@@ -1,0 +1,41 @@
+// helpful site for this:
+// https://grayscale.design
+
+export const Colors = {
+  white: "#FFFFFF",
+  darkerWhite: "#F6F6F6",
+  lightGray: "#E8E8E8",
+  veryLightGray: "#f7f7f7",
+  gray: "#a6a6a6",
+  darkGray: "#565656",
+  black: "#000000",
+  red: "red",
+  blue: "#00A3FF",
+  hoverBlue: "#2ab1ff",
+  lightBlue: "#ccecff",
+  green: "#00D19F",
+  darkerGreen: "#00C092",
+  transparent: "rgba(0,0,0,0)",
+
+  green50: "#dfffe6",
+  green100: "#b7ffc6",
+  green200: "#42ff68",
+  green300: "#00e92f",
+  green400: "#00c327",
+  green500: "#009e20",
+  green600: "#007f19",
+  green700: "#006f16",
+  green800: "#005812",
+  green900: "#00480e",
+
+  blue50: "#f3f6ff",
+  blue100: "#e9efff",
+  blue200: "#d3deff",
+  blue300: "#b6c8ff",
+  blue400: "#87a5ff",
+  blue500: "#547fff",
+  blue600: "#265cff",
+  blue700: "#0745ff",
+  blue800: "#0034cf",
+  blue900: "#002bab",
+};

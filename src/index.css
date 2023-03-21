@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  font-family: 'Familjen Grotesk';
+  font-weight: 400;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Antd Styles */
+@import '~antd/dist/antd.css';
+.ant-switch-checked {
+  background-color: #8425f0;
+}
+.ant-switch-checked:focus {
+  -webkit-box-shadow: 0 0 0 2px rgba(166, 0, 243, 0.2);
+  box-shadow: 0 0 0 2px rgba(163, 0, 238, 0.2);
+}
+
+/* React Tooltip Styles */
+.react-tooltip-overrides {
+  opacity: 1 !important;
+  border-radius: 10px !important;
+}
+
+/* For hiding the scrollbar but still allowing scrolling */
+.hide-scrollbar {
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  /** WebKit */
+  display: none;
+}
+
+::selection {
+  background: rgba(190, 190, 190, 0.25);
+  color: black;
+}
