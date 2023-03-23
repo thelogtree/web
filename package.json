@@ -61,7 +61,7 @@
   },
   "scripts": {
     "prod": "IS_PROD='truthy' node host.js",
-    "start": "IS_PROD='' react-scripts start",
+    "start": "IS_PROD='' react-scripts --openssl-legacy-provider start",
     "heroku-postbuild": "yarn build",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -83,7 +83,7 @@
     ]
   },
   "engines": {
-    "node": ">=14.x"
+    "node": ">=18.x"
   },
   "devDependencies": {
     "@types/segment-analytics": "^0.0.33",

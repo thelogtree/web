@@ -4,7 +4,6 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import "antd/dist/antd.css";
 
 if (process.env.REACT_APP_SENTRY_DSN) {
   Sentry.init({

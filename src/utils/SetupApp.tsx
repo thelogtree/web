@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { useFetchMe, useFetchMyOrganization } from "src/redux/actionIndex";
+import {
+  setUser,
+  useFetchMe,
+  useFetchMyOrganization,
+} from "src/redux/actionIndex";
 import { getAuthStatus } from "src/redux/auth/selector";
 import { getOrganization, getUser } from "src/redux/organization/selector";
 
@@ -9,7 +13,6 @@ import firebase from "../firebaseConfig";
 import { setAuthStatus } from "../redux/auth/action";
 import { analytics } from "../utils/segmentClient";
 import { getFirstPathWithSlash, usePathname } from "./helpers";
-import { setUser } from "@sentry/react";
 
 // routes where logged out users can view it and will not be redirected anywhere
 const NO_ACTION_ROUTES = ["/sign-in", "/invite"];

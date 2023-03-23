@@ -1,20 +1,15 @@
+import "antd/dist/reset.css";
+
 import React from "react";
 import { Provider } from "react-redux";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { applyMiddleware, createStore } from "redux";
 import { createLogger } from "redux-logger";
 import thunk from "redux-thunk";
 
 import { ReduxReducers } from "./redux/reducerIndex";
-import { Header } from "./sharedComponents/Header";
-import { constants } from "./utils/constants";
-import { SetupApp } from "./utils/SetupApp";
 import { RouteManager } from "./RouteManager";
+import { SetupApp } from "./utils/SetupApp";
 
 const REDUX_LOGS_ENABLED = false;
 

@@ -1,16 +1,15 @@
 body {
   margin: 0;
-  font-family: 'Familjen Grotesk';
+  font-family: "Inter";
   font-weight: 400;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
 /* Antd Styles */
-@import '~antd/dist/antd.css';
 .ant-switch-checked {
   background-color: #8425f0;
 }

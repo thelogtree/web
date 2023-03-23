@@ -8,10 +8,10 @@ import { Colors } from "./utils/colors";
 import { constants } from "./utils/constants";
 import { StylesType } from "./utils/styles";
 import { getFirstPathWithSlash, usePathname } from "./utils/helpers";
-import { SignIn } from "./screens/SignIn";
-import { Dashboard } from "./screens/Dashboard";
 import { Sidebar } from "./sharedComponents/Sidebar";
-import { Invite } from "./screens/Invite";
+import { SignInScreen } from "./screens/SignIn";
+import { DashboardScreen } from "./screens/Dashboard";
+import { InviteScreen } from "./screens/Invite";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 
@@ -23,11 +23,7 @@ export const RouteManager = () => {
     return ROUTES_WITH_SIDEBAR.includes(path);
   }, [path]);
 
-  return authStatus === "UNDETERMINED" ? (
-    <div style={styles.loadingContainer}>
-      <LoadingSpinner />
-    </div>
-  ) : (
+  return authStatus === "UNDETERMINED" ? null : (
     <Switch>
       <div style={styles.container}>
         {routeNeedsSidebar ? <Sidebar /> : null}
@@ -38,9 +34,9 @@ export const RouteManager = () => {
               : undefined
           }
         >
-          <Route path="/sign-in" component={SignIn} />
-          <Route path="/org/:slug/dashboard" component={Dashboard} />
-          <Route path="/invite/:slug/:id" component={Invite} />
+          <Route path="/sign-in" component={SignInScreen} />
+          <Route path="/org/:slug/dashboard" component={DashboardScreen} />
+          <Route path="/invite/:slug/:id" component={InviteScreen} />
         </div>
       </div>
     </Switch>
@@ -48,16 +44,6 @@ export const RouteManager = () => {
 };
 
 const styles: StylesType = {
-  loadingContainer: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   container: {
     display: "flex",
     flexDirection: "column",
@@ -66,6 +52,6 @@ const styles: StylesType = {
     right: 0,
     bottom: 0,
     left: 0,
-    backgroundColor: Colors.darkerWhite,
+    backgroundColor: Colors.white,
   },
 };
