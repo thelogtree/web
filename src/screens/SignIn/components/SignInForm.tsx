@@ -1,29 +1,14 @@
+import React, { useState } from "react";
+import { showGenericErrorAlert } from "src/utils/helpers";
 import firebase from "../../../firebaseConfig";
-import React, { useMemo, useState } from "react";
-import { Api } from "src/api";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { Colors } from "src/utils/colors";
-import { showGenericErrorAlert } from "src/utils/helpers";
 import { SharedStyles, StylesType } from "src/utils/styles";
 
-type Props = {
-  numMembers: number;
-  organizationId: string;
-  invitationId: string;
-};
-
-export const AcceptInviteForm = ({
-  numMembers,
-  organizationId,
-  invitationId,
-}: Props) => {
+export const SignInForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-
-  const joinTeamBtnText = useMemo(() => {
-    return numMembers >= 1 ? "Join team" : "Become first member";
-  }, [numMembers]);
 
   const _submitForm = async () => {
     try {
@@ -31,22 +16,18 @@ export const AcceptInviteForm = ({
         throw new Error("Please fill in all the details.");
       }
       setIsLoading(true);
-      await Api.organization.acceptInvite(
-        organizationId,
-        invitationId,
-        email,
-        password
-      );
       await firebase.auth().signInWithEmailAndPassword(email, password);
     } catch (e) {
-      showGenericErrorAlert(e);
+      showGenericErrorAlert({
+        message: "The email or password you entered is incorrect.",
+      });
       setIsLoading(false); // this must stay only in the catch
     }
   };
 
   return (
     <div style={styles.container}>
-      <label style={styles.inputTitle}>Work email</label>
+      <label style={styles.inputTitle}>Email</label>
       <input
         placeholder="john@companyname.com"
         value={email}
@@ -64,7 +45,7 @@ export const AcceptInviteForm = ({
       />
       <button
         style={{
-          ...styles.joinTeamBtn,
+          ...styles.signInBtn,
           ...(isLoading && SharedStyles.loadingButton),
         }}
         onClick={_submitForm}
@@ -77,7 +58,7 @@ export const AcceptInviteForm = ({
             style={{ marginRight: 12 }}
           />
         ) : null}
-        {joinTeamBtnText}
+        Sign in
       </button>
     </div>
   );
@@ -113,7 +94,7 @@ const styles: StylesType = {
     paddingBottom: 10,
     fontWeight: 400,
   },
-  joinTeamBtn: {
+  signInBtn: {
     outline: "none",
     borderRadius: 4,
     backgroundColor: Colors.blue800,

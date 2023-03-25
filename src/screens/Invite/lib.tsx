@@ -52,7 +52,7 @@ export const orgJoiningTextOnInviteScreen = (
   } else if (numMembers === 0) {
     return `Finish joining ${organizationName}`;
   } else if (numMembers === 1) {
-    return `Finish joining 1 other member on ${organizationName}`;
+    return `Finish joining 1 other on ${organizationName}`;
   }
-  return `Finish joining ${numMembers} other members on ${organizationName}`;
+  return `Finish joining ${numMembers} other on ${organizationName}`;
 };

@@ -13,4 +13,15 @@ export const organization = {
         invitationId,
       },
     }),
+  acceptInvite: (
+    organizationId: string,
+    invitationId: string,
+    email: string,
+    password: string
+  ) =>
+    axios.post(routeUrl + `/${organizationId}/user`, {
+      invitationId,
+      email,
+      password,
+    }),
 };

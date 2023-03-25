@@ -30,8 +30,11 @@ export const RouteManager = () => {
         <div
           style={
             routeNeedsSidebar
-              ? { paddingLeft: constants.sidebarWidth }
-              : undefined
+              ? {
+                  ...styles.innerContainer,
+                  left: constants.sidebarWidth,
+                }
+              : styles.innerContainer
           }
         >
           <Route path="/sign-in" component={SignInScreen} />
@@ -53,5 +56,16 @@ const styles: StylesType = {
     bottom: 0,
     left: 0,
     backgroundColor: Colors.white,
+  },
+  innerContainer: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
   },
 };

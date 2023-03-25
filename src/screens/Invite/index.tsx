@@ -6,9 +6,12 @@ import { orgJoiningTextOnInviteScreen, useInvitationInfo } from "./lib";
 import { Colors } from "src/utils/colors";
 import { DynamicContainer } from "src/sharedComponents/DynamicContainer";
 import { AcceptInviteForm } from "./components/AcceptInviteForm";
+import { useParams } from "react-router-dom";
 
 export const InviteScreen = () => {
   const { invitationInfo, isFetchingInvitationInfo } = useInvitationInfo();
+  const params = useParams() as any;
+  const invitationId = params["id"];
   const shouldShowLoadingSpinner = isFetchingInvitationInfo || !invitationInfo;
   const joiningText = useMemo(
     () =>
@@ -22,9 +25,13 @@ export const InviteScreen = () => {
   return shouldShowLoadingSpinner ? (
     <LoadingSpinnerFullScreen />
   ) : (
-    <DynamicContainer innerStyle={{ paddingTop: "25%" }}>
+    <DynamicContainer innerStyle={{ paddingTop: "12%" }}>
       <label style={styles.joiningText}>{joiningText}</label>
-      <AcceptInviteForm />
+      <AcceptInviteForm
+        invitationId={invitationId}
+        organizationId={invitationInfo.organizationId}
+        numMembers={invitationInfo.numMembers}
+      />
     </DynamicContainer>
   );
 };
@@ -35,7 +42,10 @@ const styles: StylesType = {
     height: "100%",
   },
   joiningText: {
-    fontSize: 20,
+    fontSize: 24,
     color: Colors.black,
+    paddingBottom: 30,
+    textAlign: "center",
+    width: "100%",
   },
 };
