@@ -5,13 +5,15 @@ import { Colors } from "src/utils/colors";
 import { constants } from "src/utils/constants";
 import { shortenString } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
-import { SignedInOrganization } from "./SignedInOrganization";
+import { SignedInOrganization } from "./components/SignedInOrganization";
+import { ApiTab } from "./components/ApiTab";
 
 export const Sidebar = () => {
   const organization = useSelector(getOrganization);
   return organization ? (
     <div style={styles.container}>
-      <SignedInOrganization/>
+      <SignedInOrganization />
+      <ApiTab />
     </div>
   ) : (
     <div style={styles.container} />

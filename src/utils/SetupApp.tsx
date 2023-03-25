@@ -31,7 +31,7 @@ export const SetupApp = () => {
   useEffect(() => {
     if (user && authStatus === "SIGNED_IN") {
       if (user.organizationId.toString() === organization?._id) {
-        history.push(`/org/${organization.slug}/dashboard`);
+        history.push(`/org/${organization.slug}/api-dashboard`);
       } else {
         fetchMyOrganization();
       }

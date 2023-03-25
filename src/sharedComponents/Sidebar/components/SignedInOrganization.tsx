@@ -94,6 +94,7 @@ const styles: StylesType = {
   orgName: {
     fontSize: 16,
     fontWeight: 600,
+    cursor: "pointer",
   },
   caretDownIcon: {
     width: 12,

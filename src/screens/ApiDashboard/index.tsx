@@ -5,7 +5,7 @@ import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { LoadingSpinnerFullScreen } from "src/sharedComponents/LoadingSpinnerFullScreen";
 import { StylesType } from "src/utils/styles";
 
-export const DashboardScreen = () => {
+export const ApiDashboardScreen = () => {
   const organization = useSelector(getOrganization);
   return organization ? (
     <div style={styles.container}>dashboard {organization?.name}</div>

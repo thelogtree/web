@@ -10,7 +10,7 @@ import { StylesType } from "./utils/styles";
 import { getFirstPathWithSlash, usePathname } from "./utils/helpers";
 import { Sidebar } from "./sharedComponents/Sidebar";
 import { SignInScreen } from "./screens/SignIn";
-import { DashboardScreen } from "./screens/Dashboard";
+import { ApiDashboardScreen } from "./screens/ApiDashboard";
 import { InviteScreen } from "./screens/Invite";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
@@ -38,7 +38,10 @@ export const RouteManager = () => {
           }
         >
           <Route path="/sign-in" component={SignInScreen} />
-          <Route path="/org/:slug/dashboard" component={DashboardScreen} />
+          <Route
+            path="/org/:slug/api-dashboard"
+            component={ApiDashboardScreen}
+          />
           <Route path="/invite/:slug/:id" component={InviteScreen} />
         </div>
       </div>
