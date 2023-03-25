@@ -26,4 +26,6 @@ export const organization = {
     }),
   generateInviteLink: (organizationId: string) =>
     axios.post(routeUrl + `/${organizationId}/invite-link`),
+  generateSecretKey: (organizationId: string) =>
+    axios.post(routeUrl + `/${organizationId}/secret-key`),
 };

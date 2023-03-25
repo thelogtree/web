@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Api } from "../../api";
 import { getUser } from "./selector";
+import { getAuthStatus } from "../auth/selector";
 
 const SET_ORGANIZATION = "SET_ORGANIZATION";
 type SET_ORGANIZATION = typeof SET_ORGANIZATION;
@@ -38,12 +39,13 @@ export type OrganizationActionsIndex = ISetOrganization | ISetUser;
 export const useFetchMyOrganization = () => {
   const dispatch = useDispatch();
   const user = useSelector(getUser);
+  const authStatus = useSelector(getAuthStatus);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
   const fetch = async () => {
     let wasSuccessful = false;
     try {
-      if (!user) {
+      if (!user || authStatus !== "SIGNED_IN") {
         return;
       }
       setIsFetching(true);

@@ -22,7 +22,7 @@ export const SignedInOrganization = () => {
       const { url } = res.data;
       Swal.fire({
         width: 800,
-        html: `<h2 style="padding-top: 15px;">Here's an invite link</h3><p style="text-align: left; padding-top: 12px;">Send this link to the person you want to invite to ${organization?.name}. This link will expire once it gets used or after 24 hours if it's never used.</p><a href={${url}} style="color: rgb(50,50,50);">${url}</a>`,
+        html: `<h2 style="padding-top: 15px;">Here's a new invite link</h3><p style="text-align: left; padding-top: 12px;">Send this link to the person you want to invite to ${organization?.name}. This link will expire once it gets used or after 24 hours if it's never used.</p><a href={${url}} style="color: rgb(50,50,50);">${url}</a>`,
       });
     } catch (e) {
       showGenericErrorAlert(e);
