@@ -24,4 +24,6 @@ export const organization = {
       email,
       password,
     }),
+  generateInviteLink: (organizationId: string) =>
+    axios.post(routeUrl + `/${organizationId}/invite-link`),
 };

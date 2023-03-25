@@ -2,21 +2,45 @@ import { Dropdown, MenuProps } from "antd";
 import firebase from "firebase";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { Api } from "src/api";
 import CaretDownIcon from "src/assets/caretDown.png";
 import { getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
-import { shortenString } from "src/utils/helpers";
+import { shortenString, showGenericErrorAlert } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
+import Swal from "sweetalert2";
 
 export const SignedInOrganization = () => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const organization = useSelector(getOrganization);
+
+  const _generateInviteLink = async () => {
+    try {
+      const res = await Api.organization.generateInviteLink(
+        organization!._id.toString()
+      );
+      const { url } = res.data;
+      Swal.fire({
+        width: 800,
+        html: `<h2 style="padding-top: 15px;">Here's an invite link</h3><p style="text-align: left; padding-top: 12px;">Send this link to the person you want to invite to ${organization?.name}. This link will expire once it gets used or after 24 hours if it's never used.</p><a href={${url}} style="color: rgb(50,50,50);">${url}</a>`,
+      });
+    } catch (e) {
+      showGenericErrorAlert(e);
+    }
+  };
 
   const items: MenuProps["items"] = [
     {
       key: "1",
       label: <label style={styles.signOutBtn}>Sign out</label>,
       onClick: () => firebase.auth().signOut(),
+    },
+    {
+      key: "2",
+      label: (
+        <label style={styles.generateInviteLink}>Invite team member</label>
+      ),
+      onClick: _generateInviteLink,
     },
   ];
 
@@ -79,5 +103,8 @@ const styles: StylesType = {
   signOutBtn: {
     cursor: "pointer",
     color: Colors.red,
+  },
+  generateInviteLink: {
+    cursor: "pointer",
   },
 };
