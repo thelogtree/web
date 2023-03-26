@@ -55,6 +55,8 @@ const styles: StylesType = {
     paddingTop: 4,
     paddingBottom: 4,
     fontSize: 14,
+    boxShadow: "0px 2px 5px rgba(0,0,0,0.1)",
+    letterSpacing: 1,
   },
   title: {
     paddingBottom: 15,
