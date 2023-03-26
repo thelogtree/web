@@ -10,12 +10,7 @@ export const useFindFrontendFolderFromUrl = () => {
   const folders = useSelector(getFolders);
   const [lastFolderInPath, setLastFolderInPath] =
     useState<FrontendFolder | null>(null);
-  const path = usePathname();
-  const fullFolderPath = useMemo(() => {
-    const whereFolderPathStarts =
-      path.indexOf(LOGS_ROUTE_PREFIX) + LOGS_ROUTE_PREFIX.length;
-    return path.substring(whereFolderPathStarts);
-  }, [path]);
+  const fullFolderPath = useFullFolderPathFromUrl();
 
   const _dfsThroughFolders = () => {
     if (!folders.length) {
@@ -39,4 +34,16 @@ export const useFindFrontendFolderFromUrl = () => {
   }, [fullFolderPath, organization?._id, folders.length]);
 
   return lastFolderInPath;
+};
+
+export const useFullFolderPathFromUrl = () => {
+  const path = usePathname();
+
+  const fullFolderPath = useMemo(() => {
+    const whereFolderPathStarts =
+      path.indexOf(LOGS_ROUTE_PREFIX) + LOGS_ROUTE_PREFIX.length;
+    return path.substring(whereFolderPathStarts);
+  }, [path]);
+
+  return fullFolderPath;
 };

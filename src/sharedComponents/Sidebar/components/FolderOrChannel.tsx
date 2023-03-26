@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
 import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
+import { useFullFolderPathFromUrl } from "src/screens/Logs/lib";
 
 type Props = {
   folderOrChannel: FrontendFolder;
@@ -19,13 +20,18 @@ export const FolderOrChannel = ({ folderOrChannel, index }: Props) => {
   const organization = useSelector(getOrganization);
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const isChannel = !folderOrChannel.children.length;
+  const fullFolderPath = useFullFolderPathFromUrl();
+  const isSelected = folderOrChannel.fullPath === fullFolderPath;
 
   return (
     <button
       style={{
         ...styles.container,
         ...(!index && styles.topBorder),
-        ...(isHovering && { backgroundColor: Colors.lightGray }),
+        ...((isHovering || isSelected) && {
+          backgroundColor: Colors.lightGray,
+        }),
+        ...(isSelected && { cursor: "default" }),
       }}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -35,8 +41,13 @@ export const FolderOrChannel = ({ folderOrChannel, index }: Props) => {
         )
       }
     >
-      <img src={isChannel ? ChannelIcon : FolderIcon} style={styles.icon} />
-      <label style={styles.name}>{folderOrChannel.name}</label>
+      <img
+        src={isChannel ? ChannelIcon : FolderIcon}
+        style={{ ...styles.icon, ...(isSelected && { cursor: "auto" }) }}
+      />
+      <label style={{ ...styles.name, ...(isSelected && { cursor: "auto" }) }}>
+        {folderOrChannel.name}
+      </label>
     </button>
   );
 };
