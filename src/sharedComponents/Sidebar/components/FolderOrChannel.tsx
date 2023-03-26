@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
 import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
 import { useFullFolderPathFromUrl } from "src/screens/Logs/lib";
+import { shortenString } from "src/utils/helpers";
 
 type Props = {
   folderOrChannel: FrontendFolder;
@@ -71,7 +72,7 @@ export const FolderOrChannel = ({
         <label
           style={{ ...styles.name, ...(isSelected && { cursor: "auto" }) }}
         >
-          {folderOrChannel.name}
+          {shortenString(folderOrChannel.name, 20)}
         </label>
       </button>
       {children.map((child) => (
