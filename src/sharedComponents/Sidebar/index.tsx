@@ -3,10 +3,11 @@ import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { constants } from "src/utils/constants";
-import { shortenString } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
-import { SignedInOrganization } from "./components/SignedInOrganization";
+
 import { ApiTab } from "./components/ApiTab";
+import { Folders } from "./components/Folders";
+import { SignedInOrganization } from "./components/SignedInOrganization";
 
 export const Sidebar = () => {
   const organization = useSelector(getOrganization);
@@ -14,6 +15,7 @@ export const Sidebar = () => {
     <div style={styles.container}>
       <SignedInOrganization />
       <ApiTab />
+      <Folders />
     </div>
   ) : (
     <div style={styles.container} />

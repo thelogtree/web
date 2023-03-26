@@ -13,3 +13,8 @@ export const getUser = createSelector(
   [getOrganizationReducer],
   (organizationReducer: OrganizationReducerType) => organizationReducer.user
 );
+
+export const getFolders = createSelector(
+  [getOrganizationReducer],
+  (organizationReducer: OrganizationReducerType) => organizationReducer.folders
+);

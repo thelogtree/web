@@ -13,6 +13,7 @@ import firebase from "../firebaseConfig";
 import { setAuthStatus } from "../redux/auth/action";
 import { analytics } from "../utils/segmentClient";
 import { getFirstPathWithSlash, usePathname } from "./helpers";
+import { ORG_ROUTE_PREFIX } from "src/RouteManager";
 
 // routes where logged out users can view it and will not be redirected anywhere
 const NO_ACTION_ROUTES = ["/sign-in", "/invite"];
@@ -30,7 +31,10 @@ export const SetupApp = () => {
 
   useEffect(() => {
     if (user && authStatus === "SIGNED_IN") {
-      if (user.organizationId.toString() === organization?._id) {
+      if (
+        user.organizationId.toString() === organization?._id &&
+        path !== ORG_ROUTE_PREFIX
+      ) {
         history.push(`/org/${organization.slug}/api-dashboard`);
       } else {
         fetchMyOrganization();

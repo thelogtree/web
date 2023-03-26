@@ -12,8 +12,11 @@ import { Sidebar } from "./sharedComponents/Sidebar";
 import { SignInScreen } from "./screens/SignIn";
 import { ApiDashboardScreen } from "./screens/ApiDashboard";
 import { InviteScreen } from "./screens/Invite";
+import { LogsScreen } from "./screens/Logs";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
+export const LOGS_ROUTE_PREFIX = "/logs";
+export const ORG_ROUTE_PREFIX = "/org";
 
 export const RouteManager = () => {
   const authStatus = useSelector(getAuthStatus);
@@ -39,8 +42,12 @@ export const RouteManager = () => {
         >
           <Route path="/sign-in" component={SignInScreen} />
           <Route
-            path="/org/:slug/api-dashboard"
+            path={`${ORG_ROUTE_PREFIX}/:slug/api-dashboard`}
             component={ApiDashboardScreen}
+          />
+          <Route
+            path={`${ORG_ROUTE_PREFIX}/:slug${LOGS_ROUTE_PREFIX}`}
+            component={LogsScreen}
           />
           <Route path="/invite/:slug/:id" component={InviteScreen} />
         </div>

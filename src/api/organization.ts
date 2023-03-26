@@ -13,6 +13,8 @@ export const organization = {
         invitationId,
       },
     }),
+  getFolders: (organizationId: string) =>
+    axios.get(routeUrl + `/${organizationId}/folders`),
   acceptInvite: (
     organizationId: string,
     invitationId: string,

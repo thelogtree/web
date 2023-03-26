@@ -4,13 +4,16 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Api } from "../../api";
-import { getUser } from "./selector";
+import { getOrganization, getUser } from "./selector";
 import { getAuthStatus } from "../auth/selector";
+import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 
 const SET_ORGANIZATION = "SET_ORGANIZATION";
 type SET_ORGANIZATION = typeof SET_ORGANIZATION;
 const SET_USER = "SET_USER";
 type SET_USER = typeof SET_USER;
+const SET_FOLDERS = "SET_FOLDERS";
+type SET_FOLDERS = typeof SET_FOLDERS;
 
 type ISetOrganization = {
   type: SET_ORGANIZATION;
@@ -32,8 +35,20 @@ export const setUser = (user: UserDocument | null): ISetUser => ({
   user,
 });
 
+type ISetFolders = {
+  type: SET_FOLDERS;
+  folders: FrontendFolder[];
+};
+export const setFolders = (folders: FrontendFolder[]): ISetFolders => ({
+  type: SET_FOLDERS,
+  folders,
+});
+
 // actions identifiable by the reducer
-export type OrganizationActionsIndex = ISetOrganization | ISetUser;
+export type OrganizationActionsIndex =
+  | ISetOrganization
+  | ISetUser
+  | ISetFolders;
 
 // api-related actions
 export const useFetchMyOrganization = () => {
@@ -81,6 +96,32 @@ export const useFetchMe = () => {
     } catch (e) {
       Sentry.captureException(e);
       dispatch(setUser(null));
+    }
+    setIsFetching(false);
+    return wasSuccessful;
+  };
+
+  return { fetch, isFetching };
+};
+
+export const useFetchFolders = () => {
+  const dispatch = useDispatch();
+  const organization = useSelector(getOrganization);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  const fetch = async () => {
+    let wasSuccessful = false;
+    try {
+      setIsFetching(true);
+      const res = await Api.organization.getFolders(
+        organization!._id.toString()
+      );
+      const { folders: fetchedFolders } = res.data;
+      dispatch(setFolders(fetchedFolders));
+      wasSuccessful = true;
+    } catch (e) {
+      Sentry.captureException(e);
+      dispatch(setFolders([]));
     }
     setIsFetching(false);
     return wasSuccessful;
