@@ -3,6 +3,8 @@ import { StylesType } from "src/utils/styles";
 
 import { Log } from "./components/Log";
 import { useFindFrontendFolderFromUrl, useLogs } from "./lib";
+import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
+import { LoadingLogs } from "./components/LoadingLogs";
 
 export const LogsScreen = () => {
   const frontendFolder = useFindFrontendFolderFromUrl();
@@ -11,9 +13,7 @@ export const LogsScreen = () => {
   return frontendFolder ? (
     <div style={styles.container}>
       <label style={styles.folderName}>{frontendFolder.name}</label>
-      {logs.map((log) => (
-        <Log log={log} />
-      ))}
+      {isLoading ? <LoadingLogs /> : logs.map((log) => <Log log={log} />)}
     </div>
   ) : null;
 };
