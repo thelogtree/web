@@ -5,6 +5,7 @@ import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { LoadingSpinnerFullScreen } from "src/sharedComponents/LoadingSpinnerFullScreen";
 import { StylesType } from "src/utils/styles";
 import { GenerateKeys } from "./components/GenerateKeys";
+import { UsageInstructions } from "./components/UsageInstructions";
 
 export const ApiDashboardScreen = () => {
   const organization = useSelector(getOrganization);
@@ -12,6 +13,7 @@ export const ApiDashboardScreen = () => {
     <div style={styles.container}>
       <label style={styles.title}>API Dashboard</label>
       <GenerateKeys />
+      <UsageInstructions />
     </div>
   ) : (
     <LoadingSpinnerFullScreen />
