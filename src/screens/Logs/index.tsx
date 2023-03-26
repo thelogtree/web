@@ -1,17 +1,19 @@
-import { LogDocument } from "logtree-types";
-import React, { useState } from "react";
-import { FrontendLog } from "./components/Log";
+import React from "react";
 import { StylesType } from "src/utils/styles";
-import { useFindFrontendFolderFromUrl } from "./lib";
+
+import { Log } from "./components/Log";
+import { useFindFrontendFolderFromUrl, useLogs } from "./lib";
 
 export const LogsScreen = () => {
   const frontendFolder = useFindFrontendFolderFromUrl();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [logs, setLogs] = useState<FrontendLog[]>([]);
+  const { logs, isLoading } = useLogs(frontendFolder?._id);
 
   return frontendFolder ? (
     <div style={styles.container}>
       <label style={styles.folderName}>{frontendFolder.name}</label>
+      {logs.map((log) => (
+        <Log log={log} />
+      ))}
     </div>
   ) : null;
 };
@@ -31,5 +33,6 @@ const styles: StylesType = {
     paddingTop: 40,
     textAlign: "left",
     width: "100%",
+    paddingBottom: 30,
   },
 };

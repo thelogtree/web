@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
+import { Api } from "src/api";
 import { getFolders, getOrganization } from "src/redux/organization/selector";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
-import { usePathname } from "src/utils/helpers";
+import { showGenericErrorAlert, usePathname } from "src/utils/helpers";
 
 export const useFindFrontendFolderFromUrl = () => {
   const organization = useSelector(getOrganization);
@@ -46,4 +47,40 @@ export const useFullFolderPathFromUrl = () => {
   }, [path]);
 
   return fullFolderPath;
+};
+
+export type FrontendLog = {
+  content: string;
+  _id: string;
+  createdAt: Date;
+};
+
+export const useLogs = (folderId?: string) => {
+  const organization = useSelector(getOrganization);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [logs, setLogs] = useState<FrontendLog[]>([]);
+
+  const _fetchLogs = async () => {
+    try {
+      if (!organization || !folderId) {
+        return null;
+      }
+      setIsLoading(true);
+      const res = await Api.organization.getLogs(
+        organization._id.toString(),
+        folderId
+      );
+      const { logs: fetchedLogs } = res.data;
+      setLogs(fetchedLogs);
+      setIsLoading(false);
+    } catch (e) {
+      showGenericErrorAlert(e);
+    }
+  };
+
+  useEffect(() => {
+    _fetchLogs();
+  }, [folderId, organization?._id]);
+
+  return { logs, isLoading };
 };
