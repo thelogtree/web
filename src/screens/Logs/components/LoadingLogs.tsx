@@ -4,7 +4,7 @@ import { StylesType } from "src/utils/styles";
 
 export const LoadingLogs = () => (
   <div style={styles.loadingContainer}>
-    <LoadingSpinner size={30} />
+    <LoadingSpinner size={40} />
   </div>
 );
 
@@ -12,9 +12,8 @@ const styles: StylesType = {
   loadingContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     width: "100%",
-    paddingTop: 20,
-    paddingLeft: 50,
+    paddingTop: 200,
   },
 };

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FrontendFolder } from "./Folders";
 import { StylesType } from "src/utils/styles";
 import FolderIcon from "src/assets/folder.png";
 import ChannelIcon from "src/assets/channel.png";
+import OpenFolderIcon from "src/assets/openFolder.png";
 import { Colors } from "src/utils/colors";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -31,6 +32,13 @@ export const FolderOrChannel = ({
   const isChannel = !folderOrChannel.children.length;
   const fullFolderPath = useFullFolderPathFromUrl();
   const isSelected = folderOrChannel.fullPath === fullFolderPath;
+
+  const icon = useMemo(() => {
+    if (isChannel) {
+      return ChannelIcon;
+    }
+    return children.length ? OpenFolderIcon : FolderIcon;
+  }, [isChannel, children.length]);
 
   const _onPress = () => {
     if (isChannel) {
@@ -66,7 +74,7 @@ export const FolderOrChannel = ({
         onClick={_onPress}
       >
         <img
-          src={isChannel ? ChannelIcon : FolderIcon}
+          src={icon}
           style={{ ...styles.icon, ...(isSelected && { cursor: "auto" }) }}
         />
         <label

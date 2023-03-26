@@ -72,7 +72,7 @@ export const useLogs = (folderId?: string) => {
     setStart(Math.min(logs.length, start + PAGINATION_RECORDS_INCREMENT));
   };
 
-  const _fetchLogs = async () => {
+  const _fetchLogs = async (isFreshFetch?: boolean) => {
     try {
       if (!organization || !folderId) {
         return;
@@ -81,7 +81,7 @@ export const useLogs = (folderId?: string) => {
       setIsLoading(true);
 
       // addresses possible race conditions with pagination and excessive amount of new logs
-      let currentDateCeiling = logsNoNewerThanDate;
+      let currentDateCeiling = isFreshFetch ? new Date() : logsNoNewerThanDate;
       if (!currentDateCeiling) {
         currentDateCeiling = new Date();
         setLogsNoNewerThanDate(currentDateCeiling);
@@ -90,12 +90,15 @@ export const useLogs = (folderId?: string) => {
       const res = await Api.organization.getLogs(
         organization._id.toString(),
         folderId,
-        start,
+        isFreshFetch ? 0 : start,
         currentDateCeiling
       );
       const { logs: fetchedLogs, numLogsInTotal: fetchedNumLogsInTotal } =
         res.data;
-      const newLogsArr = _.uniqBy(logs.concat(fetchedLogs), "_id");
+      const newLogsArr = _.uniqBy(
+        (isFreshFetch ? [] : logs).concat(fetchedLogs),
+        "_id"
+      );
       setLogs(newLogsArr);
       setNumLogsInTotal(fetchedNumLogsInTotal);
       setIsLoading(false);
@@ -105,8 +108,17 @@ export const useLogs = (folderId?: string) => {
   };
 
   useEffect(() => {
-    _fetchLogs();
-  }, [folderId, organization?._id, start]);
+    if (start !== 0) {
+      // only used for fetching more results in pagination
+      _fetchLogs();
+    }
+  }, [start]);
+
+  useEffect(() => {
+    setLogs([]);
+    setStart(0);
+    _fetchLogs(true); // override the "start" pagination index so we don't have to wait for react state to update
+  }, [folderId, organization?._id]);
 
   return { logs, numLogsInTotal, isLoading, attemptFetchingMoreResults };
 };
