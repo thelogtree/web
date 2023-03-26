@@ -20,7 +20,7 @@ export const UsageInstructions = () => {
       </pre>
       <label style={styles.canUseAnyLanguage}>
         The example above is in Javascript, but you can use any programming
-        language you want to call this endpoint.
+        language to call this endpoint.
       </label>
     </div>
   );
