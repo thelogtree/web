@@ -28,7 +28,11 @@ export const Folders = () => {
   return isFetching ? null : (
     <div style={styles.container}>
       {folders.map((folder, i) => (
-        <FolderOrChannel folderOrChannel={folder} hasTopBorder={!i} />
+        <FolderOrChannel
+          folderOrChannel={folder}
+          hasTopBorder={!i}
+          key={folder._id}
+        />
       ))}
     </div>
   );

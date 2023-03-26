@@ -5,6 +5,7 @@ import { Api } from "src/api";
 import { getFolders, getOrganization } from "src/redux/organization/selector";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import { showGenericErrorAlert, usePathname } from "src/utils/helpers";
+import _ from "lodash";
 
 export const useFindFrontendFolderFromUrl = () => {
   const organization = useSelector(getOrganization);
@@ -55,23 +56,48 @@ export type FrontendLog = {
   createdAt: Date;
 };
 
+const PAGINATION_RECORDS_INCREMENT = 100; // cannot be more than 100 because the backend only returns 100
+
 export const useLogs = (folderId?: string) => {
   const organization = useSelector(getOrganization);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [logs, setLogs] = useState<FrontendLog[]>([]);
+  const [numLogsInTotal, setNumLogsInTotal] = useState<number>(0);
+  const [logsNoNewerThanDate, setLogsNoNewerThanDate] = useState<
+    Date | undefined
+  >(undefined);
+  const [start, setStart] = useState<number>(0);
+
+  const attemptFetchingMoreResults = async () => {
+    setStart(Math.min(logs.length, start + PAGINATION_RECORDS_INCREMENT));
+  };
 
   const _fetchLogs = async () => {
     try {
       if (!organization || !folderId) {
-        return null;
+        return;
       }
+
       setIsLoading(true);
+
+      // addresses possible race conditions with pagination and excessive amount of new logs
+      let currentDateCeiling = logsNoNewerThanDate;
+      if (!currentDateCeiling) {
+        currentDateCeiling = new Date();
+        setLogsNoNewerThanDate(currentDateCeiling);
+      }
+
       const res = await Api.organization.getLogs(
         organization._id.toString(),
-        folderId
+        folderId,
+        start,
+        currentDateCeiling
       );
-      const { logs: fetchedLogs } = res.data;
-      setLogs(fetchedLogs);
+      const { logs: fetchedLogs, numLogsInTotal: fetchedNumLogsInTotal } =
+        res.data;
+      const newLogsArr = _.uniqBy(logs.concat(fetchedLogs), "_id");
+      setLogs(newLogsArr);
+      setNumLogsInTotal(fetchedNumLogsInTotal);
       setIsLoading(false);
     } catch (e) {
       showGenericErrorAlert(e);
@@ -80,7 +106,7 @@ export const useLogs = (folderId?: string) => {
 
   useEffect(() => {
     _fetchLogs();
-  }, [folderId, organization?._id]);
+  }, [folderId, organization?._id, start]);
 
-  return { logs, isLoading };
+  return { logs, numLogsInTotal, isLoading, attemptFetchingMoreResults };
 };
