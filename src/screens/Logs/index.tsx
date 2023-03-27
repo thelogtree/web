@@ -24,6 +24,8 @@ export const LogsScreen = () => {
   const numLogsText = useMemo(() => {
     if (isLoading || isSearchQueued) {
       return "";
+    } else if (query && logs.length === 1) {
+      return "Showing 1 log that matches your query";
     } else if (query && logs.length) {
       return `Showing the ${logs.length} most recent logs that match your query`;
     } else if (numLogsInTotal === 1) {
@@ -60,6 +62,7 @@ export const LogsScreen = () => {
       <div style={styles.container} ref={containerRef} onScroll={_handleScroll}>
         <div style={styles.titleContainer}>
           <label style={styles.folderName}>{frontendFolder.name}</label>
+          <label style={styles.fullPath}>{frontendFolder.fullPath}</label>
         </div>
         {numLogsInTotal ? (
           <label style={styles.numLogsTotalText}>{numLogsText}</label>
@@ -109,7 +112,7 @@ const styles: StylesType = {
     fontSize: 30,
     textAlign: "left",
     width: "100%",
-    paddingRight: 5,
+    paddingRight: 20,
   },
   numLogsTotalText: {
     paddingBottom: 15,
@@ -136,5 +139,12 @@ const styles: StylesType = {
     alignItems: "center",
     paddingTop: 40,
     paddingBottom: 15,
+  },
+  fullPath: {
+    color: Colors.gray,
+    fontSize: 13,
+    minWidth: 300,
+    position: "relative",
+    top: 2,
   },
 };
