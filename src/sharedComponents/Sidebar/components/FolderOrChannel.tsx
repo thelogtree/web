@@ -11,6 +11,7 @@ import { getOrganization } from "src/redux/organization/selector";
 import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
 import { useFullFolderPathFromUrl } from "src/screens/Logs/lib";
 import { shortenString } from "src/utils/helpers";
+import { Options } from "src/screens/Logs/components/Options";
 
 type Props = {
   folderOrChannel: FrontendFolder;
@@ -73,15 +74,18 @@ export const FolderOrChannel = ({
         onMouseLeave={() => setIsHovering(false)}
         onClick={_onPress}
       >
-        <img
-          src={icon}
-          style={{ ...styles.icon, ...(isSelected && { cursor: "auto" }) }}
-        />
-        <label
-          style={{ ...styles.name, ...(isSelected && { cursor: "auto" }) }}
-        >
-          {shortenString(folderOrChannel.name, 20)}
-        </label>
+        <div style={styles.innerButtonLeftSide}>
+          <img
+            src={icon}
+            style={{ ...styles.icon, ...(isSelected && { cursor: "auto" }) }}
+          />
+          <label
+            style={{ ...styles.name, ...(isSelected && { cursor: "auto" }) }}
+          >
+            {shortenString(folderOrChannel.name, 16)}
+          </label>
+        </div>
+        {isHovering && <Options folderOrChannel={folderOrChannel} />}
       </button>
       {children.map((child) => (
         <FolderOrChannel
@@ -97,7 +101,7 @@ const styles: StylesType = {
   container: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
     height: 40,
@@ -117,10 +121,17 @@ const styles: StylesType = {
   name: {
     paddingLeft: 6,
     cursor: "pointer",
+    paddingRight: 6,
   },
   topBorder: {
     borderTopStyle: "solid",
     borderTopWidth: 1,
     borderTopColor: Colors.lightGray,
+  },
+  innerButtonLeftSide: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
 };

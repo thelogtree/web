@@ -48,4 +48,8 @@ export const organization = {
       folderId,
       query,
     }),
+  deleteFolderAndEverythingInside: (organizationId: string, folderId: string) =>
+    axios.post(routeUrl + `/${organizationId}/delete-folder`, {
+      folderId,
+    }),
 };

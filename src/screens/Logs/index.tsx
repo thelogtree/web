@@ -6,6 +6,7 @@ import { useFindFrontendFolderFromUrl, useLogs } from "./lib";
 import { LoadingLogs } from "./components/LoadingLogs";
 import { Colors } from "src/utils/colors";
 import { SearchBar } from "./components/SearchBar";
+import { Options } from "./components/Options";
 
 export const LogsScreen = () => {
   const frontendFolder = useFindFrontendFolderFromUrl();
@@ -34,6 +35,8 @@ export const LogsScreen = () => {
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
       return "No logs from the last 14 days match your query";
+    } else if (logs.length === numLogsInTotal && !numLogsInTotal) {
+      return "This channel has no logs in it yet.";
     } else if (query || logs.length === numLogsInTotal) {
       return "There are no more results.";
     }
@@ -55,7 +58,9 @@ export const LogsScreen = () => {
     <>
       <SearchBar query={query} setQuery={setQuery} />
       <div style={styles.container} ref={containerRef} onScroll={_handleScroll}>
-        <label style={styles.folderName}>{frontendFolder.name}</label>
+        <div style={styles.titleContainer}>
+          <label style={styles.folderName}>{frontendFolder.name}</label>
+        </div>
         {numLogsInTotal ? (
           <label style={styles.numLogsTotalText}>{numLogsText}</label>
         ) : null}
@@ -102,10 +107,9 @@ const styles: StylesType = {
   folderName: {
     fontWeight: 600,
     fontSize: 30,
-    paddingTop: 40,
     textAlign: "left",
     width: "100%",
-    paddingBottom: 15,
+    paddingRight: 5,
   },
   numLogsTotalText: {
     paddingBottom: 15,
@@ -124,5 +128,13 @@ const styles: StylesType = {
     color: Colors.gray,
     textAlign: "center",
     width: "100%",
+  },
+  titleContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingTop: 40,
+    paddingBottom: 15,
   },
 };
