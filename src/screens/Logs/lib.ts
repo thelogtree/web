@@ -67,9 +67,17 @@ export const useLogs = (folderId?: string) => {
     Date | undefined
   >(undefined);
   const [start, setStart] = useState<number>(0);
+  const [query, setQuery] = useState<string>("");
+  const [isSearchQueued, setIsSearchQueued] = useState<boolean>(false);
 
   const attemptFetchingMoreResults = async () => {
     setStart(Math.min(logs.length, start + PAGINATION_RECORDS_INCREMENT));
+  };
+
+  const _freshQueryAndReset = () => {
+    setLogs([]);
+    setStart(0);
+    _fetchLogs(true); // override the "start" pagination index so we don't have to wait for react state to update
   };
 
   const _fetchLogs = async (isFreshFetch?: boolean) => {
@@ -87,24 +95,35 @@ export const useLogs = (folderId?: string) => {
         setLogsNoNewerThanDate(currentDateCeiling);
       }
 
-      const res = await Api.organization.getLogs(
-        organization._id.toString(),
-        folderId,
-        isFreshFetch ? 0 : start,
-        currentDateCeiling
-      );
-      const { logs: fetchedLogs, numLogsInTotal: fetchedNumLogsInTotal } =
-        res.data;
+      let fetchedLogs: FrontendLog[] = [];
+      if (query) {
+        const res = await Api.organization.searchForLogs(
+          organization._id.toString(),
+          folderId,
+          query
+        );
+        fetchedLogs = res.data.logs;
+      } else {
+        const res = await Api.organization.getLogs(
+          organization._id.toString(),
+          folderId,
+          isFreshFetch ? 0 : start,
+          currentDateCeiling
+        );
+        const fetchedNumLogsInTotal = res.data.numLogsInTotal;
+        fetchedLogs = res.data.logs;
+        setNumLogsInTotal(fetchedNumLogsInTotal);
+      }
       const newLogsArr = _.uniqBy(
         (isFreshFetch ? [] : logs).concat(fetchedLogs),
         "_id"
       );
       setLogs(newLogsArr);
-      setNumLogsInTotal(fetchedNumLogsInTotal);
       setIsLoading(false);
     } catch (e) {
       showGenericErrorAlert(e);
     }
+    setIsSearchQueued(false);
   };
 
   useEffect(() => {
@@ -115,10 +134,26 @@ export const useLogs = (folderId?: string) => {
   }, [start]);
 
   useEffect(() => {
-    setLogs([]);
-    setStart(0);
-    _fetchLogs(true); // override the "start" pagination index so we don't have to wait for react state to update
+    _freshQueryAndReset();
   }, [folderId, organization?._id]);
 
-  return { logs, numLogsInTotal, isLoading, attemptFetchingMoreResults };
+  useEffect(() => {
+    setIsSearchQueued(true);
+    const typingTimer = setTimeout(() => {
+      _freshQueryAndReset();
+    }, 600);
+    return () => {
+      clearTimeout(typingTimer);
+    };
+  }, [query]);
+
+  return {
+    logs,
+    numLogsInTotal,
+    isLoading,
+    attemptFetchingMoreResults,
+    query,
+    setQuery,
+    isSearchQueued,
+  };
 };

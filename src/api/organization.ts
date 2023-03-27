@@ -43,4 +43,9 @@ export const organization = {
     axios.post(routeUrl + `/${organizationId}/invite-link`),
   generateSecretKey: (organizationId: string) =>
     axios.post(routeUrl + `/${organizationId}/secret-key`),
+  searchForLogs: (organizationId: string, folderId: string, query: string) =>
+    axios.post(routeUrl + `/${organizationId}/search`, {
+      folderId,
+      query,
+    }),
 };
