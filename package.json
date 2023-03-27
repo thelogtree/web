@@ -60,7 +60,7 @@
     "yup": "0.29.3"
   },
   "scripts": {
-    "prod": "IS_PROD='truthy' node host.js",
+    "prod": "IS_PROD='truthy' --openssl-legacy-provider node host.js",
     "start": "IS_PROD='' react-scripts --openssl-legacy-provider start",
     "heroku-postbuild": "yarn build",
     "build": "react-scripts build",
