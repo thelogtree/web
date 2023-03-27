@@ -52,26 +52,30 @@ export const LogsScreen = () => {
   };
 
   return frontendFolder ? (
-    <div style={styles.container} ref={containerRef} onScroll={_handleScroll}>
+    <>
       <SearchBar query={query} setQuery={setQuery} />
-      <label style={styles.folderName}>{frontendFolder.name}</label>
-      {numLogsInTotal ? (
-        <label style={styles.numLogsTotalText}>{numLogsText}</label>
-      ) : null}
-      {(isLoading && !logs.length) || isSearchQueued ? (
-        <LoadingLogs />
-      ) : (
-        <div style={styles.logsFeed}>
-          <hr style={styles.hr} />
-          {logs.map((log) => (
-            <Log log={log} key={log._id} />
-          ))}
-          {isSearchQueued ? null : (
-            <label style={styles.moreResultsLoadingText}>{endOfFeedText}</label>
-          )}
-        </div>
-      )}
-    </div>
+      <div style={styles.container} ref={containerRef} onScroll={_handleScroll}>
+        <label style={styles.folderName}>{frontendFolder.name}</label>
+        {numLogsInTotal ? (
+          <label style={styles.numLogsTotalText}>{numLogsText}</label>
+        ) : null}
+        {(isLoading && !logs.length) || isSearchQueued ? (
+          <LoadingLogs />
+        ) : (
+          <div style={styles.logsFeed}>
+            <hr style={styles.hr} />
+            {logs.map((log) => (
+              <Log log={log} key={log._id} />
+            ))}
+            {isSearchQueued ? null : (
+              <label style={styles.moreResultsLoadingText}>
+                {endOfFeedText}
+              </label>
+            )}
+          </div>
+        )}
+      </div>
+    </>
   ) : null;
 };
 
@@ -82,7 +86,10 @@ const styles: StylesType = {
     justifyContent: "flex-start",
     alignItems: "flex-start",
     width: "100%",
-    padding: 60,
+    paddingLeft: 60,
+    paddingRight: 60,
+    paddingBottom: 60,
+    paddingTop: 20,
     overflow: "scroll",
   },
   logsFeed: {

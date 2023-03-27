@@ -37,6 +37,7 @@ const styles: StylesType = {
     top: 0,
     left: 0,
     bottom: 0,
+    zIndex: 5,
   },
   orgName: {
     fontSize: 16,
