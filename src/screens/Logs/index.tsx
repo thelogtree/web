@@ -7,6 +7,7 @@ import { LoadingLogs } from "./components/LoadingLogs";
 import { Colors } from "src/utils/colors";
 import { SearchBar } from "./components/SearchBar";
 import { Options } from "./components/Options";
+import { numberToNumberWithCommas } from "src/utils/helpers";
 
 export const LogsScreen = () => {
   const frontendFolder = useFindFrontendFolderFromUrl();
@@ -27,11 +28,13 @@ export const LogsScreen = () => {
     } else if (query && logs.length === 1) {
       return "Showing 1 log that matches your query";
     } else if (query && logs.length) {
-      return `Showing the ${logs.length} most recent logs that match your query`;
+      return `Showing the ${numberToNumberWithCommas(
+        logs.length
+      )} most recent logs that match your query`;
     } else if (numLogsInTotal === 1) {
       return "Showing 1 log";
     }
-    return `Showing ${numLogsInTotal} logs`;
+    return `Showing ${numberToNumberWithCommas(numLogsInTotal)} logs`;
   }, [numLogsInTotal, logs.length, query, isLoading, isSearchQueued]);
 
   const endOfFeedText = useMemo(() => {
