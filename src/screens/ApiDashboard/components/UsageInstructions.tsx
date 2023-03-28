@@ -19,6 +19,8 @@ export const UsageInstructions = () => {
         </div>
       </pre>
       <label style={styles.canUseAnyLanguage}>
+        If the folderPath you specify does not exist yet, Logtree will
+        automatically create it once the first log is sent to that folderPath.
         The example above is in Javascript, but you can use any programming
         language to call this endpoint.
       </label>
