@@ -65,7 +65,7 @@ const styles: StylesType = {
   },
   tabTitle: {
     fontSize: 15,
-    paddingLeft: 10,
+    paddingLeft: 6,
     color: Colors.black,
   },
 };
