@@ -6,6 +6,7 @@ import { showGenericErrorAlert } from "src/utils/helpers";
 import { FolderOrChannel } from "./FolderOrChannel";
 import { StylesType } from "src/utils/styles";
 import { useFetchFolders } from "src/redux/actionIndex";
+import { Colors } from "src/utils/colors";
 
 export type FrontendFolder = {
   children: FrontendFolder[];
@@ -27,6 +28,7 @@ export const Folders = () => {
 
   return isFetching ? null : (
     <div style={styles.container}>
+      {folders.length ? <label style={styles.title}>CHANNELS</label> : null}
       {folders.map((folder, i) => (
         <FolderOrChannel
           folderOrChannel={folder}
@@ -46,5 +48,12 @@ const styles: StylesType = {
     alignItems: "flex-start",
     width: "100%",
     paddingTop: 50,
+  },
+  title: {
+    paddingBottom: 8,
+    color: Colors.darkGray,
+    letterSpacing: 0.7,
+    paddingLeft: 13,
+    fontSize: 11,
   },
 };
