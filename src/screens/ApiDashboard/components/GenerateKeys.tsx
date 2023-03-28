@@ -1,14 +1,16 @@
+import { orgPermissionLevel } from "logtree-types";
 import React, { useEffect, useMemo, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useSelector } from "react-redux";
 import { Api } from "src/api";
-import { getOrganization } from "src/redux/organization/selector";
+import { getOrganization, getUser } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { showGenericErrorAlert } from "src/utils/helpers";
 import { SharedStyles, StylesType } from "src/utils/styles";
 import Swal from "sweetalert2";
 
 export const GenerateKeys = () => {
+  const user = useSelector(getUser);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [plaintextSecretKey, setPlaintextSecretKey] = useState<string>("");
   const [justCopiedPublishableApiKey, setJustCopiedPublishableApiKey] =
@@ -19,6 +21,8 @@ export const GenerateKeys = () => {
   const alreadyGeneratedSecretKey = Boolean(
     organization?.keys.encryptedSecretKey
   );
+  const isUserAnOrgAdmin =
+    user?.orgPermissionLevel === orgPermissionLevel.Admin;
 
   const keyText = useMemo(() => {
     if (plaintextSecretKey) {
@@ -53,6 +57,12 @@ export const GenerateKeys = () => {
   };
 
   const _confirmGenerateSecretKey = async () => {
+    if (!isUserAnOrgAdmin) {
+      showGenericErrorAlert({
+        message: "You must be an admin to generate a secret key.",
+      });
+      return;
+    }
     if (!alreadyGeneratedSecretKey) {
       return _generateSecretKey();
     }
@@ -133,9 +143,10 @@ export const GenerateKeys = () => {
             style={{
               ...styles.generateSecretKey,
               ...(isLoading && SharedStyles.loadingButton),
+              ...(!isUserAnOrgAdmin && { opacity: 0.3, cursor: "auto" }),
             }}
             onClick={_confirmGenerateSecretKey}
-            disabled={isLoading}
+            disabled={isLoading || !isUserAnOrgAdmin}
           >
             {generateKeyButtonText}
           </button>
