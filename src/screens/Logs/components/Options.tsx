@@ -5,12 +5,13 @@ import { StylesType } from "src/utils/styles";
 import Swal from "sweetalert2";
 import { Api } from "src/api";
 import { useSelector } from "react-redux";
-import { getOrganization } from "src/redux/organization/selector";
+import { getOrganization, getUser } from "src/redux/organization/selector";
 import { useFetchFolders } from "src/redux/actionIndex";
 import { useHistory } from "react-router-dom";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import { Colors } from "src/utils/colors";
 import { useFullFolderPathFromUrl } from "../lib";
+import { orgPermissionLevel } from "logtree-types";
 
 type Props = {
   folderOrChannel: FrontendFolder;
@@ -19,6 +20,7 @@ type Props = {
 export const Options = ({ folderOrChannel }: Props) => {
   const isChannel = !folderOrChannel.children.length;
   const history = useHistory();
+  const user = useSelector(getUser);
   const organization = useSelector(getOrganization);
   const fullFolderPath = useFullFolderPathFromUrl();
   const currentPathWillBeDeleted = fullFolderPath.includes(
@@ -26,6 +28,8 @@ export const Options = ({ folderOrChannel }: Props) => {
   );
   const { fetch: fetchFolders } = useFetchFolders();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const isUserAnOrgAdmin =
+    user?.orgPermissionLevel === orgPermissionLevel.Admin;
 
   const _confirmDeleteFolderAndEverythingInside = async () => {
     if (isLoading) {
@@ -59,14 +63,18 @@ export const Options = ({ folderOrChannel }: Props) => {
   };
 
   const items: MenuProps["items"] = [
-    {
-      key: "1",
-      label: <label style={styles.delete}>Delete</label>,
-      onClick: _confirmDeleteFolderAndEverythingInside,
-    },
+    ...(isUserAnOrgAdmin
+      ? [
+          {
+            key: "1",
+            label: <label style={styles.delete}>Delete</label>,
+            onClick: _confirmDeleteFolderAndEverythingInside,
+          },
+        ]
+      : []),
   ];
 
-  return (
+  return items.length ? (
     <Dropdown menu={{ items }} trigger={["click"]}>
       <img
         src={MenuIcon}
@@ -74,7 +82,7 @@ export const Options = ({ folderOrChannel }: Props) => {
         onClick={(e) => e.stopPropagation()}
       />
     </Dropdown>
-  );
+  ) : null;
 };
 
 const styles: StylesType = {
