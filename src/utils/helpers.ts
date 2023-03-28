@@ -39,7 +39,9 @@ export const titleCase = (str: string) =>
 
 // example: 50000 -> 50,000
 export const numberToNumberWithCommas = (val: number): string =>
-  val.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  val >= 1000
+    ? val.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    : val.toString();
 
 export const getErrorMessage = (e: AxiosError) =>
   _.get(e, "response.data", e.message);

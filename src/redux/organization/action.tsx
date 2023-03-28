@@ -14,6 +14,8 @@ const SET_USER = "SET_USER";
 type SET_USER = typeof SET_USER;
 const SET_FOLDERS = "SET_FOLDERS";
 type SET_FOLDERS = typeof SET_FOLDERS;
+const SET_ORGANIZATION_MEMBERS = "SET_ORGANIZATION_MEMBERS";
+type SET_ORGANIZATION_MEMBERS = typeof SET_ORGANIZATION_MEMBERS;
 
 type ISetOrganization = {
   type: SET_ORGANIZATION;
@@ -44,11 +46,23 @@ export const setFolders = (folders: FrontendFolder[]): ISetFolders => ({
   folders,
 });
 
+type ISetOrganizationMembers = {
+  type: SET_ORGANIZATION_MEMBERS;
+  organizationMembers: UserDocument[];
+};
+export const setOrganizationMembers = (
+  organizationMembers: UserDocument[]
+): ISetOrganizationMembers => ({
+  type: SET_ORGANIZATION_MEMBERS,
+  organizationMembers,
+});
+
 // actions identifiable by the reducer
 export type OrganizationActionsIndex =
   | ISetOrganization
   | ISetUser
-  | ISetFolders;
+  | ISetFolders
+  | ISetOrganizationMembers;
 
 // api-related actions
 export const useFetchMyOrganization = () => {
@@ -122,6 +136,32 @@ export const useFetchFolders = () => {
     } catch (e) {
       Sentry.captureException(e);
       dispatch(setFolders([]));
+    }
+    setIsFetching(false);
+    return wasSuccessful;
+  };
+
+  return { fetch, isFetching };
+};
+
+export const useFetchOrganizationMembers = () => {
+  const dispatch = useDispatch();
+  const organization = useSelector(getOrganization);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  const fetch = async () => {
+    let wasSuccessful = false;
+    try {
+      setIsFetching(true);
+      const res = await Api.organization.getOrganizationMembers(
+        organization!._id.toString()
+      );
+      const { users } = res.data;
+      dispatch(setOrganizationMembers(users));
+      wasSuccessful = true;
+    } catch (e) {
+      Sentry.captureException(e);
+      dispatch(setOrganizationMembers([]));
     }
     setIsFetching(false);
     return wasSuccessful;

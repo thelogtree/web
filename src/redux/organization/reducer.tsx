@@ -6,12 +6,14 @@ export type OrganizationReducerType = {
   organization: OrganizationDocument | null;
   user: UserDocument | null;
   folders: FrontendFolder[];
+  organizationMembers: UserDocument[];
 };
 
 const initialState: OrganizationReducerType = {
   organization: null,
   user: null,
   folders: [],
+  organizationMembers: [],
 };
 
 export const organizationReducer = (
@@ -25,6 +27,8 @@ export const organizationReducer = (
       return { ...state, organization: action.organization };
     case "SET_FOLDERS":
       return { ...state, folders: action.folders };
+    case "SET_ORGANIZATION_MEMBERS":
+      return { ...state, organizationMembers: action.organizationMembers };
     default:
       return state;
   }

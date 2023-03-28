@@ -8,6 +8,7 @@ import { StylesType } from "src/utils/styles";
 import { ApiTab } from "./components/ApiTab";
 import { Folders } from "./components/Folders";
 import { SignedInOrganization } from "./components/SignedInOrganization";
+import { TeamTab } from "./components/TeamTab";
 
 export const Sidebar = () => {
   const organization = useSelector(getOrganization);
@@ -15,6 +16,7 @@ export const Sidebar = () => {
     <div style={styles.container}>
       <div style={styles.innerContainer}>
         <SignedInOrganization />
+        <TeamTab />
         <ApiTab />
         <Folders />
       </div>

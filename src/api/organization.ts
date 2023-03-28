@@ -1,3 +1,4 @@
+import { orgPermissionLevel } from "logtree-types";
 import axios from "../utils/axios";
 
 const routeUrl = "/organization";
@@ -15,6 +16,19 @@ export const organization = {
     }),
   getFolders: (organizationId: string) =>
     axios.get(routeUrl + `/${organizationId}/folders`),
+  getOrganizationMembers: (organizationId: string) =>
+    axios.get(routeUrl + `/${organizationId}/team`),
+  updateUserPermissions: (
+    organizationId: string,
+    userIdToUpdate: string,
+    newPermission?: orgPermissionLevel,
+    isRemoved?: boolean
+  ) =>
+    axios.put(routeUrl + `/${organizationId}/user-permissions`, {
+      userIdToUpdate,
+      newPermission,
+      isRemoved,
+    }),
   getLogs: (
     organizationId: string,
     folderId: string,

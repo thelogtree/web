@@ -65,6 +65,6 @@ export const SharedStyles: StylesType = {
   },
   loadingButton: {
     cursor: "default",
-    opacity: 0.3,
+    opacity: 0.4,
   },
 };

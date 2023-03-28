@@ -4,40 +4,37 @@ import { useHistory } from "react-router-dom";
 import { getOrganization } from "src/redux/organization/selector";
 import { usePathname } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
-import NotebookIcon from "src/assets/notebook.png";
+import PersonIcon from "src/assets/person.png";
 import { Colors } from "src/utils/colors";
 
-export const ApiTab = () => {
+export const TeamTab = () => {
   const organization = useSelector(getOrganization);
   const history = useHistory();
   const pathname = usePathname();
-  const isOnApiDashboard = pathname.includes(
-    `/org/${organization?.slug}/api-dashboard`
-  );
+  const isOnTeamTab = pathname.includes(`/org/${organization?.slug}/team`);
 
-  const _goToApiScreen = () =>
-    history.push(`/org/${organization?.slug}/api-dashboard`);
+  const _goToTeamScreen = () => history.push(`/org/${organization?.slug}/team`);
 
   return (
     <button
       style={{
         ...styles.container,
-        ...(isOnApiDashboard && {
+        ...(isOnTeamTab && {
           backgroundColor: Colors.lightGray,
           cursor: "auto",
         }),
       }}
-      onClick={_goToApiScreen}
-      disabled={isOnApiDashboard}
+      onClick={_goToTeamScreen}
+      disabled={isOnTeamTab}
     >
-      <img src={NotebookIcon} style={styles.icon} />
+      <img src={PersonIcon} style={styles.icon} />
       <label
         style={{
           ...styles.tabTitle,
-          ...(!isOnApiDashboard && { cursor: "pointer" }),
+          ...(!isOnTeamTab && { cursor: "pointer" }),
         }}
       >
-        API Dashboard
+        Team Members
       </label>
     </button>
   );

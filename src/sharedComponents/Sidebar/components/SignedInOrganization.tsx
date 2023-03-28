@@ -35,13 +35,6 @@ export const SignedInOrganization = () => {
       label: <label style={styles.signOutBtn}>Sign out</label>,
       onClick: () => firebase.auth().signOut(),
     },
-    {
-      key: "2",
-      label: (
-        <label style={styles.generateInviteLink}>Invite team member</label>
-      ),
-      onClick: _generateInviteLink,
-    },
   ];
 
   return organization ? (

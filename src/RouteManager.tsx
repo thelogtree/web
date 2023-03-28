@@ -13,6 +13,7 @@ import { SignInScreen } from "./screens/SignIn";
 import { ApiDashboardScreen } from "./screens/ApiDashboard";
 import { InviteScreen } from "./screens/Invite";
 import { LogsScreen } from "./screens/Logs";
+import { TeamScreen } from "./screens/Team";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -44,6 +45,10 @@ export const RouteManager = () => {
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/api-dashboard`}
             component={ApiDashboardScreen}
+          />
+          <Route
+            path={`${ORG_ROUTE_PREFIX}/:slug/team`}
+            component={TeamScreen}
           />
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug${LOGS_ROUTE_PREFIX}`}

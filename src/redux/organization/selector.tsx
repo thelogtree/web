@@ -18,3 +18,9 @@ export const getFolders = createSelector(
   [getOrganizationReducer],
   (organizationReducer: OrganizationReducerType) => organizationReducer.folders
 );
+
+export const getOrganizationMembers = createSelector(
+  [getOrganizationReducer],
+  (organizationReducer: OrganizationReducerType) =>
+    organizationReducer.organizationMembers
+);

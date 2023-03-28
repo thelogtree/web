@@ -28,10 +28,16 @@ export const GenerateKeys = () => {
     if (plaintextSecretKey) {
       return plaintextSecretKey;
     }
+    if (
+      alreadyGeneratedSecretKey &&
+      user?.orgPermissionLevel !== orgPermissionLevel.Admin
+    ) {
+      return "You must be an admin to generate a secret key.";
+    }
     return alreadyGeneratedSecretKey
       ? "Your team has already generated a secret key."
       : "To get started, generate your secret key by clicking the button below.";
-  }, [alreadyGeneratedSecretKey, plaintextSecretKey]);
+  }, [alreadyGeneratedSecretKey, plaintextSecretKey, user?.orgPermissionLevel]);
 
   const generateKeyButtonText = useMemo(() => {
     if (isLoading) {

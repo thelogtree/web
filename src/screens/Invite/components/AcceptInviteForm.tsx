@@ -53,7 +53,9 @@ export const AcceptInviteForm = ({
         onChange={(e) => setEmail(e.target.value)}
         style={styles.input}
       />
-      <label style={{ ...styles.inputTitle, paddingTop: 24 }}>Password</label>
+      <label style={{ ...styles.inputTitle, paddingTop: 24 }}>
+        Set password
+      </label>
       <input
         placeholder="Secret"
         value={password}
