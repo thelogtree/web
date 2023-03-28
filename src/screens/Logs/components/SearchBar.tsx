@@ -43,8 +43,8 @@ const styles: StylesType = {
     border: "none",
     paddingLeft: 11,
     width: "100%",
-    paddingTop: 17,
-    paddingBottom: 17,
+    paddingTop: 21,
+    paddingBottom: 19,
   },
   icon: {
     width: 24,
