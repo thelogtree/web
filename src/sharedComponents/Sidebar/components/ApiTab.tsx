@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { getOrganization } from "src/redux/organization/selector";
 import { usePathname } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
-import GuyHammeringIcon from "src/assets/guyHammering.png";
+import NotebookIcon from "src/assets/notebook.png";
 import { Colors } from "src/utils/colors";
 
 export const ApiTab = () => {
@@ -28,7 +28,7 @@ export const ApiTab = () => {
       onClick={_goToApiScreen}
       disabled={isOnApiDashboard}
     >
-      <img src={GuyHammeringIcon} style={styles.icon} />
+      <img src={NotebookIcon} style={styles.icon} />
       <label
         style={{
           ...styles.tabTitle,
@@ -66,6 +66,6 @@ const styles: StylesType = {
   tabTitle: {
     fontSize: 15,
     paddingLeft: 10,
-    color: Colors.darkGray,
+    color: Colors.black,
   },
 };
