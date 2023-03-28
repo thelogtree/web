@@ -27,11 +27,11 @@ const styles: StylesType = {
     width: "100%",
     height: "100%",
     position: "relative",
-    padding: 50,
+    padding: 90,
   },
   title: {
-    fontSize: 26,
     fontWeight: 600,
+    fontSize: 30,
     paddingBottom: 40,
   },
 };
