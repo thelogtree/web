@@ -16,8 +16,10 @@ export const Log = ({ log }: Props) => {
 
   const formattedString = useMemo(() => {
     const now = moment(log.createdAt);
+    const isToday = now.isSame(new Date(), "day");
     return (
-      now.format("MM/DD/YYYY hh:mm:ss A") +
+      (isToday ? "Today at" : "") +
+      now.format(`${isToday ? "" : "MM/DD/YYYY"} hh:mm:ss A`) +
       " " +
       moment.tz(moment.tz.guess()).zoneAbbr()
     );
@@ -25,9 +27,9 @@ export const Log = ({ log }: Props) => {
 
   const copyText = useMemo(() => {
     if (justCopied) {
-      return "📋 copied!";
+      return "📋 Copied!";
     }
-    return isHovering ? "📋 click to copy" : "";
+    return isHovering ? "📋 Click to copy" : "";
   }, [justCopied, isHovering]);
 
   const textToCopy = useMemo(() => {
