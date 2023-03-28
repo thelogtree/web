@@ -56,6 +56,7 @@ const styles: StylesType = {
     backgroundColor: Colors.transparent,
     width: "100%",
     height: 40,
+    minHeight: 40,
     paddingLeft: 15,
   },
   icon: {

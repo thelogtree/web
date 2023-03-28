@@ -13,9 +13,11 @@ export const Sidebar = () => {
   const organization = useSelector(getOrganization);
   return organization ? (
     <div style={styles.container}>
-      <SignedInOrganization />
-      <ApiTab />
-      <Folders />
+      <div style={styles.innerContainer}>
+        <SignedInOrganization />
+        <ApiTab />
+        <Folders />
+      </div>
     </div>
   ) : (
     <div style={styles.container} />
@@ -38,6 +40,15 @@ const styles: StylesType = {
     left: 0,
     bottom: 0,
     zIndex: 5,
+    overflowY: "hidden",
+  },
+  innerContainer: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    width: "100%",
+    overflowY: "scroll",
   },
   orgName: {
     fontSize: 16,
