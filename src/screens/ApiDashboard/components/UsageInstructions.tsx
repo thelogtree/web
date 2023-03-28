@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
-import { PROD_SERVER_URL } from "src/utils/axios";
+import { PROD_SERVER_URL, serverSlug } from "src/utils/axios";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 
@@ -15,7 +15,7 @@ export const UsageInstructions = () => {
       </label>
       <pre style={styles.preStyle}>
         <div style={styles.codeExample}>
-          {`axios.post("${PROD_SERVER_URL}/v1/logs",\n  {\n    content: string; // what you want to log\n    folderPath: string; // where you want to log it in logtree. e.g. "/transactions"\n  },\n  {\n    headers: {\n      "x-logtree-key": "${organization?.keys.publishableApiKey}", // this is your publishable api key\n      "authorization": "your_secret_key"\n    }\n  }\n)`}
+          {`axios.post("${PROD_SERVER_URL}${serverSlug}/v1/logs",\n  {\n    content: string; // what you want to log\n    folderPath: string; // where you want to log it in logtree. e.g. "/transactions"\n  },\n  {\n    headers: {\n      "x-logtree-key": "${organization?.keys.publishableApiKey}", // this is your publishable api key\n      "authorization": "your_secret_key"\n    }\n  }\n)`}
         </div>
       </pre>
       <label style={styles.canUseAnyLanguage}>

@@ -6,7 +6,7 @@ const IS_RUNNING_SERVER_LOCALLY = false;
 
 const LOCAL_SERVER_URL = "http://localhost:5900";
 export const PROD_SERVER_URL = process.env.REACT_APP_PROD_API_URL;
-const serverSlug = "/api";
+export const serverSlug = "/api";
 
 const axiosWrapper = axios.create({
   baseURL: IS_RUNNING_SERVER_LOCALLY
