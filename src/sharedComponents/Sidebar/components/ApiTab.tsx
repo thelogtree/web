@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getOrganization } from "src/redux/organization/selector";
@@ -11,12 +11,12 @@ export const ApiTab = () => {
   const organization = useSelector(getOrganization);
   const history = useHistory();
   const pathname = usePathname();
-  const isOnApiDashboard = pathname.includes(
-    `/org/${organization?.slug}/api-dashboard`
-  );
+  const apiPath = `/org/${organization?.slug}/api-dashboard`;
+  const isOnApiDashboard = useMemo(() => {
+    return pathname.includes(apiPath);
+  }, [pathname]);
 
-  const _goToApiScreen = () =>
-    history.push(`/org/${organization?.slug}/api-dashboard`);
+  const _goToApiScreen = () => history.push(apiPath);
 
   return (
     <button

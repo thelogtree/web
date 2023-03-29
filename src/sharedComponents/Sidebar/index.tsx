@@ -9,6 +9,7 @@ import { ApiTab } from "./components/ApiTab";
 import { Folders } from "./components/Folders";
 import { SignedInOrganization } from "./components/SignedInOrganization";
 import { TeamTab } from "./components/TeamTab";
+import { FavoritesTab } from "./components/FavoritesTab";
 
 export const Sidebar = () => {
   const organization = useSelector(getOrganization);
@@ -18,6 +19,7 @@ export const Sidebar = () => {
         <SignedInOrganization />
         <TeamTab />
         <ApiTab />
+        <FavoritesTab />
         <Folders />
       </div>
     </div>
