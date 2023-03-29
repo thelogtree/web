@@ -7,6 +7,7 @@ export type OrganizationReducerType = {
   user: UserDocument | null;
   folders: FrontendFolder[];
   organizationMembers: UserDocument[];
+  favoriteFolderPaths: string[];
 };
 
 const initialState: OrganizationReducerType = {
@@ -14,6 +15,7 @@ const initialState: OrganizationReducerType = {
   user: null,
   folders: [],
   organizationMembers: [],
+  favoriteFolderPaths: [],
 };
 
 export const organizationReducer = (
@@ -29,6 +31,8 @@ export const organizationReducer = (
       return { ...state, folders: action.folders };
     case "SET_ORGANIZATION_MEMBERS":
       return { ...state, organizationMembers: action.organizationMembers };
+    case "SET_FAVORITE_FOLDER_PATHS":
+      return { ...state, favoriteFolderPaths: action.favoriteFolderPaths };
     default:
       return state;
   }

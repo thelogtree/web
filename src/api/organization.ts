@@ -66,4 +66,15 @@ export const organization = {
     axios.post(routeUrl + `/${organizationId}/delete-folder`, {
       folderId,
     }),
+  favoriteFolderPath: (
+    organizationId: string,
+    fullPath: string,
+    isRemoved?: boolean
+  ) =>
+    axios.post(routeUrl + `/${organizationId}/favorite-folder`, {
+      fullPath,
+      isRemoved,
+    }),
+  getFavoriteFolderPaths: (organizationId: string) =>
+    axios.get(routeUrl + `/${organizationId}/favorite-folders`),
 };

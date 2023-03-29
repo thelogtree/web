@@ -24,3 +24,9 @@ export const getOrganizationMembers = createSelector(
   (organizationReducer: OrganizationReducerType) =>
     organizationReducer.organizationMembers
 );
+
+export const getFavoriteFolderPaths = createSelector(
+  [getOrganizationReducer],
+  (organizationReducer: OrganizationReducerType) =>
+    organizationReducer.favoriteFolderPaths
+);

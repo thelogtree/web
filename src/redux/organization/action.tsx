@@ -16,6 +16,8 @@ const SET_FOLDERS = "SET_FOLDERS";
 type SET_FOLDERS = typeof SET_FOLDERS;
 const SET_ORGANIZATION_MEMBERS = "SET_ORGANIZATION_MEMBERS";
 type SET_ORGANIZATION_MEMBERS = typeof SET_ORGANIZATION_MEMBERS;
+const SET_FAVORITE_FOLDER_PATHS = "SET_FAVORITE_FOLDER_PATHS";
+type SET_FAVORITE_FOLDER_PATHS = typeof SET_FAVORITE_FOLDER_PATHS;
 
 type ISetOrganization = {
   type: SET_ORGANIZATION;
@@ -57,12 +59,24 @@ export const setOrganizationMembers = (
   organizationMembers,
 });
 
+type ISetFavoriteFolderPaths = {
+  type: SET_FAVORITE_FOLDER_PATHS;
+  favoriteFolderPaths: string[];
+};
+export const setFavoriteFolderPaths = (
+  favoriteFolderPaths: string[]
+): ISetFavoriteFolderPaths => ({
+  type: SET_FAVORITE_FOLDER_PATHS,
+  favoriteFolderPaths,
+});
+
 // actions identifiable by the reducer
 export type OrganizationActionsIndex =
   | ISetOrganization
   | ISetUser
   | ISetFolders
-  | ISetOrganizationMembers;
+  | ISetOrganizationMembers
+  | ISetFavoriteFolderPaths;
 
 // api-related actions
 export const useFetchMyOrganization = () => {
@@ -162,6 +176,32 @@ export const useFetchOrganizationMembers = () => {
     } catch (e) {
       Sentry.captureException(e);
       dispatch(setOrganizationMembers([]));
+    }
+    setIsFetching(false);
+    return wasSuccessful;
+  };
+
+  return { fetch, isFetching };
+};
+
+export const useFetchFavoriteFolderPaths = () => {
+  const dispatch = useDispatch();
+  const organization = useSelector(getOrganization);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  const fetch = async () => {
+    let wasSuccessful = false;
+    try {
+      setIsFetching(true);
+      const res = await Api.organization.getFavoriteFolderPaths(
+        organization!._id.toString()
+      );
+      const { folderPaths } = res.data;
+      dispatch(setFavoriteFolderPaths(folderPaths));
+      wasSuccessful = true;
+    } catch (e) {
+      Sentry.captureException(e);
+      dispatch(setFavoriteFolderPaths([]));
     }
     setIsFetching(false);
     return wasSuccessful;

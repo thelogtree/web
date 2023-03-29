@@ -5,7 +5,10 @@ import { getFolders, getOrganization } from "src/redux/organization/selector";
 import { showGenericErrorAlert } from "src/utils/helpers";
 import { FolderOrChannel } from "./FolderOrChannel";
 import { StylesType } from "src/utils/styles";
-import { useFetchFolders } from "src/redux/actionIndex";
+import {
+  useFetchFavoriteFolderPaths,
+  useFetchFolders,
+} from "src/redux/actionIndex";
 import { Colors } from "src/utils/colors";
 
 export type FrontendFolder = {
@@ -17,12 +20,14 @@ export type FrontendFolder = {
 
 export const Folders = () => {
   const organization = useSelector(getOrganization);
-  const { fetch, isFetching } = useFetchFolders();
+  const { fetch: fetchFolders, isFetching } = useFetchFolders();
+  const { fetch: fetchFavoriteFolderPaths } = useFetchFavoriteFolderPaths();
   const folders = useSelector(getFolders);
 
   useEffect(() => {
     if (organization) {
-      fetch();
+      fetchFolders();
+      fetchFavoriteFolderPaths();
     }
   }, [organization?._id]);
 

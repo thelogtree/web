@@ -8,6 +8,8 @@ import { Colors } from "src/utils/colors";
 import { SearchBar } from "./components/SearchBar";
 import { Options } from "./components/Options";
 import { numberToNumberWithCommas } from "src/utils/helpers";
+import { FavoriteButton } from "./components/FavoriteButton";
+import { Tooltip } from "antd";
 
 export const LogsScreen = () => {
   const frontendFolder = useFindFrontendFolderFromUrl();
@@ -65,7 +67,10 @@ export const LogsScreen = () => {
       <div style={styles.container} ref={containerRef} onScroll={_handleScroll}>
         <div style={styles.titleContainer}>
           <label style={styles.folderName}>{frontendFolder.name}</label>
-          <label style={styles.fullPath}>{frontendFolder.fullPath}</label>
+          <FavoriteButton />
+          <Tooltip title="This channel's folderPath">
+            <label style={styles.fullPath}>{frontendFolder.fullPath}</label>
+          </Tooltip>
         </div>
         {numLogsInTotal ? (
           <label style={styles.numLogsTotalText}>{numLogsText}</label>
@@ -114,8 +119,7 @@ const styles: StylesType = {
     fontWeight: 600,
     fontSize: 30,
     textAlign: "left",
-    width: "100%",
-    paddingRight: 20,
+    paddingRight: 6,
   },
   numLogsTotalText: {
     paddingBottom: 15,
@@ -142,12 +146,13 @@ const styles: StylesType = {
     alignItems: "center",
     paddingTop: 40,
     paddingBottom: 15,
+    width: "100%",
   },
   fullPath: {
     color: Colors.gray,
     fontSize: 13,
-    minWidth: 300,
     position: "relative",
     top: 2,
+    paddingLeft: 15,
   },
 };
