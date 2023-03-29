@@ -60,6 +60,7 @@ const PAGINATION_RECORDS_INCREMENT = 100; // cannot be more than 100 because the
 
 export const useLogs = (folderId?: string) => {
   const organization = useSelector(getOrganization);
+  const isFavoritesScreen = useIsFavoriteLogsScreen();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [logs, setLogs] = useState<FrontendLog[]>([]);
   const [numLogsInTotal, setNumLogsInTotal] = useState<number>(0);
@@ -82,7 +83,7 @@ export const useLogs = (folderId?: string) => {
 
   const _fetchLogs = async (isFreshFetch?: boolean) => {
     try {
-      if (!organization || !folderId) {
+      if (!organization || (!folderId && !isFavoritesScreen)) {
         return;
       }
 
@@ -99,14 +100,16 @@ export const useLogs = (folderId?: string) => {
       if (query) {
         const res = await Api.organization.searchForLogs(
           organization._id.toString(),
+          query,
           folderId,
-          query
+          isFavoritesScreen
         );
         fetchedLogs = res.data.logs;
       } else {
         const res = await Api.organization.getLogs(
           organization._id.toString(),
           folderId,
+          isFavoritesScreen,
           isFreshFetch ? 0 : start,
           currentDateCeiling
         );
@@ -163,4 +166,14 @@ export const useLogs = (folderId?: string) => {
     setQuery,
     isSearchQueued,
   };
+};
+
+export const useIsFavoriteLogsScreen = () => {
+  const organization = useSelector(getOrganization);
+  const pathname = usePathname();
+  const isFavoritesScreen = useMemo(() => {
+    return pathname.indexOf(`/org/${organization?.slug}/favorites`) === 0;
+  }, [organization?._id, pathname]);
+
+  return isFavoritesScreen;
 };

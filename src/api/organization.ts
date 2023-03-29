@@ -31,7 +31,8 @@ export const organization = {
     }),
   getLogs: (
     organizationId: string,
-    folderId: string,
+    folderId?: string,
+    isFavorites?: boolean,
     start?: number,
     logsNoNewerThanDate?: Date
   ) =>
@@ -40,6 +41,7 @@ export const organization = {
         folderId,
         start,
         logsNoNewerThanDate,
+        isFavorites,
       },
     }),
   acceptInvite: (
@@ -57,10 +59,16 @@ export const organization = {
     axios.post(routeUrl + `/${organizationId}/invite-link`),
   generateSecretKey: (organizationId: string) =>
     axios.post(routeUrl + `/${organizationId}/secret-key`),
-  searchForLogs: (organizationId: string, folderId: string, query: string) =>
+  searchForLogs: (
+    organizationId: string,
+    query: string,
+    folderId?: string,
+    isFavorites?: boolean
+  ) =>
     axios.post(routeUrl + `/${organizationId}/search`, {
       folderId,
       query,
+      isFavorites,
     }),
   deleteFolderAndEverythingInside: (organizationId: string, folderId: string) =>
     axios.post(routeUrl + `/${organizationId}/delete-folder`, {

@@ -2,17 +2,22 @@ import React, { useMemo, useRef, useState } from "react";
 import { StylesType } from "src/utils/styles";
 
 import { Log } from "./components/Log";
-import { useFindFrontendFolderFromUrl, useLogs } from "./lib";
+import {
+  useFindFrontendFolderFromUrl,
+  useIsFavoriteLogsScreen,
+  useLogs,
+} from "./lib";
 import { LoadingLogs } from "./components/LoadingLogs";
 import { Colors } from "src/utils/colors";
 import { SearchBar } from "./components/SearchBar";
 import { Options } from "./components/Options";
-import { numberToNumberWithCommas } from "src/utils/helpers";
+import { numberToNumberWithCommas, usePathname } from "src/utils/helpers";
 import { FavoriteButton } from "./components/FavoriteButton";
 import { Tooltip } from "antd";
 
 export const LogsScreen = () => {
   const frontendFolder = useFindFrontendFolderFromUrl();
+  const isFavoriteLogsScreen = useIsFavoriteLogsScreen();
   const {
     logs,
     numLogsInTotal,
@@ -42,8 +47,14 @@ export const LogsScreen = () => {
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
       return "No logs from the last 14 days match your query";
-    } else if (logs.length === numLogsInTotal && !numLogsInTotal) {
+    } else if (
+      logs.length === numLogsInTotal &&
+      !numLogsInTotal &&
+      !isFavoriteLogsScreen
+    ) {
       return "This channel has no logs in it yet.";
+    } else if (logs.length === numLogsInTotal && !numLogsInTotal) {
+      return "Logs from channels you like will show up here";
     } else if (query || logs.length === numLogsInTotal) {
       return "There are no more results.";
     }
@@ -61,16 +72,24 @@ export const LogsScreen = () => {
     }
   };
 
-  return frontendFolder ? (
+  return frontendFolder || isFavoriteLogsScreen ? (
     <>
       <SearchBar query={query} setQuery={setQuery} />
       <div style={styles.container} ref={containerRef} onScroll={_handleScroll}>
         <div style={styles.titleContainer}>
-          <label style={styles.folderName}>{frontendFolder.name}</label>
-          <FavoriteButton />
-          <Tooltip title="This channel's folderPath">
-            <label style={styles.fullPath}>{frontendFolder.fullPath}</label>
-          </Tooltip>
+          <label style={styles.folderName}>
+            {isFavoriteLogsScreen ? "favorites" : frontendFolder!.name}
+          </label>
+          {!isFavoriteLogsScreen && (
+            <>
+              <FavoriteButton />
+              <Tooltip title="This channel's folderPath">
+                <label style={styles.fullPath}>
+                  {frontendFolder!.fullPath}
+                </label>
+              </Tooltip>
+            </>
+          )}
         </div>
         {numLogsInTotal ? (
           <label style={styles.numLogsTotalText}>{numLogsText}</label>
