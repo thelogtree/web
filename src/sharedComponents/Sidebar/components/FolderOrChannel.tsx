@@ -91,6 +91,7 @@ export const FolderOrChannel = ({
         <FolderOrChannel
           folderOrChannel={child}
           extraMarginLeft={extraMarginLeft + PADDING_LEFT_INCREMENT}
+          key={child._id}
         />
       ))}
     </>

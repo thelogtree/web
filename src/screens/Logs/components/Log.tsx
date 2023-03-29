@@ -47,7 +47,8 @@ export const Log = ({ log }: Props) => {
   return (
     <div style={styles.container}>
       <label style={styles.logCreatedAt}>
-        {formattedString}
+        <span>{formattedString}</span>
+        <span style={styles.folderFullPath}>{log?.folderFullPath}</span>
         <span style={styles.copyText}>{copyText}</span>
       </label>
       <CopyToClipboard text={textToCopy} onCopy={() => setJustCopied(true)}>
@@ -103,6 +104,10 @@ const styles: StylesType = {
     textAlign: "left",
   },
   copyText: {
+    paddingLeft: 15,
+    fontWeight: 300,
+  },
+  folderFullPath: {
     paddingLeft: 15,
     fontWeight: 300,
   },

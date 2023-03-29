@@ -2,7 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
 import { Api } from "src/api";
-import { getFolders, getOrganization } from "src/redux/organization/selector";
+import {
+  getFavoriteFolderPaths,
+  getFolders,
+  getOrganization,
+} from "src/redux/organization/selector";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import { showGenericErrorAlert, usePathname } from "src/utils/helpers";
 import _ from "lodash";
@@ -54,6 +58,8 @@ export type FrontendLog = {
   content: string;
   _id: string;
   createdAt: Date;
+  folderId?: string;
+  folderFullPath?: string;
 };
 
 const PAGINATION_RECORDS_INCREMENT = 100; // cannot be more than 100 because the backend only returns 100
@@ -61,8 +67,13 @@ const PAGINATION_RECORDS_INCREMENT = 100; // cannot be more than 100 because the
 export const useLogs = (folderId?: string) => {
   const organization = useSelector(getOrganization);
   const isFavoritesScreen = useIsFavoriteLogsScreen();
+  const flattenedFolders = useFlattenedFolders();
+  const favoritedFolderPaths = useSelector(getFavoriteFolderPaths);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [logs, setLogs] = useState<FrontendLog[]>([]);
+  const logsIds = useMemo(() => {
+    return logs.map((logs) => logs._id);
+  }, [isLoading, logs.length]);
   const [numLogsInTotal, setNumLogsInTotal] = useState<number>(0);
   const [logsNoNewerThanDate, setLogsNoNewerThanDate] = useState<
     Date | undefined
@@ -79,6 +90,27 @@ export const useLogs = (folderId?: string) => {
     setLogs([]);
     setStart(0);
     _fetchLogs(true); // override the "start" pagination index so we don't have to wait for react state to update
+  };
+
+  const _addFolderPathToLogsIfPossible = (
+    logs: FrontendLog[]
+  ): FrontendLog[] => {
+    if (!logs.length) {
+      return [];
+    }
+    if (!logs[0].folderId) {
+      // not favorites, return as-is
+      return logs;
+    }
+    return logs.map((log) => {
+      const folderFullPath = flattenedFolders.find(
+        (flattenedFolder) => flattenedFolder._id === log.folderId
+      )?.fullPath;
+      return {
+        ...log,
+        folderFullPath,
+      };
+    });
   };
 
   const _fetchLogs = async (isFreshFetch?: boolean) => {
@@ -137,8 +169,8 @@ export const useLogs = (folderId?: string) => {
   }, [start]);
 
   useEffect(() => {
-    _freshQueryAndReset();
-  }, [folderId, organization?._id]);
+    setLogs(_addFolderPathToLogsIfPossible(logs));
+  }, [isFavoritesScreen, favoritedFolderPaths.length, JSON.stringify(logsIds)]);
 
   useEffect(() => {
     setIsSearchQueued(!!query);
@@ -155,7 +187,7 @@ export const useLogs = (folderId?: string) => {
         clearTimeout(typingTimer);
       }
     };
-  }, [query]);
+  }, [query, folderId, organization?._id]);
 
   return {
     logs,
@@ -176,4 +208,32 @@ export const useIsFavoriteLogsScreen = () => {
   }, [organization?._id, pathname]);
 
   return isFavoritesScreen;
+};
+
+type FlattenedFolder = {
+  _id: string;
+  fullPath: string;
+};
+
+export const useFlattenedFolders = (): FlattenedFolder[] => {
+  const organization = useSelector(getOrganization);
+  const folders = useSelector(getFolders);
+
+  const flattenFolders = (folders: FrontendFolder[]) =>
+    folders.reduce((acc: FrontendFolder[], folder) => {
+      acc.push(folder);
+      if (folder.children && folder.children.length > 0) {
+        acc.push(...flattenFolders(folder.children));
+      }
+      return acc;
+    }, []);
+
+  const flattenedFolders = useMemo(() => {
+    return flattenFolders(folders).map((folder) => ({
+      _id: folder._id,
+      fullPath: folder.fullPath,
+    }));
+  }, [folders.length, organization?._id]);
+
+  return flattenedFolders;
 };
