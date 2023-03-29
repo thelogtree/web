@@ -49,7 +49,7 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
-    paddingBottom: 30,
+    paddingBottom: 25,
     width: "100%",
   },
   title: {

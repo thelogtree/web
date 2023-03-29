@@ -46,7 +46,7 @@ export const GenerateInviteLinkButton = () => {
       style={{ ...styles.container, ...(isLoading && styles.loadingButton) }}
     >
       {isLoading ? (
-        <LoadingSpinner size={20} />
+        <LoadingSpinner size={20} color={Colors.black} />
       ) : (
         <label
           style={{
@@ -70,17 +70,17 @@ const styles: StylesType = {
     outline: "none",
     border: "none",
     cursor: "pointer",
-    color: Colors.darkGray,
     borderStyle: "solid",
     borderWidth: 1,
-    borderColor: Colors.darkGray,
-    borderRadius: 4,
+    borderColor: Colors.black,
+    borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: Colors.white,
-    boxShadow: "0px 2px 6px rgba(0,0,0,0.1)",
   },
   inviteMemberLbl: {
     cursor: "pointer",
+    fontWeight: 500,
+    color: Colors.black,
   },
 };
