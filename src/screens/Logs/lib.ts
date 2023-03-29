@@ -138,12 +138,14 @@ export const useLogs = (folderId?: string) => {
   }, [folderId, organization?._id]);
 
   useEffect(() => {
-    setIsSearchQueued(true);
+    setIsSearchQueued(!!query);
     let typingTimer;
     if (query) {
       typingTimer = setTimeout(() => {
         _freshQueryAndReset();
       }, 600);
+    } else {
+      _freshQueryAndReset();
     }
     return () => {
       if (typingTimer) {
