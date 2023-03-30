@@ -54,8 +54,7 @@ const styles: StylesType = {
     borderBottomColor: Colors.lightGray,
     backgroundColor: Colors.transparent,
     width: "100%",
-    height: 40,
-    minHeight: 40,
+    minHeight: 36,
     paddingLeft: 15,
   },
   icon: {
@@ -63,7 +62,7 @@ const styles: StylesType = {
     height: 20,
   },
   tabTitle: {
-    fontSize: 15,
+    fontSize: 14,
     paddingLeft: 6,
     color: Colors.black,
   },

@@ -105,7 +105,7 @@ const styles: StylesType = {
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    height: 40,
+    height: 36,
     backgroundColor: Colors.transparent,
     outline: "none",
     border: "none",
@@ -123,6 +123,7 @@ const styles: StylesType = {
     paddingLeft: 6,
     cursor: "pointer",
     paddingRight: 6,
+    fontSize: 14,
   },
   topBorder: {
     borderTopStyle: "solid",
