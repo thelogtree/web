@@ -14,6 +14,7 @@ import { setAuthStatus } from "../redux/auth/action";
 import { analytics } from "../utils/segmentClient";
 import { getFirstPathWithSlash, usePathname } from "./helpers";
 import { ORG_ROUTE_PREFIX } from "src/RouteManager";
+import { isMobile } from "react-device-detect";
 
 // routes where logged out users can view it and will not be redirected anywhere
 const NO_ACTION_ROUTES = ["/sign-in", "/invite"];
@@ -35,7 +36,11 @@ export const SetupApp = () => {
         user.organizationId.toString() === organization?._id &&
         path !== ORG_ROUTE_PREFIX
       ) {
-        history.push(`/org/${organization.slug}/api-dashboard`);
+        if (isMobile) {
+          history.push(`/org/${organization.slug}/favorites`);
+        } else {
+          history.push(`/org/${organization.slug}/api-dashboard`);
+        }
       } else {
         fetchMyOrganization();
       }
