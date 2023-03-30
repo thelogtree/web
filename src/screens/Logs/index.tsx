@@ -46,7 +46,7 @@ export const LogsScreen = () => {
 
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
-      return "No logs from the last 14 days match your query";
+      return "No logs from the last 14 days match your query.";
     } else if (
       logs.length === numLogsInTotal &&
       !numLogsInTotal &&
@@ -54,7 +54,7 @@ export const LogsScreen = () => {
     ) {
       return "This channel has no logs in it yet.";
     } else if (logs.length === numLogsInTotal && !numLogsInTotal) {
-      return "Logs from channels you like will show up here";
+      return "Logs from channels you like will show up here.";
     } else if (query || logs.length === numLogsInTotal) {
       return "There are no more results.";
     }
