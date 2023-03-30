@@ -173,6 +173,7 @@ const styles: StylesType = {
     borderWidth: 1,
     borderStyle: "solid",
     position: "relative",
+    marginTop: 50,
   },
   keyText: {
     fontSize: 16,

@@ -33,7 +33,7 @@
     "firebase": "^7.23.0",
     "formik": "^2.2.6",
     "lodash": "^4.17.20",
-    "logtree-types": "1.0.12",
+    "logtree-types": "1.0.16",
     "moment-timezone": "^0.5.33",
     "qs": "^6.10.1",
     "react": "18",
