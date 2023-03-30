@@ -30,6 +30,7 @@ const styles: StylesType = {
     height: "100%",
     position: "relative",
     padding: 90,
+    overflowY: "scroll",
   },
   title: {
     fontWeight: 600,
