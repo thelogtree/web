@@ -10,11 +10,10 @@ import { Folders } from "./components/Folders";
 import { SignedInOrganization } from "./components/SignedInOrganization";
 import { TeamTab } from "./components/TeamTab";
 import { FavoritesTab } from "./components/FavoritesTab";
-import { isMobile } from "react-device-detect";
 
 export const Sidebar = () => {
   const organization = useSelector(getOrganization);
-  return organization && !isMobile ? (
+  return organization ? (
     <div style={styles.container}>
       <div style={styles.innerContainer}>
         <SignedInOrganization />

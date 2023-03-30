@@ -1,3 +1,5 @@
+import { isMobile } from "react-device-detect";
+
 export const constants = {
-  sidebarWidth: 220,
+  sidebarWidth: isMobile ? 0 : 220,
 };
