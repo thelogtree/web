@@ -14,6 +14,7 @@ import { ApiDashboardScreen } from "./screens/ApiDashboard";
 import { InviteScreen } from "./screens/Invite";
 import { LogsScreen } from "./screens/Logs";
 import { TeamScreen } from "./screens/Team";
+import { SignOutScreen } from "./screens/SignOut";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -41,6 +42,7 @@ export const RouteManager = () => {
               : styles.innerContainer
           }
         >
+          <Route path="/org/sign-out" component={SignOutScreen} />
           <Route path="/sign-in" component={SignInScreen} />
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/api-dashboard`}
