@@ -10,7 +10,6 @@ import { StylesType } from "src/utils/styles";
 export const FavoritesTab = () => {
   const history = useHistory();
   const organization = useSelector(getOrganization);
-  const [isHovering, setIsHovering] = useState<boolean>(false);
   const pathname = usePathname();
   const favoritesPath = `/org/${organization?.slug}/favorites`;
   const isSelected = useMemo(() => {
@@ -24,13 +23,11 @@ export const FavoritesTab = () => {
       <button
         style={{
           ...styles.container,
-          ...((isHovering || isSelected) && {
+          ...(isSelected && {
             backgroundColor: Colors.lightGray,
           }),
           ...(isSelected && { cursor: "default" }),
         }}
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
         onClick={_goToFavorites}
       >
         <div style={styles.innerButtonLeftSide}>
