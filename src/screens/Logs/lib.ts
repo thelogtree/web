@@ -62,7 +62,7 @@ export type FrontendLog = {
   folderFullPath?: string;
 };
 
-const PAGINATION_RECORDS_INCREMENT = 100; // cannot be more than 100 because the backend only returns 100
+const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 100 because the backend only returns 100
 
 export const useLogs = (folderId?: string) => {
   const organization = useSelector(getOrganization);
