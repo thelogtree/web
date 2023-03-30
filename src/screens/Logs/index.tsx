@@ -78,7 +78,7 @@ export const LogsScreen = () => {
       <div style={styles.container} ref={containerRef} onScroll={_handleScroll}>
         <div style={styles.titleContainer}>
           <label style={styles.folderName}>
-            {isFavoriteLogsScreen ? "favorites" : frontendFolder!.name}
+            {isFavoriteLogsScreen ? "my-favorites" : frontendFolder!.name}
           </label>
           {!isFavoriteLogsScreen && (
             <>

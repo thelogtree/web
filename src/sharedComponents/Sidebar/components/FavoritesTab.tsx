@@ -41,7 +41,7 @@ export const FavoritesTab = () => {
           <label
             style={{ ...styles.name, ...(isSelected && { cursor: "auto" }) }}
           >
-            favorites
+            my-favorites
           </label>
         </div>
       </button>
