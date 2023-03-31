@@ -65,5 +65,6 @@ const styles: StylesType = {
     fontSize: 14,
     paddingLeft: 6,
     color: Colors.black,
+    fontWeight: 300,
   },
 };
