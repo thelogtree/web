@@ -15,6 +15,7 @@ export type FrontendFolder = {
   children: FrontendFolder[];
   name: string;
   fullPath: string;
+  hasUnreadLogs: boolean;
   _id: string;
 };
 

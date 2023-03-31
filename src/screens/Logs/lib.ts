@@ -10,6 +10,7 @@ import {
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import { showGenericErrorAlert, usePathname } from "src/utils/helpers";
 import _ from "lodash";
+import { useFetchFolders } from "src/redux/actionIndex";
 
 export const useFindFrontendFolderFromUrl = () => {
   const organization = useSelector(getOrganization);
@@ -67,6 +68,7 @@ const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 100 because the 
 export const useLogs = (folderId?: string) => {
   const organization = useSelector(getOrganization);
   const isFavoritesScreen = useIsFavoriteLogsScreen();
+  const frontendFolder = useFindFrontendFolderFromUrl();
   const flattenedFolders = useFlattenedFolders();
   const favoritedFolderPaths = useSelector(getFavoriteFolderPaths);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -81,6 +83,7 @@ export const useLogs = (folderId?: string) => {
   const [start, setStart] = useState<number>(0);
   const [query, setQuery] = useState<string>("");
   const [isSearchQueued, setIsSearchQueued] = useState<boolean>(false);
+  const { fetch: refetchFolders } = useFetchFolders();
 
   const attemptFetchingMoreResults = async () => {
     setStart(Math.min(logs.length, start + PAGINATION_RECORDS_INCREMENT));
@@ -155,6 +158,10 @@ export const useLogs = (folderId?: string) => {
       );
       setLogs(newLogsArr);
       setIsLoading(false);
+
+      if (isFreshFetch && frontendFolder?.hasUnreadLogs) {
+        refetchFolders(); // refresh the unread status of the folder
+      }
     } catch (e) {
       showGenericErrorAlert(e);
     }

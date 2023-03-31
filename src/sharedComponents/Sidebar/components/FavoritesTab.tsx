@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import ChannelIcon from "src/assets/channel.png";
+import LikeIcon from "src/assets/likeNotFilled.png";
 import { getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { usePathname } from "src/utils/helpers";
@@ -32,13 +32,13 @@ export const FavoritesTab = () => {
       >
         <div style={styles.innerButtonLeftSide}>
           <img
-            src={ChannelIcon}
+            src={LikeIcon}
             style={{ ...styles.icon, ...(isSelected && { cursor: "auto" }) }}
           />
           <label
             style={{ ...styles.name, ...(isSelected && { cursor: "auto" }) }}
           >
-            my-favorites
+            My Favorites
           </label>
         </div>
       </button>

@@ -7,11 +7,12 @@ import OpenFolderIcon from "src/assets/openFolder.png";
 import { Colors } from "src/utils/colors";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getOrganization } from "src/redux/organization/selector";
+import { getFolders, getOrganization } from "src/redux/organization/selector";
 import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
 import { useFullFolderPathFromUrl } from "src/screens/Logs/lib";
-import { shortenString } from "src/utils/helpers";
+import { shortenString, usePathname } from "src/utils/helpers";
 import { Options } from "src/screens/Logs/components/Options";
+import { useFetchFolders } from "src/redux/actionIndex";
 
 type Props = {
   folderOrChannel: FrontendFolder;
@@ -26,6 +27,7 @@ export const FolderOrChannel = ({
   hasTopBorder,
   extraMarginLeft = 0,
 }: Props) => {
+  const folders = useSelector(getFolders);
   const history = useHistory();
   const organization = useSelector(getOrganization);
   const [isHovering, setIsHovering] = useState<boolean>(false);
@@ -56,7 +58,7 @@ export const FolderOrChannel = ({
     if (fullFolderPath.indexOf(folderOrChannel.fullPath) === 0) {
       setChildren(folderOrChannel.children);
     }
-  }, [fullFolderPath]);
+  }, [fullFolderPath, JSON.stringify(folders)]);
 
   return (
     <>
@@ -80,7 +82,13 @@ export const FolderOrChannel = ({
             style={{ ...styles.icon, ...(isSelected && { cursor: "auto" }) }}
           />
           <label
-            style={{ ...styles.name, ...(isSelected && { cursor: "auto" }) }}
+            style={{
+              ...styles.name,
+              ...(isSelected && { cursor: "auto" }),
+              ...(folderOrChannel.hasUnreadLogs &&
+                isChannel &&
+                styles.hasUnreadLogs),
+            }}
           >
             {shortenString(folderOrChannel.name, 16)}
           </label>
@@ -124,6 +132,7 @@ const styles: StylesType = {
     cursor: "pointer",
     paddingRight: 6,
     fontSize: 14,
+    fontWeight: 300,
   },
   topBorder: {
     borderTopStyle: "solid",
@@ -135,5 +144,8 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
+  },
+  hasUnreadLogs: {
+    fontWeight: 700,
   },
 };
