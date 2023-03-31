@@ -10,6 +10,7 @@ import {
   useFetchFolders,
 } from "src/redux/actionIndex";
 import { Colors } from "src/utils/colors";
+import { SyncButton } from "./SyncButton";
 
 export type FrontendFolder = {
   children: FrontendFolder[];
@@ -34,7 +35,12 @@ export const Folders = () => {
 
   return isFetching ? null : (
     <div style={styles.container}>
-      {folders.length ? <label style={styles.title}>CHANNELS</label> : null}
+      {folders.length ? (
+        <div style={styles.topContainer}>
+          <label style={styles.title}>CHANNELS</label>
+          <SyncButton />
+        </div>
+      ) : null}
       {folders.map((folder, i) => (
         <FolderOrChannel
           folderOrChannel={folder}
@@ -56,10 +62,17 @@ const styles: StylesType = {
     paddingTop: 50,
   },
   title: {
-    paddingBottom: 8,
     color: Colors.darkGray,
     letterSpacing: 0.7,
     paddingLeft: 13,
     fontSize: 11,
+    paddingRight: 0,
+  },
+  topContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingBottom: 8,
   },
 };
