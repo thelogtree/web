@@ -1,19 +1,19 @@
+import { Tooltip } from "antd";
 import React, { useMemo, useRef, useState } from "react";
+import { Colors } from "src/utils/colors";
+import { numberToNumberWithCommas } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 
+import { FavoriteButton } from "./components/FavoriteButton";
+import { LoadingLogs } from "./components/LoadingLogs";
 import { Log } from "./components/Log";
+import { SearchBar } from "./components/SearchBar";
 import {
   useFindFrontendFolderFromUrl,
   useIsFavoriteLogsScreen,
   useLogs,
 } from "./lib";
-import { LoadingLogs } from "./components/LoadingLogs";
-import { Colors } from "src/utils/colors";
-import { SearchBar } from "./components/SearchBar";
-import { Options } from "./components/Options";
-import { numberToNumberWithCommas, usePathname } from "src/utils/helpers";
-import { FavoriteButton } from "./components/FavoriteButton";
-import { Tooltip } from "antd";
+import { LoadUpdatesButton } from "./components/LoadUpdatesButton";
 
 export const LogsScreen = () => {
   const frontendFolder = useFindFrontendFolderFromUrl();
@@ -26,6 +26,7 @@ export const LogsScreen = () => {
     query,
     setQuery,
     isSearchQueued,
+    freshQueryAndReset,
   } = useLogs(frontendFolder?._id);
   const containerRef = useRef(null);
 
@@ -38,7 +39,7 @@ export const LogsScreen = () => {
       return `Showing the ${numberToNumberWithCommas(
         logs.length
       )} most recent logs that match your query`;
-    } else if (numLogsInTotal === 1) {
+    } else if (numLogsInTotal === 1 && !query) {
       return "Showing 1 log";
     } else if (query) {
       return "No results found.";
@@ -90,6 +91,7 @@ export const LogsScreen = () => {
                   {frontendFolder!.fullPath}
                 </label>
               </Tooltip>
+              <LoadUpdatesButton refreshLogs={freshQueryAndReset} />
             </>
           )}
         </div>

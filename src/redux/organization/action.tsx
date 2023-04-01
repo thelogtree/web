@@ -140,6 +140,7 @@ export const useFetchFolders = () => {
   const fetch = async () => {
     let wasSuccessful = false;
     try {
+      console.log("fetching folders");
       setIsFetching(true);
       const res = await Api.organization.getFolders(
         organization!._id.toString()

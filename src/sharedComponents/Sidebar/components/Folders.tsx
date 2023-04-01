@@ -22,23 +22,31 @@ export type FrontendFolder = {
 
 export const Folders = () => {
   const organization = useSelector(getOrganization);
-  const { fetch: fetchFolders, isFetching } = useFetchFolders();
+  const { fetch: fetchFolders } = useFetchFolders();
   const { fetch: fetchFavoriteFolderPaths } = useFetchFavoriteFolderPaths();
   const folders = useSelector(getFolders);
 
   useEffect(() => {
+    let fetchingInterval;
     if (organization) {
       fetchFolders();
       fetchFavoriteFolderPaths();
     }
+    fetchingInterval = setInterval(() => {
+      fetchFolders();
+    }, 5000);
+    return () => {
+      if (fetchingInterval) {
+        clearInterval(fetchingInterval);
+      }
+    };
   }, [organization?._id]);
 
-  return isFetching ? null : (
+  return folders.length ? (
     <div style={styles.container}>
       {folders.length ? (
         <div style={styles.topContainer}>
           <label style={styles.title}>CHANNELS</label>
-          <SyncButton />
         </div>
       ) : null}
       {folders.map((folder, i) => (
@@ -49,7 +57,7 @@ export const Folders = () => {
         />
       ))}
     </div>
-  );
+  ) : null;
 };
 
 const styles: StylesType = {

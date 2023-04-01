@@ -1,21 +1,21 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { FrontendFolder } from "./Folders";
-import { StylesType } from "src/utils/styles";
-import FolderIcon from "src/assets/folder.png";
-import ChannelIcon from "src/assets/channel.png";
-import OpenFolderIcon from "src/assets/openFolder.png";
-import { Colors } from "src/utils/colors";
-import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getFolders, getOrganization } from "src/redux/organization/selector";
+import { useHistory } from "react-router-dom";
+import ChannelIcon from "src/assets/channel.png";
+import FolderIcon from "src/assets/folder.png";
+import OpenFolderIcon from "src/assets/openFolder.png";
+import { getOrganization } from "src/redux/organization/selector";
 import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
+import { Options } from "src/screens/Logs/components/Options";
 import {
-  useFlattenedFolders,
+  useChildrenHasUnreadLogs,
   useFullFolderPathFromUrl,
 } from "src/screens/Logs/lib";
-import { shortenString, usePathname } from "src/utils/helpers";
-import { Options } from "src/screens/Logs/components/Options";
-import { useFetchFolders } from "src/redux/actionIndex";
+import { Colors } from "src/utils/colors";
+import { shortenString } from "src/utils/helpers";
+import { StylesType } from "src/utils/styles";
+
+import { FrontendFolder } from "./Folders";
 
 type Props = {
   folderOrChannel: FrontendFolder;
@@ -30,7 +30,6 @@ export const FolderOrChannel = ({
   hasTopBorder,
   extraMarginLeft = 0,
 }: Props) => {
-  const folders = useSelector(getFolders);
   const history = useHistory();
   const organization = useSelector(getOrganization);
   const [isHovering, setIsHovering] = useState<boolean>(false);
@@ -38,13 +37,8 @@ export const FolderOrChannel = ({
   const isChannel = !folderOrChannel.children.length;
   const fullFolderPath = useFullFolderPathFromUrl();
   const isSelected = folderOrChannel.fullPath === fullFolderPath;
-  const flattenedSubfoldersForThisFolder = useFlattenedFolders(
-    [folderOrChannel],
-    true
-  );
-  const childrenIncludesUnreadChannel = !!flattenedSubfoldersForThisFolder.find(
-    (f) => f.hasUnreadLogs
-  );
+  const childrenIncludesUnreadChannel =
+    useChildrenHasUnreadLogs(folderOrChannel);
 
   const icon = useMemo(() => {
     if (isChannel) {
@@ -54,7 +48,11 @@ export const FolderOrChannel = ({
   }, [isChannel, children.length]);
 
   const _onPress = () => {
-    if (isChannel) {
+    if (isSelected && childrenIncludesUnreadChannel) {
+      window.location.reload();
+      return;
+    }
+    if (!isSelected && isChannel) {
       history.push(
         `/org/${organization?.slug}${LOGS_ROUTE_PREFIX}${folderOrChannel.fullPath}`
       );
@@ -67,8 +65,10 @@ export const FolderOrChannel = ({
     // if the url is at this path already, show the children
     if (fullFolderPath.indexOf(folderOrChannel.fullPath) === 0) {
       setChildren(folderOrChannel.children);
+    } else if (folderOrChannel.children.length) {
+      setChildren(folderOrChannel.children); // if folder is already open, show updated in its children
     }
-  }, [fullFolderPath, JSON.stringify(folders)]);
+  }, [fullFolderPath, JSON.stringify(folderOrChannel)]);
 
   return (
     <>

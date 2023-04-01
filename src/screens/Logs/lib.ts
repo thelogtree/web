@@ -13,10 +13,7 @@ import _ from "lodash";
 import { useFetchFolders } from "src/redux/actionIndex";
 
 export const useFindFrontendFolderFromUrl = () => {
-  const organization = useSelector(getOrganization);
   const folders = useSelector(getFolders);
-  const [lastFolderInPath, setLastFolderInPath] =
-    useState<FrontendFolder | null>(null);
   const fullFolderPath = useFullFolderPathFromUrl();
 
   const _dfsThroughFolders = () => {
@@ -28,19 +25,16 @@ export const useFindFrontendFolderFromUrl = () => {
     while (foldersToTraverse.length) {
       const currFolder = foldersToTraverse[0];
       if (currFolder.fullPath === fullFolderPath) {
-        setLastFolderInPath(currFolder);
-        return;
+        return currFolder;
       }
       foldersToTraverse = foldersToTraverse.concat(currFolder.children);
       foldersToTraverse = foldersToTraverse.slice(1);
     }
+
+    return null;
   };
 
-  useEffect(() => {
-    _dfsThroughFolders();
-  }, [fullFolderPath, organization?._id, folders.length]);
-
-  return lastFolderInPath;
+  return _dfsThroughFolders() ?? null;
 };
 
 export const useFullFolderPathFromUrl = () => {
@@ -90,10 +84,16 @@ export const useLogs = (folderId?: string) => {
     setStart(Math.min(logs.length, start + PAGINATION_RECORDS_INCREMENT));
   };
 
-  const _freshQueryAndReset = () => {
-    setLogs([]);
-    setStart(0);
-    _fetchLogs(true); // override the "start" pagination index so we don't have to wait for react state to update
+  const freshQueryAndReset = async (
+    shouldResetQueryString: boolean = false
+  ) => {
+    if (shouldResetQueryString && query) {
+      setQuery(""); // this state change will call the fetch logs for us, so we can stop early
+    } else {
+      setLogs([]);
+      setStart(0);
+      await _fetchLogs(true); // override the "start" pagination index so we don't have to wait for react state to update
+    }
   };
 
   const _addFolderPathToLogsIfPossible = (
@@ -185,10 +185,10 @@ export const useLogs = (folderId?: string) => {
     let typingTimer;
     if (query) {
       typingTimer = setTimeout(() => {
-        _freshQueryAndReset();
+        freshQueryAndReset();
       }, 600);
     } else {
-      _freshQueryAndReset();
+      freshQueryAndReset();
     }
     return () => {
       if (typingTimer) {
@@ -196,6 +196,10 @@ export const useLogs = (folderId?: string) => {
       }
     };
   }, [query, folderId, organization?._id]);
+
+  useEffect(() => {
+    setQuery("");
+  }, [folderId]);
 
   return {
     logs,
@@ -205,6 +209,7 @@ export const useLogs = (folderId?: string) => {
     query,
     setQuery,
     isSearchQueued,
+    freshQueryAndReset,
   };
 };
 
@@ -228,21 +233,20 @@ export const useFlattenedFolders = (
   overrideFolders?: FrontendFolder[],
   filterForOnlyChannels?: boolean
 ): FlattenedFolder[] => {
-  const organization = useSelector(getOrganization);
   const folders = useSelector(getFolders);
 
-  const flattenFolders = (folders: FrontendFolder[]) =>
+  const _flattenFolders = (folders: FrontendFolder[]) =>
     folders.reduce((acc: FrontendFolder[], folder) => {
       acc.push(folder);
       if (folder.children && folder.children.length > 0) {
-        acc.push(...flattenFolders(folder.children));
+        acc.push(..._flattenFolders(folder.children));
       }
       return acc;
     }, []);
 
-  const flattenedFolders = useMemo(() => {
+  const _getFinalResult = () => {
     if (filterForOnlyChannels) {
-      return flattenFolders(overrideFolders || folders)
+      return _flattenFolders(overrideFolders || folders)
         .filter((folder) => !folder.children.length)
         .map((folder) => ({
           _id: folder._id,
@@ -250,16 +254,24 @@ export const useFlattenedFolders = (
           hasUnreadLogs: folder.hasUnreadLogs,
         }));
     }
-    return flattenFolders(overrideFolders || folders).map((folder) => ({
+    return _flattenFolders(overrideFolders || folders).map((folder) => ({
       _id: folder._id,
       fullPath: folder.fullPath,
       hasUnreadLogs: folder.hasUnreadLogs,
     }));
-  }, [
-    JSON.stringify(folders),
-    JSON.stringify(overrideFolders),
-    organization?._id,
-  ]);
+  };
 
-  return flattenedFolders;
+  return _getFinalResult();
+};
+
+// returns true if any children or this channel has unread logs
+export const useChildrenHasUnreadLogs = (
+  folderOrChannel: FrontendFolder | null
+) => {
+  const flattenedSubfoldersForThisFolder = useFlattenedFolders(
+    folderOrChannel ? [folderOrChannel] : [],
+    true
+  );
+
+  return !!flattenedSubfoldersForThisFolder.find((f) => f.hasUnreadLogs);
 };
