@@ -91,7 +91,10 @@ export const LogsScreen = () => {
                   {frontendFolder!.fullPath}
                 </label>
               </Tooltip>
-              <LoadUpdatesButton refreshLogs={freshQueryAndReset} />
+              <LoadUpdatesButton
+                refreshLogs={freshQueryAndReset}
+                isLoading={isLoading}
+              />
             </>
           )}
         </div>

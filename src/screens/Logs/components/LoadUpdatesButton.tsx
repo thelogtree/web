@@ -1,26 +1,59 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useChildrenHasUnreadLogs, useFindFrontendFolderFromUrl } from "../lib";
 import { Tooltip } from "antd";
 import SyncIcon from "src/assets/sync.png";
 import { StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
+import moment from "moment-timezone";
 
 type Props = {
+  isLoading: boolean;
   refreshLogs: (shouldResetQueryString?: boolean) => Promise<void>;
 };
 
-export const LoadUpdatesButton = ({ refreshLogs }: Props) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+export const LoadUpdatesButton = ({ isLoading, refreshLogs }: Props) => {
+  const [lastShowedButton, setLastShowedButton] = useState<Date | null>(null);
+  const [shouldShowButton, setShouldShowButton] = useState<boolean>(false);
   const frontendFolder = useFindFrontendFolderFromUrl();
   const channelHasUnreadLogs = useChildrenHasUnreadLogs(frontendFolder);
 
-  const _refresh = async () => {
-    setIsLoading(true);
-    await refreshLogs(true);
-    setIsLoading(false);
-  };
+  const _refresh = async () => refreshLogs(true);
 
-  return channelHasUnreadLogs ? (
+  // we have a timeout here because it takes a second to refetch the folders
+  // after fetching the logs, and we don't want to accidentally assume that there are unread
+  // logs when we just needed to wait another second or so.
+  // Note: This is all just perfecting the UI/UX to eliminate all glitches
+  useEffect(() => {
+    let timeout;
+    if (
+      channelHasUnreadLogs &&
+      !isLoading &&
+      lastShowedButton &&
+      moment().diff(moment(lastShowedButton), "seconds") <= 2
+    ) {
+      timeout = setTimeout(() => {
+        setShouldShowButton(true);
+      }, 1200);
+    } else if (channelHasUnreadLogs && !isLoading) {
+      // if it has been a while since the button was visible or we haven't seen it yet, it is safe to show immediately
+      setShouldShowButton(true);
+    } else {
+      setShouldShowButton(false);
+    }
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [channelHasUnreadLogs, isLoading]);
+
+  useEffect(() => {
+    if (shouldShowButton) {
+      setLastShowedButton(new Date());
+    }
+  }, [shouldShowButton]);
+
+  return shouldShowButton ? (
     <button style={styles.container} onClick={_refresh} disabled={isLoading}>
       <img src={SyncIcon} style={styles.icon} />
       <label style={styles.text}>See new logs</label>
