@@ -21,14 +21,10 @@ export const LoadUpdatesButton = ({ refreshLogs }: Props) => {
   };
 
   return channelHasUnreadLogs ? (
-    <Tooltip title="Click to see the new logs">
-      <button style={styles.container} onClick={_refresh} disabled={isLoading}>
-        <img
-          src={SyncIcon}
-          style={{ ...styles.icon, ...(isLoading && styles.spin) }}
-        />
-      </button>
-    </Tooltip>
+    <button style={styles.container} onClick={_refresh} disabled={isLoading}>
+      <img src={SyncIcon} style={styles.icon} />
+      <label style={styles.text}>See new logs</label>
+    </button>
   ) : null;
 };
 
@@ -37,14 +33,27 @@ const styles: StylesType = {
     outline: "none",
     border: "none",
     cursor: "pointer",
-    backgroundColor: Colors.transparent,
+    backgroundColor: Colors.white,
+    borderRadius: 20,
+    borderColor: Colors.darkGray,
+    borderWidth: 1,
+    borderStyle: "solid",
+    marginLeft: 12,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 2,
+    paddingBottom: 2,
+    boxShadow: "0px 2px 1px rgba(0,0,0,0.05)",
   },
   icon: {
     width: 13,
     height: 13,
     cursor: "pointer",
   },
-  spin: {
-    animation: "spin 4s linear infinite",
+  text: {
+    color: Colors.darkGray,
+    fontSize: 12,
+    paddingLeft: 6,
+    cursor: "pointer",
   },
 };
