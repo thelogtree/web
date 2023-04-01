@@ -34,7 +34,7 @@ const styles: StylesType = {
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
     borderBottomColor: Colors.lightGray,
-    boxShadow: "0px 2px 5px rgba(0,0,0,0.05)",
+    // boxShadow: "0px 2px 5px rgba(0,0,0,0.05)",
     zIndex: 3,
   },
   input: {
