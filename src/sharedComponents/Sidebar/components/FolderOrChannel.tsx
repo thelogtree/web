@@ -65,7 +65,7 @@ export const FolderOrChannel = ({
     // if the url is at this path already, show the children
     if (fullFolderPath.indexOf(folderOrChannel.fullPath) === 0) {
       setChildren(folderOrChannel.children);
-    } else if (folderOrChannel.children.length) {
+    } else if (children.length) {
       setChildren(folderOrChannel.children); // if folder is already open, show updated in its children
     }
   }, [fullFolderPath, JSON.stringify(folderOrChannel)]);
