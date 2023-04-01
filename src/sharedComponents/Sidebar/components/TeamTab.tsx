@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getOrganization } from "src/redux/organization/selector";
@@ -6,6 +6,7 @@ import { usePathname } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 import PersonIcon from "src/assets/person.png";
 import { Colors } from "src/utils/colors";
+import "../index.css";
 
 export const TeamTab = () => {
   const organization = useSelector(getOrganization);
@@ -21,11 +22,14 @@ export const TeamTab = () => {
         ...styles.container,
         ...(isOnTeamTab && {
           backgroundColor: Colors.lightGray,
-          cursor: "auto",
+        }),
+        ...(isOnTeamTab && {
+          cursor: "default",
         }),
       }}
       onClick={_goToTeamScreen}
       disabled={isOnTeamTab}
+      className="tab"
     >
       <img src={PersonIcon} style={styles.icon} />
       <label
@@ -52,7 +56,6 @@ const styles: StylesType = {
     // borderBottomStyle: "solid",
     // borderBottomWidth: 1,
     // borderBottomColor: Colors.lightGray,
-    backgroundColor: Colors.transparent,
     width: "100%",
     minHeight: 33,
     paddingLeft: 15,

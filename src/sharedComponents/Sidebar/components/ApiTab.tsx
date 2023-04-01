@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getOrganization } from "src/redux/organization/selector";
@@ -24,11 +24,14 @@ export const ApiTab = () => {
         ...styles.container,
         ...(isOnApiDashboard && {
           backgroundColor: Colors.lightGray,
-          cursor: "auto",
+        }),
+        ...(isOnApiDashboard && {
+          cursor: "default",
         }),
       }}
       onClick={_goToApiScreen}
       disabled={isOnApiDashboard}
+      className="tab"
     >
       <img src={NotebookIcon} style={styles.icon} />
       <label
@@ -55,7 +58,6 @@ const styles: StylesType = {
     // borderBottomStyle: "solid",
     // borderBottomWidth: 1,
     // borderBottomColor: Colors.lightGray,
-    backgroundColor: Colors.transparent,
     width: "100%",
     minHeight: 33,
     paddingLeft: 15,

@@ -1,0 +1,7 @@
+.tab {
+  background-color: transparent;
+}
+
+.tab:hover {
+  background-color: #e8e8e8;
+}

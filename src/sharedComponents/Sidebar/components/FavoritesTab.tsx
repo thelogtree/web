@@ -29,6 +29,8 @@ export const FavoritesTab = () => {
           ...(isSelected && { cursor: "default" }),
         }}
         onClick={_goToFavorites}
+        disabled={isSelected}
+        className="tab"
       >
         <div style={styles.innerButtonLeftSide}>
           <img
@@ -54,7 +56,6 @@ const styles: StylesType = {
     alignItems: "center",
     width: "100%",
     minHeight: 33,
-    backgroundColor: Colors.transparent,
     outline: "none",
     border: "none",
     // borderBottomColor: Colors.lightGray,
