@@ -46,11 +46,16 @@ export const Log = ({ log }: Props) => {
 
   return (
     <div style={styles.container}>
-      <label style={styles.logCreatedAt}>
-        <span>{formattedString}</span>
-        <span style={styles.folderFullPath}>{log?.folderFullPath}</span>
-        <span style={styles.copyText}>{copyText}</span>
-      </label>
+      <div style={styles.top}>
+        <label style={styles.leftSide}>
+          <span>{formattedString}</span>
+          <span style={styles.folderFullPath}>{log?.folderFullPath}</span>
+          <span style={styles.copyText}>{copyText}</span>
+        </label>
+        {log.referenceId && (
+          <label style={styles.rightSide}>id:{log.referenceId}</label>
+        )}
+      </div>
       <CopyToClipboard text={textToCopy} onCopy={() => setJustCopied(true)}>
         <div style={styles.copyBtn}>
           <pre
@@ -87,7 +92,12 @@ const styles: StylesType = {
     padding: 15,
     textAlign: "left",
   },
-  logCreatedAt: {
+  leftSide: {
+    color: Colors.gray,
+    fontSize: 12,
+    paddingBottom: 6,
+  },
+  rightSide: {
     color: Colors.gray,
     fontSize: 12,
     paddingBottom: 6,
@@ -110,5 +120,12 @@ const styles: StylesType = {
   folderFullPath: {
     paddingLeft: 15,
     fontWeight: 300,
+  },
+  top: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    width: "100%",
   },
 };

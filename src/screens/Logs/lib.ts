@@ -61,9 +61,10 @@ export type FrontendLog = {
   createdAt: Date;
   folderId?: string;
   folderFullPath?: string;
+  referenceId?: string;
 };
 
-const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 100 because the backend only returns 100
+const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 50 because the backend only returns 50
 
 export const useLogs = (folderId?: string) => {
   const organization = useSelector(getOrganization);
