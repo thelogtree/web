@@ -5,6 +5,7 @@ import SyncIcon from "src/assets/sync.png";
 import { StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
 import moment from "moment-timezone";
+import "../index.css";
 
 type Props = {
   isLoading: boolean;
@@ -54,7 +55,12 @@ export const LoadUpdatesButton = ({ isLoading, refreshLogs }: Props) => {
   }, [shouldShowButton]);
 
   return shouldShowButton ? (
-    <button style={styles.container} onClick={_refresh} disabled={isLoading}>
+    <button
+      style={styles.container}
+      onClick={_refresh}
+      disabled={isLoading}
+      className="loadMoreButton"
+    >
       <img src={SyncIcon} style={styles.icon} />
       <label style={styles.text}>See new logs</label>
     </button>
@@ -66,7 +72,6 @@ const styles: StylesType = {
     outline: "none",
     border: "none",
     cursor: "pointer",
-    backgroundColor: Colors.white,
     borderRadius: 20,
     borderColor: Colors.darkGray,
     borderWidth: 1,

@@ -81,6 +81,7 @@ export const FolderOrChannel = ({
           }),
           ...(isSelected && { cursor: "default" }),
           paddingLeft: extraMarginLeft + 15,
+          ...(folderOrChannel.isMuted && { opacity: 0.5 }),
         }}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
@@ -95,7 +96,9 @@ export const FolderOrChannel = ({
             style={{
               ...styles.name,
               ...(isSelected && { cursor: "auto" }),
-              ...(childrenIncludesUnreadChannel && styles.hasUnreadLogs),
+              ...(childrenIncludesUnreadChannel &&
+                !folderOrChannel.isMuted &&
+                styles.hasUnreadLogs),
             }}
           >
             {shortenString(folderOrChannel.name, 16)}

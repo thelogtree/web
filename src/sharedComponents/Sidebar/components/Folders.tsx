@@ -10,13 +10,13 @@ import {
   useFetchFolders,
 } from "src/redux/actionIndex";
 import { Colors } from "src/utils/colors";
-import { SyncButton } from "./SyncButton";
 
 export type FrontendFolder = {
   children: FrontendFolder[];
   name: string;
   fullPath: string;
   hasUnreadLogs: boolean;
+  isMuted: boolean;
   _id: string;
 };
 

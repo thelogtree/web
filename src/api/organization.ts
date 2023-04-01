@@ -85,4 +85,13 @@ export const organization = {
     }),
   getFavoriteFolderPaths: (organizationId: string) =>
     axios.get(routeUrl + `/${organizationId}/favorite-folders`),
+  setFolderPreference: (
+    organizationId: string,
+    fullPath: string,
+    isMuted: boolean
+  ) =>
+    axios.post(routeUrl + `/${organizationId}/folder-preference`, {
+      fullPath,
+      isMuted,
+    }),
 };

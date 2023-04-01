@@ -1,0 +1,7 @@
+.loadMoreButton {
+    background-color: white;
+}
+
+.loadMoreButton:hover {
+    background-color: rgb(241, 241, 241);
+}

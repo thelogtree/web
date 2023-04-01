@@ -12,6 +12,7 @@ import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders"
 import { Colors } from "src/utils/colors";
 import { useFullFolderPathFromUrl } from "../lib";
 import { orgPermissionLevel } from "logtree-types";
+import { showGenericErrorAlert } from "src/utils/helpers";
 
 type Props = {
   folderOrChannel: FrontendFolder;
@@ -32,34 +33,56 @@ export const Options = ({ folderOrChannel }: Props) => {
     user?.orgPermissionLevel === orgPermissionLevel.Admin;
 
   const _confirmDeleteFolderAndEverythingInside = async () => {
-    if (isLoading) {
-      return;
+    try {
+      if (isLoading) {
+        return;
+      }
+      const res = await Swal.fire({
+        title: "Please confirm",
+        text: isChannel
+          ? "Deleting this channel will delete all logs inside of it too. This may take a few seconds."
+          : "Deleting this folder will delete everything inside of it, including logs and subfolders. This may take a few seconds.",
+        icon: "warning",
+        showCancelButton: true,
+        showDenyButton: true,
+        denyButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        showConfirmButton: false,
+      });
+      if (res.isDenied) {
+        setIsLoading(true);
+        await Api.organization.deleteFolderAndEverythingInside(
+          organization!._id.toString(),
+          folderOrChannel._id
+        );
+        await fetchFolders();
+        setIsLoading(false);
+        Swal.fire({ title: "Successfully deleted", icon: "success" });
+        if (currentPathWillBeDeleted) {
+          history.push(`/org/${organization?.slug}/api-dashboard`);
+        }
+      }
+    } catch (e) {
+      showGenericErrorAlert(e);
     }
-    const res = await Swal.fire({
-      title: "Please confirm",
-      text: isChannel
-        ? "Deleting this channel will delete all logs inside of it too. This may take a few seconds."
-        : "Deleting this folder will delete everything inside of it, including logs and subfolders. This may take a few seconds.",
-      icon: "warning",
-      showCancelButton: true,
-      showDenyButton: true,
-      denyButtonText: "Delete",
-      cancelButtonText: "Cancel",
-      showConfirmButton: false,
-    });
-    if (res.isDenied) {
+  };
+
+  const _muteOrUnmuteChannel = async () => {
+    try {
+      if (isLoading) {
+        return;
+      }
       setIsLoading(true);
-      await Api.organization.deleteFolderAndEverythingInside(
+      await Api.organization.setFolderPreference(
         organization!._id.toString(),
-        folderOrChannel._id
+        folderOrChannel.fullPath,
+        !folderOrChannel.isMuted
       );
       await fetchFolders();
-      setIsLoading(false);
-      Swal.fire({ title: "Successfully deleted", icon: "success" });
-      if (currentPathWillBeDeleted) {
-        history.push(`/org/${organization?.slug}/api-dashboard`);
-      }
+    } catch (e) {
+      showGenericErrorAlert(e);
     }
+    setIsLoading(false);
   };
 
   const items: MenuProps["items"] = [
@@ -69,6 +92,19 @@ export const Options = ({ folderOrChannel }: Props) => {
             key: "1",
             label: <label style={styles.delete}>Delete</label>,
             onClick: _confirmDeleteFolderAndEverythingInside,
+          },
+        ]
+      : []),
+    ...(isChannel
+      ? [
+          {
+            key: "2",
+            label: (
+              <label style={styles.mute}>
+                {folderOrChannel.isMuted ? "Unmute" : "Mute"}
+              </label>
+            ),
+            onClick: _muteOrUnmuteChannel,
           },
         ]
       : []),
@@ -93,6 +129,10 @@ const styles: StylesType = {
   },
   delete: {
     color: Colors.red,
+    cursor: "pointer",
+  },
+  mute: {
+    color: Colors.darkGray,
     cursor: "pointer",
   },
 };
