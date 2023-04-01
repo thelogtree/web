@@ -54,6 +54,7 @@ export const Folders = () => {
           folderOrChannel={folder}
           hasTopBorder={!i}
           key={folder._id}
+          isMutedBecauseOfParent={false}
         />
       ))}
     </div>

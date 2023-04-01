@@ -19,6 +19,7 @@ import { FrontendFolder } from "./Folders";
 
 type Props = {
   folderOrChannel: FrontendFolder;
+  isMutedBecauseOfParent: boolean;
   hasTopBorder?: boolean;
   extraMarginLeft?: number;
 };
@@ -29,6 +30,7 @@ export const FolderOrChannel = ({
   folderOrChannel,
   hasTopBorder,
   extraMarginLeft = 0,
+  isMutedBecauseOfParent,
 }: Props) => {
   const history = useHistory();
   const organization = useSelector(getOrganization);
@@ -39,6 +41,7 @@ export const FolderOrChannel = ({
   const isSelected = folderOrChannel.fullPath === fullFolderPath;
   const childrenIncludesUnreadChannel =
     useChildrenHasUnreadLogs(folderOrChannel);
+  const isMuted = isMutedBecauseOfParent || folderOrChannel.isMuted;
 
   const icon = useMemo(() => {
     if (isChannel) {
@@ -81,7 +84,7 @@ export const FolderOrChannel = ({
           }),
           ...(isSelected && { cursor: "default" }),
           paddingLeft: extraMarginLeft + 15,
-          ...(folderOrChannel.isMuted && { opacity: 0.5 }),
+          ...(isMuted && { opacity: 0.5 }),
         }}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
@@ -97,20 +100,26 @@ export const FolderOrChannel = ({
               ...styles.name,
               ...(isSelected && { cursor: "auto" }),
               ...(childrenIncludesUnreadChannel &&
-                !folderOrChannel.isMuted &&
+                !isMuted &&
                 styles.hasUnreadLogs),
             }}
           >
             {shortenString(folderOrChannel.name, 16)}
           </label>
         </div>
-        {isHovering && <Options folderOrChannel={folderOrChannel} />}
+        {isHovering && (
+          <Options
+            folderOrChannel={folderOrChannel}
+            isMutedBecauseOfParent={isMutedBecauseOfParent}
+          />
+        )}
       </button>
       {children.map((child) => (
         <FolderOrChannel
           folderOrChannel={child}
           extraMarginLeft={extraMarginLeft + PADDING_LEFT_INCREMENT}
           key={child._id}
+          isMutedBecauseOfParent={folderOrChannel.isMuted}
         />
       ))}
     </>

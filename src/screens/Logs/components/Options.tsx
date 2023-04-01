@@ -16,9 +16,10 @@ import { showGenericErrorAlert } from "src/utils/helpers";
 
 type Props = {
   folderOrChannel: FrontendFolder;
+  isMutedBecauseOfParent: boolean;
 };
 
-export const Options = ({ folderOrChannel }: Props) => {
+export const Options = ({ folderOrChannel, isMutedBecauseOfParent }: Props) => {
   const isChannel = !folderOrChannel.children.length;
   const history = useHistory();
   const user = useSelector(getUser);
@@ -95,19 +96,21 @@ export const Options = ({ folderOrChannel }: Props) => {
           },
         ]
       : []),
-    ...(isChannel
-      ? [
-          {
-            key: "2",
-            label: (
-              <label style={styles.mute}>
-                {folderOrChannel.isMuted ? "Unmute" : "Mute"}
-              </label>
-            ),
-            onClick: _muteOrUnmuteChannel,
-          },
-        ]
-      : []),
+    {
+      key: "2",
+      label: (
+        <label
+          style={isMutedBecauseOfParent ? styles.cannotUnmute : styles.mute}
+        >
+          {isMutedBecauseOfParent
+            ? "Cannot unmute because a parent folder is muted"
+            : folderOrChannel.isMuted
+            ? "Unmute"
+            : "Mute"}
+        </label>
+      ),
+      onClick: isMutedBecauseOfParent ? undefined : _muteOrUnmuteChannel,
+    },
   ];
 
   return items.length ? (
@@ -134,5 +137,10 @@ const styles: StylesType = {
   mute: {
     color: Colors.darkGray,
     cursor: "pointer",
+  },
+  cannotUnmute: {
+    color: Colors.darkGray,
+    cursor: "default",
+    opacity: 0.4,
   },
 };
