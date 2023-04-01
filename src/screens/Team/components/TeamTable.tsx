@@ -11,7 +11,7 @@ export const TeamTable = () => {
   return (
     <div style={styles.container}>
       {organizationMembers.map((member, i) => (
-        <MemberRow member={member} isFirst={!i} />
+        <MemberRow member={member} isFirst={!i} key={member._id.toString()} />
       ))}
     </div>
   );
