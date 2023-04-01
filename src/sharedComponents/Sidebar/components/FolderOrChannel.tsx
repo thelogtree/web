@@ -9,7 +9,10 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getFolders, getOrganization } from "src/redux/organization/selector";
 import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
-import { useFullFolderPathFromUrl } from "src/screens/Logs/lib";
+import {
+  useFlattenedFolders,
+  useFullFolderPathFromUrl,
+} from "src/screens/Logs/lib";
 import { shortenString, usePathname } from "src/utils/helpers";
 import { Options } from "src/screens/Logs/components/Options";
 import { useFetchFolders } from "src/redux/actionIndex";
@@ -35,6 +38,13 @@ export const FolderOrChannel = ({
   const isChannel = !folderOrChannel.children.length;
   const fullFolderPath = useFullFolderPathFromUrl();
   const isSelected = folderOrChannel.fullPath === fullFolderPath;
+  const flattenedSubfoldersForThisFolder = useFlattenedFolders(
+    [folderOrChannel],
+    true
+  );
+  const childrenIncludesUnreadChannel = !!flattenedSubfoldersForThisFolder.find(
+    (f) => f.hasUnreadLogs
+  );
 
   const icon = useMemo(() => {
     if (isChannel) {
@@ -85,9 +95,7 @@ export const FolderOrChannel = ({
             style={{
               ...styles.name,
               ...(isSelected && { cursor: "auto" }),
-              ...(folderOrChannel.hasUnreadLogs &&
-                isChannel &&
-                styles.hasUnreadLogs),
+              ...(childrenIncludesUnreadChannel && styles.hasUnreadLogs),
             }}
           >
             {shortenString(folderOrChannel.name, 16)}

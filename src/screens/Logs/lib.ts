@@ -221,9 +221,13 @@ export const useIsFavoriteLogsScreen = () => {
 type FlattenedFolder = {
   _id: string;
   fullPath: string;
+  hasUnreadLogs: boolean;
 };
 
-export const useFlattenedFolders = (): FlattenedFolder[] => {
+export const useFlattenedFolders = (
+  overrideFolders?: FrontendFolder[],
+  filterForOnlyChannels?: boolean
+): FlattenedFolder[] => {
   const organization = useSelector(getOrganization);
   const folders = useSelector(getFolders);
 
@@ -237,11 +241,25 @@ export const useFlattenedFolders = (): FlattenedFolder[] => {
     }, []);
 
   const flattenedFolders = useMemo(() => {
-    return flattenFolders(folders).map((folder) => ({
+    if (filterForOnlyChannels) {
+      return flattenFolders(overrideFolders || folders)
+        .filter((folder) => !folder.children.length)
+        .map((folder) => ({
+          _id: folder._id,
+          fullPath: folder.fullPath,
+          hasUnreadLogs: folder.hasUnreadLogs,
+        }));
+    }
+    return flattenFolders(overrideFolders || folders).map((folder) => ({
       _id: folder._id,
       fullPath: folder.fullPath,
+      hasUnreadLogs: folder.hasUnreadLogs,
     }));
-  }, [folders.length, organization?._id]);
+  }, [
+    JSON.stringify(folders),
+    JSON.stringify(overrideFolders),
+    organization?._id,
+  ]);
 
   return flattenedFolders;
 };
