@@ -40,6 +40,8 @@ export const LogsScreen = () => {
       )} most recent logs that match your query`;
     } else if (numLogsInTotal === 1) {
       return "Showing 1 log";
+    } else if (query) {
+      return "No results found.";
     }
     return `Showing ${numberToNumberWithCommas(numLogsInTotal)} logs`;
   }, [numLogsInTotal, logs.length, query, isLoading, isSearchQueued]);

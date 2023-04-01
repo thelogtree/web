@@ -12,7 +12,7 @@ export const SearchBar = ({ query, setQuery }: Props) => (
   <div style={styles.container}>
     <img src={SearchIcon} style={styles.icon} />
     <input
-      placeholder="Search for logs that contain a specific word or phrase"
+      placeholder={`Search for logs that contain a specific word, phrase, or reference id (e.g. "id:the_id")`}
       value={query}
       onChange={(e) => setQuery(e.target.value)}
       style={styles.input}
