@@ -1,6 +1,7 @@
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useFindFrontendFolderFromUrl } from "../lib";
 
 const { RangePicker } = DatePicker;
 
@@ -14,6 +15,10 @@ type Props = {
 };
 
 export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
+  const currentFolder = useFindFrontendFolderFromUrl();
+  const [currentFolderId, setCurrentFolderId] = useState<string>("");
+  const foldersMatch = (currentFolder?._id || "") === currentFolderId;
+
   const _onChange = (value: any | null) => {
     const value1Exists = value?.length >= 1 && value[0];
     const value2Exists = value?.length >= 2 && value[1];
@@ -31,7 +36,11 @@ export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
     freshQueryAndReset(false, floorDate, ceilingDate);
   };
 
-  return doesQueryExist ? null : (
+  useEffect(() => {
+    setCurrentFolderId(currentFolder?._id || "");
+  }, [currentFolder?._id]);
+
+  return doesQueryExist || !foldersMatch ? null : (
     <RangePicker
       showTime={{ format: "HH:mm" }}
       format="YYYY-MM-DD HH:mm"
