@@ -344,7 +344,7 @@ export const useFolderStats = (numLogs: number) => {
   const extendedPhrasing = useMemo(() => {
     return `${Math.abs(percentageChange)}% ${
       percentageChange > 0 ? "more" : "fewer"
-    } logs in the last ${timeInterval}.`;
+    } logs than usual in the last ${timeInterval}.`;
   }, [timeInterval, percentageChange]);
 
   const _fetch = async () => {
