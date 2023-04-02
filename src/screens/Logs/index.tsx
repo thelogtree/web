@@ -37,7 +37,7 @@ export const LogsScreen = () => {
 
   const numLogsText = useMemo(() => {
     if (isLoading || isSearchQueued) {
-      return "";
+      return "Fetching...";
     } else if (query && logs.length === 1) {
       return "Showing 1 log that matches your query";
     } else if (query && logs.length) {
