@@ -2,6 +2,7 @@ import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useFindFrontendFolderFromUrl } from "../lib";
+import { StylesType } from "src/utils/styles";
 
 const { RangePicker } = DatePicker;
 
@@ -10,7 +11,8 @@ type Props = {
   freshQueryAndReset: (
     shouldEmptyQuery?: boolean,
     overrideFloorDate?: Date,
-    overrideCeilingDate?: Date
+    overrideCeilingDate?: Date,
+    shouldResetFloorDate?: boolean
   ) => Promise<void>;
 };
 
@@ -33,7 +35,7 @@ export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
 
     // we say 'false' for resetting the query because we don't support
     // filtering dates on search results yet.
-    freshQueryAndReset(false, floorDate, ceilingDate);
+    freshQueryAndReset(false, floorDate, ceilingDate, !floorDate);
   };
 
   useEffect(() => {
@@ -46,6 +48,13 @@ export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
       format="YYYY-MM-DD hh:mm A"
       onChange={_onChange}
       allowClear
+      style={styles.picker}
     />
   );
+};
+
+const styles: StylesType = {
+  picker: {
+    minWidth: 420,
+  },
 };
