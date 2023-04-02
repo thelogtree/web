@@ -48,7 +48,7 @@ export const LogsScreen = () => {
       return "Showing 1 log";
     } else if (query || (isDateFilterApplied && !logs.length)) {
       return "No results found.";
-    } else if (!isDateFilterApplied) {
+    } else if (!isDateFilterApplied && numLogsInTotal) {
       return `Showing all ${numberToNumberWithCommas(numLogsInTotal)} logs`;
     }
     return `Showing ${numberToNumberWithCommas(numLogsInTotal)} logs`;
