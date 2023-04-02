@@ -12,6 +12,7 @@ import { showGenericErrorAlert, usePathname } from "src/utils/helpers";
 import _ from "lodash";
 import { useFetchFolders } from "src/redux/actionIndex";
 import moment from "moment-timezone";
+import * as Sentry from "@sentry/react";
 
 export const useFindFrontendFolderFromUrl = () => {
   const folders = useSelector(getFolders);
@@ -331,4 +332,47 @@ export const getIndexOfFirstLogAfterToday = (logs: FrontendLog[]) => {
     }
   }
   return firstIndex;
+};
+
+export const useFolderStats = () => {
+  const organization = useSelector(getOrganization);
+  const currentFolder = useFindFrontendFolderFromUrl();
+  const [percentageChange, setPercentageChange] = useState<number>(0);
+  const [timeInterval, setTimeInterval] = useState<"hour" | "day">("hour");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const extendedPhrasing = useMemo(() => {
+    return `${Math.abs(percentageChange)}% ${
+      percentageChange > 0 ? "more" : "fewer"
+    } logs in the last ${timeInterval}.`;
+  }, [timeInterval, percentageChange]);
+
+  const _fetch = async () => {
+    try {
+      if (isLoading || !organization || !currentFolder?._id) {
+        return;
+      }
+      setIsLoading(true);
+      const res = await Api.organization.getFolderStats(
+        organization!._id.toString(),
+        currentFolder!._id
+      );
+      const {
+        percentageChange: fetchedPercentageChange,
+        timeInterval: fetchedTimeInterval,
+      } = res.data;
+      setPercentageChange(fetchedPercentageChange);
+      setTimeInterval(fetchedTimeInterval);
+    } catch (e) {
+      setPercentageChange(0);
+      Sentry.captureException(e);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    _fetch();
+  }, [currentFolder?._id]);
+
+  return { percentageChange, timeInterval, extendedPhrasing, isLoading };
 };

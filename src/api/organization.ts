@@ -16,6 +16,12 @@ export const organization = {
     }),
   getFolders: (organizationId: string) =>
     axios.get(routeUrl + `/${organizationId}/folders`),
+  getFolderStats: (organizationId: string, folderId: string) =>
+    axios.get(routeUrl + `/${organizationId}/folder-stats`, {
+      params: {
+        folderId,
+      },
+    }),
   getOrganizationMembers: (organizationId: string) =>
     axios.get(routeUrl + `/${organizationId}/team`),
   updateUserPermissions: (

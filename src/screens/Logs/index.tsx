@@ -17,6 +17,7 @@ import {
 import { LoadUpdatesButton } from "./components/LoadUpdatesButton";
 import { LogsAfterTodayNote } from "./components/LogsAfterTodayNote";
 import { DateFilter } from "./components/DateFilter";
+import { Stat } from "./components/Stat";
 
 export const LogsScreen = () => {
   const frontendFolder = useFindFrontendFolderFromUrl();
@@ -118,10 +119,13 @@ export const LogsScreen = () => {
             </div>
             <label style={styles.numLogsTotalText}>{numLogsText}</label>
           </div>
-          <DateFilter
-            doesQueryExist={isSearchQueued || !!query}
-            freshQueryAndReset={freshQueryAndReset}
-          />
+          <div style={styles.verticalTopRight}>
+            <Stat />
+            <DateFilter
+              doesQueryExist={isSearchQueued || !!query}
+              freshQueryAndReset={freshQueryAndReset}
+            />
+          </div>
         </div>
         {(isLoading && !logs.length) || isSearchQueued ? (
           <LoadingLogs />
@@ -223,6 +227,13 @@ const styles: StylesType = {
     flexDirection: "column",
     justifyContent: "flex-end",
     alignItems: "flex-start",
+    width: "100%",
+  },
+  verticalTopRight: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
     width: "100%",
   },
 };

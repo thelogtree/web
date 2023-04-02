@@ -13,7 +13,7 @@ export const Colors = {
   blue: "#00A3FF",
   hoverBlue: "#2ab1ff",
   lightBlue: "#ccecff",
-  green: "#00D19F",
+  green: "#00AE42",
   darkerGreen: "#00C092",
   transparent: "rgba(0,0,0,0)",
 
