@@ -9,11 +9,13 @@ import { LoadingLogs } from "./components/LoadingLogs";
 import { Log } from "./components/Log";
 import { SearchBar } from "./components/SearchBar";
 import {
+  getIndexOfFirstLogAfterToday,
   useFindFrontendFolderFromUrl,
   useIsFavoriteLogsScreen,
   useLogs,
 } from "./lib";
 import { LoadUpdatesButton } from "./components/LoadUpdatesButton";
+import { LogsAfterTodayNote } from "./components/LogsAfterTodayNote";
 
 export const LogsScreen = () => {
   const frontendFolder = useFindFrontendFolderFromUrl();
@@ -29,6 +31,7 @@ export const LogsScreen = () => {
     freshQueryAndReset,
   } = useLogs(frontendFolder?._id);
   const containerRef = useRef(null);
+  const firstIndexOfLogAfterToday = getIndexOfFirstLogAfterToday(logs);
 
   const numLogsText = useMemo(() => {
     if (isLoading || isSearchQueued) {
@@ -106,9 +109,16 @@ export const LogsScreen = () => {
         ) : (
           <div style={styles.logsFeed}>
             <hr style={styles.hr} />
-            {logs.map((log) => (
-              <Log log={log} key={log._id} />
-            ))}
+            {logs.map((log, i) => {
+              return (
+                <>
+                  {firstIndexOfLogAfterToday === i && i && (
+                    <LogsAfterTodayNote />
+                  )}
+                  <Log log={log} key={log._id} />
+                </>
+              );
+            })}
             {isSearchQueued ? null : (
               <label style={styles.moreResultsLoadingText}>
                 {endOfFeedText}

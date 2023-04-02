@@ -11,6 +11,7 @@ import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders"
 import { showGenericErrorAlert, usePathname } from "src/utils/helpers";
 import _ from "lodash";
 import { useFetchFolders } from "src/redux/actionIndex";
+import moment from "moment-timezone";
 
 export const useFindFrontendFolderFromUrl = () => {
   const folders = useSelector(getFolders);
@@ -274,4 +275,17 @@ export const useChildrenHasUnreadLogs = (
   );
 
   return !!flattenedSubfoldersForThisFolder.find((f) => f.hasUnreadLogs);
+};
+
+export const getIndexOfFirstLogAfterToday = (logs: FrontendLog[]) => {
+  let firstIndex = -1;
+  logs.forEach((log, i) => {
+    const logCreatedAt = moment(log.createdAt);
+    const isToday = logCreatedAt.isSame(new Date(), "day");
+    if (!isToday) {
+      firstIndex = i;
+      return;
+    }
+  });
+  return firstIndex;
 };

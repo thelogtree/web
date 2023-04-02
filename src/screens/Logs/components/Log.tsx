@@ -16,11 +16,11 @@ export const Log = ({ log }: Props) => {
   const [justCopied, setJustCopied] = useState<boolean>(false);
 
   const formattedString = useMemo(() => {
-    const now = moment(log.createdAt);
-    const isToday = now.isSame(new Date(), "day");
+    const logCreatedAt = moment(log.createdAt);
+    const isToday = logCreatedAt.isSame(new Date(), "day");
     return (
       (isToday ? "Today at" : "") +
-      now.format(`${isToday ? "" : "MM/DD/YYYY"} hh:mm:ss A`) +
+      logCreatedAt.format(`${isToday ? "" : "MM/DD/YYYY"} hh:mm:ss A`) +
       " " +
       moment.tz(moment.tz.guess()).zoneAbbr()
     );
