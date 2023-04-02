@@ -287,6 +287,5 @@ export const getIndexOfFirstLogAfterToday = (logs: FrontendLog[]) => {
       break;
     }
   }
-  console.log(firstIndex);
   return firstIndex;
 };
