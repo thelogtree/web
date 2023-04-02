@@ -279,13 +279,14 @@ export const useChildrenHasUnreadLogs = (
 
 export const getIndexOfFirstLogAfterToday = (logs: FrontendLog[]) => {
   let firstIndex = -1;
-  logs.forEach((log, i) => {
-    const logCreatedAt = moment(log.createdAt);
+  for (let i = 0; i < logs.length; i++) {
+    const logCreatedAt = moment(logs[i].createdAt);
     const isToday = logCreatedAt.isSame(new Date(), "day");
     if (!isToday) {
       firstIndex = i;
-      return;
+      break;
     }
-  });
+  }
+  console.log(firstIndex);
   return firstIndex;
 };

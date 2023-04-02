@@ -112,9 +112,9 @@ export const LogsScreen = () => {
             {logs.map((log, i) => {
               return (
                 <>
-                  {firstIndexOfLogAfterToday === i && i && (
+                  {firstIndexOfLogAfterToday === i && i ? (
                     <LogsAfterTodayNote />
-                  )}
+                  ) : null}
                   <Log log={log} key={log._id} />
                 </>
               );
