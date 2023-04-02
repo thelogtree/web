@@ -3,8 +3,9 @@ import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import { FrontendLog } from "../lib";
 import moment from "moment-timezone";
-import { now } from "lodash";
+import { now, startCase } from "lodash";
 import CopyToClipboard from "react-copy-to-clipboard";
+import { sentenceCase } from "src/utils/helpers";
 
 type Props = {
   log: FrontendLog;
@@ -25,6 +26,13 @@ export const Log = ({ log }: Props) => {
     );
   }, [log._id]);
 
+  const modifiedFormattedString = useMemo(() => {
+    const logCreatedAt = moment(log.createdAt);
+    const isRecent = moment().diff(logCreatedAt, "hours") <= 1;
+    const fromNow = logCreatedAt.fromNow();
+    return isRecent ? fromNow : formattedString;
+  }, [log._id, formattedString]);
+
   const copyText = useMemo(() => {
     if (justCopied) {
       return "📋 Copied!";
@@ -33,7 +41,7 @@ export const Log = ({ log }: Props) => {
   }, [justCopied, isHovering]);
 
   const textToCopy = useMemo(() => {
-    return `${formattedString}\n${log.content}`;
+    return `${formattedString}\n\n${log.content}`;
   }, [log._id]);
 
   useEffect(() => {
@@ -48,7 +56,7 @@ export const Log = ({ log }: Props) => {
     <div style={styles.container}>
       <div style={styles.top}>
         <label style={styles.leftSide}>
-          <span>{formattedString}</span>
+          <span>{modifiedFormattedString}</span>
           <span style={styles.folderFullPath}>{log?.folderFullPath}</span>
           <span style={styles.copyText}>{copyText}</span>
         </label>
