@@ -34,13 +34,15 @@ export const organization = {
     folderId?: string,
     isFavorites?: boolean,
     start?: number,
-    logsNoNewerThanDate?: Date
+    logsNoNewerThanDate?: Date,
+    logsNoOlderThanDate?: Date
   ) =>
     axios.get(routeUrl + `/${organizationId}/logs`, {
       params: {
         folderId,
         start,
         logsNoNewerThanDate,
+        logsNoOlderThanDate,
         isFavorites,
       },
     }),

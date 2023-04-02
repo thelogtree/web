@@ -16,6 +16,7 @@ import {
 } from "./lib";
 import { LoadUpdatesButton } from "./components/LoadUpdatesButton";
 import { LogsAfterTodayNote } from "./components/LogsAfterTodayNote";
+import { DateFilter } from "./components/DateFilter";
 
 export const LogsScreen = () => {
   const frontendFolder = useFindFrontendFolderFromUrl();
@@ -29,6 +30,7 @@ export const LogsScreen = () => {
     setQuery,
     isSearchQueued,
     freshQueryAndReset,
+    isDateFilterApplied,
   } = useLogs(frontendFolder?._id);
   const containerRef = useRef(null);
   const firstIndexOfLogAfterToday = getIndexOfFirstLogAfterToday(logs);
@@ -44,15 +46,24 @@ export const LogsScreen = () => {
       )} most recent logs that match your query`;
     } else if (numLogsInTotal === 1 && !query) {
       return "Showing 1 log";
-    } else if (query) {
+    } else if (query || (isDateFilterApplied && !logs.length)) {
       return "No results found.";
     }
     return `Showing ${numberToNumberWithCommas(numLogsInTotal)} logs`;
-  }, [numLogsInTotal, logs.length, query, isLoading, isSearchQueued]);
+  }, [
+    numLogsInTotal,
+    logs.length,
+    query,
+    isLoading,
+    isSearchQueued,
+    isDateFilterApplied,
+  ]);
 
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
       return "No logs from the last 14 days match your query.";
+    } else if (isDateFilterApplied && !logs.length) {
+      return "No logs from this time period.";
     } else if (
       logs.length === numLogsInTotal &&
       !numLogsInTotal &&
@@ -65,7 +76,7 @@ export const LogsScreen = () => {
       return "There are no more results.";
     }
     return "Fetching more results...";
-  }, [logs.length, numLogsInTotal, query]);
+  }, [logs.length, numLogsInTotal, query, isDateFilterApplied]);
 
   const _handleScroll = () => {
     const container: any | null = containerRef.current;
@@ -82,28 +93,34 @@ export const LogsScreen = () => {
     <>
       <SearchBar query={query} setQuery={setQuery} />
       <div style={styles.container} ref={containerRef} onScroll={_handleScroll}>
-        <div style={styles.titleContainer}>
-          <label style={styles.folderName}>
-            {isFavoriteLogsScreen ? "My Favorites" : frontendFolder!.name}
-          </label>
-          {!isFavoriteLogsScreen && (
-            <>
-              <FavoriteButton />
-              <Tooltip title="This channel's folderPath">
-                <label style={styles.fullPath}>
-                  {frontendFolder!.fullPath}
-                </label>
-              </Tooltip>
-              <LoadUpdatesButton
-                refreshLogs={freshQueryAndReset}
-                isLoading={isLoading}
-              />
-            </>
-          )}
+        <div style={styles.topContainer}>
+          <div style={styles.verticalTop}>
+            <div style={styles.titleContainer}>
+              <label style={styles.folderName}>
+                {isFavoriteLogsScreen ? "My Favorites" : frontendFolder!.name}
+              </label>
+              {!isFavoriteLogsScreen && (
+                <>
+                  <FavoriteButton />
+                  <Tooltip title="This channel's folderPath">
+                    <label style={styles.fullPath}>
+                      {frontendFolder!.fullPath}
+                    </label>
+                  </Tooltip>
+                  <LoadUpdatesButton
+                    refreshLogs={freshQueryAndReset}
+                    isLoading={isLoading}
+                  />
+                </>
+              )}
+            </div>
+            <label style={styles.numLogsTotalText}>{numLogsText}</label>
+          </div>
+          <DateFilter
+            doesQueryExist={isSearchQueued || !!query}
+            freshQueryAndReset={freshQueryAndReset}
+          />
         </div>
-        {numLogsInTotal ? (
-          <label style={styles.numLogsTotalText}>{numLogsText}</label>
-        ) : null}
         {(isLoading && !logs.length) || isSearchQueued ? (
           <LoadingLogs />
         ) : (
@@ -111,12 +128,12 @@ export const LogsScreen = () => {
             <hr style={styles.hr} />
             {logs.map((log, i) => {
               return (
-                <>
+                <React.Fragment key={`container:${log._id}`}>
                   {firstIndexOfLogAfterToday === i && i ? (
-                    <LogsAfterTodayNote />
+                    <LogsAfterTodayNote key={`note:${log._id}`} />
                   ) : null}
                   <Log log={log} key={log._id} />
-                </>
+                </React.Fragment>
               );
             })}
             {isSearchQueued ? null : (
@@ -158,7 +175,7 @@ const styles: StylesType = {
     paddingRight: 6,
   },
   numLogsTotalText: {
-    paddingBottom: 15,
+    paddingBottom: 0,
     color: Colors.darkGray,
     fontSize: 13,
   },
@@ -180,6 +197,14 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
+    paddingBottom: 15,
+    width: "100%",
+  },
+  topContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
     paddingTop: 40,
     paddingBottom: 15,
     width: "100%",
@@ -190,5 +215,12 @@ const styles: StylesType = {
     position: "relative",
     top: 2,
     paddingLeft: 15,
+  },
+  verticalTop: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "flex-start",
+    width: "100%",
   },
 };

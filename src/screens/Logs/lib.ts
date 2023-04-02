@@ -73,6 +73,8 @@ export const useLogs = (folderId?: string) => {
     return logs.map((logs) => logs._id);
   }, [isLoading, logs.length]);
   const [numLogsInTotal, setNumLogsInTotal] = useState<number>(0);
+  const [isDateFilterApplied, setIsDateFilterApplied] =
+    useState<boolean>(false);
   const [logsNoNewerThanDate, setLogsNoNewerThanDate] = useState<
     Date | undefined
   >(undefined);
@@ -86,14 +88,16 @@ export const useLogs = (folderId?: string) => {
   };
 
   const freshQueryAndReset = async (
-    shouldResetQueryString: boolean = false
+    shouldResetQueryString: boolean = false,
+    overrideFloorDate?: Date,
+    overrideCeilingDate?: Date
   ) => {
     if (shouldResetQueryString && query) {
       setQuery(""); // this state change will call the fetch logs for us, so we can stop early
     } else {
       setLogs([]);
       setStart(0);
-      await _fetchLogs(true); // override the "start" pagination index so we don't have to wait for react state to update
+      await _fetchLogs(true, overrideFloorDate, overrideCeilingDate); // override the "start" pagination index so we don't have to wait for react state to update
     }
   };
 
@@ -118,7 +122,11 @@ export const useLogs = (folderId?: string) => {
     });
   };
 
-  const _fetchLogs = async (isFreshFetch?: boolean) => {
+  const _fetchLogs = async (
+    isFreshFetch?: boolean,
+    overrideFloorDate?: Date,
+    overrideCeilingDate?: Date
+  ) => {
     try {
       if (!organization || (!folderId && !isFavoritesScreen)) {
         return;
@@ -126,12 +134,17 @@ export const useLogs = (folderId?: string) => {
 
       setIsLoading(true);
 
+      setIsDateFilterApplied(Boolean(overrideFloorDate || overrideCeilingDate));
+
       // addresses possible race conditions with pagination and excessive amount of new logs
-      let currentDateCeiling = isFreshFetch ? new Date() : logsNoNewerThanDate;
+      let currentDateCeiling =
+        overrideCeilingDate ||
+        (isFreshFetch ? new Date() : logsNoNewerThanDate);
       if (!currentDateCeiling) {
         currentDateCeiling = new Date();
         setLogsNoNewerThanDate(currentDateCeiling);
       }
+      let currentDateFloor = overrideFloorDate ?? undefined;
 
       let fetchedLogs: FrontendLog[] = [];
       if (query) {
@@ -148,7 +161,8 @@ export const useLogs = (folderId?: string) => {
           folderId,
           isFavoritesScreen,
           isFreshFetch ? 0 : start,
-          currentDateCeiling
+          currentDateCeiling,
+          currentDateFloor
         );
         const fetchedNumLogsInTotal = res.data.numLogsInTotal;
         fetchedLogs = res.data.logs;
@@ -211,6 +225,8 @@ export const useLogs = (folderId?: string) => {
     setQuery,
     isSearchQueued,
     freshQueryAndReset,
+    setLogsNoNewerThanDate,
+    isDateFilterApplied,
   };
 };
 
