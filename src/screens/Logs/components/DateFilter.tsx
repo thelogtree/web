@@ -3,6 +3,8 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useFindFrontendFolderFromUrl } from "../lib";
 import { StylesType } from "src/utils/styles";
+import { Colors } from "src/utils/colors";
+import ClockIcon from "src/assets/clock.png";
 
 const { RangePicker } = DatePicker;
 
@@ -17,6 +19,7 @@ type Props = {
 };
 
 export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   const currentFolder = useFindFrontendFolderFromUrl();
   const [currentFolderId, setCurrentFolderId] = useState<string>("");
   const foldersMatch = (currentFolder?._id || "") === currentFolderId;
@@ -39,22 +42,67 @@ export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
   };
 
   useEffect(() => {
+    setIsVisible(false);
     setCurrentFolderId(currentFolder?._id || "");
   }, [currentFolder?._id]);
 
-  return doesQueryExist || !foldersMatch ? null : (
-    <RangePicker
-      showTime={{ format: "hh:mm A" }}
-      format="YYYY-MM-DD hh:mm A"
-      onChange={_onChange}
-      allowClear
-      style={styles.picker}
-    />
+  return doesQueryExist || !foldersMatch ? null : isVisible ? (
+    <div style={styles.container}>
+      <label style={styles.filterLbl}>Filter by date</label>
+      <RangePicker
+        showTime={{ format: "hh:mm A" }}
+        format="YYYY-MM-DD hh:mm A"
+        onChange={_onChange}
+        allowClear
+        style={styles.picker}
+      />
+    </div>
+  ) : (
+    <button style={styles.filterBtn} onClick={() => setIsVisible(true)}>
+      <img src={ClockIcon} style={styles.icon} />
+      <label style={styles.applyFilterLbl}>Filter by date</label>
+    </button>
   );
 };
 
 const styles: StylesType = {
   picker: {
     minWidth: 420,
+  },
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+  },
+  filterLbl: {
+    fontSize: 12,
+    color: Colors.gray,
+    fontWeight: 300,
+    paddingBottom: 10,
+    letterSpacing: 0.8,
+  },
+  filterBtn: {
+    border: "none",
+    backgroundColor: Colors.transparent,
+    outline: "none",
+    cursor: "pointer",
+    minWidth: 120,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+  },
+  applyFilterLbl: {
+    cursor: "pointer",
+    color: Colors.gray,
+    fontSize: 13,
+    letterSpacing: 0.8,
+  },
+  icon: {
+    cursor: "pointer",
+    width: 16,
+    height: 16,
+    marginRight: 6,
   },
 };
