@@ -42,8 +42,8 @@ export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
 
   return doesQueryExist || !foldersMatch ? null : (
     <RangePicker
-      showTime={{ format: "HH:mm" }}
-      format="YYYY-MM-DD HH:mm"
+      showTime={{ format: "hh:mm A" }}
+      format="YYYY-MM-DD hh:mm A"
       onChange={_onChange}
       allowClear
     />

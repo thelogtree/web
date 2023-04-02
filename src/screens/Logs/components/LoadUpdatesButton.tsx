@@ -30,7 +30,7 @@ export const LoadUpdatesButton = ({ isLoading, refreshLogs }: Props) => {
       channelHasUnreadLogs &&
       !isLoading &&
       lastShowedButton &&
-      moment().diff(moment(lastShowedButton), "seconds") <= 2
+      moment().diff(moment(lastShowedButton), "seconds") <= 3
     ) {
       timeout = setTimeout(() => {
         setShouldShowButton(true);
