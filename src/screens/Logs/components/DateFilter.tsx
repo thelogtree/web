@@ -46,7 +46,7 @@ export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
     setCurrentFolderId(currentFolder?._id || "");
   }, [currentFolder?._id]);
 
-  return doesQueryExist || !foldersMatch ? null : isVisible ? (
+  return doesQueryExist ? null : isVisible && foldersMatch ? (
     <div style={styles.container}>
       <label style={styles.filterLbl}>Filter by date</label>
       <RangePicker

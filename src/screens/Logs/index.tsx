@@ -120,7 +120,7 @@ export const LogsScreen = () => {
             <label style={styles.numLogsTotalText}>{numLogsText}</label>
           </div>
           <div style={styles.verticalTopRight}>
-            <Stat />
+            <Stat numLogs={numLogsInTotal} />
             <DateFilter
               doesQueryExist={isSearchQueued || !!query}
               freshQueryAndReset={freshQueryAndReset}

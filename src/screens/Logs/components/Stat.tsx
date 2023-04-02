@@ -5,11 +5,15 @@ import ArrowDownIcon from "src/assets/arrowDown.png";
 import { StylesType } from "src/utils/styles";
 import { Tooltip } from "antd";
 
-export const Stat = () => {
-  const { percentageChange, timeInterval, extendedPhrasing, isLoading } =
-    useFolderStats();
+type Props = {
+  numLogs: number;
+};
 
-  return percentageChange && !isLoading ? (
+export const Stat = ({ numLogs }: Props) => {
+  const { percentageChange, timeInterval, extendedPhrasing } =
+    useFolderStats(numLogs);
+
+  return percentageChange ? (
     <Tooltip title={extendedPhrasing}>
       <div style={styles.container}>
         <img

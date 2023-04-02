@@ -334,7 +334,7 @@ export const getIndexOfFirstLogAfterToday = (logs: FrontendLog[]) => {
   return firstIndex;
 };
 
-export const useFolderStats = () => {
+export const useFolderStats = (numLogs: number) => {
   const organization = useSelector(getOrganization);
   const currentFolder = useFindFrontendFolderFromUrl();
   const [percentageChange, setPercentageChange] = useState<number>(0);
@@ -371,8 +371,13 @@ export const useFolderStats = () => {
   };
 
   useEffect(() => {
+    setPercentageChange(0);
     _fetch();
   }, [currentFolder?._id]);
 
-  return { percentageChange, timeInterval, extendedPhrasing, isLoading };
+  useEffect(() => {
+    _fetch();
+  }, [numLogs]);
+
+  return { percentageChange, timeInterval, extendedPhrasing };
 };
