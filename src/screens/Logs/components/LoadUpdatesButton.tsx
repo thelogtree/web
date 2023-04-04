@@ -16,7 +16,7 @@ export const LoadUpdatesButton = ({ isLoading, refreshLogs }: Props) => {
   const [lastShowedButton, setLastShowedButton] = useState<Date | null>(null);
   const [shouldShowButton, setShouldShowButton] = useState<boolean>(false);
   const frontendFolder = useFindFrontendFolderFromUrl();
-  const channelHasUnreadLogs = useChildrenHasUnreadLogs(frontendFolder);
+  const channelHasUnreadLogs = useChildrenHasUnreadLogs(frontendFolder, true);
 
   const _refresh = async () => refreshLogs(true);
 
