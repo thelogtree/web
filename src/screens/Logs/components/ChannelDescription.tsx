@@ -44,6 +44,7 @@ export const ChannelDescription = () => {
 
   const _toggleEditing = () => {
     setIsEditing(!isEditing);
+    setDescription(folder?.description || "");
   };
 
   if (!folder) {
