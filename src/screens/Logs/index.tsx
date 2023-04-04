@@ -18,6 +18,7 @@ import { LoadUpdatesButton } from "./components/LoadUpdatesButton";
 import { LogsAfterTodayNote } from "./components/LogsAfterTodayNote";
 import { DateFilter } from "./components/DateFilter";
 import { Stat } from "./components/Stat";
+import { ChannelDescription } from "./components/ChannelDescription";
 
 export const LogsScreen = () => {
   const frontendFolder = useFindFrontendFolderFromUrl();
@@ -117,6 +118,7 @@ export const LogsScreen = () => {
                 </>
               )}
             </div>
+            <ChannelDescription />
             <label style={styles.numLogsTotalText}>{numLogsText}</label>
           </div>
           <div style={styles.verticalTopRight}>

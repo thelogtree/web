@@ -102,4 +102,13 @@ export const organization = {
       fullPath,
       isMuted,
     }),
+  updateFolder: (
+    organizationId: string,
+    folderId: string,
+    description?: string
+  ) =>
+    axios.put(routeUrl + `/${organizationId}/folder`, {
+      folderId,
+      description,
+    }),
 };

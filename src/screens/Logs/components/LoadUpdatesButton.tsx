@@ -59,7 +59,7 @@ export const LoadUpdatesButton = ({ isLoading, refreshLogs }: Props) => {
       style={styles.container}
       onClick={_refresh}
       disabled={isLoading}
-      className="loadMoreButton"
+      className="buttonToPress"
     >
       <img src={SyncIcon} style={styles.icon} />
       <label style={styles.text}>See new logs</label>

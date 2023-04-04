@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Api } from "src/api";
-import { getFolders, getOrganization } from "src/redux/organization/selector";
-import { showGenericErrorAlert } from "src/utils/helpers";
-import { FolderOrChannel } from "./FolderOrChannel";
-import { StylesType } from "src/utils/styles";
 import {
   useFetchFavoriteFolderPaths,
   useFetchFolders,
 } from "src/redux/actionIndex";
+import { getFolders, getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
+import { StylesType } from "src/utils/styles";
+
+import { FolderOrChannel } from "./FolderOrChannel";
 
 export type FrontendFolder = {
   children: FrontendFolder[];
@@ -17,6 +16,7 @@ export type FrontendFolder = {
   fullPath: string;
   hasUnreadLogs: boolean;
   isMuted: boolean;
+  description?: string;
   _id: string;
 };
 
