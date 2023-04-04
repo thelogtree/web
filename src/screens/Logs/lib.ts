@@ -323,7 +323,7 @@ export const useChildrenHasUnreadLogs = (
   );
 
   return !!flattenedSubfoldersForThisFolder.find(
-    (f) => f.hasUnreadLogs && f.isMuted === includeMutedChannels
+    (f) => f.hasUnreadLogs && (includeMutedChannels ? true : !f.isMuted)
   );
 };
 
