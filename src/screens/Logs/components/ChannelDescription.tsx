@@ -87,10 +87,13 @@ export const ChannelDescription = () => {
 
   return description ? (
     <div style={styles.container}>
-      <label style={styles.description}>{description}</label>
-      <Tooltip title="Edit description">
-        <button style={styles.toggleEditingBtn} onClick={_toggleEditing}>
-          <img src={PencilIcon} style={styles.icon} />
+      <Tooltip title="Click to edit description">
+        <button
+          style={styles.hiddenEditBtn}
+          onClick={_toggleEditing}
+          className="descriptionBackground"
+        >
+          <label style={styles.description}>{description}</label>
         </button>
       </Tooltip>
     </div>
@@ -161,6 +164,7 @@ const styles: StylesType = {
   description: {
     color: Colors.darkGray,
     fontSize: 12,
+    cursor: "pointer",
   },
   icon: {
     width: 13,
@@ -186,5 +190,18 @@ const styles: StylesType = {
     textAlign: "left",
     position: "relative",
     right: 6,
+  },
+  hiddenEditBtn: {
+    outline: "none",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    textAlign: "left",
+    cursor: "pointer",
+    border: "none",
+    position: "relative",
+    right: 5,
+    backgroundColor: Colors.transparent,
   },
 };

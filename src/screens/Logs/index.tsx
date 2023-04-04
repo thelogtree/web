@@ -236,6 +236,6 @@ const styles: StylesType = {
     flexDirection: "column",
     justifyContent: "flex-end",
     alignItems: "flex-end",
-    width: "100%",
+    width: "50%",
   },
 };
