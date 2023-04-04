@@ -153,6 +153,9 @@ const styles: StylesType = {
     paddingRight: 6,
     fontSize: 14,
     fontWeight: 300,
+    textOverflow: "clip",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
   },
   topBorder: {
     // borderTopStyle: "solid",
