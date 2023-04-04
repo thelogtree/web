@@ -9,6 +9,7 @@ import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 
 import { FolderOrChannel } from "./FolderOrChannel";
+import _ from "lodash";
 
 export type FrontendFolder = {
   children: FrontendFolder[];
@@ -25,6 +26,7 @@ export const Folders = () => {
   const { fetch: fetchFolders } = useFetchFolders();
   const { fetch: fetchFavoriteFolderPaths } = useFetchFavoriteFolderPaths();
   const folders = useSelector(getFolders);
+  const sortedFolders = _.sortBy(folders, "isMuted");
 
   useEffect(() => {
     let fetchingInterval;
@@ -49,7 +51,7 @@ export const Folders = () => {
           <label style={styles.title}>CHANNELS</label>
         </div>
       ) : null}
-      {folders.map((folder, i) => (
+      {sortedFolders.map((folder, i) => (
         <FolderOrChannel
           folderOrChannel={folder}
           hasTopBorder={!i}

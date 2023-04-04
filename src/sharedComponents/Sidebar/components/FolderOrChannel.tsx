@@ -16,6 +16,7 @@ import { shortenString } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 
 import { FrontendFolder } from "./Folders";
+import _ from "lodash";
 
 type Props = {
   folderOrChannel: FrontendFolder;
@@ -42,6 +43,7 @@ export const FolderOrChannel = ({
   const childrenIncludesUnreadChannel =
     useChildrenHasUnreadLogs(folderOrChannel);
   const isMuted = isMutedBecauseOfParent || folderOrChannel.isMuted;
+  const sortedChildren = _.sortBy(children, "isMuted");
 
   const icon = useMemo(() => {
     if (isChannel) {
@@ -114,7 +116,7 @@ export const FolderOrChannel = ({
           />
         )}
       </button>
-      {children.map((child) => (
+      {sortedChildren.map((child) => (
         <FolderOrChannel
           folderOrChannel={child}
           extraMarginLeft={extraMarginLeft + PADDING_LEFT_INCREMENT}
