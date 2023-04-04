@@ -24,6 +24,24 @@ export const UsageInstructions = () => {
         The example above is in Javascript, but you can use any programming
         language to call this endpoint.
       </label>
+      <label style={{ ...styles.title, paddingTop: 40 }}>
+        To get the most recent logs from Logtree, make an HTTP request that
+        looks like this:
+      </label>
+      <pre style={styles.preStyle}>
+        <div style={styles.codeExample}>
+          {`axios.get("${PROD_SERVER_URL}${serverSlug}/v1/logs",\n  {\n    folderPath?: string; // (optional) what channel you want to filter to. e.g. "/transactions"\n    referenceId?: string; // (optional) what reference ID you want to filter to.\n  },\n  {\n    headers: {\n      "x-logtree-key": "${organization?.keys.publishableApiKey}", // this is your publishable api key\n      "authorization": "your_secret_key"\n    }\n  }\n)`}
+        </div>
+      </pre>
+      <label style={styles.canUseAnyLanguage}>
+        Note that the folderPath in this endpoint looks for a complete match. So
+        if the folderPath is "/transactions" then it will return logs that
+        belong to only that folder, not subchannels like "/transactions/large".
+        If no folderPath is specified, the most recent logs will be returned
+        regardless of where they were logged. The response will be an array
+        sorted in descending order by the date the log was created at, with a
+        maximum of 100 logs being returned.
+      </label>
     </div>
   );
 };
