@@ -272,6 +272,7 @@ type FlattenedFolder = {
   _id: string;
   fullPath: string;
   hasUnreadLogs: boolean;
+  isMuted: boolean;
 };
 
 export const useFlattenedFolders = (
@@ -297,12 +298,14 @@ export const useFlattenedFolders = (
           _id: folder._id,
           fullPath: folder.fullPath,
           hasUnreadLogs: folder.hasUnreadLogs,
+          isMuted: folder.isMuted,
         }));
     }
     return _flattenFolders(overrideFolders || folders).map((folder) => ({
       _id: folder._id,
       fullPath: folder.fullPath,
       hasUnreadLogs: folder.hasUnreadLogs,
+      isMuted: folder.isMuted,
     }));
   };
 
@@ -311,14 +314,17 @@ export const useFlattenedFolders = (
 
 // returns true if any children or this channel has unread logs
 export const useChildrenHasUnreadLogs = (
-  folderOrChannel: FrontendFolder | null
+  folderOrChannel: FrontendFolder | null,
+  includeMutedChannels: boolean = false
 ) => {
   const flattenedSubfoldersForThisFolder = useFlattenedFolders(
     folderOrChannel ? [folderOrChannel] : [],
     true
   );
 
-  return !!flattenedSubfoldersForThisFolder.find((f) => f.hasUnreadLogs);
+  return !!flattenedSubfoldersForThisFolder.find(
+    (f) => f.hasUnreadLogs && f.isMuted === includeMutedChannels
+  );
 };
 
 export const getIndexOfFirstLogAfterToday = (logs: FrontendLog[]) => {
