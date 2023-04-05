@@ -106,7 +106,7 @@ export const FolderOrChannel = ({
                 styles.hasUnreadLogs),
             }}
           >
-            {shortenString(folderOrChannel.name, 16)}
+            {shortenString(folderOrChannel.name, 23)}
           </label>
         </div>
         {isHovering && (
