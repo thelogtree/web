@@ -33,6 +33,7 @@ export const LogsScreen = () => {
     isSearchQueued,
     freshQueryAndReset,
     isDateFilterApplied,
+    isFetchingFolders,
   } = useLogs(frontendFolder?._id);
   const containerRef = useRef(null);
   const firstIndexOfLogAfterToday = getIndexOfFirstLogAfterToday(logs);
@@ -113,7 +114,7 @@ export const LogsScreen = () => {
                   </Tooltip>
                   <LoadUpdatesButton
                     refreshLogs={freshQueryAndReset}
-                    isLoading={isLoading}
+                    isLoading={isLoading || isFetchingFolders}
                   />
                 </>
               )}

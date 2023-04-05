@@ -85,7 +85,8 @@ export const useLogs = (folderId?: string) => {
   const [start, setStart] = useState<number>(0);
   const [query, setQuery] = useState<string>("");
   const [isSearchQueued, setIsSearchQueued] = useState<boolean>(false);
-  const { fetch: refetchFolders } = useFetchFolders();
+  const { fetch: refetchFolders, isFetching: isFetchingFolders } =
+    useFetchFolders();
 
   const attemptFetchingMoreResults = async () => {
     setStart(Math.min(logs.length, start + PAGINATION_RECORDS_INCREMENT));
@@ -193,11 +194,12 @@ export const useLogs = (folderId?: string) => {
         "_id"
       );
       setLogs(newLogsArr);
-      setIsLoading(false);
 
       if (isFreshFetch && frontendFolder?.hasUnreadLogs) {
         refetchFolders(); // refresh the unread status of the folder
       }
+
+      setIsLoading(false);
     } catch (e) {
       showGenericErrorAlert(e);
     }
@@ -255,6 +257,7 @@ export const useLogs = (folderId?: string) => {
     freshQueryAndReset,
     setLogsNoNewerThanDate,
     isDateFilterApplied,
+    isFetchingFolders,
   };
 };
 
