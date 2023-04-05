@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useLogs } from "../Logs/lib";
-import { numberToNumberWithCommas } from "src/utils/helpers";
+import { numberToNumberWithCommas, useSearchParams } from "src/utils/helpers";
 import { LogsList } from "../Logs/components/LogsList";
 import { StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
@@ -9,6 +9,7 @@ import { TopOfSearch } from "./components/TopOfSearch";
 
 export const GlobalSearchScreen = () => {
   const { logs, numLogsInTotal, query, setQuery, isSearchQueued } = useLogs();
+  const { query: urlQuery } = useSearchParams();
 
   const numLogsText = useMemo(() => {
     if (isSearchQueued) {
@@ -30,9 +31,11 @@ export const GlobalSearchScreen = () => {
       return "No logs from the last 14 days match your query.";
     } else if (query) {
       return "There are no more results.";
+    } else if (urlQuery) {
+      return "One moment...";
     }
     return "Search something to see results!";
-  }, [logs.length, numLogsInTotal, query, isSearchQueued]);
+  }, [logs.length, numLogsInTotal, query, isSearchQueued, urlQuery]);
 
   return (
     <>
