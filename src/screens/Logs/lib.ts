@@ -8,11 +8,16 @@ import {
   getOrganization,
 } from "src/redux/organization/selector";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
-import { showGenericErrorAlert, usePathname } from "src/utils/helpers";
+import {
+  showGenericErrorAlert,
+  usePathname,
+  useSearchParams,
+} from "src/utils/helpers";
 import _ from "lodash";
 import { useFetchFolders } from "src/redux/actionIndex";
 import moment from "moment-timezone";
 import * as Sentry from "@sentry/react";
+import { useHistory, useLocation } from "react-router-dom";
 
 export const useFindFrontendFolderFromUrl = () => {
   const folders = useSelector(getFolders);
@@ -63,11 +68,14 @@ export type FrontendLog = {
 const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 50 because the backend only returns 50
 
 export const useLogs = (folderId?: string) => {
+  const history = useHistory();
   const organization = useSelector(getOrganization);
   const isFavoritesScreen = useIsFavoriteLogsScreen();
   const isGlobalSearchScreen = useIsGlobalSearchScreen();
   const frontendFolder = useFindFrontendFolderFromUrl();
   const flattenedFolders = useFlattenedFolders();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
   const favoritedFolderPaths = useSelector(getFavoriteFolderPaths);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [logs, setLogs] = useState<FrontendLog[]>([]);
@@ -84,6 +92,7 @@ export const useLogs = (folderId?: string) => {
     Date | undefined
   >(undefined);
   const [start, setStart] = useState<number>(0);
+  const { query: urlQuery } = useSearchParams();
   const [query, setQuery] = useState<string>("");
   const [isSearchQueued, setIsSearchQueued] = useState<boolean>(false);
   const { fetch: refetchFolders, isFetching: isFetchingFolders } =
@@ -144,7 +153,8 @@ export const useLogs = (folderId?: string) => {
       if (
         !organization ||
         (!folderId && !isFavoritesScreen && !isGlobalSearchScreen) ||
-        (isGlobalSearchScreen && !query)
+        (isGlobalSearchScreen && !query) ||
+        (!query && urlQuery)
       ) {
         return;
       }
@@ -237,6 +247,11 @@ export const useLogs = (folderId?: string) => {
     setIsSearchQueued(!!query);
     setIsDateFilterApplied(false);
     let typingTimer;
+    params.set("query", query);
+    history.replace({
+      pathname: location.pathname,
+      search: `?${params.toString()}`,
+    });
     if (query) {
       typingTimer = setTimeout(() => {
         freshQueryAndReset();
@@ -250,6 +265,14 @@ export const useLogs = (folderId?: string) => {
       }
     };
   }, [query, folderId, organization?._id]);
+
+  useEffect(() => {
+    if ((urlQuery || "") !== query) {
+      setTimeout(() => {
+        setQuery(urlQuery);
+      }, 1000);
+    }
+  }, []);
 
   useEffect(() => {
     setQuery("");

@@ -1,17 +1,24 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
-import { FrontendLog } from "../lib";
+import { FrontendLog, useIsGlobalSearchScreen } from "../lib";
 import moment from "moment-timezone";
 import { now, startCase } from "lodash";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { sentenceCase } from "src/utils/helpers";
+import { useSelector } from "react-redux";
+import { getOrganization } from "src/redux/organization/selector";
+import { useHistory } from "react-router-dom";
+import { Tooltip } from "antd";
 
 type Props = {
   log: FrontendLog;
 };
 
 export const Log = ({ log }: Props) => {
+  const history = useHistory();
+  const organization = useSelector(getOrganization);
+  const isOnGlobalSearch = useIsGlobalSearchScreen();
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [justCopied, setJustCopied] = useState<boolean>(false);
 
@@ -44,6 +51,10 @@ export const Log = ({ log }: Props) => {
     return `${formattedString}\n\n${log.content}`;
   }, [log._id]);
 
+  const searchForReferenceId = () => {
+    history.push(`/org/${organization!.slug}/search?query=${log.referenceId}`);
+  };
+
   useEffect(() => {
     if (justCopied) {
       setTimeout(() => {
@@ -61,7 +72,19 @@ export const Log = ({ log }: Props) => {
           <span style={styles.copyText}>{copyText}</span>
         </label>
         {log.referenceId && (
-          <label style={styles.rightSide}>id:{log.referenceId}</label>
+          <Tooltip
+            title={
+              isOnGlobalSearch ? "" : "Click to do a Global Search on this ID"
+            }
+          >
+            <a
+              style={styles.rightSide}
+              onClick={isOnGlobalSearch ? undefined : searchForReferenceId}
+              className={isOnGlobalSearch ? undefined : "referenceIdLink"}
+            >
+              id:{log.referenceId}
+            </a>
+          </Tooltip>
         )}
       </div>
       <CopyToClipboard text={textToCopy} onCopy={() => setJustCopied(true)}>

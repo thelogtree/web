@@ -13,3 +13,12 @@
 .descriptionBackground:hover {
   text-decoration: underline;
 }
+
+.referenceIdLink {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.referenceIdLink:hover {
+  text-decoration: underline;
+}

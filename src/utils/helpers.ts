@@ -2,8 +2,8 @@ import { flow, last, lowerCase, startCase } from "lodash/fp";
 import _, { first } from "lodash";
 import { AxiosError } from "axios";
 import Swal from "sweetalert2";
-import { useHistory } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 
 export const getKeyFromValueInMap = (map: Object, valueToFind: any) => {
   for (const [key, value] of Object.entries(map)) {
@@ -62,4 +62,19 @@ export const usePathname = () => {
   }, []);
 
   return activePathname;
+};
+
+export const useSearchParams = (): any => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+
+  const resObj = useMemo(() => {
+    let res = {};
+    for (const [key, value] of Array.from(params.entries())) {
+      res[key] = value;
+    }
+    return res;
+  }, [JSON.stringify(params)]);
+
+  return resObj;
 };
