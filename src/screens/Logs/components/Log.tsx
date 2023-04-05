@@ -52,7 +52,9 @@ export const Log = ({ log }: Props) => {
   }, [log._id]);
 
   const searchForReferenceId = () => {
-    history.push(`/org/${organization!.slug}/search?query=${log.referenceId}`);
+    history.push(
+      `/org/${organization!.slug}/search?query=id:${log.referenceId}`
+    );
   };
 
   useEffect(() => {
