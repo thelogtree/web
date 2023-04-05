@@ -60,6 +60,10 @@ export const RouteManager = () => {
             path={`${ORG_ROUTE_PREFIX}/:slug/favorites`}
             component={LogsScreen}
           />
+          <Route
+            path={`${ORG_ROUTE_PREFIX}/:slug/search`}
+            component={LogsScreen}
+          />
           <Route path="/invite/:slug/:id" component={InviteScreen} />
         </div>
       </div>

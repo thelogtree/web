@@ -65,6 +65,7 @@ const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 50 because the b
 export const useLogs = (folderId?: string) => {
   const organization = useSelector(getOrganization);
   const isFavoritesScreen = useIsFavoriteLogsScreen();
+  const isGlobalSearchScreen = useIsGlobalSearchScreen();
   const frontendFolder = useFindFrontendFolderFromUrl();
   const flattenedFolders = useFlattenedFolders();
   const favoritedFolderPaths = useSelector(getFavoriteFolderPaths);
@@ -118,7 +119,7 @@ export const useLogs = (folderId?: string) => {
     if (!logs.length) {
       return [];
     }
-    if (!logs[0].folderId) {
+    if (!logs[0].folderId || (!isFavoritesScreen && !isGlobalSearchScreen)) {
       // not favorites, return as-is
       return logs;
     }
@@ -140,7 +141,10 @@ export const useLogs = (folderId?: string) => {
     shouldResetFloorDate?: boolean
   ) => {
     try {
-      if (!organization || (!folderId && !isFavoritesScreen)) {
+      if (
+        !organization ||
+        (!folderId && !isFavoritesScreen && !isGlobalSearchScreen)
+      ) {
         return;
       }
 
@@ -176,7 +180,7 @@ export const useLogs = (folderId?: string) => {
           isFavoritesScreen
         );
         fetchedLogs = res.data.logs;
-      } else {
+      } else if (!isGlobalSearchScreen) {
         const res = await Api.organization.getLogs(
           organization._id.toString(),
           folderId,
@@ -222,7 +226,12 @@ export const useLogs = (folderId?: string) => {
 
   useEffect(() => {
     setLogs(_addFolderPathToLogsIfPossible(logs));
-  }, [isFavoritesScreen, favoritedFolderPaths.length, JSON.stringify(logsIds)]);
+  }, [
+    isFavoritesScreen,
+    isGlobalSearchScreen,
+    favoritedFolderPaths.length,
+    JSON.stringify(logsIds),
+  ]);
 
   useEffect(() => {
     setIsSearchQueued(!!query);
@@ -269,6 +278,16 @@ export const useIsFavoriteLogsScreen = () => {
   }, [organization?._id, pathname]);
 
   return isFavoritesScreen;
+};
+
+export const useIsGlobalSearchScreen = () => {
+  const organization = useSelector(getOrganization);
+  const pathname = usePathname();
+  const isGlobalSearchScreen = useMemo(() => {
+    return pathname.indexOf(`/org/${organization?.slug}/search`) === 0;
+  }, [organization?._id, pathname]);
+
+  return isGlobalSearchScreen;
 };
 
 type FlattenedFolder = {

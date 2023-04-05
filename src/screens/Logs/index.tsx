@@ -19,6 +19,7 @@ import { LogsAfterTodayNote } from "./components/LogsAfterTodayNote";
 import { DateFilter } from "./components/DateFilter";
 import { Stat } from "./components/Stat";
 import { ChannelDescription } from "./components/ChannelDescription";
+import { LogsList } from "./components/LogsList";
 
 export const LogsScreen = () => {
   const frontendFolder = useFindFrontendFolderFromUrl();
@@ -36,7 +37,6 @@ export const LogsScreen = () => {
     isFetchingFolders,
   } = useLogs(frontendFolder?._id);
   const containerRef = useRef(null);
-  const firstIndexOfLogAfterToday = getIndexOfFirstLogAfterToday(logs);
 
   const numLogsText = useMemo(() => {
     if (isLoading || isSearchQueued) {
@@ -130,28 +130,15 @@ export const LogsScreen = () => {
             />
           </div>
         </div>
-        {(isLoading && !logs.length) || isSearchQueued ? (
-          <LoadingLogs />
-        ) : (
-          <div style={styles.logsFeed}>
-            <hr style={styles.hr} />
-            {logs.map((log, i) => {
-              return (
-                <React.Fragment key={`container:${log._id}`}>
-                  {firstIndexOfLogAfterToday === i && i ? (
-                    <LogsAfterTodayNote key={`note:${log._id}`} />
-                  ) : null}
-                  <Log log={log} key={log._id} />
-                </React.Fragment>
-              );
-            })}
-            {isSearchQueued ? null : (
-              <label style={styles.moreResultsLoadingText}>
-                {endOfFeedText}
-              </label>
-            )}
-          </div>
-        )}
+        <div style={styles.hrWrapper}>
+          <hr style={styles.hr} />
+        </div>
+        <LogsList
+          isLoading={isLoading}
+          isSearchQueued={isSearchQueued}
+          logs={logs}
+          endOfFeedText={endOfFeedText}
+        />
       </div>
     </>
   ) : null;
@@ -170,13 +157,6 @@ const styles: StylesType = {
     paddingTop: 20,
     overflow: "scroll",
   },
-  logsFeed: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    width: "100%",
-  },
   folderName: {
     fontWeight: 600,
     fontSize: 30,
@@ -187,19 +167,6 @@ const styles: StylesType = {
     paddingBottom: 0,
     color: Colors.gray,
     fontSize: 13,
-  },
-  hr: {
-    border: "none",
-    width: "100%",
-    backgroundColor: Colors.lightGray,
-    height: 1,
-    marginBottom: 30,
-  },
-  moreResultsLoadingText: {
-    paddingTop: 20,
-    color: Colors.gray,
-    textAlign: "center",
-    width: "100%",
   },
   titleContainer: {
     display: "flex",
@@ -238,5 +205,15 @@ const styles: StylesType = {
     justifyContent: "flex-end",
     alignItems: "flex-end",
     width: "50%",
+  },
+  hr: {
+    border: "none",
+    width: "100%",
+    backgroundColor: Colors.lightGray,
+    height: 1,
+    marginBottom: 30,
+  },
+  hrWrapper: {
+    width: "100%",
   },
 };
