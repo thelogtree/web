@@ -1,27 +1,26 @@
 import { Tooltip } from "antd";
 import React, { useMemo, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { getFolders } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { numberToNumberWithCommas } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 
+import { ChannelDescription } from "./components/ChannelDescription";
+import { DateFilter } from "./components/DateFilter";
 import { FavoriteButton } from "./components/FavoriteButton";
-import { LoadingLogs } from "./components/LoadingLogs";
-import { Log } from "./components/Log";
+import { LoadUpdatesButton } from "./components/LoadUpdatesButton";
+import { LogsList } from "./components/LogsList";
 import { SearchBar } from "./components/SearchBar";
+import { Stat } from "./components/Stat";
 import {
-  getIndexOfFirstLogAfterToday,
   useFindFrontendFolderFromUrl,
   useIsFavoriteLogsScreen,
   useLogs,
 } from "./lib";
-import { LoadUpdatesButton } from "./components/LoadUpdatesButton";
-import { LogsAfterTodayNote } from "./components/LogsAfterTodayNote";
-import { DateFilter } from "./components/DateFilter";
-import { Stat } from "./components/Stat";
-import { ChannelDescription } from "./components/ChannelDescription";
-import { LogsList } from "./components/LogsList";
 
 export const LogsScreen = () => {
+  const folders = useSelector(getFolders);
   const frontendFolder = useFindFrontendFolderFromUrl();
   const isFavoriteLogsScreen = useIsFavoriteLogsScreen();
   const {
@@ -93,6 +92,10 @@ export const LogsScreen = () => {
       attemptFetchingMoreResults();
     }
   };
+
+  if (!frontendFolder && !isFavoriteLogsScreen && folders.length) {
+    return <div style={styles.deleted}>This channel no longer exists.</div>;
+  }
 
   return frontendFolder || isFavoriteLogsScreen ? (
     <>
@@ -215,5 +218,11 @@ const styles: StylesType = {
   },
   hrWrapper: {
     width: "100%",
+  },
+  deleted: {
+    width: "100%",
+    textAlign: "center",
+    paddingTop: 300,
+    color: Colors.darkGray,
   },
 };

@@ -25,9 +25,6 @@ export const Options = ({ folderOrChannel, isMutedBecauseOfParent }: Props) => {
   const user = useSelector(getUser);
   const organization = useSelector(getOrganization);
   const fullFolderPath = useFullFolderPathFromUrl();
-  const currentPathWillBeDeleted = fullFolderPath.includes(
-    folderOrChannel.fullPath
-  );
   const { fetch: fetchFolders } = useFetchFolders();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const isUserAnOrgAdmin =
@@ -59,9 +56,6 @@ export const Options = ({ folderOrChannel, isMutedBecauseOfParent }: Props) => {
         await fetchFolders();
         setIsLoading(false);
         Swal.fire({ title: "Successfully deleted", icon: "success" });
-        if (currentPathWillBeDeleted) {
-          history.push(`/org/${organization?.slug}/api-dashboard`);
-        }
       }
     } catch (e) {
       showGenericErrorAlert(e);
