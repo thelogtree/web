@@ -74,7 +74,7 @@ export const useSearchParams = (): any => {
       res[key] = value;
     }
     return res;
-  }, [JSON.stringify(params)]);
+  }, [Array.from(params.entries())]);
 
   return resObj;
 };

@@ -6,6 +6,7 @@ import { StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
 import { SearchBar } from "../Logs/components/SearchBar";
 import { TopOfSearch } from "./components/TopOfSearch";
+import { HypeDescription } from "./components/HypeDescription";
 
 export const GlobalSearchScreen = () => {
   const { logs, numLogsInTotal, query, setQuery, isSearchQueued } = useLogs();
@@ -34,8 +35,8 @@ export const GlobalSearchScreen = () => {
     } else if (urlQuery) {
       return "We're preparing your search. One moment please...";
     }
-    return "Search something to see results!";
-  }, [logs.length, numLogsInTotal, query, isSearchQueued, urlQuery]);
+    return "";
+  }, [logs.length, numLogsInTotal, query, isSearchQueued]);
 
   return (
     <>
@@ -51,6 +52,7 @@ export const GlobalSearchScreen = () => {
           logs={logs}
           endOfFeedText={endOfFeedText}
         />
+        {endOfFeedText ? null : <HypeDescription />}
       </div>
     </>
   );

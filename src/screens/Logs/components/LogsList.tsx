@@ -35,7 +35,7 @@ export const LogsList = ({
           </React.Fragment>
         );
       })}
-      {isSearchQueued ? null : (
+      {isSearchQueued && !endOfFeedText ? null : (
         <label style={styles.moreResultsLoadingText}>{endOfFeedText}</label>
       )}
     </div>
