@@ -164,8 +164,9 @@ const styles: StylesType = {
   },
   description: {
     color: Colors.darkGray,
-    fontSize: 12,
+    fontSize: 13,
     cursor: "pointer",
+    fontWeight: 300,
   },
   icon: {
     width: 13,
