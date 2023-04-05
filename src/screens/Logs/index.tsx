@@ -184,7 +184,7 @@ const styles: StylesType = {
   },
   numLogsTotalText: {
     paddingBottom: 0,
-    color: Colors.darkGray,
+    color: Colors.gray,
     fontSize: 13,
   },
   hr: {
