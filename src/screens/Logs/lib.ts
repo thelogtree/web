@@ -143,7 +143,8 @@ export const useLogs = (folderId?: string) => {
     try {
       if (
         !organization ||
-        (!folderId && !isFavoritesScreen && !isGlobalSearchScreen)
+        (!folderId && !isFavoritesScreen && !isGlobalSearchScreen) ||
+        (isGlobalSearchScreen && !query)
       ) {
         return;
       }
@@ -202,11 +203,10 @@ export const useLogs = (folderId?: string) => {
       if (isFreshFetch && frontendFolder?.hasUnreadLogs) {
         refetchFolders(); // refresh the unread status of the folder
       }
-
-      setIsLoading(false);
     } catch (e) {
       showGenericErrorAlert(e);
     }
+    setIsLoading(false);
     setIsSearchQueued(false);
   };
 
@@ -254,6 +254,12 @@ export const useLogs = (folderId?: string) => {
   useEffect(() => {
     setQuery("");
   }, [folderId]);
+
+  useEffect(() => {
+    if (!query && isGlobalSearchScreen) {
+      setIsLoading(false);
+    }
+  }, [isGlobalSearchScreen, query]);
 
   return {
     logs,

@@ -11,6 +11,7 @@ import { SignedInOrganization } from "./components/SignedInOrganization";
 import { TeamTab } from "./components/TeamTab";
 import { FavoritesTab } from "./components/FavoritesTab";
 import { ConnectIntegrationsTab } from "./components/ConnectIntegrationsTab";
+import { GlobalSearchTab } from "./components/GlobalSearchTab";
 
 export const Sidebar = () => {
   const organization = useSelector(getOrganization);
@@ -22,6 +23,7 @@ export const Sidebar = () => {
         <ApiTab />
         <ConnectIntegrationsTab />
         <FavoritesTab />
+        <GlobalSearchTab />
         <Folders />
       </div>
     </div>
