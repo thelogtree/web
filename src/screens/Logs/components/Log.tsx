@@ -122,6 +122,7 @@ const styles: StylesType = {
     borderStyle: "solid",
     padding: 15,
     textAlign: "left",
+    whiteSpace: "pre-wrap",
   },
   leftSide: {
     color: Colors.gray,
