@@ -86,7 +86,7 @@ export const FolderOrChannel = ({
           }),
           ...(isSelected && { cursor: "default" }),
           paddingLeft: extraMarginLeft + 15,
-          ...(isMuted && { opacity: 0.5 }),
+          ...(isMuted && { opacity: 0.4 }),
         }}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
