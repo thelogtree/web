@@ -153,8 +153,7 @@ export const useLogs = (folderId?: string) => {
       if (
         !organization ||
         (!folderId && !isFavoritesScreen && !isGlobalSearchScreen) ||
-        (isGlobalSearchScreen && !query) ||
-        (!query && urlQuery)
+        (isGlobalSearchScreen && !query)
       ) {
         return;
       }

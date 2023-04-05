@@ -32,7 +32,7 @@ export const GlobalSearchScreen = () => {
     } else if (query) {
       return "There are no more results.";
     } else if (urlQuery) {
-      return "One moment...";
+      return "One moment please...";
     }
     return "Search something to see results!";
   }, [logs.length, numLogsInTotal, query, isSearchQueued, urlQuery]);
