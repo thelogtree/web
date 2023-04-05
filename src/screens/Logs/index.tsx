@@ -75,12 +75,18 @@ export const LogsScreen = () => {
     ) {
       return "This channel has no logs in it yet.";
     } else if (logs.length === numLogsInTotal && !numLogsInTotal) {
-      return "Logs from channels you like will show up here.";
+      return "Like the channels you care most about and we'll show you those logs here.";
     } else if (query || logs.length === numLogsInTotal) {
       return "There are no more results.";
     }
     return "Fetching more results...";
-  }, [logs.length, numLogsInTotal, query, isDateFilterApplied]);
+  }, [
+    logs.length,
+    numLogsInTotal,
+    query,
+    isDateFilterApplied,
+    isFavoriteLogsScreen,
+  ]);
 
   const _handleScroll = () => {
     const container: any | null = containerRef.current;
