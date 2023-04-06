@@ -17,6 +17,7 @@ import { StylesType } from "src/utils/styles";
 
 import { FrontendFolder } from "./Folders";
 import _ from "lodash";
+import { constants } from "src/utils/constants";
 
 type Props = {
   folderOrChannel: FrontendFolder;
@@ -104,9 +105,10 @@ export const FolderOrChannel = ({
               ...(childrenIncludesUnreadChannel &&
                 !isMuted &&
                 styles.hasUnreadLogs),
+              maxWidth: constants.sidebarWidth - extraMarginLeft - 60,
             }}
           >
-            {shortenString(folderOrChannel.name, 23)}
+            {folderOrChannel.name}
           </label>
         </div>
         {isHovering && (
@@ -155,7 +157,7 @@ const styles: StylesType = {
     paddingRight: 6,
     fontSize: 14,
     fontWeight: 300,
-    textOverflow: "clip",
+    textOverflow: "ellipsis",
     whiteSpace: "nowrap",
     overflow: "hidden",
   },

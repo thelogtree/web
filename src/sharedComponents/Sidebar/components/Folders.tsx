@@ -71,6 +71,7 @@ const styles: StylesType = {
     alignItems: "flex-start",
     width: "100%",
     paddingTop: 50,
+    paddingBottom: 80,
   },
   title: {
     color: Colors.darkGray,
