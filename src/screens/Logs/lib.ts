@@ -63,6 +63,7 @@ export type FrontendLog = {
   folderId?: string;
   folderFullPath?: string;
   referenceId?: string;
+  externalLink?: string;
 };
 
 const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 50 because the backend only returns 50
@@ -436,4 +437,18 @@ export const useFolderStats = (numLogs: number) => {
   }, [numLogs]);
 
   return { percentageChange, timeInterval, extendedPhrasing };
+};
+
+export const useExternalLinkForLog = (log: FrontendLog) => {
+  const url = useMemo(() => {
+    if (!log.externalLink) {
+      return "";
+    }
+    return log.externalLink?.includes("http://") ||
+      log.externalLink?.includes("https://")
+      ? log.externalLink
+      : "https://" + log.externalLink;
+  }, [log.externalLink]);
+
+  return url;
 };

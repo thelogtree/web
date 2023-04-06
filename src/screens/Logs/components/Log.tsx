@@ -1,7 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
-import { FrontendLog, useIsGlobalSearchScreen } from "../lib";
+import {
+  FrontendLog,
+  useExternalLinkForLog,
+  useIsGlobalSearchScreen,
+} from "../lib";
 import moment from "moment-timezone";
 import { now, startCase } from "lodash";
 import CopyToClipboard from "react-copy-to-clipboard";
@@ -10,6 +14,7 @@ import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
 import { useHistory } from "react-router-dom";
 import { Tooltip } from "antd";
+import { OpenExternalLink } from "./OpenExternalLink";
 
 type Props = {
   log: FrontendLog;
@@ -51,7 +56,7 @@ export const Log = ({ log }: Props) => {
     return `${formattedString}\n\n${log.content}`;
   }, [log._id]);
 
-  const searchForReferenceId = () => {
+  const _searchForReferenceId = () => {
     history.push(
       `/org/${organization!.slug}/search?query=id:${log.referenceId}`
     );
@@ -71,6 +76,7 @@ export const Log = ({ log }: Props) => {
         <label style={styles.leftSide}>
           <span>{modifiedFormattedString}</span>
           <span style={styles.folderFullPath}>{log?.folderFullPath}</span>
+          <OpenExternalLink log={log} />
           <span style={styles.copyText}>{copyText}</span>
         </label>
         {log.referenceId && (
@@ -81,7 +87,7 @@ export const Log = ({ log }: Props) => {
           >
             <a
               style={styles.rightSide}
-              onClick={isOnGlobalSearch ? undefined : searchForReferenceId}
+              onClick={isOnGlobalSearch ? undefined : _searchForReferenceId}
               className={isOnGlobalSearch ? undefined : "referenceIdLink"}
             >
               id:{log.referenceId}
