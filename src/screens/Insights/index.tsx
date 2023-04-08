@@ -12,7 +12,15 @@ import { CenteredLoadingSpinner } from "./components/CenteredLoadingSpinner";
 import { Colors } from "src/utils/colors";
 
 export const InsightsScreen = () => {
-  const { insights, isLoading, refetchInsights } = useInsights();
+  const {
+    insightsOfNotMostCheckedFolders,
+    insightsOfMostCheckedFolders,
+    isLoading,
+    refetchInsights,
+  } = useInsights();
+  const shouldShowInsightTables =
+    !!insightsOfMostCheckedFolders.length ||
+    !!insightsOfNotMostCheckedFolders.length;
 
   return (
     <div style={styles.container}>
@@ -22,8 +30,8 @@ export const InsightsScreen = () => {
       </div>
       {isLoading ? (
         <CenteredLoadingSpinner />
-      ) : insights.length ? (
-        <InsightsTable insights={insights} />
+      ) : shouldShowInsightTables ? (
+        <InsightsTable insights={insightsOfNotMostCheckedFolders} />
       ) : (
         <label style={styles.noTrends}>
           No trends yet. We'll automatically spot trends once you have a couple

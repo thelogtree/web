@@ -13,7 +13,10 @@ export type Insight = {
 };
 
 export const useInsights = () => {
-  const [insights, setInsights] = useState<Insight[]>([]);
+  const [insightsOfMostCheckedFolders, setInsightsOfMostCheckedFolders] =
+    useState<Insight[]>([]);
+  const [insightsOfNotMostCheckedFolders, setInsightsOfNotMostCheckedFolders] =
+    useState<Insight[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const organization = useSelector(getOrganization);
 
@@ -23,8 +26,14 @@ export const useInsights = () => {
       const res = await Api.organization.getInsights(
         organization!._id.toString()
       );
-      const { insights: fetchedInsights } = res.data;
-      setInsights(fetchedInsights);
+      const {
+        insightsOfMostCheckedFolders: fetchInsightsOfMostCheckedFolders,
+        insightsOfNotMostCheckedFolders: fetchedInsightsOfNotMostCheckedFolders,
+      } = res.data;
+      setInsightsOfMostCheckedFolders(fetchInsightsOfMostCheckedFolders);
+      setInsightsOfNotMostCheckedFolders(
+        fetchedInsightsOfNotMostCheckedFolders
+      );
     } catch (e) {
       console.error(e);
     }
@@ -37,5 +46,10 @@ export const useInsights = () => {
     }
   }, [organization?._id]);
 
-  return { insights, isLoading, refetchInsights: fetchInsights };
+  return {
+    insightsOfMostCheckedFolders,
+    insightsOfNotMostCheckedFolders,
+    isLoading,
+    refetchInsights: fetchInsights,
+  };
 };
