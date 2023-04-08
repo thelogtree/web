@@ -17,7 +17,7 @@ export const RefreshButton = ({ isLoading, refresh }: Props) =>
       className="refreshBtn"
     >
       <img src={SyncIcon} style={styles.icon} />
-      <label style={styles.text}>Refresh</label>
+      <label style={styles.text}>Refresh all trends</label>
     </button>
   );
 
@@ -30,7 +30,7 @@ const styles: StylesType = {
     borderColor: Colors.darkGray,
     borderWidth: 1,
     borderStyle: "solid",
-    marginLeft: 12,
+    marginLeft: 26,
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 2,

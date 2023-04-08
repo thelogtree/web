@@ -1,6 +1,6 @@
 import "./index.css";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { LoadingSpinnerFullScreen } from "src/sharedComponents/LoadingSpinnerFullScreen";
 import { StylesType } from "src/utils/styles";
 
@@ -10,6 +10,7 @@ import { InsightsTable } from "./components/InsightsTable";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { CenteredLoadingSpinner } from "./components/CenteredLoadingSpinner";
 import { Colors } from "src/utils/colors";
+import { HigherPriorityInsights } from "./components/HigherPriorityInsights";
 
 export const InsightsScreen = () => {
   const {
@@ -22,16 +23,35 @@ export const InsightsScreen = () => {
     !!insightsOfMostCheckedFolders.length ||
     !!insightsOfNotMostCheckedFolders.length;
 
+  const firstTitle = useMemo(() => {
+    if (isLoading) {
+      return "Searching for trends...";
+    } else if (!!insightsOfMostCheckedFolders.length) {
+      return "Trends for you";
+    }
+    return "All trends";
+  }, [
+    isLoading,
+    !!insightsOfMostCheckedFolders.length,
+    !!insightsOfNotMostCheckedFolders.length,
+  ]);
+
   return (
     <div style={styles.container}>
       <div style={styles.topContainer}>
-        <label style={styles.title}>Trends</label>
+        <label style={styles.title}>{firstTitle}</label>
         <RefreshButton isLoading={isLoading} refresh={refetchInsights} />
       </div>
       {isLoading ? (
         <CenteredLoadingSpinner />
       ) : shouldShowInsightTables ? (
-        <InsightsTable insights={insightsOfNotMostCheckedFolders} />
+        <>
+          <HigherPriorityInsights insights={insightsOfMostCheckedFolders} />
+          <InsightsTable
+            insights={insightsOfNotMostCheckedFolders}
+            shouldHideTitle={!insightsOfMostCheckedFolders.length}
+          />
+        </>
       ) : (
         <label style={styles.noTrends}>
           No trends yet. We'll automatically spot trends once you have a couple
