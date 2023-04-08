@@ -24,8 +24,6 @@ export const GlobalSearchTab = () => {
         ...styles.container,
         ...(isOnGlobalSearch && {
           backgroundColor: Colors.lightGray,
-        }),
-        ...(isOnGlobalSearch && {
           cursor: "default",
         }),
       }}

@@ -25,8 +25,8 @@ export const FavoritesTab = () => {
           ...styles.container,
           ...(isSelected && {
             backgroundColor: Colors.lightGray,
+            cursor: "default",
           }),
-          ...(isSelected && { cursor: "default" }),
         }}
         onClick={_goToFavorites}
         disabled={isSelected}

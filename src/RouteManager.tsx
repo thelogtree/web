@@ -16,6 +16,7 @@ import { LogsScreen } from "./screens/Logs";
 import { TeamScreen } from "./screens/Team";
 import { SignOutScreen } from "./screens/SignOut";
 import { GlobalSearchScreen } from "./screens/GlobalSearch";
+import { InsightsScreen } from "./screens/Insights";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -64,6 +65,10 @@ export const RouteManager = () => {
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/search`}
             component={GlobalSearchScreen}
+          />
+          <Route
+            path={`${ORG_ROUTE_PREFIX}/:slug/insights`}
+            component={InsightsScreen}
           />
           <Route path="/invite/:slug/:id" component={InviteScreen} />
         </div>

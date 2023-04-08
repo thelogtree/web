@@ -1,0 +1,15 @@
+.refreshBtn {
+  background-color: white;
+}
+
+.refreshBtn:hover {
+  background-color: rgb(241, 241, 241);
+}
+
+.insightItem {
+  background-color: white;
+}
+
+.insightItem:hover {
+  background-color: rgb(241, 241, 241);
+}

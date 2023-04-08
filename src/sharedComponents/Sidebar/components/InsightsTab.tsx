@@ -1,45 +1,46 @@
-import React, { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { getOrganization } from "src/redux/organization/selector";
-import { usePathname } from "src/utils/helpers";
-import { StylesType } from "src/utils/styles";
-import PersonIcon from "src/assets/person.png";
-import { Colors } from "src/utils/colors";
 import "../index.css";
 
-export const TeamTab = () => {
+import React, { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import LightbulbIcon from "src/assets/lightbulb.png";
+import { getOrganization } from "src/redux/organization/selector";
+import { Colors } from "src/utils/colors";
+import { usePathname } from "src/utils/helpers";
+import { StylesType } from "src/utils/styles";
+
+export const InsightsTab = () => {
   const organization = useSelector(getOrganization);
   const history = useHistory();
   const pathname = usePathname();
-  const teamPath = `/org/${organization?.slug}/team`;
-  const isOnTeamTab = useMemo(() => {
-    return pathname.includes(teamPath);
+  const insightsPath = `/org/${organization?.slug}/insights`;
+  const isSelected = useMemo(() => {
+    return pathname.includes(insightsPath);
   }, [pathname]);
 
-  const _goToTeamScreen = () => history.push(teamPath);
+  const _goToInsights = () => history.push(insightsPath);
 
   return (
     <button
       style={{
         ...styles.container,
-        ...(isOnTeamTab && {
+        ...(isSelected && {
           backgroundColor: Colors.lightGray,
           cursor: "default",
         }),
       }}
-      onClick={_goToTeamScreen}
-      disabled={isOnTeamTab}
+      onClick={_goToInsights}
+      disabled={isSelected}
       className="tab"
     >
-      <img src={PersonIcon} style={styles.icon} />
+      <img src={LightbulbIcon} style={styles.icon} />
       <label
         style={{
           ...styles.tabTitle,
-          ...(!isOnTeamTab && { cursor: "pointer" }),
+          ...(!isSelected && { cursor: "pointer" }),
         }}
       >
-        Team Members
+        Trends
       </label>
     </button>
   );

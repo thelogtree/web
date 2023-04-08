@@ -16,6 +16,8 @@ export const organization = {
     }),
   getFolders: (organizationId: string) =>
     axios.get(routeUrl + `/${organizationId}/folders`),
+  getInsights: (organizationId: string) =>
+    axios.get(routeUrl + `/${organizationId}/insights`),
   getFolderStats: (organizationId: string, folderId: string) =>
     axios.get(routeUrl + `/${organizationId}/folder-stats`, {
       params: {

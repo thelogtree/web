@@ -24,8 +24,6 @@ export const ApiTab = () => {
         ...styles.container,
         ...(isOnApiDashboard && {
           backgroundColor: Colors.lightGray,
-        }),
-        ...(isOnApiDashboard && {
           cursor: "default",
         }),
       }}
