@@ -4,11 +4,14 @@ import firebase from "../../../firebaseConfig";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { Colors } from "src/utils/colors";
 import { SharedStyles, StylesType } from "src/utils/styles";
+import Swal from "sweetalert2";
 
 export const SignInForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [isLoadingResetPassword, setIsLoadingResetPassword] =
+    useState<boolean>(false);
 
   const _submitForm = async () => {
     try {
@@ -23,6 +26,29 @@ export const SignInForm = () => {
       });
       setIsLoading(false); // this must stay only in the catch
     }
+  };
+
+  const _resetPassword = async () => {
+    if (!email) {
+      Swal.fire({
+        title: "Enter email",
+        text: "Please enter the email of your account first, then click the reset password button again.",
+        icon: "info",
+      });
+      return;
+    }
+    try {
+      setIsLoadingResetPassword(true);
+      await firebase.auth().sendPasswordResetEmail(email);
+      Swal.fire({
+        title: "Sent email",
+        text: `We just sent an email to ${email} with instructions on how to reset your password.`,
+        icon: "info",
+      });
+    } catch (e) {
+      showGenericErrorAlert({ message: "No account with this email exists." });
+    }
+    setIsLoadingResetPassword(false);
   };
 
   return (
@@ -43,6 +69,15 @@ export const SignInForm = () => {
         style={styles.input}
         autoComplete="new-password"
       />
+      <button
+        style={styles.resetPasswordBtn}
+        onClick={_resetPassword}
+        disabled={isLoadingResetPassword}
+      >
+        {isLoadingResetPassword
+          ? "One moment..."
+          : "Forgot your password? Click here to reset it."}
+      </button>
       <button
         style={{
           ...styles.signInBtn,
@@ -100,7 +135,7 @@ const styles: StylesType = {
     backgroundColor: Colors.blue800,
     border: "none",
     width: "100%",
-    marginTop: 30,
+    marginTop: 20,
     height: 40,
     color: Colors.white,
     fontWeight: 600,
@@ -109,5 +144,18 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+  resetPasswordBtn: {
+    outline: "none",
+    border: "none",
+    textDecoration: "underline",
+    cursor: "pointer",
+    backgroundColor: Colors.transparent,
+    textAlign: "left",
+    color: Colors.gray,
+    fontSize: 12,
+    marginTop: 12,
+    position: "relative",
+    right: 5,
   },
 };
