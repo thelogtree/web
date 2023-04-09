@@ -18,10 +18,11 @@ const styles: StylesType = {
     height: "100%",
   },
   signInTitle: {
-    fontSize: 24,
+    fontSize: 30,
     color: Colors.black,
-    paddingBottom: 30,
+    paddingBottom: 40,
     textAlign: "center",
     width: "100%",
+    fontWeight: 300,
   },
 };

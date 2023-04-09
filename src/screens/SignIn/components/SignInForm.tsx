@@ -132,7 +132,7 @@ const styles: StylesType = {
   signInBtn: {
     outline: "none",
     borderRadius: 4,
-    backgroundColor: Colors.blue800,
+    backgroundColor: Colors.black,
     border: "none",
     width: "100%",
     marginTop: 20,
