@@ -53,7 +53,7 @@ export const Log = ({ log }: Props) => {
   }, [justCopied, isHovering]);
 
   const textToCopy = useMemo(() => {
-    return `${formattedString}\n\n${log.content}`;
+    return `${formattedString}\n${log.content}`;
   }, [log._id]);
 
   const _searchForReferenceId = () => {
