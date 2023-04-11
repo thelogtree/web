@@ -396,12 +396,13 @@ export const useFolderStats = (numLogs: number) => {
   const currentFolder = useFindFrontendFolderFromUrl();
   const [percentageChange, setPercentageChange] = useState<number>(0);
   const [timeInterval, setTimeInterval] = useState<"hour" | "day">("hour");
+  const [logFrequencies, setLogFrequencies] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const extendedPhrasing = useMemo(() => {
     return `${Math.abs(percentageChange)}% ${
       percentageChange > 0 ? "more" : "fewer"
-    } logs than usual in the last ${timeInterval}.`;
+    } logs in the last ${timeInterval} compared to what it is on average in the last 30 ${timeInterval}s.`;
   }, [timeInterval, percentageChange]);
 
   const _fetch = async () => {
@@ -417,11 +418,14 @@ export const useFolderStats = (numLogs: number) => {
       const {
         percentageChange: fetchedPercentageChange,
         timeInterval: fetchedTimeInterval,
+        logFrequencies: fetchedLogFrequencies,
       } = res.data;
       setPercentageChange(fetchedPercentageChange);
       setTimeInterval(fetchedTimeInterval);
+      setLogFrequencies((fetchedLogFrequencies as number[]).reverse());
     } catch (e) {
       setPercentageChange(0);
+      setLogFrequencies([]);
       Sentry.captureException(e);
     }
     setIsLoading(false);
@@ -429,6 +433,7 @@ export const useFolderStats = (numLogs: number) => {
 
   useEffect(() => {
     setPercentageChange(0);
+    setLogFrequencies([]);
     _fetch();
   }, [currentFolder?._id]);
 
@@ -436,7 +441,7 @@ export const useFolderStats = (numLogs: number) => {
     _fetch();
   }, [numLogs]);
 
-  return { percentageChange, timeInterval, extendedPhrasing };
+  return { percentageChange, timeInterval, extendedPhrasing, logFrequencies };
 };
 
 export const useExternalLinkForLog = (log: FrontendLog) => {

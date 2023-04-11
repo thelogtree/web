@@ -193,6 +193,7 @@ const styles: StylesType = {
     paddingTop: 40,
     paddingBottom: 15,
     width: "100%",
+    minHeight: 170,
   },
   fullPath: {
     color: Colors.gray,
