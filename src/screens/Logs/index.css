@@ -22,3 +22,12 @@
 .referenceIdLink:hover {
   text-decoration: underline;
 }
+
+.logFolderPath {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logFolderPath:hover {
+  text-decoration: underline;
+}

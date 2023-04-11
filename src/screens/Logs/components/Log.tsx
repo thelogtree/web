@@ -4,6 +4,7 @@ import { StylesType } from "src/utils/styles";
 import {
   FrontendLog,
   useExternalLinkForLog,
+  useIsFavoriteLogsScreen,
   useIsGlobalSearchScreen,
 } from "../lib";
 import moment from "moment-timezone";
@@ -15,6 +16,7 @@ import { getOrganization } from "src/redux/organization/selector";
 import { useHistory } from "react-router-dom";
 import { Tooltip } from "antd";
 import { OpenExternalLink } from "./OpenExternalLink";
+import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
 
 type Props = {
   log: FrontendLog;
@@ -24,8 +26,10 @@ export const Log = ({ log }: Props) => {
   const history = useHistory();
   const organization = useSelector(getOrganization);
   const isOnGlobalSearch = useIsGlobalSearchScreen();
+  const isOnFavoritesScreen = useIsFavoriteLogsScreen();
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [justCopied, setJustCopied] = useState<boolean>(false);
+  const canJumpToNewChannel = isOnGlobalSearch || isOnFavoritesScreen;
 
   const formattedString = useMemo(() => {
     const logCreatedAt = moment(log.createdAt);
@@ -62,6 +66,14 @@ export const Log = ({ log }: Props) => {
     );
   };
 
+  const _goToOtherChannel = () => {
+    if (canJumpToNewChannel) {
+      history.push(
+        `/org/${organization!.slug}${LOGS_ROUTE_PREFIX}${log.folderFullPath}`
+      );
+    }
+  };
+
   useEffect(() => {
     if (justCopied) {
       setTimeout(() => {
@@ -75,7 +87,13 @@ export const Log = ({ log }: Props) => {
       <div style={styles.top}>
         <label style={styles.leftSide}>
           <span>{modifiedFormattedString}</span>
-          <span style={styles.folderFullPath}>{log?.folderFullPath}</span>
+          <span
+            style={styles.folderFullPath}
+            onClick={_goToOtherChannel}
+            className={canJumpToNewChannel ? "logFolderPath" : undefined}
+          >
+            {log?.folderFullPath}
+          </span>
           <OpenExternalLink log={log} />
           <span style={styles.copyText}>{copyText}</span>
         </label>
