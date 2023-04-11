@@ -8,33 +8,15 @@ import { MiniGraph } from "./MiniGraph";
 import { Colors } from "src/utils/colors";
 
 type Props = {
-  numLogs: number;
+  numLogs: number; // only used to determine when to refetch folder stats
 };
 
 export const Stat = ({ numLogs }: Props) => {
-  const { percentageChange, timeInterval, extendedPhrasing, logFrequencies } =
-    useFolderStats(numLogs);
-
-  const modifiedTimeInterval = timeInterval === "day" ? "24 hours" : "hour";
+  const { logFrequencies, numLogsToday } = useFolderStats(numLogs);
 
   return logFrequencies.length /* || percentageChange*/ ? (
     <div style={styles.outerContainer}>
-      <MiniGraph logFrequencies={logFrequencies} />
-      {percentageChange
-        ? null
-        : // <Tooltip title={extendedPhrasing}>
-          //   <div style={styles.container}>
-          //     {/* <img
-          //       src={percentageChange > 0 ? ArrowUpIcon : ArrowDownIcon}
-          //       style={styles.icon}
-          //     /> */}
-          //     <label style={styles.percent}>
-          //       {percentageChange > 0 ? "Up" : "Down"}{" "}
-          //       {Math.abs(percentageChange)}% in the last {modifiedTimeInterval}
-          //     </label>
-          //   </div>
-          // </Tooltip>
-          null}
+      <MiniGraph logFrequencies={logFrequencies} numLogsToday={numLogsToday} />
     </div>
   ) : null;
 };

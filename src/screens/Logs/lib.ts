@@ -397,6 +397,7 @@ export const useFolderStats = (numLogs: number) => {
   const [percentageChange, setPercentageChange] = useState<number>(0);
   const [timeInterval, setTimeInterval] = useState<"hour" | "day">("hour");
   const [logFrequencies, setLogFrequencies] = useState<number[]>([]);
+  const [numLogsToday, setNumLogsToday] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const extendedPhrasing = useMemo(() => {
@@ -419,12 +420,15 @@ export const useFolderStats = (numLogs: number) => {
         percentageChange: fetchedPercentageChange,
         timeInterval: fetchedTimeInterval,
         logFrequencies: fetchedLogFrequencies,
+        numLogsToday: fetchedNumLogsToday,
       } = res.data;
       setPercentageChange(fetchedPercentageChange);
       setTimeInterval(fetchedTimeInterval);
       setLogFrequencies((fetchedLogFrequencies as number[]).reverse());
+      setNumLogsToday(fetchedNumLogsToday);
     } catch (e) {
       setPercentageChange(0);
+      setNumLogsToday(0);
       setLogFrequencies([]);
       Sentry.captureException(e);
     }
@@ -433,6 +437,7 @@ export const useFolderStats = (numLogs: number) => {
 
   useEffect(() => {
     setPercentageChange(0);
+    setNumLogsToday(0);
     setLogFrequencies([]);
     _fetch();
   }, [currentFolder?._id]);
@@ -441,7 +446,13 @@ export const useFolderStats = (numLogs: number) => {
     _fetch();
   }, [numLogs]);
 
-  return { percentageChange, timeInterval, extendedPhrasing, logFrequencies };
+  return {
+    percentageChange,
+    timeInterval,
+    extendedPhrasing,
+    logFrequencies,
+    numLogsToday,
+  };
 };
 
 export const useExternalLinkForLog = (log: FrontendLog) => {

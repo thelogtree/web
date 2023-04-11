@@ -15,9 +15,10 @@ import { StylesType } from "src/utils/styles";
 
 type Props = {
   logFrequencies: number[]; // this is per-day right now
+  numLogsToday: number;
 };
 
-export const MiniGraph = ({ logFrequencies }: Props) => {
+export const MiniGraph = ({ logFrequencies, numLogsToday }: Props) => {
   const getName = (index: number) => {
     if (index === logFrequencies.length - 1) {
       return "Last 24 hours";
@@ -42,7 +43,12 @@ export const MiniGraph = ({ logFrequencies }: Props) => {
 
   return (
     <div style={styles.container}>
-      <label style={styles.title}>Last {logFrequencies.length} days</label>
+      <label style={styles.title}>
+        Showing last {logFrequencies.length} days
+      </label>
+      <label style={styles.numToday}>
+        {numLogsToday ? `+${numLogsToday} logs today` : "No logs today"}
+      </label>
       <ResponsiveContainer width={140} height={50}>
         <LineChart width={140} height={50} data={data}>
           <Line
@@ -68,6 +74,13 @@ const styles: StylesType = {
   title: {
     fontSize: 13,
     color: Colors.black,
+    paddingBottom: 4,
+    fontWeight: 500,
+  },
+  numToday: {
+    fontSize: 12,
+    color: Colors.darkGray,
     paddingBottom: 6,
+    fontWeight: 300,
   },
 };
