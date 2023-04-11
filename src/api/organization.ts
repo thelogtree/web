@@ -1,5 +1,6 @@
 import { orgPermissionLevel } from "logtree-types";
 import axios from "../utils/axios";
+import moment from "moment";
 
 const routeUrl = "/organization";
 
@@ -22,6 +23,7 @@ export const organization = {
     axios.get(routeUrl + `/${organizationId}/folder-stats`, {
       params: {
         folderId,
+        timezone: moment.tz.guess(),
       },
     }),
   getOrganizationMembers: (organizationId: string) =>
