@@ -113,5 +113,6 @@ const styles: StylesType = {
     fontSize: 12,
     paddingLeft: 10,
     fontWeight: 300,
+    cursor: "pointer",
   },
 };
