@@ -10,6 +10,7 @@ export type Insight = {
     percentageChange: number;
     timeInterval: "hour" | "day";
   };
+  numLogsToday: number;
 };
 
 export const useInsights = () => {

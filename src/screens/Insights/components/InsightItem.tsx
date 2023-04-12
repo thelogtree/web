@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Insight } from "../lib";
 import { StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
@@ -22,6 +22,22 @@ export const InsightItem = ({ insight }: Props) => {
     );
   };
 
+  const timeIntervalRephrase = useMemo(() => {
+    if (insight.stat.timeInterval === "day") {
+      return "24 hours";
+    }
+    return insight.stat.timeInterval;
+  }, [insight.stat.timeInterval]);
+
+  const numLogsRephrase = useMemo(() => {
+    if (!insight.numLogsToday) {
+      return "No logs today";
+    }
+    return `${insight.numLogsToday} ${
+      insight.numLogsToday === 1 ? "log" : "logs"
+    } today`;
+  }, [insight.numLogsToday]);
+
   return (
     <button
       style={styles.container}
@@ -37,7 +53,8 @@ export const InsightItem = ({ insight }: Props) => {
         />
         <label style={styles.percent}>
           {Math.abs(insight.stat.percentageChange)}% in the last{" "}
-          {insight.stat.timeInterval}
+          {timeIntervalRephrase}{" "}
+          <span style={styles.numLogsToday}>{numLogsRephrase}</span>
         </label>
       </div>
     </button>
@@ -90,5 +107,11 @@ const styles: StylesType = {
     paddingLeft: 6,
     fontWeight: 500,
     cursor: "pointer",
+  },
+  numLogsToday: {
+    color: Colors.gray,
+    fontSize: 12,
+    paddingLeft: 10,
+    fontWeight: 300,
   },
 };

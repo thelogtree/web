@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Insight } from "../lib";
 import { StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
@@ -22,6 +22,22 @@ export const HighPriorityInsightItem = ({ insight }: Props) => {
     );
   };
 
+  const timeIntervalRephrase = useMemo(() => {
+    if (insight.stat.timeInterval === "day") {
+      return "24 hours";
+    }
+    return insight.stat.timeInterval;
+  }, [insight.stat.timeInterval]);
+
+  const numLogsRephrase = useMemo(() => {
+    if (!insight.numLogsToday) {
+      return "No logs today";
+    }
+    return `${insight.numLogsToday} ${
+      insight.numLogsToday === 1 ? "log" : "logs"
+    } today`;
+  }, [insight.numLogsToday]);
+
   return (
     <button
       style={styles.container}
@@ -32,15 +48,20 @@ export const HighPriorityInsightItem = ({ insight }: Props) => {
         <label style={styles.folderName}>{insight.folder.name}</label>
         <label style={styles.fullPath}>{insight.folder.fullPath}</label>
       </div>
-      <div style={styles.bottomContainer}>
-        <img
-          src={insight.stat.percentageChange > 0 ? ArrowUpIcon : ArrowDownIcon}
-          style={styles.icon}
-        />
-        <label style={styles.percent}>
-          {Math.abs(insight.stat.percentageChange)}% in the last{" "}
-          {insight.stat.timeInterval}
-        </label>
+      <div style={styles.rightSide}>
+        <div style={styles.horizontalTopRight}>
+          <img
+            src={
+              insight.stat.percentageChange > 0 ? ArrowUpIcon : ArrowDownIcon
+            }
+            style={styles.icon}
+          />
+          <label style={styles.percent}>
+            {Math.abs(insight.stat.percentageChange)}% in the last{" "}
+            {timeIntervalRephrase}
+          </label>
+        </div>
+        <label style={styles.numLogsToday}>{numLogsRephrase}</label>
       </div>
     </button>
   );
@@ -81,21 +102,33 @@ const styles: StylesType = {
     color: Colors.gray,
     cursor: "pointer",
   },
-  bottomContainer: {
+  rightSide: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-end",
+  },
+  horizontalTopRight: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
   },
   icon: {
-    width: 22,
-    height: 22,
+    width: 20,
+    height: 20,
     cursor: "pointer",
   },
   percent: {
-    fontSize: 18,
+    fontSize: 16,
     paddingLeft: 6,
     fontWeight: 500,
     cursor: "pointer",
+  },
+  numLogsToday: {
+    color: Colors.gray,
+    fontSize: 13,
+    paddingTop: 8,
+    fontWeight: 300,
   },
 };
