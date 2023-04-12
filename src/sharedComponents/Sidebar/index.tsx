@@ -6,13 +6,11 @@ import { constants } from "src/utils/constants";
 import { StylesType } from "src/utils/styles";
 
 import { ApiTab } from "./components/ApiTab";
-import { Folders } from "./components/Folders";
-import { SignedInOrganization } from "./components/SignedInOrganization";
-import { TeamTab } from "./components/TeamTab";
 import { FavoritesTab } from "./components/FavoritesTab";
-import { ConnectIntegrationsTab } from "./components/ConnectIntegrationsTab";
+import { Folders } from "./components/Folders";
 import { GlobalSearchTab } from "./components/GlobalSearchTab";
 import { InsightsTab } from "./components/InsightsTab";
+import { SignedInOrganization } from "./components/SignedInOrganization";
 
 export const Sidebar = () => {
   const organization = useSelector(getOrganization);
@@ -20,9 +18,7 @@ export const Sidebar = () => {
     <div style={styles.container}>
       <div style={styles.innerContainer}>
         <SignedInOrganization />
-        <TeamTab />
         <ApiTab />
-        <ConnectIntegrationsTab />
         <FavoritesTab />
         <InsightsTab />
         <GlobalSearchTab />

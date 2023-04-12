@@ -33,7 +33,6 @@ const styles: StylesType = {
     borderWidth: 0,
     borderColor: Colors.lightGray,
     borderStyle: "solid",
-    padding: 8,
   },
   container: {
     display: "flex",

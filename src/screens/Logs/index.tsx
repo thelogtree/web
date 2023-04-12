@@ -121,12 +121,12 @@ export const LogsScreen = () => {
                       {frontendFolder!.fullPath}
                     </label>
                   </Tooltip>
-                  <LoadUpdatesButton
-                    refreshLogs={freshQueryAndReset}
-                    isLoading={isLoading || isFetchingFolders}
-                  />
                 </>
               )}
+              <LoadUpdatesButton
+                refreshLogs={freshQueryAndReset}
+                isLoading={isLoading || isFetchingFolders}
+              />
             </div>
             <ChannelDescription />
             <label style={styles.numLogsTotalText}>{numLogsText}</label>
@@ -216,7 +216,7 @@ const styles: StylesType = {
     alignItems: "flex-end",
     width: "50%",
     position: "relative",
-    top: 16
+    top: 16,
   },
   hr: {
     border: "none",

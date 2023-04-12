@@ -2,21 +2,41 @@ import { Dropdown, MenuProps } from "antd";
 import firebase from "firebase";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import CaretDownIcon from "src/assets/caretDown.png";
 import { getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { shortenString } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 
+const ZAPIER_INVITE_LINK =
+  "https://zapier.com/developer/public-invite/180777/c6de2f8899d569621d0ffb574a601391/";
+
 export const SignedInOrganization = () => {
+  const history = useHistory();
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const organization = useSelector(getOrganization);
+  const teamPath = `/org/${organization?.slug}/team`;
+  const _goToTeamScreen = () => history.push(teamPath);
+  const _connectIntegrationsClicked = () => {
+    window.open(ZAPIER_INVITE_LINK, "_blank");
+  };
 
   const items: MenuProps["items"] = [
     {
       key: "1",
       label: <label style={styles.signOutBtn}>Sign out</label>,
       onClick: () => firebase.auth().signOut(),
+    },
+    {
+      key: "2",
+      label: <label style={styles.normalBtn}>Team members</label>,
+      onClick: _goToTeamScreen,
+    },
+    {
+      key: "3",
+      label: <label style={styles.normalBtn}>Connect Zapier</label>,
+      onClick: _connectIntegrationsClicked,
     },
   ];
 
@@ -87,6 +107,10 @@ const styles: StylesType = {
   signOutBtn: {
     cursor: "pointer",
     color: Colors.red,
+  },
+  normalBtn: {
+    cursor: "pointer",
+    color: Colors.darkGray,
   },
   generateInviteLink: {
     cursor: "pointer",

@@ -363,6 +363,20 @@ export const useFlattenedFolders = (
   return _getFinalResult();
 };
 
+export const useFavoritesFolderHasUnreadLogs = () => {
+  const flattenedFolders = useFlattenedFolders(undefined, true);
+  const favoritedFolderPaths = useSelector(getFavoriteFolderPaths);
+
+  const favoritesFolderHasUnread = Boolean(
+    flattenedFolders.find(
+      (folder) =>
+        folder.hasUnreadLogs && favoritedFolderPaths.includes(folder.fullPath)
+    )
+  );
+
+  return favoritesFolderHasUnread;
+};
+
 // returns true if any children or this channel has unread logs
 export const useChildrenHasUnreadLogs = (
   folderOrChannel: FrontendFolder | null,

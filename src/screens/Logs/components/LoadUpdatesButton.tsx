@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useChildrenHasUnreadLogs, useFindFrontendFolderFromUrl } from "../lib";
+import {
+  useChildrenHasUnreadLogs,
+  useFavoritesFolderHasUnreadLogs,
+  useFindFrontendFolderFromUrl,
+  useIsFavoriteLogsScreen,
+} from "../lib";
 import { Tooltip } from "antd";
 import SyncIcon from "src/assets/sync.png";
 import { StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
 import moment from "moment-timezone";
 import "../index.css";
+import { useSelector } from "react-redux";
 
 type Props = {
   isLoading: boolean;
@@ -16,7 +22,12 @@ export const LoadUpdatesButton = ({ isLoading, refreshLogs }: Props) => {
   const [lastShowedButton, setLastShowedButton] = useState<Date | null>(null);
   const [shouldShowButton, setShouldShowButton] = useState<boolean>(false);
   const frontendFolder = useFindFrontendFolderFromUrl();
-  const channelHasUnreadLogs = useChildrenHasUnreadLogs(frontendFolder, true);
+  const isFavoriteLogsScreen = useIsFavoriteLogsScreen();
+  const favoritesFolderHasUnreadLogs = useFavoritesFolderHasUnreadLogs();
+  const childrenHaveUnreadLogs = useChildrenHasUnreadLogs(frontendFolder, true);
+  const channelHasUnreadLogs = isFavoriteLogsScreen
+    ? favoritesFolderHasUnreadLogs
+    : childrenHaveUnreadLogs;
 
   const _refresh = async () => refreshLogs(true);
 
