@@ -72,6 +72,7 @@ export const useLogs = (folderId?: string) => {
   const history = useHistory();
   const organization = useSelector(getOrganization);
   const isFavoritesScreen = useIsFavoriteLogsScreen();
+  const favoritesScreenHasUnread = useFavoritesFolderHasUnreadLogs();
   const isGlobalSearchScreen = useIsGlobalSearchScreen();
   const frontendFolder = useFindFrontendFolderFromUrl();
   const flattenedFolders = useFlattenedFolders();
@@ -210,7 +211,10 @@ export const useLogs = (folderId?: string) => {
       );
       setLogs(newLogsArr);
 
-      if (isFreshFetch && frontendFolder?.hasUnreadLogs) {
+      let hadUnreadLogs = isFavoritesScreen
+        ? favoritesScreenHasUnread
+        : frontendFolder?.hasUnreadLogs;
+      if (isFreshFetch && hadUnreadLogs) {
         refetchFolders(); // refresh the unread status of the folder
       }
     } catch (e) {
