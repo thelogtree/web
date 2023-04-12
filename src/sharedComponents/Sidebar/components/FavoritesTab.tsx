@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import LikeIcon from "src/assets/likeNotFilled.png";
-import LikeFilledIcon from "src/assets/likeFilled.png";
+import LikeFilledIcon from "src/assets/heartWithArrow.png";
 import { getOrganization } from "src/redux/organization/selector";
 import { useFavoritesFolderHasUnreadLogs } from "src/screens/Logs/lib";
 import { Colors } from "src/utils/colors";
