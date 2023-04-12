@@ -53,11 +53,11 @@ export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
   return doesQueryExist ? null : isVisible && foldersMatch ? (
     <div style={styles.container}>
       <label
-        style={styles.filterLbl}
+        style={styles.removeFilterLbl}
         onClick={_cancel}
         className="dateFilterBtn"
       >
-        Cancel
+        Remove filter
       </label>
       <RangePicker
         showTime={{ format: "hh:mm A" }}
@@ -88,10 +88,10 @@ const styles: StylesType = {
     justifyContent: "flex-end",
     alignItems: "flex-end",
   },
-  filterLbl: {
-    fontSize: 13,
+  removeFilterLbl: {
+    fontSize: 12,
     color: Colors.gray,
-    fontWeight: 300,
+    fontWeight: 400,
     paddingBottom: 6,
     letterSpacing: 0.8,
     cursor: "pointer",
