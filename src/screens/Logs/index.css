@@ -31,3 +31,11 @@
 .logFolderPath:hover {
   text-decoration: underline;
 }
+
+.dateFilterBtn {
+  text-decoration: none;
+}
+
+.dateFilterBtn:hover {
+  text-decoration: underline;
+}

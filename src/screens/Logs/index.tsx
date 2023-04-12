@@ -215,6 +215,8 @@ const styles: StylesType = {
     justifyContent: "flex-end",
     alignItems: "flex-end",
     width: "50%",
+    position: "relative",
+    top: 16
   },
   hr: {
     border: "none",

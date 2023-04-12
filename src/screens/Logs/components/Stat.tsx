@@ -14,7 +14,7 @@ type Props = {
 export const Stat = ({ numLogs }: Props) => {
   const { logFrequencies, numLogsToday } = useFolderStats(numLogs);
 
-  return logFrequencies.length /* || percentageChange*/ ? (
+  return logFrequencies.length ? (
     <div style={styles.outerContainer}>
       <MiniGraph logFrequencies={logFrequencies} numLogsToday={numLogsToday} />
     </div>
@@ -30,7 +30,7 @@ const styles: StylesType = {
     marginBottom: 12,
     borderRadius: 4,
     backgroundColor: Colors.white,
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: Colors.lightGray,
     borderStyle: "solid",
     padding: 8,

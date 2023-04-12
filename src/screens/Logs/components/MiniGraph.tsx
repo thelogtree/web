@@ -8,6 +8,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  AreaChart,
+  Area,
 } from "recharts";
 import moment from "moment";
 import { Colors } from "src/utils/colors";
@@ -43,22 +45,27 @@ export const MiniGraph = ({ logFrequencies, numLogsToday }: Props) => {
 
   return (
     <div style={styles.container}>
-      <label style={styles.title}>
-        Showing last {logFrequencies.length} days
-      </label>
+      <label style={styles.title}>Last {logFrequencies.length} days</label>
       <label style={styles.numToday}>
         {numLogsToday ? `+${numLogsToday} logs today` : "No logs today"}
       </label>
-      <ResponsiveContainer width={140} height={50}>
-        <LineChart width={140} height={50} data={data}>
-          <Line
+      <ResponsiveContainer width={130} height={40}>
+        <AreaChart width={130} height={40} data={data}>
+          <defs>
+            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#919191" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#919191" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <Area
             type="monotone"
             dataKey="logs"
-            stroke={Colors.black}
+            stroke={Colors.gray}
             strokeWidth={2}
             dot={false}
+            fill="url(#colorUv)"
           />
-        </LineChart>
+        </AreaChart>
       </ResponsiveContainer>
     </div>
   );
@@ -72,13 +79,13 @@ const styles: StylesType = {
     alignItems: "flex-end",
   },
   title: {
-    fontSize: 13,
+    fontSize: 15,
     color: Colors.black,
     paddingBottom: 4,
     fontWeight: 500,
   },
   numToday: {
-    fontSize: 12,
+    fontSize: 13,
     color: Colors.darkGray,
     paddingBottom: 6,
     fontWeight: 300,

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useFindFrontendFolderFromUrl } from "../lib";
 import { StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
-import ClockIcon from "src/assets/clock.png";
 
 const { RangePicker } = DatePicker;
 
@@ -41,6 +40,11 @@ export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
     freshQueryAndReset(false, floorDate, ceilingDate, !floorDate);
   };
 
+  const _cancel = () => {
+    setIsVisible(false);
+    _onChange(null);
+  };
+
   useEffect(() => {
     setIsVisible(false);
     setCurrentFolderId(currentFolder?._id || "");
@@ -48,7 +52,13 @@ export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
 
   return doesQueryExist ? null : isVisible && foldersMatch ? (
     <div style={styles.container}>
-      <label style={styles.filterLbl}>Filter by date</label>
+      <label
+        style={styles.filterLbl}
+        onClick={_cancel}
+        className="dateFilterBtn"
+      >
+        Cancel
+      </label>
       <RangePicker
         showTime={{ format: "hh:mm A" }}
         format="YYYY-MM-DD hh:mm A"
@@ -58,9 +68,12 @@ export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
       />
     </div>
   ) : (
-    <button style={styles.filterBtn} onClick={() => setIsVisible(true)}>
-      <img src={ClockIcon} style={styles.icon} />
-      <label style={styles.applyFilterLbl}>Filter by date</label>
+    <button
+      style={styles.filterBtn}
+      onClick={() => setIsVisible(true)}
+      className="dateFilterBtn"
+    >
+      <label style={styles.applyFilterLbl}>Filter date</label>
     </button>
   );
 };
@@ -76,11 +89,12 @@ const styles: StylesType = {
     alignItems: "flex-end",
   },
   filterLbl: {
-    fontSize: 12,
+    fontSize: 13,
     color: Colors.gray,
     fontWeight: 300,
-    paddingBottom: 10,
+    paddingBottom: 6,
     letterSpacing: 0.8,
+    cursor: "pointer",
   },
   filterBtn: {
     border: "none",
@@ -92,10 +106,11 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "flex-end",
+    position: "relative",
+    color: Colors.gray,
   },
   applyFilterLbl: {
     cursor: "pointer",
-    color: Colors.gray,
     fontSize: 13,
     letterSpacing: 0.8,
   },
