@@ -48,7 +48,7 @@ export const MiniGraph = ({ logFrequencies, numLogsToday }: Props) => {
       <label style={styles.title}>Last {logFrequencies.length} days</label>
       <label style={styles.numToday}>
         {numLogsToday
-          ? `+${numLogsToday} ${numLogsToday === 1 ? "log" : "logs"} today`
+          ? `${numLogsToday} ${numLogsToday === 1 ? "log" : "logs"} today`
           : "No logs today"}
       </label>
       <ResponsiveContainer width={130} height={40}>
