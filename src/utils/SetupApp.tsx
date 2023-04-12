@@ -36,11 +36,7 @@ export const SetupApp = () => {
         user.organizationId.toString() === organization?._id &&
         path !== ORG_ROUTE_PREFIX
       ) {
-        if (isMobile) {
-          history.push(`/org/${organization.slug}/favorites`);
-        } else {
-          history.push(`/org/${organization.slug}/api-dashboard`);
-        }
+        history.push(`/org/${organization.slug}/favorites`);
       } else {
         fetchMyOrganization();
       }
