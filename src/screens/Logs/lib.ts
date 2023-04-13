@@ -218,7 +218,8 @@ export const useLogs = (folderId?: string) => {
         refetchFolders(); // refresh the unread status of the folder
       }
     } catch (e) {
-      showGenericErrorAlert(e);
+      console.error(e);
+      // showGenericErrorAlert(e);
     }
     setIsLoading(false);
     setIsSearchQueued(false);
