@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dropdown, MenuProps } from "antd";
 import MenuIcon from "src/assets/threeDots.png";
 import { StylesType } from "src/utils/styles";
 import Swal from "sweetalert2";
 import { Api } from "src/api";
 import { useSelector } from "react-redux";
-import { getOrganization, getUser } from "src/redux/organization/selector";
-import { useFetchFolders } from "src/redux/actionIndex";
+import {
+  getFavoriteFolderPaths,
+  getOrganization,
+  getUser,
+} from "src/redux/organization/selector";
+import {
+  useFetchFavoriteFolderPaths,
+  useFetchFolders,
+} from "src/redux/actionIndex";
 import { useHistory } from "react-router-dom";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import { Colors } from "src/utils/colors";
 import { useFullFolderPathFromUrl } from "../lib";
 import { orgPermissionLevel } from "logtree-types";
 import { showGenericErrorAlert } from "src/utils/helpers";
+import { getIsFavoritedOnBackend } from "./FavoriteButton";
 
 type Props = {
   folderOrChannel: FrontendFolder;
@@ -21,14 +29,17 @@ type Props = {
 
 export const Options = ({ folderOrChannel, isMutedBecauseOfParent }: Props) => {
   const isChannel = !folderOrChannel.children.length;
-  const history = useHistory();
   const user = useSelector(getUser);
   const organization = useSelector(getOrganization);
-  const fullFolderPath = useFullFolderPathFromUrl();
   const { fetch: fetchFolders } = useFetchFolders();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const isUserAnOrgAdmin =
     user?.orgPermissionLevel === orgPermissionLevel.Admin;
+  const favoritedPaths = useSelector(getFavoriteFolderPaths);
+  const [isFavorited, setIsFavorited] = useState<boolean>(
+    getIsFavoritedOnBackend(favoritedPaths, folderOrChannel.fullPath)
+  );
+  const { fetch: fetchFavoriteFolders } = useFetchFavoriteFolderPaths();
 
   const _confirmDeleteFolderAndEverythingInside = async () => {
     try {
@@ -80,6 +91,32 @@ export const Options = ({ folderOrChannel, isMutedBecauseOfParent }: Props) => {
     setIsLoading(false);
   };
 
+  const _handleFlipFavorite = async () => {
+    try {
+      if (
+        isLoading ||
+        isFavorited ===
+          getIsFavoritedOnBackend(favoritedPaths, folderOrChannel.fullPath)
+      ) {
+        return;
+      }
+      setIsLoading(true);
+      await Api.organization.favoriteFolderPath(
+        organization!._id.toString(),
+        folderOrChannel.fullPath,
+        !isFavorited
+      );
+      await fetchFavoriteFolders();
+    } catch (e) {
+      showGenericErrorAlert(e);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    _handleFlipFavorite();
+  }, [isFavorited]);
+
   const items: MenuProps["items"] = [
     ...(isUserAnOrgAdmin
       ? [
@@ -105,6 +142,19 @@ export const Options = ({ folderOrChannel, isMutedBecauseOfParent }: Props) => {
       ),
       onClick: isMutedBecauseOfParent ? undefined : _muteOrUnmuteChannel,
     },
+    ...(folderOrChannel.children.length
+      ? []
+      : [
+          {
+            key: "3",
+            label: (
+              <label style={styles.favorite}>
+                {isFavorited ? "Remove from favorites" : "Add as favorite"}
+              </label>
+            ),
+            onClick: () => setIsFavorited(!isFavorited),
+          },
+        ]),
   ];
 
   return items.length ? (
@@ -129,6 +179,10 @@ const styles: StylesType = {
     cursor: "pointer",
   },
   mute: {
+    color: Colors.darkGray,
+    cursor: "pointer",
+  },
+  favorite: {
     color: Colors.darkGray,
     cursor: "pointer",
   },

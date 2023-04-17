@@ -14,7 +14,7 @@ import { showGenericErrorAlert } from "src/utils/helpers";
 import { Api } from "src/api";
 import { Tooltip } from "antd";
 
-const getIsFavoritedOnBackend = (
+export const getIsFavoritedOnBackend = (
   favoritedPaths: string[],
   currentFullPath: string
 ) =>
@@ -58,7 +58,7 @@ export const FavoriteButton = () => {
 
   useEffect(() => {
     setIsFavorited(getIsFavoritedOnBackend(favoritedPaths, fullFolderPath));
-  }, [fullFolderPath]);
+  }, [fullFolderPath, favoritedPaths.length]);
 
   return (
     <Tooltip title={isFavorited ? "Remove from favorites" : "Add to favorites"}>
