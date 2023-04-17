@@ -1,5 +1,9 @@
 import * as Sentry from "@sentry/react";
-import { OrganizationDocument, UserDocument } from "logtree-types";
+import {
+  OrganizationDocument,
+  RuleDocument,
+  UserDocument,
+} from "logtree-types";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -18,6 +22,8 @@ const SET_ORGANIZATION_MEMBERS = "SET_ORGANIZATION_MEMBERS";
 type SET_ORGANIZATION_MEMBERS = typeof SET_ORGANIZATION_MEMBERS;
 const SET_FAVORITE_FOLDER_PATHS = "SET_FAVORITE_FOLDER_PATHS";
 type SET_FAVORITE_FOLDER_PATHS = typeof SET_FAVORITE_FOLDER_PATHS;
+const SET_RULES = "SET_RULES";
+type SET_RULES = typeof SET_RULES;
 
 type ISetOrganization = {
   type: SET_ORGANIZATION;
@@ -70,13 +76,23 @@ export const setFavoriteFolderPaths = (
   favoriteFolderPaths,
 });
 
+type ISetRules = {
+  type: SET_RULES;
+  rules: RuleDocument[];
+};
+export const setRules = (rules: RuleDocument[]): ISetRules => ({
+  type: SET_RULES,
+  rules,
+});
+
 // actions identifiable by the reducer
 export type OrganizationActionsIndex =
   | ISetOrganization
   | ISetUser
   | ISetFolders
   | ISetOrganizationMembers
-  | ISetFavoriteFolderPaths;
+  | ISetFavoriteFolderPaths
+  | ISetRules;
 
 // api-related actions
 export const useFetchMyOrganization = () => {
@@ -202,6 +218,30 @@ export const useFetchFavoriteFolderPaths = () => {
     } catch (e) {
       Sentry.captureException(e);
       dispatch(setFavoriteFolderPaths([]));
+    }
+    setIsFetching(false);
+    return wasSuccessful;
+  };
+
+  return { fetch, isFetching };
+};
+
+export const useFetchMyRules = () => {
+  const dispatch = useDispatch();
+  const organization = useSelector(getOrganization);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  const fetch = async () => {
+    let wasSuccessful = false;
+    try {
+      setIsFetching(true);
+      const res = await Api.organization.getRules(organization!._id.toString());
+      const { rules } = res.data;
+      dispatch(setRules(rules));
+      wasSuccessful = true;
+    } catch (e) {
+      Sentry.captureException(e);
+      dispatch(setRules([]));
     }
     setIsFetching(false);
     return wasSuccessful;

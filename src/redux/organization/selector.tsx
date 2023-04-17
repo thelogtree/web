@@ -30,3 +30,8 @@ export const getFavoriteFolderPaths = createSelector(
   (organizationReducer: OrganizationReducerType) =>
     organizationReducer.favoriteFolderPaths
 );
+
+export const getRules = createSelector(
+  [getOrganizationReducer],
+  (organizationReducer: OrganizationReducerType) => organizationReducer.rules
+);

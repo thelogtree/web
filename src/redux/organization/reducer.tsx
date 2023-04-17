@@ -1,6 +1,10 @@
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import { OrganizationActionsIndex } from "./action";
-import { OrganizationDocument, UserDocument } from "logtree-types";
+import {
+  OrganizationDocument,
+  RuleDocument,
+  UserDocument,
+} from "logtree-types";
 
 export type OrganizationReducerType = {
   organization: OrganizationDocument | null;
@@ -8,6 +12,7 @@ export type OrganizationReducerType = {
   folders: FrontendFolder[];
   organizationMembers: UserDocument[];
   favoriteFolderPaths: string[];
+  rules: RuleDocument[];
 };
 
 const initialState: OrganizationReducerType = {
@@ -16,6 +21,7 @@ const initialState: OrganizationReducerType = {
   folders: [],
   organizationMembers: [],
   favoriteFolderPaths: [],
+  rules: [],
 };
 
 export const organizationReducer = (
@@ -33,6 +39,8 @@ export const organizationReducer = (
       return { ...state, organizationMembers: action.organizationMembers };
     case "SET_FAVORITE_FOLDER_PATHS":
       return { ...state, favoriteFolderPaths: action.favoriteFolderPaths };
+    case "SET_RULES":
+      return { ...state, rules: action.rules };
     default:
       return state;
   }
