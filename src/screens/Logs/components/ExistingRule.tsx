@@ -72,8 +72,8 @@ export const ExistingRule = ({ rule }: Props) => {
         Email me if the number of logs in the last
         {value === 1 ? "" : ` ${value}`} {type}{" "}
         {rule.comparisonType === comparisonTypeEnum.CrossesAbove
-          ? "exceeds"
-          : "drops below"}{" "}
+          ? "crosses above"
+          : "crosses below"}{" "}
         {rule.comparisonValue}
       </label>
       <button

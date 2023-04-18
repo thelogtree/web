@@ -135,10 +135,13 @@ export const Rules = () => {
               style={styles.comparisonType}
               onChange={(val) => setComparisonType(val)}
               options={[
-                { value: comparisonTypeEnum.CrossesAbove, label: "exceeds" },
+                {
+                  value: comparisonTypeEnum.CrossesAbove,
+                  label: "crosses above",
+                },
                 {
                   value: comparisonTypeEnum.CrossesBelow,
-                  label: "drops below",
+                  label: "crosses below",
                 },
               ]}
               disabled={isLoading}
@@ -248,7 +251,7 @@ const styles: StylesType = {
     marginRight: 5,
   },
   comparisonType: {
-    width: 120,
+    width: 160,
     marginRight: 5,
   },
   lookbackValue: {
