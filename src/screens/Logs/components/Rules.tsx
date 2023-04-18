@@ -58,11 +58,11 @@ export const Rules = () => {
         throw new Error("Not all of the numerical fields are valid.");
       }
       if (
-        lookbackTime < 10 &&
+        lookbackTime < 20 &&
         lookbackTimeUnitType === lookbackTimeUnitEnum.Minutes
       ) {
         throw new Error(
-          "The shortest timeframe you can specify is 10 minutes."
+          "The shortest timeframe you can specify is 20 minutes."
         );
       }
       setIsLoading(true);
@@ -95,11 +95,15 @@ export const Rules = () => {
         open={isModalVisible}
         footer={null}
         style={styles.modalContainer}
-        width={1000}
+        width={1100}
         onCancel={() => setIsModalVisible(false)}
       >
         <div style={styles.createNewAlertContainer}>
           <label style={styles.subtitle}>Create new alert</label>
+          <label style={styles.delayNote}>
+            Note that there may be an up to 20 minute delay from the time your
+            alert triggers to the time you receive an email.
+          </label>
           <hr style={styles.hr} />
           <div style={styles.innerNewAlertContainer}>
             <label style={styles.emailMeCondition}>
@@ -198,6 +202,7 @@ const styles: StylesType = {
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
+    letterSpacing: "normal",
   },
   createNewAlertContainer: {
     display: "flex",
@@ -255,5 +260,9 @@ const styles: StylesType = {
     border: "none",
     marginBottom: 10,
     marginTop: 8,
+  },
+  delayNote: {
+    color: Colors.darkGray,
+    fontSize: 12,
   },
 };
