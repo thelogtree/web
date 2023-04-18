@@ -66,6 +66,7 @@ export const Rules = () => {
         );
       }
       setIsLoading(true);
+
       await Api.organization.createRule(
         organization!._id.toString(),
         frontendFolder!._id.toString(),
@@ -118,7 +119,7 @@ export const Rules = () => {
               style={styles.lookbackValue}
             />
             <Select
-              defaultValue={lookbackTimeUnitType}
+              value={lookbackTimeUnitType}
               style={styles.lookbackUnits}
               onChange={(val) => setLookbackTimeUnitType(val)}
               options={[
@@ -130,7 +131,7 @@ export const Rules = () => {
               disabled={isLoading}
             />
             <Select
-              defaultValue={comparisonType}
+              value={comparisonType}
               style={styles.comparisonType}
               onChange={(val) => setComparisonType(val)}
               options={[
@@ -162,12 +163,12 @@ export const Rules = () => {
           </div>
           {rulesForThisFolder.length ? (
             <>
-              <label style={{ ...styles.subtitle, paddingTop: 15 }}>
+              <label style={{ ...styles.subtitle, paddingTop: 60 }}>
                 My alerts ({rulesForThisFolder.length})
               </label>
               <hr style={styles.hr} />
               {rulesForThisFolder.map((rule) => (
-                <ExistingRule rule={rule} />
+                <ExistingRule rule={rule} key={rule._id.toString()} />
               ))}
             </>
           ) : null}

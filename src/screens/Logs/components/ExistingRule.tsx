@@ -116,6 +116,10 @@ const styles: StylesType = {
     outline: "none",
     border: "none",
     backgroundColor: Colors.transparent,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   deleteBtnText: {
     color: Colors.red,
