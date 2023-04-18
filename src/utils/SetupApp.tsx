@@ -5,6 +5,7 @@ import {
   setUser,
   useFetchMe,
   useFetchMyOrganization,
+  useFetchMyRules,
 } from "src/redux/actionIndex";
 import { getAuthStatus } from "src/redux/auth/selector";
 import { getOrganization, getUser } from "src/redux/organization/selector";
@@ -14,7 +15,6 @@ import { setAuthStatus } from "../redux/auth/action";
 import { analytics } from "../utils/segmentClient";
 import { getFirstPathWithSlash, usePathname } from "./helpers";
 import { ORG_ROUTE_PREFIX } from "src/RouteManager";
-import { isMobile } from "react-device-detect";
 
 // routes where logged out users can view it and will not be redirected anywhere
 const NO_ACTION_ROUTES = ["/sign-in", "/invite"];
@@ -24,6 +24,7 @@ export const SetupApp = () => {
   const activePathname = usePathname();
   const { fetch: fetchUser } = useFetchMe();
   const { fetch: fetchMyOrganization } = useFetchMyOrganization();
+  const { fetch: fetchMyRules } = useFetchMyRules();
   const dispatch = useDispatch();
   const user = useSelector(getUser);
   const organization = useSelector(getOrganization);
@@ -39,6 +40,7 @@ export const SetupApp = () => {
         history.push(`/org/${organization.slug}/favorites`);
       } else {
         fetchMyOrganization();
+        fetchMyRules();
       }
     } else if (
       !user &&

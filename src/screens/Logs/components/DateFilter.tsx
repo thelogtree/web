@@ -101,7 +101,7 @@ const styles: StylesType = {
     backgroundColor: Colors.transparent,
     outline: "none",
     cursor: "pointer",
-    minWidth: 120,
+    minWidth: 80,
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",

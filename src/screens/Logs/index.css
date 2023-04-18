@@ -39,3 +39,11 @@
 .dateFilterBtn:hover {
   text-decoration: underline;
 }
+
+.createRuleBtn {
+  text-decoration: none;
+}
+
+.createRuleBtn:hover {
+  text-decoration: underline;
+}

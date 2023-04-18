@@ -18,6 +18,7 @@ import {
   useIsFavoriteLogsScreen,
   useLogs,
 } from "./lib";
+import { Rules } from "./components/Rules";
 
 export const LogsScreen = () => {
   const folders = useSelector(getFolders);
@@ -133,10 +134,13 @@ export const LogsScreen = () => {
           </div>
           <div style={styles.verticalTopRight}>
             <Stat numLogs={numLogsInTotal} />
-            <DateFilter
-              doesQueryExist={isSearchQueued || !!query}
-              freshQueryAndReset={freshQueryAndReset}
-            />
+            <div style={styles.topRightMiscItemsContainer}>
+              <Rules />
+              <DateFilter
+                doesQueryExist={isSearchQueued || !!query}
+                freshQueryAndReset={freshQueryAndReset}
+              />
+            </div>
           </div>
         </div>
         <div style={styles.hrWrapper}>
@@ -231,7 +235,14 @@ const styles: StylesType = {
   deleted: {
     width: "100%",
     textAlign: "center",
-    paddingTop: 300,
+    paddingTop: "45vh",
     color: Colors.darkGray,
+    fontSize: 18,
+  },
+  topRightMiscItemsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
   },
 };
