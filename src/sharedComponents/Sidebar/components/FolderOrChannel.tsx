@@ -18,6 +18,8 @@ import { StylesType } from "src/utils/styles";
 import { FrontendFolder } from "./Folders";
 import _ from "lodash";
 import { constants } from "src/utils/constants";
+import { useInstantlyMarkFolderAsRead } from "../lib";
+import moment from "moment-timezone";
 
 type Props = {
   folderOrChannel: FrontendFolder;
@@ -41,10 +43,10 @@ export const FolderOrChannel = ({
   const isChannel = !folderOrChannel.children.length;
   const fullFolderPath = useFullFolderPathFromUrl();
   const isSelected = folderOrChannel.fullPath === fullFolderPath;
-  const childrenIncludesUnreadChannel =
-    useChildrenHasUnreadLogs(folderOrChannel);
   const isMuted = isMutedBecauseOfParent || folderOrChannel.isMuted;
   const sortedChildren = _.sortBy(children, "isMuted");
+  const { markAsRead, shouldShowUpAsUnread } =
+    useInstantlyMarkFolderAsRead(folderOrChannel);
 
   const icon = useMemo(() => {
     if (isChannel) {
@@ -54,11 +56,12 @@ export const FolderOrChannel = ({
   }, [isChannel, children.length]);
 
   const _onPress = () => {
-    if (isSelected && childrenIncludesUnreadChannel) {
+    if (isSelected && shouldShowUpAsUnread) {
       window.location.reload();
       return;
     }
     if (!isSelected && isChannel) {
+      markAsRead();
       history.push(
         `/org/${organization?.slug}${LOGS_ROUTE_PREFIX}${folderOrChannel.fullPath}`
       );
@@ -102,9 +105,7 @@ export const FolderOrChannel = ({
             style={{
               ...styles.name,
               ...(isSelected && { cursor: "auto" }),
-              ...(childrenIncludesUnreadChannel &&
-                !isMuted &&
-                styles.hasUnreadLogs),
+              ...(shouldShowUpAsUnread && !isMuted && styles.hasUnreadLogs),
               maxWidth: constants.sidebarWidth - extraMarginLeft - 60,
             }}
           >
