@@ -235,8 +235,9 @@ const styles: StylesType = {
   deleted: {
     width: "100%",
     textAlign: "center",
-    paddingTop: 300,
+    paddingTop: "45vh",
     color: Colors.darkGray,
+    fontSize: 18,
   },
   topRightMiscItemsContainer: {
     display: "flex",
