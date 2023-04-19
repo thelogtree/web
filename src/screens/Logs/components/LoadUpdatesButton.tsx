@@ -57,7 +57,7 @@ export const LoadUpdatesButton = ({ isLoading, refreshLogs }: Props) => {
         clearTimeout(timeout);
       }
     };
-  }, [channelHasUnreadLogs, isLoading, lastShowedButton]);
+  }, [channelHasUnreadLogs, isLoading, lastShowedButton, frontendFolder?._id]);
 
   useEffect(() => {
     if (shouldShowButton) {
