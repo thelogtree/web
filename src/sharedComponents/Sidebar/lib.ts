@@ -12,7 +12,7 @@ const _getShouldShowUpAsUnread = (
   lastMarkedAsRead: Date | null
 ) =>
   childrenHasUnreadLogs &&
-  (!lastMarkedAsRead || moment().diff(lastMarkedAsRead, "seconds") >= 2);
+  (!lastMarkedAsRead || moment().diff(lastMarkedAsRead, "seconds") >= 5);
 
 // this helps make a better ux instead of the user having to wait a few seconds
 // for folders to refetch
