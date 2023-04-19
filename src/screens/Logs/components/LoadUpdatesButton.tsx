@@ -1,17 +1,17 @@
+import "../index.css";
+
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
+import SyncIcon from "src/assets/sync.png";
+import { Colors } from "src/utils/colors";
+import { StylesType } from "src/utils/styles";
+
 import {
   useChildrenHasUnreadLogs,
   useFavoritesFolderHasUnreadLogs,
   useFindFrontendFolderFromUrl,
   useIsFavoriteLogsScreen,
 } from "../lib";
-import { Tooltip } from "antd";
-import SyncIcon from "src/assets/sync.png";
-import { StylesType } from "src/utils/styles";
-import { Colors } from "src/utils/colors";
-import moment from "moment-timezone";
-import "../index.css";
-import { useSelector } from "react-redux";
 
 type Props = {
   isLoading: boolean;
@@ -41,7 +41,8 @@ export const LoadUpdatesButton = ({ isLoading, refreshLogs }: Props) => {
       channelHasUnreadLogs &&
       !isLoading &&
       lastShowedButton &&
-      moment().diff(moment(lastShowedButton), "seconds") <= 3
+      moment().diff(moment(lastShowedButton), "seconds") <= 3 /* ||
+        moment().diff(moment(lastSwitchedChannels), "seconds") <= 5*/
     ) {
       timeout = setTimeout(() => {
         setShouldShowButton(true);
@@ -57,7 +58,7 @@ export const LoadUpdatesButton = ({ isLoading, refreshLogs }: Props) => {
         clearTimeout(timeout);
       }
     };
-  }, [channelHasUnreadLogs, isLoading, lastShowedButton, frontendFolder?._id]);
+  }, [channelHasUnreadLogs, isLoading, lastShowedButton]);
 
   useEffect(() => {
     if (shouldShowButton) {

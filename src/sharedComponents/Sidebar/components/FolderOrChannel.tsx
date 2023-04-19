@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -12,14 +13,10 @@ import {
   useFullFolderPathFromUrl,
 } from "src/screens/Logs/lib";
 import { Colors } from "src/utils/colors";
-import { shortenString } from "src/utils/helpers";
+import { constants } from "src/utils/constants";
 import { StylesType } from "src/utils/styles";
 
 import { FrontendFolder } from "./Folders";
-import _ from "lodash";
-import { constants } from "src/utils/constants";
-import { useInstantlyMarkFolderAsRead } from "../lib";
-import moment from "moment-timezone";
 
 type Props = {
   folderOrChannel: FrontendFolder;
@@ -45,8 +42,7 @@ export const FolderOrChannel = ({
   const isSelected = folderOrChannel.fullPath === fullFolderPath;
   const isMuted = isMutedBecauseOfParent || folderOrChannel.isMuted;
   const sortedChildren = _.sortBy(children, "isMuted");
-  const { markAsRead, shouldShowUpAsUnread } =
-    useInstantlyMarkFolderAsRead(folderOrChannel);
+  const childrenHaveUnreadLogs = useChildrenHasUnreadLogs(folderOrChannel);
 
   const icon = useMemo(() => {
     if (isChannel) {
@@ -56,12 +52,11 @@ export const FolderOrChannel = ({
   }, [isChannel, children.length]);
 
   const _onPress = () => {
-    if (isSelected && shouldShowUpAsUnread) {
+    if (isSelected && childrenHaveUnreadLogs) {
       window.location.reload();
       return;
     }
     if (!isSelected && isChannel) {
-      markAsRead();
       history.push(
         `/org/${organization?.slug}${LOGS_ROUTE_PREFIX}${folderOrChannel.fullPath}`
       );
@@ -105,7 +100,7 @@ export const FolderOrChannel = ({
             style={{
               ...styles.name,
               ...(isSelected && { cursor: "auto" }),
-              ...(shouldShowUpAsUnread && !isMuted && styles.hasUnreadLogs),
+              ...(childrenHaveUnreadLogs && !isMuted && styles.hasUnreadLogs),
               maxWidth: constants.sidebarWidth - extraMarginLeft - 60,
             }}
           >
