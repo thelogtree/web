@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import {
   useFetchFavoriteFolderPaths,
   useFetchFolders,
+  useFetchMyRules,
 } from "src/redux/actionIndex";
 import { getFolders, getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
@@ -25,6 +26,7 @@ export const Folders = () => {
   const organization = useSelector(getOrganization);
   const { fetch: fetchFolders } = useFetchFolders();
   const { fetch: fetchFavoriteFolderPaths } = useFetchFavoriteFolderPaths();
+  const { fetch: fetchMyRules } = useFetchMyRules();
   const folders = useSelector(getFolders);
   const sortedFolders = _.sortBy(folders, "isMuted");
 
@@ -33,6 +35,7 @@ export const Folders = () => {
     if (organization) {
       fetchFolders();
       fetchFavoriteFolderPaths();
+      fetchMyRules();
     }
     fetchingInterval = setInterval(() => {
       fetchFolders();

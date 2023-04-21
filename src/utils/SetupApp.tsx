@@ -24,7 +24,6 @@ export const SetupApp = () => {
   const activePathname = usePathname();
   const { fetch: fetchUser } = useFetchMe();
   const { fetch: fetchMyOrganization } = useFetchMyOrganization();
-  const { fetch: fetchMyRules } = useFetchMyRules();
   const dispatch = useDispatch();
   const user = useSelector(getUser);
   const organization = useSelector(getOrganization);
@@ -40,7 +39,6 @@ export const SetupApp = () => {
         history.push(`/org/${organization.slug}/favorites`);
       } else {
         fetchMyOrganization();
-        fetchMyRules();
       }
     } else if (
       !user &&
