@@ -4,23 +4,33 @@ import { getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import _ from "lodash";
+import { numberToNumberWithCommas } from "src/utils/helpers";
+import moment from "moment-timezone";
 
 export const Billing = () => {
   const organization = useSelector(getOrganization);
 
   return (
     <div style={styles.container}>
-      <label style={styles.billingSectionTitle}>BILLING</label>
+      <label style={styles.billingSectionTitle}>USAGE</label>
       <label style={styles.info}>
-        Credits remaining: ${_.round(organization!.currentCredits, 3)}
+        Logs sent:{" "}
+        <b>{numberToNumberWithCommas(organization!.numLogsSentInPeriod)}</b>
       </label>
       <label style={{ ...styles.info, paddingTop: 8 }}>
-        Upcoming charges: ${_.round(organization!.currentCharges, 3)}
+        Log limit:{" "}
+        <b>{numberToNumberWithCommas(organization!.logLimitForPeriod)}</b>
       </label>
-      {organization?.currentCharges ? (
-        <label style={styles.reachOut}>
-          Don't worry about this yet, we'll reach out to you when it's time to
-          pay us.
+      {organization!.cycleEnds ? (
+        <label style={styles.usageResetNote}>
+          Your usage will reset on{" "}
+          {moment(organization?.cycleEnds).format("MM/DD/YYYY")}. Email
+          andy@logtree.co to increase your limit.
+        </label>
+      ) : null}
+      {organization!.numLogsSentInPeriod >= organization!.logLimitForPeriod ? (
+        <label style={styles.noMoreLogs}>
+          You cannot send any more logs right now.
         </label>
       ) : null}
     </div>
@@ -62,9 +72,14 @@ const styles: StylesType = {
     color: Colors.black,
     fontSize: 15,
   },
-  reachOut: {
+  noMoreLogs: {
+    color: Colors.red,
+    fontSize: 13,
+    paddingTop: 10,
+  },
+  usageResetNote: {
     color: Colors.darkGray,
-    fontSize: 12,
-    paddingTop: 14,
+    fontSize: 13,
+    paddingTop: 10,
   },
 };
