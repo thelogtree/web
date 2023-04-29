@@ -1,4 +1,8 @@
-import { RuleDocument, comparisonTypeEnum } from "logtree-types";
+import {
+  RuleDocument,
+  comparisonTypeEnum,
+  notificationTypeEnum,
+} from "logtree-types";
 import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { Api } from "src/api";
@@ -69,7 +73,10 @@ export const ExistingRule = ({ rule }: Props) => {
   return (
     <div style={styles.ruleContainer}>
       <label>
-        Email me if the number of logs in the last
+        {rule.notificationType === notificationTypeEnum.Email
+          ? "Email"
+          : "Text"}{" "}
+        me if the number of logs in the last
         {value === 1 ? "" : ` ${value}`} {type}{" "}
         {rule.comparisonType === comparisonTypeEnum.CrossesAbove
           ? "crosses above"

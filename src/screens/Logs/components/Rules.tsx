@@ -1,19 +1,25 @@
 import { InputNumber, Modal, Select } from "antd";
-import { comparisonTypeEnum } from "logtree-types";
+import { comparisonTypeEnum, notificationTypeEnum } from "logtree-types";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Api } from "src/api";
-import { getOrganization, getRules } from "src/redux/organization/selector";
+import { useFetchMyRules } from "src/redux/actionIndex";
+import {
+  getOrganization,
+  getRules,
+  getUser,
+} from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { showGenericErrorAlert } from "src/utils/helpers";
 import { SharedStyles, StylesType } from "src/utils/styles";
+
 import {
   useFindFrontendFolderFromUrl,
   useIsFavoriteLogsScreen,
   useIsGlobalSearchScreen,
 } from "../lib";
-import { useFetchMyRules } from "src/redux/actionIndex";
 import { ExistingRule } from "./ExistingRule";
+import { VerifyPhone } from "./VerifyPhone";
 
 export enum lookbackTimeUnitEnum {
   Minutes = 1,
@@ -26,6 +32,7 @@ export const Rules = () => {
   const organization = useSelector(getOrganization);
   const frontendFolder = useFindFrontendFolderFromUrl();
   const rules = useSelector(getRules);
+  const user = useSelector(getUser);
   const rulesForThisFolder = rules.filter(
     (r) => r.folderId.toString() === frontendFolder?._id.toString()
   );
@@ -41,6 +48,10 @@ export const Rules = () => {
   const [lookbackTime, setLookbackTime] = useState<number | null>(null);
   const [lookbackTimeUnitType, setLookbackTimeUnitType] =
     useState<lookbackTimeUnitEnum>(lookbackTimeUnitEnum.Hours);
+  const [notificationType, setNotificationType] =
+    useState<notificationTypeEnum>(notificationTypeEnum.Email);
+  const choseSmsNotificationTypeButUserHasNoPhoneNumber =
+    notificationType === notificationTypeEnum.SMS && !user?.phoneNumber;
 
   const _resetInputs = () => {
     setComparisonValue(100);
@@ -57,6 +68,9 @@ export const Rules = () => {
       if (isNaN(comparisonValue) || isNaN(lookbackTime)) {
         throw new Error("Not all of the numerical fields are valid.");
       }
+      if (choseSmsNotificationTypeButUserHasNoPhoneNumber) {
+        throw new Error("Please provide your phone number first.");
+      }
       if (
         lookbackTime < 20 &&
         lookbackTimeUnitType === lookbackTimeUnitEnum.Minutes
@@ -72,7 +86,8 @@ export const Rules = () => {
         frontendFolder!._id.toString(),
         comparisonType,
         comparisonValue,
-        lookbackTime * lookbackTimeUnitType
+        lookbackTime * lookbackTimeUnitType,
+        notificationType
       );
       await fetchRules();
       _resetInputs();
@@ -106,9 +121,28 @@ export const Rules = () => {
             alert triggers to the time you receive an email.
           </label>
           <hr style={styles.hr} />
+          {choseSmsNotificationTypeButUserHasNoPhoneNumber ? (
+            <VerifyPhone />
+          ) : null}
           <div style={styles.innerNewAlertContainer}>
             <label style={styles.emailMeCondition}>
-              Email me if the number of logs in the last{" "}
+              <Select
+                value={notificationType}
+                style={styles.notificationType}
+                onChange={(val) => setNotificationType(val)}
+                options={[
+                  {
+                    value: notificationTypeEnum.Email,
+                    label: "Email",
+                  },
+                  {
+                    value: notificationTypeEnum.SMS,
+                    label: "Text",
+                  },
+                ]}
+                disabled={isLoading}
+              />{" "}
+              me if the number of logs in the last{" "}
             </label>
             <InputNumber
               min={1}
@@ -156,10 +190,14 @@ export const Rules = () => {
             <button
               style={{
                 ...styles.saveBtn,
-                ...(isLoading && SharedStyles.loadingButton),
+                ...((isLoading ||
+                  choseSmsNotificationTypeButUserHasNoPhoneNumber) &&
+                  SharedStyles.loadingButton),
               }}
               onClick={_createAlert}
-              disabled={isLoading}
+              disabled={
+                isLoading || choseSmsNotificationTypeButUserHasNoPhoneNumber
+              }
             >
               {isLoading ? "Saving..." : "Save"}
             </button>
@@ -252,6 +290,10 @@ const styles: StylesType = {
   },
   comparisonType: {
     width: 160,
+    marginRight: 5,
+  },
+  notificationType: {
+    width: 100,
     marginRight: 5,
   },
   lookbackValue: {

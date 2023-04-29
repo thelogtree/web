@@ -1,4 +1,8 @@
-import { comparisonTypeEnum, orgPermissionLevel } from "logtree-types";
+import {
+  comparisonTypeEnum,
+  notificationTypeEnum,
+  orgPermissionLevel,
+} from "logtree-types";
 import axios from "../utils/axios";
 import moment from "moment";
 
@@ -126,16 +130,31 @@ export const organization = {
     folderId: string,
     comparisonType: comparisonTypeEnum,
     comparisonValue: number,
-    lookbackTimeInMins: number
+    lookbackTimeInMins: number,
+    notificationType: notificationTypeEnum
   ) =>
     axios.post(routeUrl + `/${organizationId}/rule`, {
       folderId,
       comparisonType,
       comparisonValue,
       lookbackTimeInMins,
+      notificationType,
     }),
   deleteRule: (organizationId: string, ruleId: string) =>
     axios.post(routeUrl + `/${organizationId}/delete-rule`, {
       ruleId,
+    }),
+  sendPhoneVerificationCode: (organizationId: string, phoneNumber: string) =>
+    axios.post(routeUrl + `/${organizationId}/user/phone/send-code`, {
+      phoneNumber,
+    }),
+  verifyPhoneCode: (
+    organizationId: string,
+    phoneNumber: string,
+    code: string
+  ) =>
+    axios.post(routeUrl + `/${organizationId}/user/phone/verify-code`, {
+      phoneNumber,
+      code,
     }),
 };
