@@ -28,7 +28,11 @@ export enum lookbackTimeUnitEnum {
   Weeks = 10080,
 }
 
-export const Rules = () => {
+type Props = {
+  shouldHideEverything: boolean;
+};
+
+export const Rules = ({ shouldHideEverything }: Props) => {
   const organization = useSelector(getOrganization);
   const frontendFolder = useFindFrontendFolderFromUrl();
   const rules = useSelector(getRules);
@@ -101,7 +105,7 @@ export const Rules = () => {
     _resetInputs();
   }, [frontendFolder?._id]);
 
-  if (isFavoritesScreen || isGlobalSearchScreen) {
+  if (isFavoritesScreen || isGlobalSearchScreen || shouldHideEverything) {
     return null;
   }
 
@@ -239,6 +243,7 @@ const styles: StylesType = {
     border: "none",
     backgroundColor: Colors.transparent,
     marginRight: 10,
+    minWidth: 130,
   },
   modalContainer: {
     display: "flex",

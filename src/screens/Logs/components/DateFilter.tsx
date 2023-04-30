@@ -8,6 +8,8 @@ import { Colors } from "src/utils/colors";
 const { RangePicker } = DatePicker;
 
 type Props = {
+  isDateFilterOpened: boolean;
+  setIsDateFilterOpened: (isOpened: boolean) => void;
   doesQueryExist: boolean;
   freshQueryAndReset: (
     shouldEmptyQuery?: boolean,
@@ -17,8 +19,12 @@ type Props = {
   ) => Promise<void>;
 };
 
-export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
-  const [isVisible, setIsVisible] = useState<boolean>(false);
+export const DateFilter = ({
+  isDateFilterOpened,
+  setIsDateFilterOpened,
+  doesQueryExist,
+  freshQueryAndReset,
+}: Props) => {
   const currentFolder = useFindFrontendFolderFromUrl();
   const [currentFolderId, setCurrentFolderId] = useState<string>("");
   const foldersMatch = (currentFolder?._id || "") === currentFolderId;
@@ -41,16 +47,16 @@ export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
   };
 
   const _cancel = () => {
-    setIsVisible(false);
+    setIsDateFilterOpened(false);
     _onChange(null);
   };
 
   useEffect(() => {
-    setIsVisible(false);
+    setIsDateFilterOpened(false);
     setCurrentFolderId(currentFolder?._id || "");
   }, [currentFolder?._id]);
 
-  return doesQueryExist ? null : isVisible && foldersMatch ? (
+  return doesQueryExist ? null : isDateFilterOpened && foldersMatch ? (
     <div style={styles.container}>
       <label
         style={styles.removeFilterLbl}
@@ -70,7 +76,7 @@ export const DateFilter = ({ doesQueryExist, freshQueryAndReset }: Props) => {
   ) : (
     <button
       style={styles.filterBtn}
-      onClick={() => setIsVisible(true)}
+      onClick={() => setIsDateFilterOpened(true)}
       className="dateFilterBtn"
     >
       <label style={styles.applyFilterLbl}>Filter date</label>

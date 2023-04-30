@@ -37,6 +37,7 @@ export const LogsScreen = () => {
     isFetchingFolders,
   } = useLogs(frontendFolder?._id);
   const containerRef = useRef(null);
+  const [isDateFilterOpened, setIsDateFilterOpened] = useState<boolean>(false);
 
   const numLogsText = useMemo(() => {
     if (isLoading || isSearchQueued) {
@@ -74,7 +75,7 @@ export const LogsScreen = () => {
       !numLogsInTotal &&
       !isFavoriteLogsScreen
     ) {
-      return "This channel has no logs in it yet.";
+      return "This channel has no logs in it.";
     } else if (logs.length === numLogsInTotal && !numLogsInTotal) {
       return "Like the channels you care most about and we'll show you those logs here.";
     } else if (query || logs.length === numLogsInTotal) {
@@ -135,10 +136,12 @@ export const LogsScreen = () => {
           <div style={styles.verticalTopRight}>
             <Stat numLogs={numLogsInTotal} />
             <div style={styles.topRightMiscItemsContainer}>
-              <Rules />
+              <Rules shouldHideEverything={isDateFilterOpened} />
               <DateFilter
                 doesQueryExist={isSearchQueued || !!query}
                 freshQueryAndReset={freshQueryAndReset}
+                setIsDateFilterOpened={setIsDateFilterOpened}
+                isDateFilterOpened={isDateFilterOpened}
               />
             </div>
           </div>
