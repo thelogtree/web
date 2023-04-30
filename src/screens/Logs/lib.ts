@@ -255,7 +255,7 @@ export const useLogs = (folderId?: string) => {
     params.set("query", query);
     history.replace({
       pathname: location.pathname,
-      search: `?${params.toString()}`,
+      search: query ? `?${params.toString()}` : "",
     });
     if (query) {
       typingTimer = setTimeout(() => {
