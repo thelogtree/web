@@ -27,7 +27,7 @@ const styles: StylesType = {
     flexDirection: "column",
     justifyContent: "flex-end",
     alignItems: "flex-end",
-    marginBottom: 12,
+    marginBottom: 16,
     borderRadius: 4,
     backgroundColor: Colors.white,
     borderWidth: 0,

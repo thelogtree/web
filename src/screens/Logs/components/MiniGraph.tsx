@@ -1,17 +1,5 @@
 import React, { useMemo } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-} from "recharts";
-import moment from "moment";
+import { Area, AreaChart, ResponsiveContainer } from "recharts";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 

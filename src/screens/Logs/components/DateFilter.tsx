@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useFindFrontendFolderFromUrl } from "../lib";
 import { StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
+import CalendarIcon from "src/assets/calendar.png";
 
 const { RangePicker } = DatePicker;
 
@@ -79,6 +80,7 @@ export const DateFilter = ({
       onClick={() => setIsDateFilterOpened(true)}
       className="dateFilterBtn"
     >
+      <img src={CalendarIcon} style={styles.calendarIcon} />
       <label style={styles.applyFilterLbl}>Filter date</label>
     </button>
   );
@@ -119,11 +121,17 @@ const styles: StylesType = {
     cursor: "pointer",
     fontSize: 13,
     letterSpacing: 0.8,
+    marginLeft: 6,
   },
   icon: {
     cursor: "pointer",
     width: 16,
     height: 16,
     marginRight: 6,
+  },
+  calendarIcon: {
+    width: 17,
+    height: 17,
+    cursor: "pointer",
   },
 };

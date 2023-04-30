@@ -12,6 +12,7 @@ import {
 import { Colors } from "src/utils/colors";
 import { showGenericErrorAlert } from "src/utils/helpers";
 import { SharedStyles, StylesType } from "src/utils/styles";
+import AlarmIcon from "src/assets/alarm.png";
 
 import {
   useFindFrontendFolderFromUrl,
@@ -225,9 +226,12 @@ export const Rules = ({ shouldHideEverything }: Props) => {
         onClick={() => setIsModalVisible(true)}
         className="createRuleBtn"
       >
-        {rulesForThisFolder.length
-          ? `Alerts (${rulesForThisFolder.length})`
-          : "Set up alerts"}
+        <img src={AlarmIcon} style={styles.alarmIcon} />
+        <label style={styles.alertLbl}>
+          {rulesForThisFolder.length
+            ? `Alerts (${rulesForThisFolder.length})`
+            : "Set up alerts"}
+        </label>
       </button>
     </>
   );
@@ -244,6 +248,10 @@ const styles: StylesType = {
     backgroundColor: Colors.transparent,
     marginRight: 10,
     minWidth: 130,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContainer: {
     display: "flex",
@@ -316,5 +324,15 @@ const styles: StylesType = {
   delayNote: {
     color: Colors.darkGray,
     fontSize: 12,
+  },
+  alarmIcon: {
+    cursor: "pointer",
+    width: 17,
+    height: 17,
+  },
+  alertLbl: {
+    color: Colors.gray,
+    marginLeft: 6,
+    cursor: "pointer",
   },
 };
