@@ -53,7 +53,7 @@ export const VerifyPhone = () => {
       <label style={styles.title}>
         {isEnteringCode
           ? "Enter verification code"
-          : "To continue, enter your phone number"}
+          : "To enable SMS alerts, enter your phone number"}
       </label>
       <label style={styles.description}>
         {isEnteringCode
@@ -76,7 +76,7 @@ export const VerifyPhone = () => {
             onClick={_verifyCode}
             disabled={isLoading || !code}
           >
-            {isLoading ? "Loading..." : "Finish"}
+            {isLoading ? "Loading..." : "Enable"}
           </button>
         </div>
       ) : (

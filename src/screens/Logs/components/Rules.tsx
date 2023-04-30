@@ -115,10 +115,11 @@ export const Rules = () => {
         onCancel={() => setIsModalVisible(false)}
       >
         <div style={styles.createNewAlertContainer}>
-          <label style={styles.subtitle}>Create new alert</label>
+          <label style={styles.subtitle}>Set up alerts</label>
           <label style={styles.delayNote}>
             Note that there may be an up to 20 minute delay from the time your
-            alert triggers to the time you receive an email.
+            alert trigger conditions are met to the time you actually receive an
+            alert.
           </label>
           <hr style={styles.hr} />
           {choseSmsNotificationTypeButUserHasNoPhoneNumber ? (
@@ -222,7 +223,7 @@ export const Rules = () => {
       >
         {rulesForThisFolder.length
           ? `Alerts (${rulesForThisFolder.length})`
-          : "Create alert"}
+          : "Set up alerts"}
       </button>
     </>
   );
