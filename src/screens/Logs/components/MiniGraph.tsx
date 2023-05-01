@@ -39,24 +39,22 @@ export const MiniGraph = ({ logFrequencies, numLogsToday }: Props) => {
           ? `${numLogsToday} ${numLogsToday === 1 ? "log" : "logs"} today`
           : "No logs today"}
       </label>
-      <ResponsiveContainer width={130} height={40}>
-        <AreaChart width={130} height={40} data={data}>
-          <defs>
-            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#919191" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#919191" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <Area
-            type="monotone"
-            dataKey="logs"
-            stroke={Colors.gray}
-            strokeWidth={2}
-            dot={false}
-            fill="url(#colorUv)"
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+      <AreaChart width={130} height={40} data={data}>
+        <defs>
+          <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#919191" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#919191" stopOpacity={0} />
+          </linearGradient>
+        </defs>
+        <Area
+          type="monotone"
+          dataKey="logs"
+          stroke={Colors.gray}
+          strokeWidth={2}
+          dot={false}
+          fill="url(#colorUv)"
+        />
+      </AreaChart>
     </div>
   );
 };

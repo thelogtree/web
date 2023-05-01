@@ -5,7 +5,10 @@ import { useHistory } from "react-router-dom";
 import ChannelIcon from "src/assets/channel.png";
 import FolderIcon from "src/assets/folder.png";
 import OpenFolderIcon from "src/assets/openFolder.png";
-import { getOrganization } from "src/redux/organization/selector";
+import {
+  getOrganization,
+  getSidebarWidth,
+} from "src/redux/organization/selector";
 import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
 import { Options } from "src/screens/Logs/components/Options";
 import {
@@ -13,7 +16,6 @@ import {
   useFullFolderPathFromUrl,
 } from "src/screens/Logs/lib";
 import { Colors } from "src/utils/colors";
-import { constants } from "src/utils/constants";
 import { StylesType } from "src/utils/styles";
 
 import { FrontendFolder } from "./Folders";
@@ -43,6 +45,7 @@ export const FolderOrChannel = ({
   const isMuted = isMutedBecauseOfParent || folderOrChannel.isMuted;
   const sortedChildren = _.sortBy(children, "isMuted");
   const childrenHaveUnreadLogs = useChildrenHasUnreadLogs(folderOrChannel);
+  const sidebarWidth = useSelector(getSidebarWidth);
 
   const icon = useMemo(() => {
     if (isChannel) {
@@ -101,7 +104,7 @@ export const FolderOrChannel = ({
               ...styles.name,
               ...(isSelected && { cursor: "auto" }),
               ...(childrenHaveUnreadLogs && !isMuted && styles.hasUnreadLogs),
-              maxWidth: constants.sidebarWidth - extraMarginLeft - 60,
+              maxWidth: sidebarWidth - extraMarginLeft - 60,
             }}
           >
             {folderOrChannel.name}

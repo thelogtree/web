@@ -1,8 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { getOrganization } from "src/redux/organization/selector";
+import {
+  getOrganization,
+  getSidebarWidth,
+} from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
-import { constants } from "src/utils/constants";
 import { StylesType } from "src/utils/styles";
 
 import { ApiTab } from "./components/ApiTab";
@@ -11,11 +13,14 @@ import { Folders } from "./components/Folders";
 import { GlobalSearchTab } from "./components/GlobalSearchTab";
 import { InsightsTab } from "./components/InsightsTab";
 import { SignedInOrganization } from "./components/SignedInOrganization";
+import { Resizer } from "./components/Resizer";
 
 export const Sidebar = () => {
+  const sidebarWidth = useSelector(getSidebarWidth);
   const organization = useSelector(getOrganization);
+
   return organization ? (
-    <div style={styles.container}>
+    <div style={{ ...styles.container, width: sidebarWidth }}>
       <div style={styles.innerContainer}>
         <SignedInOrganization />
         <ApiTab />
@@ -24,6 +29,7 @@ export const Sidebar = () => {
         <GlobalSearchTab />
         <Folders />
       </div>
+      <Resizer />
     </div>
   ) : (
     <div style={styles.container} />
@@ -37,7 +43,6 @@ const styles: StylesType = {
     justifyContent: "flex-start",
     alignItems: "flex-start",
     backgroundColor: Colors.veryLightGray,
-    width: constants.sidebarWidth,
     // borderRightStyle: "solid",
     // borderRightWidth: 1,
     // borderRightColor: Colors.lightGray,

@@ -5,3 +5,11 @@
 .tab:hover {
   background-color: #e8e8e8;
 }
+
+.resizer {
+  cursor: default;
+}
+
+.resizer:hover {
+  cursor: ew-resize;
+}

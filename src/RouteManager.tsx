@@ -5,7 +5,6 @@ import { Route, Switch } from "react-router-dom";
 import { getAuthStatus } from "./redux/auth/selector";
 import { LoadingSpinner } from "./sharedComponents/LoadingSpinner";
 import { Colors } from "./utils/colors";
-import { constants } from "./utils/constants";
 import { StylesType } from "./utils/styles";
 import { getFirstPathWithSlash, usePathname } from "./utils/helpers";
 import { Sidebar } from "./sharedComponents/Sidebar";
@@ -17,6 +16,7 @@ import { TeamScreen } from "./screens/Team";
 import { SignOutScreen } from "./screens/SignOut";
 import { GlobalSearchScreen } from "./screens/GlobalSearch";
 import { InsightsScreen } from "./screens/Insights";
+import { getSidebarWidth } from "./redux/organization/selector";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -26,6 +26,7 @@ export const RouteManager = () => {
   const authStatus = useSelector(getAuthStatus);
   const activePathname = usePathname();
   const path = getFirstPathWithSlash(activePathname);
+  const sidebarWidth = useSelector(getSidebarWidth);
   const routeNeedsSidebar = useMemo(() => {
     return ROUTES_WITH_SIDEBAR.includes(path);
   }, [path]);
@@ -39,7 +40,7 @@ export const RouteManager = () => {
             routeNeedsSidebar
               ? {
                   ...styles.innerContainer,
-                  left: constants.sidebarWidth,
+                  left: sidebarWidth,
                 }
               : styles.innerContainer
           }

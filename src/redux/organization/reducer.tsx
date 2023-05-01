@@ -5,6 +5,7 @@ import {
   RuleDocument,
   UserDocument,
 } from "logtree-types";
+import { isMobile } from "react-device-detect";
 
 export type OrganizationReducerType = {
   organization: OrganizationDocument | null;
@@ -13,6 +14,7 @@ export type OrganizationReducerType = {
   organizationMembers: UserDocument[];
   favoriteFolderPaths: string[];
   rules: RuleDocument[];
+  sidebarWidth: number;
 };
 
 const initialState: OrganizationReducerType = {
@@ -22,6 +24,7 @@ const initialState: OrganizationReducerType = {
   organizationMembers: [],
   favoriteFolderPaths: [],
   rules: [],
+  sidebarWidth: isMobile ? 0 : 240,
 };
 
 export const organizationReducer = (
@@ -41,6 +44,8 @@ export const organizationReducer = (
       return { ...state, favoriteFolderPaths: action.favoriteFolderPaths };
     case "SET_RULES":
       return { ...state, rules: action.rules };
+    case "SET_SIDEBAR_WIDTH":
+      return { ...state, sidebarWidth: action.sidebarWidth };
     default:
       return state;
   }

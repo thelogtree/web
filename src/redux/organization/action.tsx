@@ -12,6 +12,8 @@ import { getOrganization, getUser } from "./selector";
 import { getAuthStatus } from "../auth/selector";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 
+const SET_SIDEBAR_WIDTH = "SET_SIDEBAR_WIDTH";
+type SET_SIDEBAR_WIDTH = typeof SET_SIDEBAR_WIDTH;
 const SET_ORGANIZATION = "SET_ORGANIZATION";
 type SET_ORGANIZATION = typeof SET_ORGANIZATION;
 const SET_USER = "SET_USER";
@@ -24,6 +26,15 @@ const SET_FAVORITE_FOLDER_PATHS = "SET_FAVORITE_FOLDER_PATHS";
 type SET_FAVORITE_FOLDER_PATHS = typeof SET_FAVORITE_FOLDER_PATHS;
 const SET_RULES = "SET_RULES";
 type SET_RULES = typeof SET_RULES;
+
+type ISetSidebarWidth = {
+  type: SET_SIDEBAR_WIDTH;
+  sidebarWidth: number;
+};
+export const setSidebarWidth = (sidebarWidth: number): ISetSidebarWidth => ({
+  type: SET_SIDEBAR_WIDTH,
+  sidebarWidth,
+});
 
 type ISetOrganization = {
   type: SET_ORGANIZATION;
@@ -92,7 +103,8 @@ export type OrganizationActionsIndex =
   | ISetFolders
   | ISetOrganizationMembers
   | ISetFavoriteFolderPaths
-  | ISetRules;
+  | ISetRules
+  | ISetSidebarWidth;
 
 // api-related actions
 export const useFetchMyOrganization = () => {

@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 
 import { getOrganizationReducer } from "../selectorIndex";
-import { organizationReducer, OrganizationReducerType } from "./reducer";
+import { OrganizationReducerType } from "./reducer";
 
 export const getOrganization = createSelector(
   [getOrganizationReducer],
@@ -34,4 +34,10 @@ export const getFavoriteFolderPaths = createSelector(
 export const getRules = createSelector(
   [getOrganizationReducer],
   (organizationReducer: OrganizationReducerType) => organizationReducer.rules
+);
+
+export const getSidebarWidth = createSelector(
+  [getOrganizationReducer],
+  (organizationReducer: OrganizationReducerType) =>
+    organizationReducer.sidebarWidth
 );
