@@ -159,7 +159,7 @@ const styles: StylesType = {
     lineHeight: 1.4,
     fontWeight: 300,
     width: "85%",
-    paddingBottom: isMobile ? 30 : 0,
+    paddingBottom: isMobile ? 50 : 0,
   },
   exampleContainer: {
     display: "flex",
@@ -182,7 +182,7 @@ const styles: StylesType = {
     paddingTop: 10,
     paddingBottom: 10,
     border: "none",
-    marginTop: 50,
+    marginTop: isMobile ? 70 : 50,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
