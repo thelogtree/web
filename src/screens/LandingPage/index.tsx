@@ -35,13 +35,13 @@ export const LandingPage = () => {
               One endpoint. No more digging through a mess of logs trying to
               figure out what went wrong.
             </label>
-            <div style={styles.exampleContainer}>
-              <img src={ExampleGraphic} style={styles.exampleGraphic} />
-            </div>
             <button style={styles.joinBeta} className="joinBeta">
               <label style={styles.joinBetaLbl}>Join the private beta</label>
               <img src={QuickArrowRight} style={styles.arrowRight} />
             </button>
+            <div style={styles.exampleContainer}>
+              <img src={ExampleGraphic} style={styles.exampleGraphic} />
+            </div>
           </>
         ) : (
           <div style={styles.sideBySide}>
@@ -159,7 +159,6 @@ const styles: StylesType = {
     lineHeight: 1.4,
     fontWeight: 300,
     width: "85%",
-    paddingBottom: isMobile ? 50 : 0,
   },
   exampleContainer: {
     display: "flex",
@@ -168,6 +167,7 @@ const styles: StylesType = {
     alignItems: "flex-start",
     flex: 5,
     maxWidth: isMobile ? "100%" : 860,
+    marginTop: isMobile ? 60 : 0,
   },
   exampleGraphic: {
     width: "100%",
@@ -182,7 +182,7 @@ const styles: StylesType = {
     paddingTop: 10,
     paddingBottom: 10,
     border: "none",
-    marginTop: isMobile ? 70 : 50,
+    marginTop: isMobile ? 30 : 50,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
