@@ -26,20 +26,24 @@ export const LandingPage = () => {
             Sign in
           </button>
         </div>
-        <label style={styles.mainText}>
-          The logging API designed to save you time on support.
-        </label>
-        <label style={styles.subtitle}>
-          One endpoint. No more digging through a mess of logs trying to figure
-          out what went wrong.
-        </label>
-        <div style={styles.exampleContainer}>
-          <img src={ExampleGraphic} style={styles.exampleGraphic} />
+        <div style={styles.sideBySide}>
+          <div style={styles.leftSide}>
+            <label style={styles.mainText}>
+              The logging API designed to save you time on Intercom.
+            </label>
+            <label style={styles.subtitle}>
+              One endpoint. No more digging through a mess of logs trying to
+              figure out what went wrong.
+            </label>
+            <button style={styles.joinBeta} className="joinBeta">
+              <label style={styles.joinBetaLbl}>Join the private beta</label>
+              <img src={QuickArrowRight} style={styles.arrowRight} />
+            </button>
+          </div>
+          <div style={styles.exampleContainer}>
+            <img src={ExampleGraphic} style={styles.exampleGraphic} />
+          </div>
         </div>
-        <button style={styles.joinBeta} className="joinBeta">
-          <label style={styles.joinBetaLbl}>Join the private beta</label>
-          <img src={QuickArrowRight} style={styles.arrowRight} />
-        </button>
       </div>
 
       <div style={styles.footer}>
@@ -58,8 +62,8 @@ const styles: StylesType = {
     alignItems: "center",
     width: "100%",
     height: "100%",
-    paddingLeft: 50,
-    paddingRight: 50,
+    paddingLeft: 100,
+    paddingRight: 100,
     paddingBottom: 10,
     overflowY: "auto",
   },
@@ -85,8 +89,6 @@ const styles: StylesType = {
     justifyContent: isMobile ? "center" : "flex-end",
     alignItems: "center",
     width: "100%",
-    paddingRight: 50,
-    paddingLeft: 50,
     paddingBottom: 20,
   },
   logtree: {
@@ -107,10 +109,10 @@ const styles: StylesType = {
   signIn: {
     outline: "none",
     cursor: "pointer",
-    boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
+    // boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
     border: "none",
     borderStyle: "solid",
-    borderColor: Colors.lightGray,
+    borderColor: Colors.gray,
     borderWidth: 1,
     paddingLeft: 20,
     paddingRight: 20,
@@ -127,37 +129,25 @@ const styles: StylesType = {
     WebkitTextFillColor: "transparent",
     backgroundClip: "text",
     fontWeight: 700,
-    fontSize: 50,
-    textAlign: "center",
-    paddingTop: 100,
-    maxWidth: isMobile ? "90%" : "50%",
+    fontSize: 38,
+    textAlign: "left",
   },
   subtitle: {
-    fontSize: 24,
+    fontSize: 17,
     color: Colors.gray,
-    paddingTop: 20,
-    maxWidth: isMobile ? "85%" : "45%",
-    textAlign: "center",
+    paddingTop: 12,
+    textAlign: "left",
     lineHeight: 1.4,
     fontWeight: 300,
+    width: "85%",
   },
   exampleContainer: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "flex-start",
-    maxWidth: isMobile ? "85%" : "45%",
-    paddingTop: 50,
-  },
-  channelsExample: {
-    width: isMobile ? 80 : 160,
-  },
-  exampleRightSide: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    width: "100%",
+    flex: 5,
+    maxWidth: 860,
   },
   exampleGraphic: {
     width: "100%",
@@ -181,6 +171,7 @@ const styles: StylesType = {
   joinBetaLbl: {
     color: Colors.white,
     cursor: "pointer",
+    fontSize: 14,
   },
   arrowRight: {
     width: 20,
@@ -191,5 +182,22 @@ const styles: StylesType = {
   copyright: {
     color: Colors.gray,
     fontSize: 11,
+  },
+  leftSide: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flex: 3,
+    paddingRight: 100,
+    maxWidth: 800,
+  },
+  sideBySide: {
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 180,
   },
 };
