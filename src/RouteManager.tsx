@@ -83,7 +83,7 @@ export const RouteManager = () => {
             path="/policies/terms-of-service"
             component={TermsOfServiceRenderer}
           />
-          <Route path="/waitlist" component={LandingPage} />
+          <Route exact path="/" component={LandingPage} />
         </div>
       </div>
     </Switch>

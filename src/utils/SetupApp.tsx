@@ -17,7 +17,7 @@ import { getFirstPathWithSlash, usePathname } from "./helpers";
 import { ORG_ROUTE_PREFIX } from "src/RouteManager";
 
 // routes where logged out users can view it and will not be redirected anywhere
-const NO_ACTION_ROUTES = ["/sign-in", "/invite", "/policies", "/waitlist"];
+const NO_ACTION_ROUTES = ["/sign-in", "/invite", "/policies", "/"];
 
 // routes where logged in users can view it and will not be redirected anywhere
 const SIGNED_IN_ROUTES = ["/policies"];
@@ -49,7 +49,7 @@ export const SetupApp = () => {
       authStatus === "NOT_SIGNED_IN" &&
       !NO_ACTION_ROUTES.includes(path)
     ) {
-      history.push("/sign-in");
+      history.push("/");
     }
   }, [user?._id, organization?.slug, authStatus]);
 
