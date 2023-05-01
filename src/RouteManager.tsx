@@ -19,6 +19,7 @@ import { InsightsScreen } from "./screens/Insights";
 import { getSidebarWidth } from "./redux/organization/selector";
 import { TermsOfServiceRenderer } from "./screens/Policies/TermsOfServiceRenderer";
 import { PrivacyPolicyRenderer } from "./screens/Policies/PrivacyPolicyRenderer";
+import { LandingPage } from "./screens/LandingPage";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -82,6 +83,7 @@ export const RouteManager = () => {
             path="/policies/terms-of-service"
             component={TermsOfServiceRenderer}
           />
+          <Route path="/waitlist" component={LandingPage} />
         </div>
       </div>
     </Switch>
