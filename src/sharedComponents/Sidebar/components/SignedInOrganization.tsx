@@ -8,6 +8,7 @@ import { getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { shortenString } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
+import { LegalFooter } from "../../LegalFooter";
 
 const ZAPIER_INVITE_LINK =
   "https://zapier.com/developer/public-invite/180777/c6de2f8899d569621d0ffb574a601391/";
@@ -25,23 +26,46 @@ export const SignedInOrganization = () => {
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: <label style={styles.signOutBtn}>Sign out</label>,
-      onClick: () => firebase.auth().signOut(),
-    },
-    {
-      key: "2",
       label: <label style={styles.normalBtn}>Team members</label>,
       onClick: _goToTeamScreen,
     },
     {
-      key: "3",
+      key: "2",
       label: <label style={styles.normalBtn}>Connect Zapier</label>,
       onClick: _connectIntegrationsClicked,
+    },
+    {
+      type: "divider",
+      style: styles.menuDivider,
+    },
+    {
+      key: "3",
+      label: <label style={styles.signOutBtn}>Sign out</label>,
+      onClick: () => firebase.auth().signOut(),
+    },
+    {
+      key: "4",
+      label: <label style={styles.helpBtn}>Contact us</label>,
+      onClick: () => window.open("mailto:andy@logtree.co", "_blank"),
+    },
+    {
+      key: "5",
+      label: <label style={styles.helpBtn}>Terms of service</label>,
+      onClick: () => window.open("/policies/terms-of-service", "_blank"),
+    },
+    {
+      key: "6",
+      label: <label style={styles.helpBtn}>Privacy policy</label>,
+      onClick: () => window.open("/policies/privacy-policy", "_blank"),
     },
   ];
 
   return organization ? (
-    <Dropdown menu={{ items }} trigger={["click"]}>
+    <Dropdown
+      menu={{ items }}
+      trigger={["click"]}
+      overlayStyle={{ minWidth: 200 }}
+    >
       <div
         style={{
           ...styles.container,
@@ -107,6 +131,12 @@ const styles: StylesType = {
   signOutBtn: {
     cursor: "pointer",
     color: Colors.red,
+    fontSize: 12,
+  },
+  helpBtn: {
+    cursor: "pointer",
+    color: Colors.gray,
+    fontSize: 12,
   },
   normalBtn: {
     cursor: "pointer",
@@ -114,5 +144,9 @@ const styles: StylesType = {
   },
   generateInviteLink: {
     cursor: "pointer",
+  },
+  menuDivider: {
+    marginTop: 6,
+    marginBottom: 6,
   },
 };

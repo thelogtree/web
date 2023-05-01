@@ -17,7 +17,10 @@ import { getFirstPathWithSlash, usePathname } from "./helpers";
 import { ORG_ROUTE_PREFIX } from "src/RouteManager";
 
 // routes where logged out users can view it and will not be redirected anywhere
-const NO_ACTION_ROUTES = ["/sign-in", "/invite"];
+const NO_ACTION_ROUTES = ["/sign-in", "/invite", "/policies"];
+
+// routes where logged in users can view it and will not be redirected anywhere
+const SIGNED_IN_ROUTES = ["/policies"];
 
 export const SetupApp = () => {
   const history = useHistory();
@@ -34,7 +37,8 @@ export const SetupApp = () => {
     if (user && authStatus === "SIGNED_IN") {
       if (
         user.organizationId.toString() === organization?._id &&
-        path !== ORG_ROUTE_PREFIX
+        path !== ORG_ROUTE_PREFIX &&
+        !SIGNED_IN_ROUTES.includes(path)
       ) {
         history.push(`/org/${organization.slug}/favorites`);
       } else {

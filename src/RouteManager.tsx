@@ -17,6 +17,8 @@ import { SignOutScreen } from "./screens/SignOut";
 import { GlobalSearchScreen } from "./screens/GlobalSearch";
 import { InsightsScreen } from "./screens/Insights";
 import { getSidebarWidth } from "./redux/organization/selector";
+import { TermsOfServiceRenderer } from "./screens/Policies/TermsOfServiceRenderer";
+import { PrivacyPolicyRenderer } from "./screens/Policies/PrivacyPolicyRenderer";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -72,6 +74,14 @@ export const RouteManager = () => {
             component={InsightsScreen}
           />
           <Route path="/invite/:slug/:id" component={InviteScreen} />
+          <Route
+            path="/policies/privacy-policy"
+            component={PrivacyPolicyRenderer}
+          />
+          <Route
+            path="/policies/terms-of-service"
+            component={TermsOfServiceRenderer}
+          />
         </div>
       </div>
     </Switch>
