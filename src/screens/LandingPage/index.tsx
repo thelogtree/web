@@ -26,26 +26,44 @@ export const LandingPage = () => {
             Sign in
           </button>
         </div>
-        <div style={styles.sideBySide}>
-          <div style={styles.leftSide}>
+        {isMobile ? (
+          <>
             <label style={styles.mainText}>
-              The logging API designed to save you time on Intercom.
+              The logging API designed to save you time in Intercom.
             </label>
             <label style={styles.subtitle}>
               One endpoint. No more digging through a mess of logs trying to
               figure out what went wrong.
             </label>
+            <div style={styles.exampleContainer}>
+              <img src={ExampleGraphic} style={styles.exampleGraphic} />
+            </div>
             <button style={styles.joinBeta} className="joinBeta">
               <label style={styles.joinBetaLbl}>Join the private beta</label>
               <img src={QuickArrowRight} style={styles.arrowRight} />
             </button>
+          </>
+        ) : (
+          <div style={styles.sideBySide}>
+            <div style={styles.leftSide}>
+              <label style={styles.mainText}>
+                The logging API designed to save you time in Intercom.
+              </label>
+              <label style={styles.subtitle}>
+                One endpoint. No more digging through a mess of logs trying to
+                figure out what went wrong.
+              </label>
+              <button style={styles.joinBeta} className="joinBeta">
+                <label style={styles.joinBetaLbl}>Join the private beta</label>
+                <img src={QuickArrowRight} style={styles.arrowRight} />
+              </button>
+            </div>
+            <div style={styles.exampleContainer}>
+              <img src={ExampleGraphic} style={styles.exampleGraphic} />
+            </div>
           </div>
-          <div style={styles.exampleContainer}>
-            <img src={ExampleGraphic} style={styles.exampleGraphic} />
-          </div>
-        </div>
+        )}
       </div>
-
       <div style={styles.footer}>
         <label style={styles.copyright}>© 2023 Logtree, LLC</label>
       </div>
@@ -62,8 +80,8 @@ const styles: StylesType = {
     alignItems: "center",
     width: "100%",
     height: "100%",
-    paddingLeft: 100,
-    paddingRight: 100,
+    paddingLeft: isMobile ? 20 : 100,
+    paddingRight: isMobile ? 20 : 100,
     paddingBottom: 10,
     overflowY: "auto",
   },
@@ -129,17 +147,19 @@ const styles: StylesType = {
     WebkitTextFillColor: "transparent",
     backgroundClip: "text",
     fontWeight: 700,
-    fontSize: 38,
-    textAlign: "left",
+    fontSize: isMobile ? 25 : 38,
+    textAlign: isMobile ? "center" : "left",
+    paddingTop: isMobile ? 50 : 0,
   },
   subtitle: {
-    fontSize: 17,
+    fontSize: isMobile ? 15 : 17,
     color: Colors.gray,
-    paddingTop: 12,
-    textAlign: "left",
+    paddingTop: isMobile ? 15 : 12,
+    textAlign: isMobile ? "center" : "left",
     lineHeight: 1.4,
     fontWeight: 300,
     width: "85%",
+    paddingBottom: isMobile ? 30 : 0,
   },
   exampleContainer: {
     display: "flex",
@@ -147,7 +167,7 @@ const styles: StylesType = {
     justifyContent: "center",
     alignItems: "flex-start",
     flex: 5,
-    maxWidth: 860,
+    maxWidth: isMobile ? "100%" : 860,
   },
   exampleGraphic: {
     width: "100%",
