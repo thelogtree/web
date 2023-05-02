@@ -7,11 +7,18 @@ import "./index.css";
 import { isMobile } from "react-device-detect";
 import QuickArrowRight from "src/assets/quickArrowRight.png";
 import ExampleGraphic from "src/assets/exampleGraphic.png";
+import MessageIcon from "src/assets/message.png";
+import SearchIcon from "src/assets/searchBig.png";
+import SupportPersonIcon from "src/assets/supportPerson.png";
+import JourneyIcon from "src/assets/journey.png";
+import { Col, Grid, Row } from "react-flexbox-grid";
 
 export const LandingPage = () => {
   const history = useHistory();
   return (
     <div style={styles.container}>
+      <div style={styles.fullBackgroundColor} />
+      {/* <div style={styles.backgroundColor} /> */}
       <div style={styles.topHalf}>
         <div style={styles.header}>
           <div style={styles.logtree}>
@@ -29,39 +36,121 @@ export const LandingPage = () => {
         {isMobile ? (
           <>
             <label style={styles.mainText}>
-              The logging API designed to save you time in Intercom.
+              The logging API designed to be your support engineer.
             </label>
             <label style={styles.subtitle}>
               One endpoint. No more digging through a mess of logs trying to
               figure out what went wrong.
             </label>
             <button style={styles.joinBeta} className="joinBeta">
-              <label style={styles.joinBetaLbl}>Join the private beta</label>
+              <label style={styles.joinBetaLbl}>Join the waitlist</label>
               <img src={QuickArrowRight} style={styles.arrowRight} />
             </button>
             <div style={styles.exampleContainer}>
               <img src={ExampleGraphic} style={styles.exampleGraphic} />
             </div>
+            <label style={styles.gridTitle}>
+              Organized like Slack, durable like Datadog.
+            </label>
+            <Grid style={styles.gridContainer}>
+              <Col style={styles.statItem}>
+                <label style={styles.statTitle}>100x</label>
+                <label style={styles.statDesc}>
+                  Rate limit compared to Slack webhooks
+                </label>
+              </Col>
+              <Col style={styles.statItem}>
+                <label style={styles.statTitle}>↑↓</label>
+                <label style={styles.statDesc}>Automatic trend discovery</label>
+              </Col>
+              <Col style={styles.statItem}>
+                <img src={MessageIcon} style={styles.statIcon} />
+                <label style={styles.statDesc}>
+                  Configure SMS and email alerts
+                </label>
+              </Col>
+              <Col style={styles.statItem}>
+                <img src={SearchIcon} style={styles.statIcon} />
+                <label style={styles.statDesc}>
+                  Search for logs across all your channels
+                </label>
+              </Col>
+              <Col style={styles.statItem}>
+                <img src={JourneyIcon} style={styles.statIcon} />
+                <label style={styles.statDesc}>
+                  Trace a user's journey to see what went wrong
+                </label>
+              </Col>
+              <Col style={styles.statItem}>
+                <img src={SupportPersonIcon} style={styles.statIcon} />
+                <label style={styles.statDesc}>Built for everyone</label>
+              </Col>
+            </Grid>
           </>
         ) : (
-          <div style={styles.sideBySide}>
-            <div style={styles.leftSide}>
-              <label style={styles.mainText}>
-                The logging API designed to save you time in Intercom.
-              </label>
-              <label style={styles.subtitle}>
-                One endpoint. No more digging through a mess of logs trying to
-                figure out what went wrong.
-              </label>
-              <button style={styles.joinBeta} className="joinBeta">
-                <label style={styles.joinBetaLbl}>Join the private beta</label>
-                <img src={QuickArrowRight} style={styles.arrowRight} />
-              </button>
+          <>
+            <div style={styles.sideBySide}>
+              <div style={styles.leftSide}>
+                <label style={styles.mainText}>
+                  The logging API designed to be your support engineer.
+                </label>
+                <label style={styles.subtitle}>
+                  One endpoint. No more digging through a mess of logs trying to
+                  figure out what went wrong.
+                </label>
+                <button style={styles.joinBeta} className="joinBeta">
+                  <label style={styles.joinBetaLbl}>Join the waitlist</label>
+                  <img src={QuickArrowRight} style={styles.arrowRight} />
+                </button>
+              </div>
+              <div style={styles.exampleContainer}>
+                <img src={ExampleGraphic} style={styles.exampleGraphic} />
+              </div>
             </div>
-            <div style={styles.exampleContainer}>
-              <img src={ExampleGraphic} style={styles.exampleGraphic} />
-            </div>
-          </div>
+            <label style={styles.gridTitle}>
+              Organized like Slack, durable like Datadog.
+            </label>
+            <Grid style={styles.gridContainer}>
+              <Row style={styles.statsHorizontalContainer}>
+                <Col style={{ ...styles.statItem, marginLeft: 0 }}>
+                  <label style={styles.statTitle}>100x</label>
+                  <label style={styles.statDesc}>
+                    Rate limit compared to Slack webhooks
+                  </label>
+                </Col>
+                <Col style={styles.statItem}>
+                  <label style={styles.statTitle}>↑↓</label>
+                  <label style={styles.statDesc}>
+                    Automatic trend discovery
+                  </label>
+                </Col>
+                <Col style={styles.statItem}>
+                  <img src={MessageIcon} style={styles.statIcon} />
+                  <label style={styles.statDesc}>
+                    Configure SMS and email alerts
+                  </label>
+                </Col>
+              </Row>
+              <Row style={styles.statsHorizontalContainer}>
+                <Col style={{ ...styles.statItem, marginLeft: 0 }}>
+                  <img src={SearchIcon} style={styles.statIcon} />
+                  <label style={styles.statDesc}>
+                    Search for logs across all your channels
+                  </label>
+                </Col>
+                <Col style={styles.statItem}>
+                  <img src={JourneyIcon} style={styles.statIcon} />
+                  <label style={styles.statDesc}>
+                    Trace a user's journey to see what went wrong
+                  </label>
+                </Col>
+                <Col style={styles.statItem}>
+                  <img src={SupportPersonIcon} style={styles.statIcon} />
+                  <label style={styles.statDesc}>Built for everyone</label>
+                </Col>
+              </Row>
+            </Grid>
+          </>
         )}
       </div>
       <div style={styles.footer}>
@@ -75,7 +164,6 @@ const styles: StylesType = {
   container: {
     display: "flex",
     flexDirection: "column",
-    backgroundColor: Colors.white,
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
@@ -84,14 +172,35 @@ const styles: StylesType = {
     paddingRight: isMobile ? 20 : 100,
     paddingBottom: 10,
     overflowY: "auto",
+    position: "relative",
+    zIndex: 3,
+  },
+  backgroundColor: {
+    backgroundColor: Colors.white,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: -1,
+  },
+  fullBackgroundColor: {
+    backgroundColor: Colors.white, // Colors.black,
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: -2,
   },
   topHalf: {
     display: "flex",
     flexDirection: "column",
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.transparent,
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",
+    paddingBottom: 150,
   },
   header: {
     display: "flex",
@@ -120,7 +229,7 @@ const styles: StylesType = {
     height: 30,
   },
   logtreeText: {
-    paddingLeft: 10,
+    paddingLeft: 6,
     fontSize: 20,
     fontWeight: 500,
   },
@@ -136,24 +245,34 @@ const styles: StylesType = {
     paddingRight: 20,
     paddingTop: 10,
     paddingBottom: 10,
-    borderRadius: 8,
+    borderRadius: 30,
     color: Colors.black,
     fontWeight: 500,
-    fontSize: 16,
+    fontSize: 14,
   },
   mainText: {
-    background: "linear-gradient(268.45deg, #3D3D3D 30.54%, #545454 60.79%)",
+    background: "linear-gradient(268.45deg, #000000 30.54%, #303030 60.79%)",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
     backgroundClip: "text",
     fontWeight: 700,
     fontSize: isMobile ? 25 : 38,
     textAlign: isMobile ? "center" : "left",
-    paddingTop: isMobile ? 50 : 0,
+    paddingTop: isMobile ? 70 : 0,
+  },
+  gridTitle: {
+    fontWeight: 700,
+    fontSize: isMobile ? 25 : 32,
+    paddingTop: isMobile ? `calc(100vh - 630px)` : `calc(100vh - 600px)`,
+    textAlign: "center",
+    background: "linear-gradient(268.45deg, #000000 30.54%, #303030 60.79%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
   },
   subtitle: {
     fontSize: isMobile ? 15 : 17,
-    color: Colors.gray,
+    color: Colors.darkerGray,
     paddingTop: isMobile ? 15 : 12,
     textAlign: isMobile ? "center" : "left",
     lineHeight: 1.4,
@@ -165,8 +284,8 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "flex-start",
-    flex: 5,
-    maxWidth: isMobile ? "100%" : 860,
+    flex: 4,
+    maxWidth: isMobile ? "90%" : 600,
     marginTop: isMobile ? 60 : 0,
   },
   exampleGraphic: {
@@ -219,5 +338,52 @@ const styles: StylesType = {
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 180,
+  },
+  statsHorizontalContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 30,
+    width: "100%",
+  },
+  statItem: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: isMobile ? "100%" : 340,
+    marginLeft: isMobile ? 0 : 30,
+    height: 150,
+    marginTop: isMobile ? 30 : 0,
+    backgroundColor: Colors.white,
+    borderRadius: 8,
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
+  },
+  statTitle: {
+    fontSize: 50,
+    textAlign: "center",
+    fontWeight: 300,
+  },
+  statDesc: {
+    paddingTop: 20,
+    fontSize: 14,
+    textAlign: "center",
+    fontWeight: 300,
+    color: Colors.darkerGray,
+  },
+  statIcon: {
+    width: 50,
+    height: 50,
+  },
+  gridContainer: {
+    paddingTop: isMobile ? 0 : 20,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    ...(isMobile && { width: "100%" }),
   },
 };
