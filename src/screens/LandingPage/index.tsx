@@ -1,7 +1,7 @@
 import "./index.css";
 
 import { Modal } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { Col, Grid, Row } from "react-flexbox-grid";
 import { useHistory } from "react-router-dom";
@@ -26,6 +26,7 @@ import { showGenericErrorAlert } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 
 export const LandingPage = () => {
+  const [pageLoaded, setPageLoaded] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [websiteUrl, setWebsiteUrl] = useState<string>("");
@@ -35,6 +36,12 @@ export const LandingPage = () => {
     useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const history = useHistory();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setPageLoaded(true);
+    }, 300);
+  }, []);
 
   const _addToWaitlist = async () => {
     try {
@@ -119,7 +126,7 @@ export const LandingPage = () => {
         <div style={styles.topHalf}>
           <div style={styles.header}>
             <div style={styles.logtree}>
-              <img src={LogtreeIcon} style={styles.logtreeIcon} />
+              <img src={LogtreeIcon} style={styles.logtreeIcon} alt="icon" />
               <label style={styles.logtreeText}>Logtree</label>
             </div>
             <button
@@ -132,116 +139,132 @@ export const LandingPage = () => {
           </div>
           {isMobile ? (
             <>
-              <label style={styles.mainText}>
-                The logging API designed to be your support engineer.
-              </label>
-              <label style={styles.subtitle}>
-                No more digging through a mess of logs trying to figure out what
-                went wrong.
-              </label>
-              <button
-                style={styles.joinBeta}
-                className="joinBeta"
-                onClick={() => setIsVisible(true)}
+              <div
+                style={{
+                  ...styles.mobileTopContainer,
+                  ...(pageLoaded && { opacity: 1 }),
+                }}
               >
-                <label style={styles.joinBetaLbl}>Join the waitlist</label>
-                <img src={QuickArrowRight} style={styles.arrowRight} />
-              </button>
-              <div style={styles.exampleContainer}>
-                <img src={ExampleGraphic} style={styles.exampleGraphic} />
-              </div>
-              <label style={styles.mainText2}>
-                Organize logs into folders and channels
-              </label>
-              <label style={styles.subtitle}>
-                Stop dumping everything into one feed for engineers to sort
-                through. Find what you're looking for 10x faster compared to
-                Logtail.
-              </label>
-              <div style={styles.exampleChannelsContainer}>
-                <img src={ExampleChannels} style={styles.exampleGraphic} />
-              </div>
-              <label style={styles.gridTitle}>
-                Intuitive like Slack, durable like Datadog
-              </label>
-              <Grid style={styles.gridContainer}>
-                <Col style={styles.statItem}>
-                  <label style={styles.statTitle}>100x</label>
-                  <label style={styles.statDesc}>
-                    Rate limit compared to Slack webhooks
-                  </label>
-                </Col>
-                <Col style={styles.statItem}>
-                  <label style={styles.statTitle}>↑↓</label>
-                  <label style={styles.statDesc}>
-                    Automatic trend discovery
-                  </label>
-                </Col>
-                <Col style={styles.statItem}>
-                  <img src={MessageIcon} style={styles.statIcon} />
-                  <label style={styles.statDesc}>
-                    Configure SMS and email alerts
-                  </label>
-                </Col>
-                <Col style={styles.statItem}>
-                  <img src={SearchIcon} style={styles.statIcon} />
-                  <label style={styles.statDesc}>
-                    Search for logs across all your channels
-                  </label>
-                </Col>
-                <Col style={styles.statItem}>
-                  <img src={JourneyIcon} style={styles.statIcon} />
-                  <label style={styles.statDesc}>
-                    Trace a user's journey to see what went wrong
-                  </label>
-                </Col>
-                <Col style={styles.statItem}>
-                  <img src={SupportPersonIcon} style={styles.statIcon} />
-                  <label style={styles.statDesc}>
-                    Easy for non-technical people to use
-                  </label>
-                </Col>
-              </Grid>
-              <div style={styles.easySetupContainer}>
-                <img src={SparkleIcon} style={styles.sparkleIcon} />
-                <label style={styles.easySetupTitle}>
-                  Magically-easy setup
+                <label style={styles.mainText}>
+                  The logging API designed to be your support engineer.
                 </label>
+                <label style={styles.subtitle}>
+                  No more digging through a mess of logs trying to figure out
+                  what went wrong.
+                </label>
+                <button
+                  style={styles.joinBeta}
+                  className="joinBeta"
+                  onClick={() => setIsVisible(true)}
+                >
+                  <label style={styles.joinBetaLbl}>Join the waitlist</label>
+                  <img src={QuickArrowRight} style={styles.arrowRight} />
+                </button>
+                <div style={styles.exampleContainer}>
+                  <img src={ExampleGraphic} style={styles.exampleGraphic1} />
+                </div>
               </div>
-              <label style={styles.easySetupDesc}>
-                No week-long integration sprints. There's only one endpoint to
-                connect to.
-              </label>
-              <label style={styles.usedByTitle}>
-                Used by startups that have raised millions from
-              </label>
-              <Col style={styles.usedByItem}>
-                <img src={KleinerPerkinsLogo} style={styles.vcLogo} />
-              </Col>
-              <Col style={styles.usedByItem}>
-                <img src={SVAngelLogo} style={styles.vcLogo} />
-              </Col>
-              <Col style={styles.usedByItem}>
-                <img src={SPCLogo} style={styles.vcLogo} />
-              </Col>
-              <Col style={styles.usedByItem}>
-                <img src={YCLogo} style={styles.vcLogo} />
-              </Col>
-              <label style={styles.endingText}>
-                Join the waitlist for exclusive access.
-              </label>
-              <button
-                style={{ ...styles.joinBeta, marginTop: 0 }}
-                className="joinBeta"
-                onClick={() => setIsVisible(true)}
-              >
-                <label style={styles.joinBetaLbl}>Join the waitlist</label>
-                <img src={QuickArrowRight} style={styles.arrowRight} />
-              </button>
+              {pageLoaded && (
+                <>
+                  <label style={styles.mainText2}>
+                    Organize logs into folders and channels
+                  </label>
+                  <label style={styles.subtitle}>
+                    Stop dumping everything into one feed for engineers to sort
+                    through. Find what you're looking for 10x faster compared to
+                    Logtail.
+                  </label>
+                  <div style={styles.exampleChannelsContainer}>
+                    <img src={ExampleChannels} style={styles.exampleGraphic} />
+                  </div>
+                  <label style={styles.gridTitle}>
+                    Intuitive like Slack, durable like Datadog
+                  </label>
+                  <Grid style={styles.gridContainer}>
+                    <Col style={styles.statItem}>
+                      <label style={styles.statTitle}>100x</label>
+                      <label style={styles.statDesc}>
+                        Rate limit compared to Slack webhooks
+                      </label>
+                    </Col>
+                    <Col style={styles.statItem}>
+                      <label style={styles.statTitle}>↑↓</label>
+                      <label style={styles.statDesc}>
+                        Automatic trend discovery
+                      </label>
+                    </Col>
+                    <Col style={styles.statItem}>
+                      <img src={MessageIcon} style={styles.statIcon} />
+                      <label style={styles.statDesc}>
+                        Configure SMS and email alerts
+                      </label>
+                    </Col>
+                    <Col style={styles.statItem}>
+                      <img src={SearchIcon} style={styles.statIcon} />
+                      <label style={styles.statDesc}>
+                        Search for logs across all your channels
+                      </label>
+                    </Col>
+                    <Col style={styles.statItem}>
+                      <img src={JourneyIcon} style={styles.statIcon} />
+                      <label style={styles.statDesc}>
+                        Trace a user's journey to see what went wrong
+                      </label>
+                    </Col>
+                    <Col style={styles.statItem}>
+                      <img src={SupportPersonIcon} style={styles.statIcon} />
+                      <label style={styles.statDesc}>
+                        Easy for non-technical people to use
+                      </label>
+                    </Col>
+                  </Grid>
+                  <div style={styles.easySetupContainer}>
+                    <img src={SparkleIcon} style={styles.sparkleIcon} />
+                    <label style={styles.easySetupTitle}>
+                      Magically-easy setup
+                    </label>
+                  </div>
+                  <label style={styles.easySetupDesc}>
+                    No week-long integration sprints. There's only one endpoint
+                    to connect to.
+                  </label>
+                  <label style={styles.usedByTitle}>
+                    Used by startups that have raised millions from
+                  </label>
+                  <Col style={styles.usedByItem}>
+                    <img src={KleinerPerkinsLogo} style={styles.vcLogo} />
+                  </Col>
+                  <Col style={styles.usedByItem}>
+                    <img src={SVAngelLogo} style={styles.vcLogo} />
+                  </Col>
+                  <Col style={styles.usedByItem}>
+                    <img src={SPCLogo} style={styles.vcLogo} />
+                  </Col>
+                  <Col style={styles.usedByItem}>
+                    <img src={YCLogo} style={styles.vcLogo} />
+                  </Col>
+                  <label style={styles.endingText}>
+                    Join the waitlist for exclusive access.
+                  </label>
+                  <button
+                    style={{ ...styles.joinBeta, marginTop: 0 }}
+                    className="joinBeta"
+                    onClick={() => setIsVisible(true)}
+                  >
+                    <label style={styles.joinBetaLbl}>Join the waitlist</label>
+                    <img src={QuickArrowRight} style={styles.arrowRight} />
+                  </button>
+                </>
+              )}
             </>
           ) : (
             <>
-              <div style={styles.sideBySide}>
+              <div
+                style={{
+                  ...styles.sideBySide,
+                  ...(pageLoaded && { opacity: 1 }),
+                }}
+              >
                 <div style={styles.leftSide}>
                   <label style={styles.mainText}>
                     The logging API designed to be your support engineer.
@@ -260,107 +283,114 @@ export const LandingPage = () => {
                   </button>
                 </div>
                 <div style={styles.exampleContainer}>
-                  <img src={ExampleGraphic} style={styles.exampleGraphic} />
+                  <img src={ExampleGraphic} style={styles.exampleGraphic1} />
                 </div>
               </div>
-              <div style={styles.sideBySide2}>
-                <div style={styles.leftSide}>
-                  <label style={styles.mainText}>
-                    Organize logs into folders and channels
+              {pageLoaded && (
+                <>
+                  <div style={styles.sideBySide2}>
+                    <div style={styles.leftSide}>
+                      <label style={styles.mainText}>
+                        Organize logs into folders and channels
+                      </label>
+                      <label style={styles.subtitle}>
+                        Stop dumping everything into one feed for engineers to
+                        sort through later. Find what you're looking for 10x
+                        faster compared to Logtail.
+                      </label>
+                    </div>
+                    <div style={styles.exampleChannelsContainer}>
+                      <img
+                        src={ExampleChannels}
+                        style={styles.exampleGraphic}
+                      />
+                    </div>
+                  </div>
+                  <label style={styles.gridTitle}>
+                    Intuitive like Slack, durable like Datadog
                   </label>
-                  <label style={styles.subtitle}>
-                    Stop dumping everything into one feed for engineers to sort
-                    through later. Find what you're looking for 10x faster
-                    compared to Logtail.
+                  <Grid style={styles.gridContainer}>
+                    <Row style={styles.statsHorizontalContainer}>
+                      <Col style={{ ...styles.statItem, marginLeft: 0 }}>
+                        <label style={styles.statTitle}>100x</label>
+                        <label style={styles.statDesc}>
+                          Rate limit compared to Slack webhooks
+                        </label>
+                      </Col>
+                      <Col style={styles.statItem}>
+                        <label style={styles.statTitle}>↑↓</label>
+                        <label style={styles.statDesc}>
+                          Automatic trend discovery
+                        </label>
+                      </Col>
+                      <Col style={styles.statItem}>
+                        <img src={MessageIcon} style={styles.statIcon} />
+                        <label style={styles.statDesc}>
+                          Configure SMS and email alerts
+                        </label>
+                      </Col>
+                    </Row>
+                    <Row style={styles.statsHorizontalContainer}>
+                      <Col style={{ ...styles.statItem, marginLeft: 0 }}>
+                        <img src={SearchIcon} style={styles.statIcon} />
+                        <label style={styles.statDesc}>
+                          Search for logs across all your channels
+                        </label>
+                      </Col>
+                      <Col style={styles.statItem}>
+                        <img src={JourneyIcon} style={styles.statIcon} />
+                        <label style={styles.statDesc}>
+                          Trace a user's journey to see what went wrong
+                        </label>
+                      </Col>
+                      <Col style={styles.statItem}>
+                        <img src={SupportPersonIcon} style={styles.statIcon} />
+                        <label style={styles.statDesc}>
+                          Easy for non-technical people to use
+                        </label>
+                      </Col>
+                    </Row>
+                  </Grid>
+                  <div style={styles.easySetupContainer}>
+                    <img src={SparkleIcon} style={styles.sparkleIcon} />
+                    <label style={styles.easySetupTitle}>
+                      Magically-easy setup
+                    </label>
+                  </div>
+                  <label style={styles.easySetupDesc}>
+                    No week-long integration sprints. There's only one endpoint
+                    to connect to.
                   </label>
-                </div>
-                <div style={styles.exampleChannelsContainer}>
-                  <img src={ExampleChannels} style={styles.exampleGraphic} />
-                </div>
-              </div>
-              <label style={styles.gridTitle}>
-                Intuitive like Slack, durable like Datadog
-              </label>
-              <Grid style={styles.gridContainer}>
-                <Row style={styles.statsHorizontalContainer}>
-                  <Col style={{ ...styles.statItem, marginLeft: 0 }}>
-                    <label style={styles.statTitle}>100x</label>
-                    <label style={styles.statDesc}>
-                      Rate limit compared to Slack webhooks
-                    </label>
-                  </Col>
-                  <Col style={styles.statItem}>
-                    <label style={styles.statTitle}>↑↓</label>
-                    <label style={styles.statDesc}>
-                      Automatic trend discovery
-                    </label>
-                  </Col>
-                  <Col style={styles.statItem}>
-                    <img src={MessageIcon} style={styles.statIcon} />
-                    <label style={styles.statDesc}>
-                      Configure SMS and email alerts
-                    </label>
-                  </Col>
-                </Row>
-                <Row style={styles.statsHorizontalContainer}>
-                  <Col style={{ ...styles.statItem, marginLeft: 0 }}>
-                    <img src={SearchIcon} style={styles.statIcon} />
-                    <label style={styles.statDesc}>
-                      Search for logs across all your channels
-                    </label>
-                  </Col>
-                  <Col style={styles.statItem}>
-                    <img src={JourneyIcon} style={styles.statIcon} />
-                    <label style={styles.statDesc}>
-                      Trace a user's journey to see what went wrong
-                    </label>
-                  </Col>
-                  <Col style={styles.statItem}>
-                    <img src={SupportPersonIcon} style={styles.statIcon} />
-                    <label style={styles.statDesc}>
-                      Easy for non-technical people to use
-                    </label>
-                  </Col>
-                </Row>
-              </Grid>
-              <div style={styles.easySetupContainer}>
-                <img src={SparkleIcon} style={styles.sparkleIcon} />
-                <label style={styles.easySetupTitle}>
-                  Magically-easy setup
-                </label>
-              </div>
-              <label style={styles.easySetupDesc}>
-                No week-long integration sprints. There's only one endpoint to
-                connect to.
-              </label>
-              <label style={styles.usedByTitle}>
-                Used by startups that have raised millions from
-              </label>
-              <Row style={styles.usedByHorizontalContainer}>
-                <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
-                  <img src={KleinerPerkinsLogo} style={styles.vcLogo} />
-                </Col>
-                <Col style={styles.usedByItem}>
-                  <img src={SVAngelLogo} style={styles.vcLogo} />
-                </Col>
-                <Col style={styles.usedByItem}>
-                  <img src={SPCLogo} style={styles.vcLogo} />
-                </Col>
-                <Col style={styles.usedByItem}>
-                  <img src={YCLogo} style={styles.vcLogo} />
-                </Col>
-              </Row>
-              <label style={styles.endingText}>
-                Join the waitlist for exclusive access.
-              </label>
-              <button
-                style={{ ...styles.joinBeta, marginTop: 0 }}
-                className="joinBeta"
-                onClick={() => setIsVisible(true)}
-              >
-                <label style={styles.joinBetaLbl}>Join the waitlist</label>
-                <img src={QuickArrowRight} style={styles.arrowRight} />
-              </button>
+                  <label style={styles.usedByTitle}>
+                    Used by startups that have raised millions from
+                  </label>
+                  <Row style={styles.usedByHorizontalContainer}>
+                    <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
+                      <img src={KleinerPerkinsLogo} style={styles.vcLogo} />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img src={SVAngelLogo} style={styles.vcLogo} />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img src={SPCLogo} style={styles.vcLogo} />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img src={YCLogo} style={styles.vcLogo} />
+                    </Col>
+                  </Row>
+                  <label style={styles.endingText}>
+                    Join the waitlist for exclusive access.
+                  </label>
+                  <button
+                    style={{ ...styles.joinBeta, marginTop: 0 }}
+                    className="joinBeta"
+                    onClick={() => setIsVisible(true)}
+                  >
+                    <label style={styles.joinBetaLbl}>Join the waitlist</label>
+                    <img src={QuickArrowRight} style={styles.arrowRight} />
+                  </button>
+                </>
+              )}
             </>
           )}
         </div>
@@ -563,6 +593,9 @@ const styles: StylesType = {
     marginTop: isMobile ? 60 : 0,
     marginRight: isMobile ? 0 : 180,
   },
+  exampleGraphic1: {
+    width: "100%",
+  },
   exampleGraphic: {
     width: "100%",
   },
@@ -612,6 +645,8 @@ const styles: StylesType = {
     justifyContent: "space-between",
     alignItems: "center",
     paddingTop: 180,
+    transition: "opacity 0.4s ease-in",
+    opacity: 0,
   },
   sideBySide2: {
     display: "flex",
@@ -781,5 +816,15 @@ const styles: StylesType = {
     maxWidth: 200,
     maxHeight: 60,
     filter: "grayscale(100%)",
+  },
+  mobileTopContainer: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    transition: "opacity 0.4s ease-in",
+    opacity: 0,
   },
 };
