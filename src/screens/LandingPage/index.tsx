@@ -151,7 +151,7 @@ export const LandingPage = () => {
                 <img src={ExampleGraphic} style={styles.exampleGraphic} />
               </div>
               <label style={styles.mainText2}>
-                Organize logs into folders and channels.
+                Organize logs into folders and channels
               </label>
               <label style={styles.subtitle}>
                 Stop dumping everything into one feed for engineers to sort
@@ -266,7 +266,7 @@ export const LandingPage = () => {
               <div style={styles.sideBySide2}>
                 <div style={styles.leftSide}>
                   <label style={styles.mainText}>
-                    Organize logs into folders and channels.
+                    Organize logs into folders and channels
                   </label>
                   <label style={styles.subtitle}>
                     Stop dumping everything into one feed for engineers to sort
@@ -527,7 +527,7 @@ const styles: StylesType = {
   },
   gridTitle: {
     fontWeight: 700,
-    fontSize: isMobile ? 25 : 32,
+    fontSize: isMobile ? 25 : 38,
     paddingTop: isMobile ? `calc(100vh - 630px)` : `calc(100vh - 600px)`,
     textAlign: "center",
     background: "linear-gradient(268.45deg, #000000 30.54%, #303030 60.79%)",
@@ -768,7 +768,7 @@ const styles: StylesType = {
   },
   usedByTitle: {
     fontWeight: 700,
-    fontSize: isMobile ? 25 : 32,
+    fontSize: isMobile ? 25 : 38,
     paddingTop: isMobile ? `calc(100vh - 630px)` : `calc(100vh - 600px)`,
     textAlign: "center",
     background: "linear-gradient(268.45deg, #000000 30.54%, #303030 60.79%)",
