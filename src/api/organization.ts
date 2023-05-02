@@ -157,4 +157,10 @@ export const organization = {
       phoneNumber,
       code,
     }),
+  addToWaitlist: (email: string, websiteUrl: string, description: string) =>
+    axios.post(routeUrl + "/waitlist", {
+      email,
+      websiteUrl,
+      description,
+    }),
 };

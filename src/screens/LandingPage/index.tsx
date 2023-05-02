@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import LogtreeIcon from "src/assets/logtreeLogo192.png";
@@ -12,118 +12,135 @@ import SearchIcon from "src/assets/searchBig.png";
 import SupportPersonIcon from "src/assets/supportPerson.png";
 import JourneyIcon from "src/assets/journey.png";
 import { Col, Grid, Row } from "react-flexbox-grid";
+import { Modal } from "antd";
+import { showGenericErrorAlert } from "src/utils/helpers";
+import { Api } from "src/api";
 
 export const LandingPage = () => {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+  const [websiteUrl, setWebsiteUrl] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [successfullySubmitted, setSuccessfullySubmitted] =
+    useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const history = useHistory();
+
+  const _addToWaitlist = async () => {
+    try {
+      if (!email || !websiteUrl || !description) {
+        setError(true);
+        return;
+      }
+      setIsLoading(true);
+      await Api.organization.addToWaitlist(email, websiteUrl, description);
+      setSuccessfullySubmitted(true);
+    } catch (e) {
+      showGenericErrorAlert(e);
+    }
+    setIsLoading(false);
+  };
+
   return (
-    <div style={styles.container}>
-      <div style={styles.fullBackgroundColor} />
-      {/* <div style={styles.backgroundColor} /> */}
-      <div style={styles.topHalf}>
-        <div style={styles.header}>
-          <div style={styles.logtree}>
-            <img src={LogtreeIcon} style={styles.logtreeIcon} />
-            <label style={styles.logtreeText}>Logtree</label>
-          </div>
-          <button
-            style={styles.signIn}
-            onClick={() => history.push("/sign-in")}
-            className="signInBtn"
-          >
-            Sign in
-          </button>
-        </div>
-        {isMobile ? (
-          <>
-            <label style={styles.mainText}>
-              The logging API designed to be your support engineer.
-            </label>
-            <label style={styles.subtitle}>
-              One endpoint. No more digging through a mess of logs trying to
-              figure out what went wrong.
-            </label>
-            <button style={styles.joinBeta} className="joinBeta">
-              <label style={styles.joinBetaLbl}>Join the waitlist</label>
-              <img src={QuickArrowRight} style={styles.arrowRight} />
-            </button>
-            <div style={styles.exampleContainer}>
-              <img src={ExampleGraphic} style={styles.exampleGraphic} />
-            </div>
-            <label style={styles.gridTitle}>
-              Organized like Slack, durable like Datadog.
-            </label>
-            <Grid style={styles.gridContainer}>
-              <Col style={styles.statItem}>
-                <label style={styles.statTitle}>100x</label>
-                <label style={styles.statDesc}>
-                  Rate limit compared to Slack webhooks
-                </label>
-              </Col>
-              <Col style={styles.statItem}>
-                <label style={styles.statTitle}>↑↓</label>
-                <label style={styles.statDesc}>Automatic trend discovery</label>
-              </Col>
-              <Col style={styles.statItem}>
-                <img src={MessageIcon} style={styles.statIcon} />
-                <label style={styles.statDesc}>
-                  Configure SMS and email alerts
-                </label>
-              </Col>
-              <Col style={styles.statItem}>
-                <img src={SearchIcon} style={styles.statIcon} />
-                <label style={styles.statDesc}>
-                  Search for logs across all your channels
-                </label>
-              </Col>
-              <Col style={styles.statItem}>
-                <img src={JourneyIcon} style={styles.statIcon} />
-                <label style={styles.statDesc}>
-                  Trace a user's journey to see what went wrong
-                </label>
-              </Col>
-              <Col style={styles.statItem}>
-                <img src={SupportPersonIcon} style={styles.statIcon} />
-                <label style={styles.statDesc}>Built for everyone</label>
-              </Col>
-            </Grid>
-            <label style={styles.endingText}>
-              Join the waitlist to get exclusive access to the future of
-              logging.
-            </label>
-            <button
-              style={{ ...styles.joinBeta, marginTop: 0 }}
-              className="joinBeta"
-            >
-              <label style={styles.joinBetaLbl}>Join the waitlist</label>
-              <img src={QuickArrowRight} style={styles.arrowRight} />
-            </button>
-          </>
+    <>
+      <Modal
+        open={isVisible}
+        style={styles.modalContainer}
+        onOk={_addToWaitlist}
+        okText={
+          isLoading
+            ? "Joining..."
+            : successfullySubmitted
+            ? "Joined waitlist!"
+            : "Join waitlist"
+        }
+        okButtonProps={{
+          ...((successfullySubmitted || isLoading) && {
+            disabled: true,
+            style: { cursor: "default" },
+          }),
+        }}
+        onCancel={() => setIsVisible(false)}
+        cancelButtonProps={{ hidden: successfullySubmitted }}
+        closable={false}
+      >
+        {successfullySubmitted ? (
+          <label style={styles.addedToWaitlist}>
+            You've been added to the waitlist. Be sure to keep an eye on your
+            email!
+          </label>
         ) : (
           <>
-            <div style={styles.sideBySide}>
-              <div style={styles.leftSide}>
-                <label style={styles.mainText}>
-                  The logging API designed to be your support engineer.
-                </label>
-                <label style={styles.subtitle}>
-                  One endpoint. No more digging through a mess of logs trying to
-                  figure out what went wrong.
-                </label>
-                <button style={styles.joinBeta} className="joinBeta">
-                  <label style={styles.joinBetaLbl}>Join the waitlist</label>
-                  <img src={QuickArrowRight} style={styles.arrowRight} />
-                </button>
-              </div>
+            <input
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={styles.input}
+              type="email"
+            />
+            <input
+              placeholder="Website URL"
+              value={websiteUrl}
+              onChange={(e) => setWebsiteUrl(e.target.value)}
+              style={styles.input}
+            />
+            <textarea
+              placeholder="Why do you want to use Logtree?"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              style={styles.textAreaInput}
+            />
+            {error && (
+              <label style={styles.errorText}>
+                Please fill out all the fields above.
+              </label>
+            )}
+          </>
+        )}
+      </Modal>
+      <div style={styles.container}>
+        <div style={styles.fullBackgroundColor} />
+        {/* <div style={styles.backgroundColor} /> */}
+        <div style={styles.topHalf}>
+          <div style={styles.header}>
+            <div style={styles.logtree}>
+              <img src={LogtreeIcon} style={styles.logtreeIcon} />
+              <label style={styles.logtreeText}>Logtree</label>
+            </div>
+            <button
+              style={styles.signIn}
+              onClick={() => history.push("/sign-in")}
+              className="signInBtn"
+            >
+              Sign in
+            </button>
+          </div>
+          {isMobile ? (
+            <>
+              <label style={styles.mainText}>
+                The logging API designed to be your support engineer.
+              </label>
+              <label style={styles.subtitle}>
+                One endpoint. No more digging through a mess of logs trying to
+                figure out what went wrong.
+              </label>
+              <button
+                style={styles.joinBeta}
+                className="joinBeta"
+                onClick={() => setIsVisible(true)}
+              >
+                <label style={styles.joinBetaLbl}>Join the waitlist</label>
+                <img src={QuickArrowRight} style={styles.arrowRight} />
+              </button>
               <div style={styles.exampleContainer}>
                 <img src={ExampleGraphic} style={styles.exampleGraphic} />
               </div>
-            </div>
-            <label style={styles.gridTitle}>
-              Organized like Slack, durable like Datadog.
-            </label>
-            <Grid style={styles.gridContainer}>
-              <Row style={styles.statsHorizontalContainer}>
-                <Col style={{ ...styles.statItem, marginLeft: 0 }}>
+              <label style={styles.gridTitle}>
+                Organized like Slack, durable like Datadog.
+              </label>
+              <Grid style={styles.gridContainer}>
+                <Col style={styles.statItem}>
                   <label style={styles.statTitle}>100x</label>
                   <label style={styles.statDesc}>
                     Rate limit compared to Slack webhooks
@@ -141,9 +158,7 @@ export const LandingPage = () => {
                     Configure SMS and email alerts
                   </label>
                 </Col>
-              </Row>
-              <Row style={styles.statsHorizontalContainer}>
-                <Col style={{ ...styles.statItem, marginLeft: 0 }}>
+                <Col style={styles.statItem}>
                   <img src={SearchIcon} style={styles.statIcon} />
                   <label style={styles.statDesc}>
                     Search for logs across all your channels
@@ -159,26 +174,105 @@ export const LandingPage = () => {
                   <img src={SupportPersonIcon} style={styles.statIcon} />
                   <label style={styles.statDesc}>Built for everyone</label>
                 </Col>
-              </Row>
-            </Grid>
-            <label style={styles.endingText}>
-              Join the waitlist to get exclusive access to the future of
-              logging.
-            </label>
-            <button
-              style={{ ...styles.joinBeta, marginTop: 0 }}
-              className="joinBeta"
-            >
-              <label style={styles.joinBetaLbl}>Join the waitlist</label>
-              <img src={QuickArrowRight} style={styles.arrowRight} />
-            </button>
-          </>
-        )}
+              </Grid>
+              <label style={styles.endingText}>
+                Join the waitlist for exclusive access.
+              </label>
+              <button
+                style={{ ...styles.joinBeta, marginTop: 0 }}
+                className="joinBeta"
+                onClick={() => setIsVisible(true)}
+              >
+                <label style={styles.joinBetaLbl}>Join the waitlist</label>
+                <img src={QuickArrowRight} style={styles.arrowRight} />
+              </button>
+            </>
+          ) : (
+            <>
+              <div style={styles.sideBySide}>
+                <div style={styles.leftSide}>
+                  <label style={styles.mainText}>
+                    The logging API designed to be your support engineer.
+                  </label>
+                  <label style={styles.subtitle}>
+                    One endpoint. No more digging through a mess of logs trying
+                    to figure out what went wrong.
+                  </label>
+                  <button
+                    style={styles.joinBeta}
+                    className="joinBeta"
+                    onClick={() => setIsVisible(true)}
+                  >
+                    <label style={styles.joinBetaLbl}>Join the waitlist</label>
+                    <img src={QuickArrowRight} style={styles.arrowRight} />
+                  </button>
+                </div>
+                <div style={styles.exampleContainer}>
+                  <img src={ExampleGraphic} style={styles.exampleGraphic} />
+                </div>
+              </div>
+              <label style={styles.gridTitle}>
+                Organized like Slack, durable like Datadog.
+              </label>
+              <Grid style={styles.gridContainer}>
+                <Row style={styles.statsHorizontalContainer}>
+                  <Col style={{ ...styles.statItem, marginLeft: 0 }}>
+                    <label style={styles.statTitle}>100x</label>
+                    <label style={styles.statDesc}>
+                      Rate limit compared to Slack webhooks
+                    </label>
+                  </Col>
+                  <Col style={styles.statItem}>
+                    <label style={styles.statTitle}>↑↓</label>
+                    <label style={styles.statDesc}>
+                      Automatic trend discovery
+                    </label>
+                  </Col>
+                  <Col style={styles.statItem}>
+                    <img src={MessageIcon} style={styles.statIcon} />
+                    <label style={styles.statDesc}>
+                      Configure SMS and email alerts
+                    </label>
+                  </Col>
+                </Row>
+                <Row style={styles.statsHorizontalContainer}>
+                  <Col style={{ ...styles.statItem, marginLeft: 0 }}>
+                    <img src={SearchIcon} style={styles.statIcon} />
+                    <label style={styles.statDesc}>
+                      Search for logs across all your channels
+                    </label>
+                  </Col>
+                  <Col style={styles.statItem}>
+                    <img src={JourneyIcon} style={styles.statIcon} />
+                    <label style={styles.statDesc}>
+                      Trace a user's journey to see what went wrong
+                    </label>
+                  </Col>
+                  <Col style={styles.statItem}>
+                    <img src={SupportPersonIcon} style={styles.statIcon} />
+                    <label style={styles.statDesc}>Built for everyone</label>
+                  </Col>
+                </Row>
+              </Grid>
+              <label style={styles.endingText}>
+                Join the waitlist for exclusive access.
+              </label>
+              <button
+                style={{ ...styles.joinBeta, marginTop: 0 }}
+                className="joinBeta"
+                onClick={() => setIsVisible(true)}
+              >
+                <label style={styles.joinBetaLbl}>Join the waitlist</label>
+                <img src={QuickArrowRight} style={styles.arrowRight} />
+              </button>
+            </>
+          )}
+        </div>
+        <div style={styles.footer}>
+          <label style={styles.copyright}>© 2023 Logtree, LLC</label>
+        </div>
       </div>
-      <div style={styles.footer}>
-        <label style={styles.copyright}>© 2023 Logtree, LLC</label>
-      </div>
-    </div>
+    </>
   );
 };
 
@@ -415,5 +509,40 @@ const styles: StylesType = {
     fontWeight: 300,
     fontSize: isMobile ? 17 : 20,
     textAlign: "center",
+  },
+  input: {
+    borderStyle: "solid",
+    borderColor: Colors.lightGray,
+    backgroundColor: Colors.white,
+    borderRadius: 8,
+    paddingLeft: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    width: "100%",
+    marginBottom: 15,
+    borderWidth: 1,
+    fontSize: 15,
+  },
+  textAreaInput: {
+    borderStyle: "solid",
+    borderColor: Colors.lightGray,
+    backgroundColor: Colors.white,
+    borderRadius: 8,
+    paddingLeft: 8,
+    height: 70,
+    width: "100%",
+    borderWidth: 1,
+    fontSize: 15,
+  },
+  modalContainer: {
+    padding: 30,
+    ...(!isMobile && {
+      width: "90%",
+      maxWidth: 750,
+    }),
+  },
+  errorText: {
+    paddingTop: 30,
+    color: Colors.red,
   },
 };
