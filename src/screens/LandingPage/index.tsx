@@ -16,6 +16,7 @@ import { Modal } from "antd";
 import { showGenericErrorAlert } from "src/utils/helpers";
 import { Api } from "src/api";
 import ExampleChannels from "src/assets/channelsExample.png";
+import TwitterIcon from "src/assets/twitterLogo.png";
 
 export const LandingPage = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -305,6 +306,14 @@ export const LandingPage = () => {
           )}
         </div>
         <div style={styles.footer}>
+          <button
+            onClick={() =>
+              window.open("https://twitter.com/uselogtree", "_blank")
+            }
+            style={styles.twitterBtn}
+          >
+            <img src={TwitterIcon} style={styles.twitterIcon} />
+          </button>
           <label style={styles.copyright}>© 2023 Logtree, LLC</label>
         </div>
       </div>
@@ -623,5 +632,17 @@ const styles: StylesType = {
     width: "100%",
     paddingTop: 15,
     paddingBottom: 10,
+  },
+  twitterIcon: {
+    cursor: "pointer",
+    width: 20,
+    height: 16,
+    filter: "grayscale(100%)",
+  },
+  twitterBtn: {
+    outline: "none",
+    border: "none",
+    backgroundColor: Colors.transparent,
+    marginRight: 10,
   },
 };
