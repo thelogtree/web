@@ -1,22 +1,29 @@
-import React, { useState } from "react";
-import { Colors } from "src/utils/colors";
-import { StylesType } from "src/utils/styles";
-import LogtreeIcon from "src/assets/logtreeLogo192.png";
-import { useHistory } from "react-router-dom";
 import "./index.css";
-import { isMobile } from "react-device-detect";
-import QuickArrowRight from "src/assets/quickArrowRight.png";
-import ExampleGraphic from "src/assets/exampleGraphicNew.png";
-import MessageIcon from "src/assets/message.png";
-import SearchIcon from "src/assets/searchBig.png";
-import SupportPersonIcon from "src/assets/supportPerson.png";
-import JourneyIcon from "src/assets/journey.png";
-import { Col, Grid, Row } from "react-flexbox-grid";
+
 import { Modal } from "antd";
-import { showGenericErrorAlert } from "src/utils/helpers";
+import React, { useState } from "react";
+import { isMobile } from "react-device-detect";
+import { Col, Grid, Row } from "react-flexbox-grid";
+import { useHistory } from "react-router-dom";
 import { Api } from "src/api";
+import A16ZLogo from "src/assets/a16zLogo.jpeg";
 import ExampleChannels from "src/assets/channelsExample.png";
+import ExampleGraphic from "src/assets/exampleGraphicNew.png";
+import JourneyIcon from "src/assets/journey.png";
+import KleinerPerkinsLogo from "src/assets/kleinerPerkinsLogo.png";
+import LogtreeIcon from "src/assets/logtreeLogo192.png";
+import MessageIcon from "src/assets/message.png";
+import QuickArrowRight from "src/assets/quickArrowRight.png";
+import SearchIcon from "src/assets/searchBig.png";
+import SPCLogo from "src/assets/spcLogo.svg";
+import SupportPersonIcon from "src/assets/supportPerson.png";
+import SVAngelLogo from "src/assets/svAngelLogo.png";
 import TwitterIcon from "src/assets/twitterLogo.png";
+import YCLogo from "src/assets/ycLogo.png";
+import SequoiaLogo from "src/assets/sequoiaLogo.png";
+import { Colors } from "src/utils/colors";
+import { showGenericErrorAlert } from "src/utils/helpers";
+import { StylesType } from "src/utils/styles";
 
 export const LandingPage = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -147,9 +154,9 @@ export const LandingPage = () => {
                 Organize logs into folders and channels.
               </label>
               <label style={styles.subtitle}>
-                Mute noisy channels, like important channels, and see which
-                channels have new logs. Find what you're looking for 10x faster
-                compared to Logtail.
+                Stop dumping everything into one feed for engineers to sort
+                through. Find what you're looking for 10x faster compared to
+                Logtail.
               </label>
               <div style={styles.exampleChannelsContainer}>
                 <img src={ExampleChannels} style={styles.exampleGraphic} />
@@ -195,6 +202,21 @@ export const LandingPage = () => {
                   </label>
                 </Col>
               </Grid>
+              <label style={styles.usedByTitle}>
+                Used by startups that have raised millions from
+              </label>
+              <Col style={styles.usedByItem}>
+                <img src={KleinerPerkinsLogo} style={styles.vcLogo} />
+              </Col>
+              <Col style={styles.usedByItem}>
+                <img src={SVAngelLogo} style={styles.vcLogo} />
+              </Col>
+              <Col style={styles.usedByItem}>
+                <img src={SPCLogo} style={styles.vcLogo} />
+              </Col>
+              <Col style={styles.usedByItem}>
+                <img src={YCLogo} style={styles.vcLogo} />
+              </Col>
               <label style={styles.endingText}>
                 Join the waitlist for exclusive access.
               </label>
@@ -237,9 +259,9 @@ export const LandingPage = () => {
                     Organize logs into folders and channels.
                   </label>
                   <label style={styles.subtitle}>
-                    Mute noisy channels, like important channels, and see which
-                    channels have new logs. Find what you're looking for 10x
-                    faster compared to Logtail and Papertrail.
+                    Stop dumping everything into one feed for engineers to sort
+                    through later. Find what you're looking for 10x faster
+                    compared to Logtail.
                   </label>
                 </div>
                 <div style={styles.exampleChannelsContainer}>
@@ -291,6 +313,23 @@ export const LandingPage = () => {
                   </Col>
                 </Row>
               </Grid>
+              <label style={styles.usedByTitle}>
+                Used by startups that have raised millions from
+              </label>
+              <Row style={styles.usedByHorizontalContainer}>
+                <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
+                  <img src={KleinerPerkinsLogo} style={styles.vcLogo} />
+                </Col>
+                <Col style={styles.usedByItem}>
+                  <img src={SVAngelLogo} style={styles.vcLogo} />
+                </Col>
+                <Col style={styles.usedByItem}>
+                  <img src={SPCLogo} style={styles.vcLogo} />
+                </Col>
+                <Col style={styles.usedByItem}>
+                  <img src={YCLogo} style={styles.vcLogo} />
+                </Col>
+              </Row>
               <label style={styles.endingText}>
                 Join the waitlist for exclusive access.
               </label>
@@ -535,6 +574,14 @@ const styles: StylesType = {
     paddingTop: 30,
     width: "100%",
   },
+  usedByHorizontalContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 30,
+    width: "100%",
+  },
   statItem: {
     display: "flex",
     flexDirection: "column",
@@ -549,6 +596,15 @@ const styles: StylesType = {
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: Colors.lightGray,
+  },
+  usedByItem: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: isMobile ? "100%" : 200,
+    marginLeft: isMobile ? 0 : 25,
+    marginTop: isMobile ? 50 : 0,
   },
   statTitle: {
     fontSize: 50,
@@ -576,7 +632,7 @@ const styles: StylesType = {
   },
   endingText: {
     color: Colors.darkerGray,
-    paddingTop: 120,
+    paddingTop: isMobile ? 140 : 180,
     paddingBottom: 30,
     fontWeight: 300,
     fontSize: isMobile ? 17 : 20,
@@ -644,5 +700,21 @@ const styles: StylesType = {
     border: "none",
     backgroundColor: Colors.transparent,
     marginRight: 10,
+  },
+  usedByTitle: {
+    fontWeight: 700,
+    fontSize: isMobile ? 25 : 32,
+    paddingTop: isMobile ? `calc(100vh - 630px)` : `calc(100vh - 600px)`,
+    textAlign: "center",
+    background: "linear-gradient(268.45deg, #000000 30.54%, #303030 60.79%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+    paddingBottom: isMobile ? 10 : 40,
+  },
+  vcLogo: {
+    maxWidth: 200,
+    maxHeight: 60,
+    filter: "grayscale(100%)",
   },
 };
