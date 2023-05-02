@@ -86,6 +86,17 @@ export const LandingPage = () => {
                 <label style={styles.statDesc}>Built for everyone</label>
               </Col>
             </Grid>
+            <label style={styles.endingText}>
+              Join the waitlist to get exclusive access to the future of
+              logging.
+            </label>
+            <button
+              style={{ ...styles.joinBeta, marginTop: 0 }}
+              className="joinBeta"
+            >
+              <label style={styles.joinBetaLbl}>Join the waitlist</label>
+              <img src={QuickArrowRight} style={styles.arrowRight} />
+            </button>
           </>
         ) : (
           <>
@@ -150,6 +161,17 @@ export const LandingPage = () => {
                 </Col>
               </Row>
             </Grid>
+            <label style={styles.endingText}>
+              Join the waitlist to get exclusive access to the future of
+              logging.
+            </label>
+            <button
+              style={{ ...styles.joinBeta, marginTop: 0 }}
+              className="joinBeta"
+            >
+              <label style={styles.joinBetaLbl}>Join the waitlist</label>
+              <img src={QuickArrowRight} style={styles.arrowRight} />
+            </button>
           </>
         )}
       </div>
@@ -200,7 +222,7 @@ const styles: StylesType = {
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",
-    paddingBottom: 150,
+    paddingBottom: isMobile ? 150 : 250,
   },
   header: {
     display: "flex",
@@ -385,5 +407,13 @@ const styles: StylesType = {
     justifyContent: "center",
     alignItems: "center",
     ...(isMobile && { width: "100%" }),
+  },
+  endingText: {
+    color: Colors.darkerGray,
+    paddingTop: 120,
+    paddingBottom: 30,
+    fontWeight: 300,
+    fontSize: isMobile ? 17 : 20,
+    textAlign: "center",
   },
 };
