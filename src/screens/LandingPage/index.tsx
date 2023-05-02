@@ -162,7 +162,7 @@ export const LandingPage = () => {
                 <img src={ExampleChannels} style={styles.exampleGraphic} />
               </div>
               <label style={styles.gridTitle}>
-                Clean like Slack, durable like Datadog
+                Intuitive like Slack, durable like Datadog
               </label>
               <Grid style={styles.gridContainer}>
                 <Col style={styles.statItem}>
@@ -279,7 +279,7 @@ export const LandingPage = () => {
                 </div>
               </div>
               <label style={styles.gridTitle}>
-                Clean like Slack, durable like Datadog
+                Intuitive like Slack, durable like Datadog
               </label>
               <Grid style={styles.gridContainer}>
                 <Row style={styles.statsHorizontalContainer}>
