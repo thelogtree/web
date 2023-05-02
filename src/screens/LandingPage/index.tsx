@@ -15,6 +15,7 @@ import { Col, Grid, Row } from "react-flexbox-grid";
 import { Modal } from "antd";
 import { showGenericErrorAlert } from "src/utils/helpers";
 import { Api } from "src/api";
+import ExampleChannels from "src/assets/channelsExample.png";
 
 export const LandingPage = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -136,8 +137,19 @@ export const LandingPage = () => {
               <div style={styles.exampleContainer}>
                 <img src={ExampleGraphic} style={styles.exampleGraphic} />
               </div>
+              <label style={styles.mainText2}>
+                Organize logs into folders and channels.
+              </label>
+              <label style={styles.subtitle}>
+                Mute noisy channels and like important channels. Find what
+                you're looking for 10x faster compared to Logtail and
+                Papertrail.
+              </label>
+              <div style={styles.exampleChannelsContainer}>
+                <img src={ExampleChannels} style={styles.exampleGraphic} />
+              </div>
               <label style={styles.gridTitle}>
-                Organized like Slack, durable like Datadog.
+                Clean like Slack, durable like Datadog.
               </label>
               <Grid style={styles.gridContainer}>
                 <Col style={styles.statItem}>
@@ -213,8 +225,23 @@ export const LandingPage = () => {
                   <img src={ExampleGraphic} style={styles.exampleGraphic} />
                 </div>
               </div>
+              <div style={styles.sideBySide2}>
+                <div style={styles.leftSide}>
+                  <label style={styles.mainText}>
+                    Organize logs into folders and channels.
+                  </label>
+                  <label style={styles.subtitle}>
+                    Mute noisy channels and like important channels. Find what
+                    you're looking for 10x faster compared to Logtail and
+                    Papertrail.
+                  </label>
+                </div>
+                <div style={styles.exampleChannelsContainer}>
+                  <img src={ExampleChannels} style={styles.exampleGraphic} />
+                </div>
+              </div>
               <label style={styles.gridTitle}>
-                Organized like Slack, durable like Datadog.
+                Clean like Slack, durable like Datadog.
               </label>
               <Grid style={styles.gridContainer}>
                 <Row style={styles.statsHorizontalContainer}>
@@ -288,8 +315,8 @@ const styles: StylesType = {
     alignItems: "center",
     width: "100%",
     height: "100%",
-    paddingLeft: isMobile ? 20 : 100,
-    paddingRight: isMobile ? 20 : 100,
+    paddingLeft: isMobile ? 20 : "11vh",
+    paddingRight: isMobile ? 20 : "11vh",
     paddingBottom: 10,
     overflowY: "auto",
     position: "relative",
@@ -380,6 +407,16 @@ const styles: StylesType = {
     textAlign: isMobile ? "center" : "left",
     paddingTop: isMobile ? 70 : 0,
   },
+  mainText2: {
+    background: "linear-gradient(268.45deg, #000000 30.54%, #303030 60.79%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+    fontWeight: 700,
+    fontSize: isMobile ? 25 : 38,
+    textAlign: isMobile ? "center" : "left",
+    paddingTop: isMobile ? `calc(100vh - 630px)` : `calc(100vh - 600px)`,
+  },
   gridTitle: {
     fontWeight: 700,
     fontSize: isMobile ? 25 : 32,
@@ -397,7 +434,7 @@ const styles: StylesType = {
     textAlign: isMobile ? "center" : "left",
     lineHeight: 1.4,
     fontWeight: 300,
-    width: "85%",
+    width: isMobile ? "90%" : "85%",
   },
   exampleContainer: {
     display: "flex",
@@ -407,6 +444,16 @@ const styles: StylesType = {
     flex: 4,
     maxWidth: isMobile ? "90%" : 600,
     marginTop: isMobile ? 60 : 0,
+  },
+  exampleChannelsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    flex: 3,
+    maxWidth: isMobile ? "90%" : 300,
+    marginTop: isMobile ? 60 : 0,
+    marginRight: isMobile ? 0 : 180,
   },
   exampleGraphic: {
     width: "100%",
@@ -448,16 +495,23 @@ const styles: StylesType = {
     justifyContent: "flex-start",
     alignItems: "flex-start",
     flex: 3,
-    paddingRight: 100,
     maxWidth: 800,
   },
   sideBySide: {
     display: "flex",
     flexDirection: "row",
     width: "100%",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     paddingTop: 180,
+  },
+  sideBySide2: {
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingTop: isMobile ? `calc(100vh - 630px)` : `calc(100vh - 600px)`,
   },
   statsHorizontalContainer: {
     display: "flex",
