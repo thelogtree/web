@@ -45,7 +45,7 @@ export const SignedInOrganization = () => {
     {
       key: "4",
       label: <label style={styles.helpBtn}>Contact us</label>,
-      onClick: () => window.open("mailto:andy@logtree.co", "_blank"),
+      onClick: () => window.open("mailto:hello@logtree.co", "_blank"),
     },
     {
       key: "5",

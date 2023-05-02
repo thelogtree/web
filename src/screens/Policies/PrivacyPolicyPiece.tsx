@@ -175,7 +175,7 @@ export const PrivacyPolicyPiece = `<div>
                   and choices. If you do not agree with our policies and
                   practices, please do not use our Services. If you still have
                   any questions or concerns, please contact us at
-                  <bdt class="question">andy@logtree.co</bdt>.</span
+                  <bdt class="question">hello@logtree.co</bdt>.</span
                 ></span
               ></span
             >
@@ -6100,7 +6100,7 @@ export const PrivacyPolicyPiece = `<div>
                                                           privacy rights, you
                                                           may email us at
                                                           <bdt class="question"
-                                                            >andy@logtree.co</bdt
+                                                            >hello@logtree.co</bdt
                                                           >.</span
                                                         ></span
                                                       ><bdt
@@ -9508,7 +9508,7 @@ export const PrivacyPolicyPiece = `<div>
                                                               data-custom-class="body_text"
                                                               ><bdt
                                                                 class="question"
-                                                                >andy@logtree.co</bdt
+                                                                >hello@logtree.co</bdt
                                                               >,
                                                               <bdt
                                                                 class="
@@ -12182,7 +12182,7 @@ export const PrivacyPolicyPiece = `<div>
                                                                     class="
                                                                       question
                                                                     "
-                                                                    >andy@logtree.co</bdt
+                                                                    >hello@logtree.co</bdt
                                                                   >,
                                                                   <bdt
                                                                     class="
@@ -12611,7 +12611,7 @@ export const PrivacyPolicyPiece = `<div>
                                                                   class="
                                                                     question
                                                                   "
-                                                                  >andy@logtree.co</bdt
+                                                                  >hello@logtree.co</bdt
                                                                 ><bdt
                                                                   class="
                                                                     statement-end-if-in-editor

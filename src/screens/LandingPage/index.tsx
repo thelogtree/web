@@ -20,7 +20,7 @@ import SupportPersonIcon from "src/assets/supportPerson.png";
 import SVAngelLogo from "src/assets/svAngelLogo.png";
 import TwitterIcon from "src/assets/twitterLogo.png";
 import YCLogo from "src/assets/ycLogo.png";
-import SequoiaLogo from "src/assets/sequoiaLogo.png";
+import SparkleIcon from "src/assets/sparkle.png";
 import { Colors } from "src/utils/colors";
 import { showGenericErrorAlert } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
@@ -136,8 +136,8 @@ export const LandingPage = () => {
                 The logging API designed to be your support engineer.
               </label>
               <label style={styles.subtitle}>
-                One endpoint. No more digging through a mess of logs trying to
-                figure out what went wrong.
+                No more digging through a mess of logs trying to figure out what
+                went wrong.
               </label>
               <button
                 style={styles.joinBeta}
@@ -162,7 +162,7 @@ export const LandingPage = () => {
                 <img src={ExampleChannels} style={styles.exampleGraphic} />
               </div>
               <label style={styles.gridTitle}>
-                Clean like Slack, durable like Datadog.
+                Clean like Slack, durable like Datadog
               </label>
               <Grid style={styles.gridContainer}>
                 <Col style={styles.statItem}>
@@ -202,6 +202,16 @@ export const LandingPage = () => {
                   </label>
                 </Col>
               </Grid>
+              <div style={styles.easySetupContainer}>
+                <img src={SparkleIcon} style={styles.sparkleIcon} />
+                <label style={styles.easySetupTitle}>
+                  Magically-easy setup
+                </label>
+              </div>
+              <label style={styles.easySetupDesc}>
+                No week-long integration sprints. There's only one endpoint to
+                connect to.
+              </label>
               <label style={styles.usedByTitle}>
                 Used by startups that have raised millions from
               </label>
@@ -237,8 +247,8 @@ export const LandingPage = () => {
                     The logging API designed to be your support engineer.
                   </label>
                   <label style={styles.subtitle}>
-                    One endpoint. No more digging through a mess of logs trying
-                    to figure out what went wrong.
+                    No more digging through a mess of logs trying to figure out
+                    what went wrong.
                   </label>
                   <button
                     style={styles.joinBeta}
@@ -269,7 +279,7 @@ export const LandingPage = () => {
                 </div>
               </div>
               <label style={styles.gridTitle}>
-                Clean like Slack, durable like Datadog.
+                Clean like Slack, durable like Datadog
               </label>
               <Grid style={styles.gridContainer}>
                 <Row style={styles.statsHorizontalContainer}>
@@ -313,6 +323,16 @@ export const LandingPage = () => {
                   </Col>
                 </Row>
               </Grid>
+              <div style={styles.easySetupContainer}>
+                <img src={SparkleIcon} style={styles.sparkleIcon} />
+                <label style={styles.easySetupTitle}>
+                  Magically-easy setup
+                </label>
+              </div>
+              <label style={styles.easySetupDesc}>
+                No week-long integration sprints. There's only one endpoint to
+                connect to.
+              </label>
               <label style={styles.usedByTitle}>
                 Used by startups that have raised millions from
               </label>
@@ -345,6 +365,13 @@ export const LandingPage = () => {
           )}
         </div>
         <div style={styles.footer}>
+          <button
+            onClick={() => window.open("mailto:hello@logtree.co", "_blank")}
+            style={styles.contactUs}
+            className="contactUsBtn"
+          >
+            Contact us
+          </button>
           <button
             onClick={() =>
               window.open("https://twitter.com/uselogtree", "_blank")
@@ -469,6 +496,34 @@ const styles: StylesType = {
     fontSize: isMobile ? 25 : 38,
     textAlign: isMobile ? "center" : "left",
     paddingTop: isMobile ? `calc(100vh - 630px)` : `calc(100vh - 600px)`,
+  },
+  easySetupTitle: {
+    background: "linear-gradient(268.45deg, #000000 30.54%, #303030 60.79%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+    fontWeight: 700,
+    fontSize: isMobile ? 25 : 38,
+    textAlign: isMobile ? "center" : "left",
+    paddingLeft: isMobile ? 14 : 20,
+  },
+  sparkleIcon: {
+    width: isMobile ? 35 : 50,
+    height: isMobile ? 35 : 50,
+  },
+  easySetupContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: isMobile ? `calc(100vh - 630px)` : `calc(100vh - 600px)`,
+  },
+  easySetupDesc: {
+    paddingTop: 20,
+    fontSize: 18,
+    textAlign: "center",
+    fontWeight: 300,
+    color: Colors.darkerGray,
   },
   gridTitle: {
     fontWeight: 700,
@@ -700,6 +755,16 @@ const styles: StylesType = {
     border: "none",
     backgroundColor: Colors.transparent,
     marginRight: 10,
+    cursor: "pointer",
+  },
+  contactUs: {
+    outline: "none",
+    border: "none",
+    backgroundColor: Colors.transparent,
+    marginRight: 10,
+    cursor: "pointer",
+    color: Colors.gray,
+    fontSize: 12,
   },
   usedByTitle: {
     fontWeight: 700,

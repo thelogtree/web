@@ -1498,7 +1498,7 @@ export const TermsOfServicePiece = `<div>
                   class="block-container question question-in-editor"
                   data-id="7c40698b-5cc8-bb58-245d-2fbd1b57dfba"
                   data-type="question"
-                  >andy@logtree.co</bdt
+                  >hello@logtree.co</bdt
                 ><bdt class="block-component"></bdt> or call us at</span
               ><span>&nbsp;</span
               ><span
@@ -5743,7 +5743,7 @@ export const TermsOfServicePiece = `<div>
                 font-family: Arial;
                 color: rgb(89, 89, 89);
               "
-              ><bdt class="question"><strong>andy@logtree.co</strong></bdt></span
+              ><bdt class="question"><strong>hello@logtree.co</strong></bdt></span
             ></span
           >
         </div>
@@ -5864,7 +5864,7 @@ export const TermsOfServicePiece = `<div>
           <bdt class="question"
             ><strong
               ><span style="font-size: 15px"
-                >andy@logtree.co</span
+                >hello@logtree.co</span
               ></strong
             ></bdt
           >
