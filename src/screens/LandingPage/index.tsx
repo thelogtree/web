@@ -97,6 +97,11 @@ export const LandingPage = () => {
                 Please fill out all the fields above.
               </label>
             )}
+            <div style={styles.madeWithLogtreeContainer}>
+              <label style={styles.madeWithLogtree}>
+                ✅ This waitlist is stored in Logtree
+              </label>
+            </div>
           </>
         )}
       </Modal>
@@ -141,9 +146,9 @@ export const LandingPage = () => {
                 Organize logs into folders and channels.
               </label>
               <label style={styles.subtitle}>
-                Mute noisy channels and like important channels. Find what
-                you're looking for 10x faster compared to Logtail and
-                Papertrail.
+                Mute noisy channels, like important channels, and see which
+                channels have new logs. Find what you're looking for 10x faster
+                compared to Logtail.
               </label>
               <div style={styles.exampleChannelsContainer}>
                 <img src={ExampleChannels} style={styles.exampleGraphic} />
@@ -231,9 +236,9 @@ export const LandingPage = () => {
                     Organize logs into folders and channels.
                   </label>
                   <label style={styles.subtitle}>
-                    Mute noisy channels and like important channels. Find what
-                    you're looking for 10x faster compared to Logtail and
-                    Papertrail.
+                    Mute noisy channels, like important channels, and see which
+                    channels have new logs. Find what you're looking for 10x
+                    faster compared to Logtail and Papertrail.
                   </label>
                 </div>
                 <div style={styles.exampleChannelsContainer}>
@@ -602,5 +607,21 @@ const styles: StylesType = {
   errorText: {
     paddingTop: 30,
     color: Colors.red,
+  },
+  madeWithLogtree: {
+    marginTop: 30,
+    color: Colors.green800,
+    backgroundColor: Colors.green50,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderRadius: 30,
+    fontSize: 13,
+  },
+  madeWithLogtreeContainer: {
+    width: "100%",
+    paddingTop: 15,
+    paddingBottom: 10,
   },
 };

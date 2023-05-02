@@ -50,4 +50,15 @@ export const Colors = {
   purple700: "#6f26f6",
   purple800: "#5108d7",
   purple900: "#4307b3",
+
+  yellow50: "#f4f695",
+  yellow100: "#f3f58a",
+  yellow200: "#e6ea14",
+  yellow300: "#cfd212",
+  yellow400: "#afb20f",
+  yellow500: "#8f910c",
+  yellow600: "#6e700a",
+  yellow700: "#616208",
+  yellow800: "#4d4e07",
+  yellow900: "#3f4005",
 };
