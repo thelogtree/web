@@ -1,0 +1,15 @@
+.signInBtn {
+  background-color: white;
+}
+
+.signInBtn:hover {
+  background-color: rgb(245, 245, 245);
+}
+
+.joinBeta {
+  background-color: black;
+}
+
+.joinBeta:hover {
+  background-color: rgb(36, 36, 36);
+}

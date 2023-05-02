@@ -8,7 +8,6 @@ import { getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { shortenString } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
-import { LegalFooter } from "../../LegalFooter";
 
 const ZAPIER_INVITE_LINK =
   "https://zapier.com/developer/public-invite/180777/c6de2f8899d569621d0ffb574a601391/";
