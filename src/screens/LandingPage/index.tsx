@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import "./index.css";
 import { isMobile } from "react-device-detect";
 import QuickArrowRight from "src/assets/quickArrowRight.png";
-import ExampleGraphic from "src/assets/exampleGraphic.png";
+import ExampleGraphic from "src/assets/exampleGraphicNew.png";
 import MessageIcon from "src/assets/message.png";
 import SearchIcon from "src/assets/searchBig.png";
 import SupportPersonIcon from "src/assets/supportPerson.png";
@@ -80,7 +80,7 @@ export const LandingPage = () => {
               type="email"
             />
             <input
-              placeholder="Website URL"
+              placeholder="Link to your website"
               value={websiteUrl}
               onChange={(e) => setWebsiteUrl(e.target.value)}
               style={styles.input}
@@ -172,7 +172,9 @@ export const LandingPage = () => {
                 </Col>
                 <Col style={styles.statItem}>
                   <img src={SupportPersonIcon} style={styles.statIcon} />
-                  <label style={styles.statDesc}>Built for everyone</label>
+                  <label style={styles.statDesc}>
+                    Easy for non-technical people to use
+                  </label>
                 </Col>
               </Grid>
               <label style={styles.endingText}>
@@ -250,7 +252,9 @@ export const LandingPage = () => {
                   </Col>
                   <Col style={styles.statItem}>
                     <img src={SupportPersonIcon} style={styles.statIcon} />
-                    <label style={styles.statDesc}>Built for everyone</label>
+                    <label style={styles.statDesc}>
+                      Easy for non-technical people to use
+                    </label>
                   </Col>
                 </Row>
               </Grid>
