@@ -394,24 +394,26 @@ export const LandingPage = () => {
             </>
           )}
         </div>
-        <div style={styles.footer}>
-          <button
-            onClick={() => window.open("mailto:hello@logtree.co", "_blank")}
-            style={styles.contactUs}
-            className="contactUsBtn"
-          >
-            Contact us
-          </button>
-          <button
-            onClick={() =>
-              window.open("https://twitter.com/uselogtree", "_blank")
-            }
-            style={styles.twitterBtn}
-          >
-            <img src={TwitterIcon} style={styles.twitterIcon} />
-          </button>
-          <label style={styles.copyright}>© 2023 Logtree, LLC</label>
-        </div>
+        {pageLoaded && (
+          <div style={styles.footer}>
+            <button
+              onClick={() => window.open("mailto:hello@logtree.co", "_blank")}
+              style={styles.contactUs}
+              className="contactUsBtn"
+            >
+              Contact us
+            </button>
+            <button
+              onClick={() =>
+                window.open("https://twitter.com/uselogtree", "_blank")
+              }
+              style={styles.twitterBtn}
+            >
+              <img src={TwitterIcon} style={styles.twitterIcon} />
+            </button>
+            <label style={styles.copyright}>© 2023 Logtree, LLC</label>
+          </div>
+        )}
       </div>
     </>
   );
