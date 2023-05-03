@@ -29,7 +29,7 @@ export const DeleteProgressBar = ({
     }
     return () => {
       if (timeout) {
-        setIsVisibleAndAnimating(false);
+        clearTimeout(timeout);
       }
     };
   }, [isMouseDown, shouldShowAsDeleted]);
