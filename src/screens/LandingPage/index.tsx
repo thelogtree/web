@@ -548,7 +548,7 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: isMobile ? `calc(100vh - 630px)` : `calc(100vh - 600px)`,
+    paddingTop: isMobile ? `calc(100vh - 630px)` : 230,
   },
   easySetupDesc: {
     paddingTop: 20,
@@ -560,7 +560,7 @@ const styles: StylesType = {
   gridTitle: {
     fontWeight: 700,
     fontSize: isMobile ? 25 : 38,
-    paddingTop: isMobile ? `calc(100vh - 630px)` : `calc(100vh - 600px)`,
+    paddingTop: isMobile ? `calc(100vh - 630px)` : 230,
     textAlign: "center",
     background: "linear-gradient(268.45deg, #000000 30.54%, #303030 60.79%)",
     WebkitBackgroundClip: "text",
@@ -806,7 +806,7 @@ const styles: StylesType = {
   usedByTitle: {
     fontWeight: 700,
     fontSize: isMobile ? 25 : 38,
-    paddingTop: isMobile ? `calc(100vh - 630px)` : `calc(100vh - 600px)`,
+    paddingTop: isMobile ? `calc(100vh - 630px)` : 230,
     textAlign: "center",
     background: "linear-gradient(268.45deg, #000000 30.54%, #303030 60.79%)",
     WebkitBackgroundClip: "text",
