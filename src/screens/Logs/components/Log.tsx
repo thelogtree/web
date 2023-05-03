@@ -60,13 +60,19 @@ export const Log = ({ log }: Props) => {
   const copyText = useMemo(() => {
     if (shouldShowAsDeleted) {
       return "";
-    } else if (isMouseDown) {
-      return "Deleting";
     } else if (justCopied) {
       return "Copied!";
+    } else if (isDeleteBarVisibleAndAnimating && isMouseDown) {
+      return "Deleting";
     }
     return isHovering ? "Click to copy, hold to delete" : "";
-  }, [justCopied, isHovering, shouldShowAsDeleted, isMouseDown]);
+  }, [
+    justCopied,
+    isHovering,
+    shouldShowAsDeleted,
+    isDeleteBarVisibleAndAnimating,
+    isMouseDown,
+  ]);
 
   const textToCopy = useMemo(() => {
     return canCopyText ? `${formattedString}\n${log.content}` : "";
