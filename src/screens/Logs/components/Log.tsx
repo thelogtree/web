@@ -188,7 +188,6 @@ const styles: StylesType = {
     color: Colors.gray,
     fontSize: 12,
     paddingBottom: 6,
-    flex: 3,
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
@@ -198,7 +197,7 @@ const styles: StylesType = {
     color: Colors.gray,
     fontSize: 12,
     paddingBottom: 6,
-    flex: 1,
+    textAlign: "right",
   },
   copyBtn: {
     outline: "none",
