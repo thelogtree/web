@@ -591,7 +591,7 @@ const styles: StylesType = {
     justifyContent: "center",
     alignItems: "flex-start",
     flex: 3,
-    maxWidth: isMobile ? "90%" : 300,
+    maxWidth: isMobile ? "75%" : 300,
     marginTop: isMobile ? 60 : 0,
     marginRight: isMobile ? 0 : 180,
   },
