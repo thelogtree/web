@@ -163,4 +163,8 @@ export const organization = {
       websiteUrl,
       description,
     }),
+  deleteLog: (organizationId: string, logId: string) =>
+    axios.post(routeUrl + `/${organizationId}/delete-log`, {
+      logId,
+    }),
 };

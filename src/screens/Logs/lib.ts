@@ -487,3 +487,57 @@ export const useExternalLinkForLog = (log: FrontendLog) => {
 
   return url;
 };
+
+export const SECONDS_TO_DELETE_LOG = 3;
+export const useDeleteLog = (logId: string) => {
+  const organization = useSelector(getOrganization);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
+  const shouldShowAsDeleted = isDeleted || isLoading;
+
+  useEffect(() => {
+    let timeout;
+    if (isMouseDown) {
+      timeout = setTimeout(() => {
+        _deleteLog();
+      }, SECONDS_TO_DELETE_LOG * 1000);
+    }
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [isMouseDown]);
+
+  const _deleteLog = async () => {
+    if (isLoading || isDeleted) {
+      return;
+    }
+    try {
+      setIsLoading(true);
+      await Api.organization.deleteLog(organization!._id.toString(), logId);
+      setIsDeleted(true);
+    } catch (e) {
+      showGenericErrorAlert(e);
+    }
+    setIsLoading(false);
+  };
+
+  const onMouseDown = () => {
+    if (!isLoading && !isDeleted) {
+      setIsMouseDown(true);
+    }
+  };
+
+  const onMouseUp = () => {
+    setIsMouseDown(false);
+  };
+
+  return {
+    shouldShowAsDeleted,
+    onMouseDown,
+    isMouseDown,
+    onMouseUp,
+  };
+};
