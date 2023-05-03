@@ -574,7 +574,7 @@ const styles: StylesType = {
     textAlign: isMobile ? "center" : "left",
     lineHeight: 1.4,
     fontWeight: 300,
-    width: isMobile ? "90%" : "85%",
+    width: isMobile ? "93%" : "85%",
   },
   exampleContainer: {
     display: "flex",
