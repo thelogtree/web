@@ -12,6 +12,7 @@ import { Colors } from "src/utils/colors";
 import { showGenericErrorAlert } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 import BackArrowIcon from "src/assets/backArrow.png";
+import LockIcon from "src/assets/grayLock.png";
 
 import {
   IntegrationMap,
@@ -114,7 +115,14 @@ export const ConnectNewIntegration = ({
       }}
     >
       <div style={styles.container}>
-        <label style={styles.title}>{title}</label>
+        <label
+          style={{
+            ...styles.title,
+            ...(selectedIntegration && { paddingBottom: 8 }),
+          }}
+        >
+          {title}
+        </label>
         {!selectedIntegration && !integrationsToConnectTo.length ? (
           <span style={styles.contactUsText}>
             <a href="mailto:hello@logtree.co" style={styles.contactUsLink}>
@@ -133,6 +141,9 @@ export const ConnectNewIntegration = ({
         )}
         {selectedIntegration ? (
           <>
+            <label style={styles.helpDescription}>
+              {IntegrationMap[selectedIntegration].helpDescription}
+            </label>
             {keyInputs.map((keyInput, i) => (
               <input
                 key={i}
@@ -142,6 +153,12 @@ export const ConnectNewIntegration = ({
                 placeholder={keyTypePrettyNameMap[keyInput.type]}
               />
             ))}
+            <div style={styles.encryptionContainer}>
+              <img src={LockIcon} style={styles.icon} />
+              <label style={styles.encryptedMessage}>
+                This information will be securely encrypted.
+              </label>
+            </div>
           </>
         ) : (
           <Grid style={styles.gridContainer}>
@@ -254,5 +271,28 @@ const styles: StylesType = {
     textDecoration: "underline",
     fontWeight: 500,
     color: Colors.darkerGray,
+  },
+  encryptedMessage: {
+    fontSize: 12,
+    color: Colors.darkerGray,
+    paddingLeft: 4,
+  },
+  helpDescription: {
+    fontSize: 12,
+    width: "85%",
+    color: Colors.darkerGray,
+    textAlign: "center",
+    paddingBottom: 50,
+  },
+  encryptionContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    width: "100%",
+  },
+  icon: {
+    width: 15,
+    height: 15,
   },
 };

@@ -11,6 +11,7 @@ import {
 type IntegrationMapValue = {
   image: any;
   prettyName: string;
+  helpDescription: string;
   keyTypesNeeded: keyTypeEnum[];
 };
 
@@ -20,6 +21,8 @@ export const IntegrationMap: {
   sentry: {
     image: SentryLogo,
     prettyName: "Sentry",
+    helpDescription:
+      "You can get an Auth Token in Sentry by going to User Settings > Auth Tokens > Create New Token.",
     keyTypesNeeded: [keyTypeEnum.AuthToken],
   },
 };
