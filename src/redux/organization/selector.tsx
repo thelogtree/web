@@ -41,3 +41,9 @@ export const getSidebarWidth = createSelector(
   (organizationReducer: OrganizationReducerType) =>
     organizationReducer.sidebarWidth
 );
+
+export const getIntegrations = createSelector(
+  [getOrganizationReducer],
+  (organizationReducer: OrganizationReducerType) =>
+    organizationReducer.integrations
+);

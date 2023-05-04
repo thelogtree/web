@@ -20,6 +20,7 @@ import { getSidebarWidth } from "./redux/organization/selector";
 import { TermsOfServiceRenderer } from "./screens/Policies/TermsOfServiceRenderer";
 import { PrivacyPolicyRenderer } from "./screens/Policies/PrivacyPolicyRenderer";
 import { LandingPage } from "./screens/LandingPage";
+import { IntegrationsScreen } from "./screens/Integrations";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -73,6 +74,10 @@ export const RouteManager = () => {
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/insights`}
             component={InsightsScreen}
+          />
+          <Route
+            path={`${ORG_ROUTE_PREFIX}/:slug/integrations`}
+            component={IntegrationsScreen}
           />
           <Route path="/invite/:slug/:id" component={InviteScreen} />
           <Route

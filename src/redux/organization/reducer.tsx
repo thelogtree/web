@@ -1,6 +1,7 @@
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import { OrganizationActionsIndex } from "./action";
 import {
+  IntegrationDocument,
   OrganizationDocument,
   RuleDocument,
   UserDocument,
@@ -15,6 +16,7 @@ export type OrganizationReducerType = {
   favoriteFolderPaths: string[];
   rules: RuleDocument[];
   sidebarWidth: number;
+  integrations: IntegrationDocument[];
 };
 
 const initialState: OrganizationReducerType = {
@@ -25,6 +27,7 @@ const initialState: OrganizationReducerType = {
   favoriteFolderPaths: [],
   rules: [],
   sidebarWidth: isMobile ? 0 : 240,
+  integrations: [],
 };
 
 export const organizationReducer = (
@@ -46,6 +49,8 @@ export const organizationReducer = (
       return { ...state, rules: action.rules };
     case "SET_SIDEBAR_WIDTH":
       return { ...state, sidebarWidth: action.sidebarWidth };
+    case "SET_INTEGRATIONS":
+      return { ...state, integrations: action.integrations };
     default:
       return state;
   }

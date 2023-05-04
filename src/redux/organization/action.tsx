@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/react";
 import {
+  IntegrationDocument,
   OrganizationDocument,
   RuleDocument,
   UserDocument,
@@ -26,6 +27,8 @@ const SET_FAVORITE_FOLDER_PATHS = "SET_FAVORITE_FOLDER_PATHS";
 type SET_FAVORITE_FOLDER_PATHS = typeof SET_FAVORITE_FOLDER_PATHS;
 const SET_RULES = "SET_RULES";
 type SET_RULES = typeof SET_RULES;
+const SET_INTEGRATIONS = "SET_INTEGRATIONS";
+type SET_INTEGRATIONS = typeof SET_INTEGRATIONS;
 
 type ISetSidebarWidth = {
   type: SET_SIDEBAR_WIDTH;
@@ -96,6 +99,17 @@ export const setRules = (rules: RuleDocument[]): ISetRules => ({
   rules,
 });
 
+type ISetIntegrations = {
+  type: SET_INTEGRATIONS;
+  integrations: IntegrationDocument[];
+};
+export const setIntegrations = (
+  integrations: IntegrationDocument[]
+): ISetIntegrations => ({
+  type: SET_INTEGRATIONS,
+  integrations,
+});
+
 // actions identifiable by the reducer
 export type OrganizationActionsIndex =
   | ISetOrganization
@@ -104,7 +118,8 @@ export type OrganizationActionsIndex =
   | ISetOrganizationMembers
   | ISetFavoriteFolderPaths
   | ISetRules
-  | ISetSidebarWidth;
+  | ISetSidebarWidth
+  | ISetIntegrations;
 
 // api-related actions
 export const useFetchMyOrganization = () => {
@@ -254,6 +269,36 @@ export const useFetchMyRules = () => {
     } catch (e) {
       Sentry.captureException(e);
       dispatch(setRules([]));
+    }
+    setIsFetching(false);
+    return wasSuccessful;
+  };
+
+  return { fetch, isFetching };
+};
+
+export const useFetchIntegrations = (
+  overrideInitialLoadingStateTo?: boolean
+) => {
+  const dispatch = useDispatch();
+  const organization = useSelector(getOrganization);
+  const [isFetching, setIsFetching] = useState<boolean>(
+    overrideInitialLoadingStateTo || false
+  );
+
+  const fetch = async () => {
+    let wasSuccessful = false;
+    try {
+      setIsFetching(true);
+      const res = await Api.organization.getIntegrations(
+        organization!._id.toString()
+      );
+      const { integrations } = res.data;
+      dispatch(setIntegrations(integrations));
+      wasSuccessful = true;
+    } catch (e) {
+      Sentry.captureException(e);
+      dispatch(setIntegrations([]));
     }
     setIsFetching(false);
     return wasSuccessful;

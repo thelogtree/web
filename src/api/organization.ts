@@ -1,10 +1,12 @@
 import {
   comparisonTypeEnum,
+  integrationTypeEnum,
   notificationTypeEnum,
   orgPermissionLevel,
 } from "logtree-types";
 import axios from "../utils/axios";
 import moment from "moment";
+import { KeyInput } from "src/screens/Integrations/components/ConnectNewIntegration";
 
 const routeUrl = "/organization";
 
@@ -166,5 +168,20 @@ export const organization = {
   deleteLog: (organizationId: string, logId: string) =>
     axios.post(routeUrl + `/${organizationId}/delete-log`, {
       logId,
+    }),
+  getIntegrations: (organizationId: string) =>
+    axios.get(routeUrl + `/${organizationId}/integrations`),
+  addIntegration: (
+    organizationId: string,
+    keys: KeyInput[],
+    type: integrationTypeEnum
+  ) =>
+    axios.post(routeUrl + `/${organizationId}/integration`, {
+      keys,
+      type,
+    }),
+  deleteIntegration: (organizationId: string, integrationId: string) =>
+    axios.post(routeUrl + `/${organizationId}/delete-integration`, {
+      integrationId,
     }),
 };

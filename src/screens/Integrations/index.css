@@ -1,0 +1,9 @@
+.integrationToConnect {
+  border: none;
+}
+
+.integrationToConnect:hover {
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(206, 206, 206);
+}

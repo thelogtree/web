@@ -51,7 +51,7 @@ export const GenerateInviteLinkButton = () => {
         <label
           style={{
             ...styles.inviteMemberLbl,
-            ...(isLoading ? { cursor: "auto" } : {}),
+            ...(isLoading ? { cursor: "default" } : {}),
           }}
         >
           Send invite
@@ -63,24 +63,25 @@ export const GenerateInviteLinkButton = () => {
 
 const styles: StylesType = {
   container: {
-    display: "flex",
-    flexDirection: "column",
-    width: 140,
-    height: 35,
     outline: "none",
     border: "none",
+    backgroundColor: Colors.white,
+    color: Colors.black,
+    borderRadius: 30,
+    paddingTop: 8,
+    paddingBottom: 8,
+    width: 122,
     cursor: "pointer",
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: Colors.black,
-    borderRadius: 8,
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: Colors.white,
   },
   inviteMemberLbl: {
     cursor: "pointer",
     fontWeight: 500,
-    color: Colors.black,
+    fontSize: 14,
   },
 };
