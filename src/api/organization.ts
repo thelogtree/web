@@ -1,4 +1,5 @@
 import {
+  IntegrationDocument,
   comparisonTypeEnum,
   integrationTypeEnum,
   notificationTypeEnum,
@@ -183,5 +184,14 @@ export const organization = {
   deleteIntegration: (organizationId: string, integrationId: string) =>
     axios.post(routeUrl + `/${organizationId}/delete-integration`, {
       integrationId,
+    }),
+  updateIntegration: (
+    organizationId: string,
+    integrationId: string,
+    fieldsToUpdate: Partial<IntegrationDocument>
+  ) =>
+    axios.put(routeUrl + `/${organizationId}/integration`, {
+      integrationId,
+      ...fieldsToUpdate,
     }),
 };
