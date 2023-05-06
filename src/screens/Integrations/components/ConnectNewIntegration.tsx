@@ -117,78 +117,85 @@ export const ConnectNewIntegration = ({
       }}
     >
       <div style={styles.container}>
-        <label
-          style={{
-            ...styles.title,
-            ...(selectedIntegration && { paddingBottom: 8 }),
-          }}
-        >
-          {title}
-        </label>
-        {!selectedIntegration && !connectableIntegrations.length ? (
-          <span style={styles.contactUsText}>
-            <a href="mailto:hello@logtree.co" style={styles.contactUsLink}>
-              Contact us
-            </a>{" "}
-            to request a new integration.
-          </span>
-        ) : null}
-        {selectedIntegration && (
-          <button
-            style={styles.chooseDifferentIntegrationBtn}
-            onClick={() => setSelectedIntegration(null)}
-          >
-            <img src={BackArrowIcon} style={styles.backIcon} />
-          </button>
-        )}
-        {selectedIntegration ? (
+        {!selectedIntegration || keyInputs.length ? ( // this conditional helps avoid a glitchy feel
           <>
-            <label style={styles.helpDescription}>
-              {IntegrationsToConnectToMap[selectedIntegration].helpDescription}
+            <label
+              style={{
+                ...styles.title,
+                ...(selectedIntegration && { paddingBottom: 8 }),
+              }}
+            >
+              {title}
             </label>
-            {keyInputs.map((keyInput, i) => (
-              <input
-                key={i}
-                style={styles.keyInput}
-                value={keyInput.plaintextValue}
-                onChange={(e) => _changeKeyInput(e.target.value, i)}
-                placeholder={keyTypePrettyNameMap[keyInput.type]}
-              />
-            ))}
-            <div style={styles.encryptionContainer}>
-              <img src={LockIcon} style={styles.icon} />
-              <label style={styles.encryptedMessage}>
-                This information will be securely encrypted.
-              </label>
-            </div>
+            {!selectedIntegration && !connectableIntegrations.length ? (
+              <span style={styles.contactUsText}>
+                <a href="mailto:hello@logtree.co" style={styles.contactUsLink}>
+                  Contact us
+                </a>{" "}
+                to request a new integration.
+              </span>
+            ) : null}
+            {selectedIntegration && (
+              <button
+                style={styles.chooseDifferentIntegrationBtn}
+                onClick={() => setSelectedIntegration(null)}
+              >
+                <img src={BackArrowIcon} style={styles.backIcon} />
+              </button>
+            )}
+            {selectedIntegration ? (
+              <>
+                <label style={styles.helpDescription}>
+                  {
+                    IntegrationsToConnectToMap[selectedIntegration]
+                      .helpDescription
+                  }
+                </label>
+                {keyInputs.map((keyInput, i) => (
+                  <input
+                    key={i}
+                    style={styles.keyInput}
+                    value={keyInput.plaintextValue}
+                    onChange={(e) => _changeKeyInput(e.target.value, i)}
+                    placeholder={keyTypePrettyNameMap[keyInput.type]}
+                  />
+                ))}
+                <div style={styles.encryptionContainer}>
+                  <img src={LockIcon} style={styles.icon} />
+                  <label style={styles.encryptedMessage}>
+                    This information will be securely encrypted.
+                  </label>
+                </div>
+              </>
+            ) : (
+              <Grid style={styles.gridContainer}>
+                <Row>
+                  <Col xs={3}>
+                    {connectableIntegrations.map((integrationKey) => {
+                      const integration =
+                        IntegrationsToConnectToMap[integrationKey];
+                      return (
+                        <button
+                          style={styles.integrationBtn}
+                          className="integrationToConnect"
+                          onClick={() => setSelectedIntegration(integrationKey)}
+                        >
+                          <img
+                            src={integration.image}
+                            style={styles.integrationImg}
+                          />
+                          <label style={styles.integrationName}>
+                            {integration.prettyName}
+                          </label>
+                        </button>
+                      );
+                    })}
+                  </Col>
+                </Row>
+              </Grid>
+            )}
           </>
-        ) : (
-          <Grid style={styles.gridContainer}>
-            <Row>
-              <Col xs={3}>
-                {connectableIntegrations.map((integrationKey) => {
-                  const integration =
-                    IntegrationsToConnectToMap[integrationKey];
-                  return (
-                    <button
-                      style={styles.integrationBtn}
-                      className="integrationToConnect"
-                      onClick={() => setSelectedIntegration(integrationKey)}
-                    >
-                      <img
-                        src={integration.image}
-                        style={styles.integrationImg}
-                      />
-                      <label style={styles.integrationName}>
-                        {integration.prettyName}
-                      </label>
-                    </button>
-                  );
-                })}
-              </Col>
-            </Row>
-          </Grid>
-        )}
+        ) : null}
       </div>
     </Modal>
   );
