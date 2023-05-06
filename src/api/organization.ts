@@ -172,6 +172,8 @@ export const organization = {
     }),
   getIntegrations: (organizationId: string) =>
     axios.get(routeUrl + `/${organizationId}/integrations`),
+  getConnectableIntegrations: (organizationId: string) =>
+    axios.get(routeUrl + `/${organizationId}/connectable-integrations`),
   addIntegration: (
     organizationId: string,
     keys: KeyInput[],

@@ -47,3 +47,9 @@ export const getIntegrations = createSelector(
   (organizationReducer: OrganizationReducerType) =>
     organizationReducer.integrations
 );
+
+export const getConnectableIntegrations = createSelector(
+  [getOrganizationReducer],
+  (organizationReducer: OrganizationReducerType) =>
+    organizationReducer.connectableIntegrations
+);

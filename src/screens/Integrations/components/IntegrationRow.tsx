@@ -4,10 +4,10 @@ import { Api } from "src/api";
 import { useFetchIntegrations } from "src/redux/actionIndex";
 import { showGenericErrorAlert } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
-import { IntegrationMap } from "../lib";
 import TrashIcon from "src/assets/redTrash.png";
 import Swal from "sweetalert2";
 import { Colors } from "src/utils/colors";
+import { IntegrationsToConnectToMap } from "../integrationsToConnectTo";
 
 type Props = {
   integration: IntegrationDocument;
@@ -15,7 +15,8 @@ type Props = {
 };
 
 export const IntegrationRow = ({ integration, isFirst }: Props) => {
-  const integrationDisplayDetails = IntegrationMap[integration.type];
+  const integrationDisplayDetails =
+    IntegrationsToConnectToMap[integration.type];
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { fetch: refetchIntegrations } = useFetchIntegrations();
 

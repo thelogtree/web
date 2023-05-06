@@ -4,6 +4,7 @@ import {
   OrganizationDocument,
   RuleDocument,
   UserDocument,
+  integrationTypeEnum,
 } from "logtree-types";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +30,8 @@ const SET_RULES = "SET_RULES";
 type SET_RULES = typeof SET_RULES;
 const SET_INTEGRATIONS = "SET_INTEGRATIONS";
 type SET_INTEGRATIONS = typeof SET_INTEGRATIONS;
+const SET_CONNECTABLE_INTEGRATIONS = "SET_CONNECTABLE_INTEGRATIONS";
+type SET_CONNECTABLE_INTEGRATIONS = typeof SET_CONNECTABLE_INTEGRATIONS;
 
 type ISetSidebarWidth = {
   type: SET_SIDEBAR_WIDTH;
@@ -110,6 +113,17 @@ export const setIntegrations = (
   integrations,
 });
 
+type ISetConnectableIntegrations = {
+  type: SET_CONNECTABLE_INTEGRATIONS;
+  integrationTypes: integrationTypeEnum[];
+};
+export const setConnectableIntegrations = (
+  integrationTypes: integrationTypeEnum[]
+): ISetConnectableIntegrations => ({
+  type: SET_CONNECTABLE_INTEGRATIONS,
+  integrationTypes,
+});
+
 // actions identifiable by the reducer
 export type OrganizationActionsIndex =
   | ISetOrganization
@@ -119,7 +133,8 @@ export type OrganizationActionsIndex =
   | ISetFavoriteFolderPaths
   | ISetRules
   | ISetSidebarWidth
-  | ISetIntegrations;
+  | ISetIntegrations
+  | ISetConnectableIntegrations;
 
 // api-related actions
 export const useFetchMyOrganization = () => {
@@ -293,12 +308,18 @@ export const useFetchIntegrations = (
       const res = await Api.organization.getIntegrations(
         organization!._id.toString()
       );
+      const resConnectable = await Api.organization.getConnectableIntegrations(
+        organization!._id.toString()
+      );
       const { integrations } = res.data;
+      const { integrations: connectableIntegrations } = resConnectable.data;
       dispatch(setIntegrations(integrations));
+      dispatch(setConnectableIntegrations(connectableIntegrations));
       wasSuccessful = true;
     } catch (e) {
       Sentry.captureException(e);
       dispatch(setIntegrations([]));
+      setConnectableIntegrations([]);
     }
     setIsFetching(false);
     return wasSuccessful;

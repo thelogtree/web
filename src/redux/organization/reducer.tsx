@@ -5,6 +5,7 @@ import {
   OrganizationDocument,
   RuleDocument,
   UserDocument,
+  integrationTypeEnum,
 } from "logtree-types";
 import { isMobile } from "react-device-detect";
 
@@ -17,6 +18,7 @@ export type OrganizationReducerType = {
   rules: RuleDocument[];
   sidebarWidth: number;
   integrations: IntegrationDocument[];
+  connectableIntegrations: integrationTypeEnum[];
 };
 
 const initialState: OrganizationReducerType = {
@@ -28,6 +30,7 @@ const initialState: OrganizationReducerType = {
   rules: [],
   sidebarWidth: isMobile ? 0 : 240,
   integrations: [],
+  connectableIntegrations: [],
 };
 
 export const organizationReducer = (
@@ -51,6 +54,8 @@ export const organizationReducer = (
       return { ...state, sidebarWidth: action.sidebarWidth };
     case "SET_INTEGRATIONS":
       return { ...state, integrations: action.integrations };
+    case "SET_CONNECTABLE_INTEGRATIONS":
+      return { ...state, connectableIntegrations: action.integrationTypes };
     default:
       return state;
   }

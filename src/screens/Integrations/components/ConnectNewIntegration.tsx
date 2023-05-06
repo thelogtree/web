@@ -7,18 +7,18 @@ import { Col, Grid, Row } from "react-flexbox-grid";
 import { useSelector } from "react-redux";
 import { Api } from "src/api";
 import { useFetchIntegrations } from "src/redux/actionIndex";
-import { getOrganization } from "src/redux/organization/selector";
+import {
+  getConnectableIntegrations,
+  getOrganization,
+} from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { showGenericErrorAlert } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 import BackArrowIcon from "src/assets/backArrow.png";
 import LockIcon from "src/assets/grayLock.png";
 
-import {
-  IntegrationMap,
-  keyTypePrettyNameMap,
-  useIntegrationMapKeysToConnectTo,
-} from "../lib";
+import { keyTypePrettyNameMap } from "../lib";
+import { IntegrationsToConnectToMap } from "../integrationsToConnectTo";
 
 type Props = {
   isModalOpen: boolean;
@@ -38,28 +38,30 @@ export const ConnectNewIntegration = ({
   const [selectedIntegration, setSelectedIntegration] =
     useState<integrationTypeEnum | null>(null);
   const [keyInputs, setKeyInputs] = useState<KeyInput[]>([]);
-  const integrationsToConnectTo = useIntegrationMapKeysToConnectTo();
+  const connectableIntegrations = useSelector(getConnectableIntegrations);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { fetch: refetchIntegrations } = useFetchIntegrations();
 
   const title = useMemo(() => {
     if (selectedIntegration) {
       return `Enter your ${keyInputs.length === 1 ? "key" : "keys"} for ${
-        IntegrationMap[selectedIntegration].prettyName
+        IntegrationsToConnectToMap[selectedIntegration].prettyName
       }`;
-    } else if (integrationsToConnectTo.length) {
+    } else if (connectableIntegrations.length) {
       return "Select an integration to connect to";
     }
     return "You have already connected to all of the available integrations.";
-  }, [selectedIntegration, keyInputs.length, integrationsToConnectTo.length]);
+  }, [selectedIntegration, keyInputs.length, connectableIntegrations.length]);
 
   useEffect(() => {
     if (selectedIntegration) {
       setKeyInputs(
-        IntegrationMap[selectedIntegration].keyTypesNeeded.map((type) => ({
-          type,
-          plaintextValue: "",
-        }))
+        IntegrationsToConnectToMap[selectedIntegration].keyTypesNeeded.map(
+          (type) => ({
+            type,
+            plaintextValue: "",
+          })
+        )
       );
     } else {
       setKeyInputs([]);
@@ -123,7 +125,7 @@ export const ConnectNewIntegration = ({
         >
           {title}
         </label>
-        {!selectedIntegration && !integrationsToConnectTo.length ? (
+        {!selectedIntegration && !connectableIntegrations.length ? (
           <span style={styles.contactUsText}>
             <a href="mailto:hello@logtree.co" style={styles.contactUsLink}>
               Contact us
@@ -142,7 +144,7 @@ export const ConnectNewIntegration = ({
         {selectedIntegration ? (
           <>
             <label style={styles.helpDescription}>
-              {IntegrationMap[selectedIntegration].helpDescription}
+              {IntegrationsToConnectToMap[selectedIntegration].helpDescription}
             </label>
             {keyInputs.map((keyInput, i) => (
               <input
@@ -164,8 +166,9 @@ export const ConnectNewIntegration = ({
           <Grid style={styles.gridContainer}>
             <Row>
               <Col xs={3}>
-                {integrationsToConnectTo.map((integrationKey) => {
-                  const integration = IntegrationMap[integrationKey];
+                {connectableIntegrations.map((integrationKey) => {
+                  const integration =
+                    IntegrationsToConnectToMap[integrationKey];
                   return (
                     <button
                       style={styles.integrationBtn}
