@@ -10,11 +10,11 @@ import { StylesType } from "src/utils/styles";
 import { ApiTab } from "./components/ApiTab";
 import { FavoritesTab } from "./components/FavoritesTab";
 import { Folders } from "./components/Folders";
-import { GlobalSearchTab } from "./components/GlobalSearchTab";
 import { InsightsTab } from "./components/InsightsTab";
 import { SignedInOrganization } from "./components/SignedInOrganization";
 import { Resizer } from "./components/Resizer";
 import { SupportSearchTab } from "./components/SupportSearchTab";
+import { IntegrationsTab } from "./components/IntegrationsTab";
 
 export const Sidebar = () => {
   const sidebarWidth = useSelector(getSidebarWidth);
@@ -27,8 +27,8 @@ export const Sidebar = () => {
         <ApiTab />
         <FavoritesTab />
         <InsightsTab />
+        <IntegrationsTab />
         <SupportSearchTab />
-        {/* <GlobalSearchTab /> */}
         <Folders />
       </div>
       <Resizer />

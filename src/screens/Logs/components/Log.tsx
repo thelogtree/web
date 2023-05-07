@@ -21,6 +21,8 @@ import { OpenExternalLink } from "./OpenExternalLink";
 import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
 import { DeleteProgressBar } from "./DeleteProgressBar";
 import { DeletedLogRedBox } from "./DeletedLogRedBox";
+import { IntegrationsTab } from "src/sharedComponents/Sidebar/components/IntegrationsTab";
+import { simplifiedLogTagEnum } from "logtree-types";
 
 type Props = {
   log: FrontendLog;
@@ -155,7 +157,11 @@ export const Log = ({ log }: Props) => {
       >
         <div style={styles.copyBtn}>
           <pre
-            style={styles.pre}
+            style={{
+              ...styles.pre,
+              ...(log.tag === simplifiedLogTagEnum.Error &&
+                styles.errorTaggedLog),
+            }}
             onMouseEnter={_onMouseEnter}
             onMouseLeave={_onMouseLeave}
             onMouseDown={onMouseDown}
@@ -192,6 +198,10 @@ const styles: StylesType = {
     textAlign: "left",
     whiteSpace: "pre-wrap",
     position: "relative",
+  },
+  errorTaggedLog: {
+    backgroundColor: Colors.veryLightRed,
+    borderColor: Colors.red,
   },
   leftSide: {
     color: Colors.gray,

@@ -18,6 +18,7 @@ import { useFetchFolders } from "src/redux/actionIndex";
 import moment from "moment-timezone";
 import * as Sentry from "@sentry/react";
 import { useHistory, useLocation } from "react-router-dom";
+import { simplifiedLogTagEnum } from "logtree-types";
 
 export const useFindFrontendFolderFromUrl = () => {
   const folders = useSelector(getFolders);
@@ -64,6 +65,7 @@ export type FrontendLog = {
   folderFullPath?: string;
   referenceId?: string;
   externalLink?: string;
+  tag?: simplifiedLogTagEnum;
 };
 
 const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 50 because the backend only returns 50

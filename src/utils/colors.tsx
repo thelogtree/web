@@ -10,6 +10,7 @@ export const Colors = {
   darkerGray: "#757575",
   darkGray: "#565656",
   black: "#000000",
+  veryLightRed: "#ffe3e3",
   red: "#FF4C4C",
   blue: "#00A3FF",
   hoverBlue: "#2ab1ff",
