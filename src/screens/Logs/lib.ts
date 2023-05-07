@@ -71,6 +71,7 @@ const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 50 because the b
 export const useLogs = (folderId?: string) => {
   const history = useHistory();
   const organization = useSelector(getOrganization);
+  const isSupportScreen = useIsSupportLogsScreen();
   const isFavoritesScreen = useIsFavoriteLogsScreen();
   const favoritesScreenHasUnread = useFavoritesFolderHasUnreadLogs();
   const isGlobalSearchScreen = useIsGlobalSearchScreen();
@@ -130,8 +131,11 @@ export const useLogs = (folderId?: string) => {
     if (!logs.length) {
       return [];
     }
-    if (!logs[0].folderId || (!isFavoritesScreen && !isGlobalSearchScreen)) {
-      // not favorites, return as-is
+    if (
+      !logs[0].folderId ||
+      (!isFavoritesScreen && !isGlobalSearchScreen && !isSupportScreen)
+    ) {
+      // looking inside a specific channel, return as-is
       return logs;
     }
     return logs.map((log) => {
@@ -154,8 +158,11 @@ export const useLogs = (folderId?: string) => {
     try {
       if (
         !organization ||
-        (!folderId && !isFavoritesScreen && !isGlobalSearchScreen) ||
-        (isGlobalSearchScreen && !query)
+        (!folderId &&
+          !isFavoritesScreen &&
+          !isGlobalSearchScreen &&
+          !isSupportScreen) ||
+        ((isGlobalSearchScreen || isSupportScreen) && !query)
       ) {
         return;
       }
@@ -185,14 +192,22 @@ export const useLogs = (folderId?: string) => {
 
       let fetchedLogs: FrontendLog[] = [];
       if (query) {
-        const res = await Api.organization.searchForLogs(
-          organization._id.toString(),
-          query,
-          folderId,
-          isFavoritesScreen
-        );
+        let res;
+        if (isSupportScreen) {
+          res = await Api.organization.getSupportLogs(
+            organization._id.toString(),
+            query
+          );
+        } else {
+          res = await Api.organization.searchForLogs(
+            organization._id.toString(),
+            query,
+            folderId,
+            isFavoritesScreen
+          );
+        }
         fetchedLogs = res.data.logs;
-      } else if (!isGlobalSearchScreen) {
+      } else if (!isGlobalSearchScreen && !isSupportScreen) {
         const res = await Api.organization.getLogs(
           organization._id.toString(),
           folderId,
@@ -244,6 +259,7 @@ export const useLogs = (folderId?: string) => {
   }, [
     isFavoritesScreen,
     isGlobalSearchScreen,
+    isSupportScreen,
     favoritedFolderPaths.length,
     JSON.stringify(logsIds),
   ]);
@@ -284,10 +300,10 @@ export const useLogs = (folderId?: string) => {
   }, [folderId]);
 
   useEffect(() => {
-    if (!query && isGlobalSearchScreen) {
+    if (!query && (isGlobalSearchScreen || isSupportScreen)) {
       setIsLoading(false);
     }
-  }, [isGlobalSearchScreen, query]);
+  }, [isGlobalSearchScreen, isSupportScreen, query]);
 
   return {
     logs,
@@ -312,6 +328,16 @@ export const useIsFavoriteLogsScreen = () => {
   }, [organization?._id, pathname]);
 
   return isFavoritesScreen;
+};
+
+export const useIsSupportLogsScreen = () => {
+  const organization = useSelector(getOrganization);
+  const pathname = usePathname();
+  const isSupportScreen = useMemo(() => {
+    return pathname.indexOf(`/org/${organization?.slug}/support`) === 0;
+  }, [organization?._id, pathname]);
+
+  return isSupportScreen;
 };
 
 export const useIsGlobalSearchScreen = () => {

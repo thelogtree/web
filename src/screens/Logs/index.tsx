@@ -1,7 +1,7 @@
 import { Tooltip } from "antd";
 import React, { useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { getFolders } from "src/redux/organization/selector";
+import { getFolders, getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { numberToNumberWithCommas } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
@@ -21,6 +21,7 @@ import {
 import { Rules } from "./components/Rules";
 
 export const LogsScreen = () => {
+  const organization = useSelector(getOrganization);
   const folders = useSelector(getFolders);
   const frontendFolder = useFindFrontendFolderFromUrl();
   const isFavoriteLogsScreen = useIsFavoriteLogsScreen();
@@ -67,7 +68,7 @@ export const LogsScreen = () => {
 
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
-      return "No logs from the last 14 days match your query.";
+      return `No logs from the last ${organization?.logRetentionInDays} days match your query.`;
     } else if (isDateFilterApplied && !logs.length) {
       return "No logs from this time period.";
     } else if (

@@ -21,6 +21,7 @@ import { TermsOfServiceRenderer } from "./screens/Policies/TermsOfServiceRendere
 import { PrivacyPolicyRenderer } from "./screens/Policies/PrivacyPolicyRenderer";
 import { LandingPage } from "./screens/LandingPage";
 import { IntegrationsScreen } from "./screens/Integrations";
+import { SupportLogsScreen } from "./screens/SupportLogs";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -66,6 +67,10 @@ export const RouteManager = () => {
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/favorites`}
             component={LogsScreen}
+          />
+          <Route
+            path={`${ORG_ROUTE_PREFIX}/:slug/support`}
+            component={SupportLogsScreen}
           />
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/search`}

@@ -14,6 +14,7 @@ import { GlobalSearchTab } from "./components/GlobalSearchTab";
 import { InsightsTab } from "./components/InsightsTab";
 import { SignedInOrganization } from "./components/SignedInOrganization";
 import { Resizer } from "./components/Resizer";
+import { SupportSearchTab } from "./components/SupportSearchTab";
 
 export const Sidebar = () => {
   const sidebarWidth = useSelector(getSidebarWidth);
@@ -26,7 +27,8 @@ export const Sidebar = () => {
         <ApiTab />
         <FavoritesTab />
         <InsightsTab />
-        <GlobalSearchTab />
+        <SupportSearchTab />
+        {/* <GlobalSearchTab /> */}
         <Folders />
       </div>
       <Resizer />

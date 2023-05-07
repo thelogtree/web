@@ -93,6 +93,12 @@ export const organization = {
       query,
       isFavorites,
     }),
+  getSupportLogs: (organizationId: string, query: string) =>
+    axios.get(routeUrl + `/${organizationId}/support-logs`, {
+      params: {
+        query,
+      },
+    }),
   deleteFolderAndEverythingInside: (organizationId: string, folderId: string) =>
     axios.post(routeUrl + `/${organizationId}/delete-folder`, {
       folderId,

@@ -7,11 +7,8 @@ import { Colors } from "src/utils/colors";
 import { SearchBar } from "../Logs/components/SearchBar";
 import { TopOfSearch } from "./components/TopOfSearch";
 import { HypeDescription } from "./components/HypeDescription";
-import { useSelector } from "react-redux";
-import { getOrganization } from "src/redux/organization/selector";
 
-export const GlobalSearchScreen = () => {
-  const organization = useSelector(getOrganization);
+export const SupportLogsScreen = () => {
   const { logs, numLogsInTotal, query, setQuery, isSearchQueued } = useLogs();
   const { query: urlQuery } = useSearchParams();
 
@@ -32,7 +29,7 @@ export const GlobalSearchScreen = () => {
 
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
-      return `No logs from the last ${organization?.logRetentionInDays} days match your query.`;
+      return "No logs match your query.";
     } else if (query) {
       return "There are no more results.";
     } else if (urlQuery) {
