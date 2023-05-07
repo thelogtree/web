@@ -8,7 +8,7 @@ type Props = {
 
 export const TopOfSearch = ({ numLogsText }: Props) => (
   <div style={styles.container}>
-    <label style={styles.title}>Support Search</label>
+    <label style={styles.title}>Global Search</label>
     <label style={styles.desc}>
       Use the search bar above to look for any logs across all your folders and
       channels.
