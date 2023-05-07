@@ -520,9 +520,13 @@ export const useDeleteLog = (logId: string) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
+  const isOnSupportScreen = useIsSupportLogsScreen();
   const shouldShowAsDeleted = isDeleted || isLoading;
 
   useEffect(() => {
+    if (isOnSupportScreen) {
+      return;
+    }
     let timeout;
     if (isMouseDown) {
       timeout = setTimeout(() => {
@@ -537,7 +541,7 @@ export const useDeleteLog = (logId: string) => {
   }, [isMouseDown]);
 
   const _deleteLog = async () => {
-    if (isLoading || isDeleted) {
+    if (isLoading || isDeleted || isOnSupportScreen) {
       return;
     }
     try {
@@ -551,13 +555,15 @@ export const useDeleteLog = (logId: string) => {
   };
 
   const onMouseDown = () => {
-    if (!isLoading && !isDeleted) {
+    if (!isLoading && !isDeleted && !isOnSupportScreen) {
       setIsMouseDown(true);
     }
   };
 
   const onMouseUp = () => {
-    setIsMouseDown(false);
+    if (!isOnSupportScreen) {
+      setIsMouseDown(false);
+    }
   };
 
   return {

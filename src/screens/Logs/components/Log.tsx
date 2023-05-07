@@ -7,6 +7,7 @@ import {
   useExternalLinkForLog,
   useIsFavoriteLogsScreen,
   useIsGlobalSearchScreen,
+  useIsSupportLogsScreen,
 } from "../lib";
 import moment from "moment-timezone";
 import { now, startCase } from "lodash";
@@ -28,6 +29,7 @@ type Props = {
 export const Log = ({ log }: Props) => {
   const history = useHistory();
   const organization = useSelector(getOrganization);
+  const isOnSupportScreen = useIsSupportLogsScreen();
   const isOnGlobalSearch = useIsGlobalSearchScreen();
   const isOnFavoritesScreen = useIsFavoriteLogsScreen();
   const { shouldShowAsDeleted, onMouseDown, onMouseUp, isMouseDown } =
@@ -36,7 +38,8 @@ export const Log = ({ log }: Props) => {
   const [justCopied, setJustCopied] = useState<boolean>(false);
   const [isDeleteBarVisibleAndAnimating, setIsDeleteBarVisibleAndAnimating] =
     useState<boolean>(false);
-  const canJumpToNewChannel = isOnGlobalSearch || isOnFavoritesScreen;
+  const canJumpToNewChannel =
+    isOnGlobalSearch || isOnFavoritesScreen || isOnSupportScreen;
   const canCopyText = !isDeleteBarVisibleAndAnimating && !shouldShowAsDeleted;
 
   const formattedString = useMemo(() => {
@@ -64,6 +67,8 @@ export const Log = ({ log }: Props) => {
       return "Copied!";
     } else if (isDeleteBarVisibleAndAnimating && isMouseDown) {
       return "Deleting";
+    } else if (isOnSupportScreen) {
+      return isHovering ? "Click to copy" : "";
     }
     return isHovering ? "Click to copy, hold to delete" : "";
   }, [
@@ -79,9 +84,7 @@ export const Log = ({ log }: Props) => {
   }, [log._id, canCopyText]);
 
   const _searchForReferenceId = () => {
-    history.push(
-      `/org/${organization!.slug}/search?query=id:${log.referenceId}`
-    );
+    history.push(`/org/${organization!.slug}/support?query=${log.referenceId}`);
   };
 
   const _goToOtherChannel = () => {
