@@ -2,23 +2,32 @@ import React from "react";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import SearchIcon from "src/assets/search.png";
+import { useIsSupportLogsScreen } from "../lib";
 
 type Props = {
   query: string;
   setQuery: (str: string) => void;
 };
 
-export const SearchBar = ({ query, setQuery }: Props) => (
-  <div style={styles.container}>
-    <img src={SearchIcon} style={styles.icon} />
-    <input
-      placeholder={`Search for logs that contain a specific word, phrase, or reference id (e.g. "id:the_id")`}
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-      style={styles.input}
-    />
-  </div>
-);
+export const SearchBar = ({ query, setQuery }: Props) => {
+  const isSupportScreen = useIsSupportLogsScreen();
+
+  return (
+    <div style={styles.container}>
+      <img src={SearchIcon} style={styles.icon} />
+      <input
+        placeholder={
+          isSupportScreen
+            ? "Search for a user's email"
+            : `Search for logs that contain a specific word, phrase, or reference id (e.g. "id:the_id")`
+        }
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        style={styles.input}
+      />
+    </div>
+  );
+};
 
 const styles: StylesType = {
   container: {
