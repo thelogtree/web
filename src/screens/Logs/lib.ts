@@ -66,6 +66,7 @@ export type FrontendLog = {
   referenceId?: string;
   externalLink?: string;
   tag?: simplifiedLogTagEnum;
+  sourceTitle?: string;
 };
 
 const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 50 because the backend only returns 50

@@ -10,9 +10,7 @@ import {
   useIsSupportLogsScreen,
 } from "../lib";
 import moment from "moment-timezone";
-import { now, startCase } from "lodash";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { sentenceCase } from "src/utils/helpers";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
 import { useHistory } from "react-router-dom";
@@ -21,7 +19,6 @@ import { OpenExternalLink } from "./OpenExternalLink";
 import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
 import { DeleteProgressBar } from "./DeleteProgressBar";
 import { DeletedLogRedBox } from "./DeletedLogRedBox";
-import { IntegrationsTab } from "src/sharedComponents/Sidebar/components/IntegrationsTab";
 import { simplifiedLogTagEnum } from "logtree-types";
 
 type Props = {
@@ -119,13 +116,18 @@ export const Log = ({ log }: Props) => {
       <div style={styles.top}>
         <div style={styles.leftSide}>
           <span>{modifiedFormattedString}</span>
-          <span
-            style={styles.folderFullPath}
-            onClick={_goToOtherChannel}
-            className={canJumpToNewChannel ? "logFolderPath" : undefined}
-          >
-            {log?.folderFullPath}
-          </span>
+          {log.folderFullPath ? (
+            <span
+              style={styles.folderFullPath}
+              onClick={_goToOtherChannel}
+              className={canJumpToNewChannel ? "logFolderPath" : undefined}
+            >
+              {log.folderFullPath}
+            </span>
+          ) : null}
+          {log.sourceTitle ? (
+            <span style={styles.sourceTitle}>{log.sourceTitle}</span>
+          ) : null}
           <OpenExternalLink log={log} />
           <span style={styles.copyText}>{copyText}</span>
           <DeleteProgressBar
@@ -230,6 +232,10 @@ const styles: StylesType = {
     textAlign: "left",
   },
   copyText: {
+    paddingLeft: 15,
+    fontWeight: 300,
+  },
+  sourceTitle: {
     paddingLeft: 15,
     fontWeight: 300,
   },
