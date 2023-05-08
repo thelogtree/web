@@ -37,7 +37,7 @@ export const HypeDescription = () => {
         <div style={styles.rightContainer}>
           <label style={styles.descLbl}>Powerful efficiency</label>
           <label style={styles.smallDescLbl}>
-            Search across all your folders and channels with one query.
+            Search across all your channels and integrations with one query.
           </label>
         </div>
       </div>

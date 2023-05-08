@@ -14,7 +14,7 @@ export const SupportLogsScreen = () => {
 
   const numLogsText = useMemo(() => {
     if (isSearchQueued) {
-      return "Fetching...";
+      return "Fetching...this may take a few seconds";
     } else if (query && logs.length === 1) {
       return "Showing 1 log that matches your query";
     } else if (query && logs.length) {
