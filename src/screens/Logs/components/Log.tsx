@@ -140,7 +140,9 @@ export const Log = ({ log }: Props) => {
         {log.referenceId && (
           <Tooltip
             title={
-              isOnGlobalSearch ? "" : "Click to do a Global Search on this ID"
+              isOnGlobalSearch || isOnSupportScreen
+                ? ""
+                : "Click to do a Global Search on this ID"
             }
           >
             <a
