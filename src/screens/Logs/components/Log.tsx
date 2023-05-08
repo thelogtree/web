@@ -147,8 +147,16 @@ export const Log = ({ log }: Props) => {
           >
             <a
               style={styles.rightSide}
-              onClick={isOnGlobalSearch ? undefined : _searchForReferenceId}
-              className={isOnGlobalSearch ? undefined : "referenceIdLink"}
+              onClick={
+                isOnGlobalSearch || isOnSupportScreen
+                  ? undefined
+                  : _searchForReferenceId
+              }
+              className={
+                isOnGlobalSearch || isOnSupportScreen
+                  ? undefined
+                  : "referenceIdLink"
+              }
             >
               id:{log.referenceId}
             </a>
