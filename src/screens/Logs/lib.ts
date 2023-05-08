@@ -326,7 +326,7 @@ export const useLogs = (folderId?: string) => {
   }, [isGlobalSearchScreen, isSupportScreen, query]);
 
   return {
-    logs,
+    logs: lastSearchCompletedWithQuery === query ? logs : [],
     numLogsInTotal,
     isLoading,
     attemptFetchingMoreResults,
