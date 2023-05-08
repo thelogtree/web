@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
+import { LOGS_ROUTE_PREFIX, SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
 import { Api } from "src/api";
 import {
   getFavoriteFolderPaths,
@@ -83,7 +83,11 @@ export const useLogs = (folderId?: string) => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const favoritedFolderPaths = useSelector(getFavoriteFolderPaths);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const queryParams = useSearchParams();
+  const urlQuery = queryParams.query || "";
+  const [hasSkippedFirstRender, setHasSkippedFirstRender] =
+    useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(!!urlQuery);
   const [logs, setLogs] = useState<FrontendLog[]>([]);
   const logsIds = useMemo(() => {
     return logs.map((logs) => logs._id);
@@ -98,12 +102,17 @@ export const useLogs = (folderId?: string) => {
     Date | undefined
   >(undefined);
   const [start, setStart] = useState<number>(0);
-  const { query: urlQuery } = useSearchParams();
-  const [query, setQuery] = useState<string>("");
-  const [isSearchQueued, setIsSearchQueued] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>(urlQuery);
+  const [lastSearchCompletedWithQuery, setLastSearchCompletedWithQuery] =
+    useState<string>("");
+  const [isSearchQueued, setIsSearchQueued] = useState<boolean>(!!urlQuery);
   const { fetch: refetchFolders, isFetching: isFetchingFolders } =
     useFetchFolders();
-
+  const shouldShowLoadingSigns = Boolean(
+    isLoading ||
+      isSearchQueued ||
+      (query && lastSearchCompletedWithQuery !== query)
+  );
   const attemptFetchingMoreResults = async () => {
     setStart(Math.min(logs.length, start + PAGINATION_RECORDS_INCREMENT));
   };
@@ -194,6 +203,7 @@ export const useLogs = (folderId?: string) => {
       }
 
       let fetchedLogs: FrontendLog[] = [];
+      let fetchedNumLogsInTotal: number = 0;
       if (query) {
         let res;
         if (isSupportScreen) {
@@ -219,10 +229,13 @@ export const useLogs = (folderId?: string) => {
           currentDateCeiling,
           currentDateFloor
         );
-        const fetchedNumLogsInTotal = res.data.numLogsInTotal;
+        fetchedNumLogsInTotal = res.data.numLogsInTotal;
         fetchedLogs = res.data.logs;
-        setNumLogsInTotal(fetchedNumLogsInTotal);
       }
+
+      setLastSearchCompletedWithQuery(query);
+
+      setNumLogsInTotal(fetchedNumLogsInTotal);
       const newLogsArr = _.uniqBy(
         (isFreshFetch ? [] : logs).concat(fetchedLogs),
         "_id"
@@ -299,7 +312,11 @@ export const useLogs = (folderId?: string) => {
   }, []);
 
   useEffect(() => {
-    setQuery("");
+    if (hasSkippedFirstRender) {
+      setQuery("");
+    } else {
+      setHasSkippedFirstRender(true);
+    }
   }, [folderId]);
 
   useEffect(() => {
@@ -320,6 +337,7 @@ export const useLogs = (folderId?: string) => {
     setLogsNoNewerThanDate,
     isDateFilterApplied,
     isFetchingFolders,
+    shouldShowLoadingSigns,
   };
 };
 
@@ -337,7 +355,9 @@ export const useIsSupportLogsScreen = () => {
   const organization = useSelector(getOrganization);
   const pathname = usePathname();
   const isSupportScreen = useMemo(() => {
-    return pathname.indexOf(`/org/${organization?.slug}/support`) === 0;
+    return (
+      pathname.indexOf(`/org/${organization?.slug}${SUPPORT_TOOL_SUFFIX}`) === 0
+    );
   }, [organization?._id, pathname]);
 
   return isSupportScreen;

@@ -1,19 +1,26 @@
 import React, { useMemo } from "react";
 import { useLogs } from "../Logs/lib";
 import { numberToNumberWithCommas, useSearchParams } from "src/utils/helpers";
-import { LogsList } from "../Logs/components/LogsList";
+import { LogsList } from "./components/LogsList";
 import { StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
-import { SearchBar } from "../Logs/components/SearchBar";
+import { SearchBar } from "./components/SearchBar";
 import { TopOfSearch } from "./components/TopOfSearch";
 import { HypeDescription } from "./components/HypeDescription";
 
 export const SupportLogsScreen = () => {
-  const { logs, numLogsInTotal, query, setQuery, isSearchQueued } = useLogs();
+  const {
+    logs,
+    numLogsInTotal,
+    query,
+    setQuery,
+    isSearchQueued,
+    shouldShowLoadingSigns,
+  } = useLogs();
   const { query: urlQuery } = useSearchParams();
 
   const numLogsText = useMemo(() => {
-    if (isSearchQueued) {
+    if (shouldShowLoadingSigns) {
       return "Fetching...this may take a few seconds";
     } else if (query && logs.length === 1) {
       return "Showing 1 log that matches your query";
@@ -25,7 +32,7 @@ export const SupportLogsScreen = () => {
       return "No results found.";
     }
     return "";
-  }, [numLogsInTotal, logs.length, query, isSearchQueued]);
+  }, [numLogsInTotal, logs.length, query, shouldShowLoadingSigns]);
 
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
@@ -47,8 +54,7 @@ export const SupportLogsScreen = () => {
           <hr style={styles.hr} />
         </div>
         <LogsList
-          isLoading={isSearchQueued}
-          isSearchQueued={isSearchQueued}
+          shouldShowLoadingSigns={shouldShowLoadingSigns}
           logs={logs}
           endOfFeedText={endOfFeedText}
         />

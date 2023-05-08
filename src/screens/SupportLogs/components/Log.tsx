@@ -1,93 +1,40 @@
+import { simplifiedLogTagEnum } from "logtree-types";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Colors } from "src/utils/colors";
-import { StylesType } from "src/utils/styles";
-import {
-  FrontendLog,
-  useDeleteLog,
-  useExternalLinkForLog,
-  useIsFavoriteLogsScreen,
-  useIsGlobalSearchScreen,
-  useIsSupportLogsScreen,
-} from "../lib";
-import moment from "moment-timezone";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
-import { useHistory } from "react-router-dom";
-import { Tooltip } from "antd";
-import { OpenExternalLink } from "./OpenExternalLink";
 import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
-import { DeleteProgressBar } from "./DeleteProgressBar";
-import { DeletedLogRedBox } from "./DeletedLogRedBox";
-import { simplifiedLogTagEnum } from "logtree-types";
+import { OpenExternalLink } from "src/screens/Logs/components/OpenExternalLink";
+import { FrontendLog } from "src/screens/Logs/lib";
+import { Colors } from "src/utils/colors";
+import { StylesType } from "src/utils/styles";
+
+import { useLogFormattedTexts } from "../lib";
 
 type Props = {
   log: FrontendLog;
 };
 
 export const Log = ({ log }: Props) => {
-  const history = useHistory();
   const organization = useSelector(getOrganization);
-  const isOnGlobalSearch = useIsGlobalSearchScreen();
-  const isOnFavoritesScreen = useIsFavoriteLogsScreen();
-  const { shouldShowAsDeleted, onMouseDown, onMouseUp, isMouseDown } =
-    useDeleteLog(log._id);
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [justCopied, setJustCopied] = useState<boolean>(false);
-  const [isDeleteBarVisibleAndAnimating, setIsDeleteBarVisibleAndAnimating] =
-    useState<boolean>(false);
-  const canJumpToNewChannel = isOnGlobalSearch || isOnFavoritesScreen;
-  const canCopyText = !isDeleteBarVisibleAndAnimating && !shouldShowAsDeleted;
-
-  const formattedString = useMemo(() => {
-    const logCreatedAt = moment(log.createdAt);
-    const isToday = logCreatedAt.isSame(new Date(), "day");
-    return (
-      (isToday ? "Today at" : "") +
-      logCreatedAt.format(`${isToday ? "" : "MM/DD/YYYY"} hh:mm:ss A`) +
-      " " +
-      moment.tz(moment.tz.guess()).zoneAbbr()
-    );
-  }, [log._id]);
-
-  const modifiedFormattedString = useMemo(() => {
-    const logCreatedAt = moment(log.createdAt);
-    const isRecent = moment().diff(logCreatedAt, "hours") <= 1;
-    const fromNow = logCreatedAt.fromNow();
-    return isRecent ? fromNow : formattedString;
-  }, [log._id, formattedString]);
+  const { modifiedFormattedString, textToCopy } = useLogFormattedTexts(log);
 
   const copyText = useMemo(() => {
-    if (shouldShowAsDeleted) {
-      return "";
-    } else if (justCopied) {
+    if (justCopied) {
       return "Copied!";
-    } else if (isDeleteBarVisibleAndAnimating && isMouseDown) {
-      return "Deleting";
+    } else if (isHovering) {
+      return "Click to copy";
     }
-    return isHovering ? "Click to copy, hold to delete" : "";
-  }, [
-    justCopied,
-    isHovering,
-    shouldShowAsDeleted,
-    isDeleteBarVisibleAndAnimating,
-    isMouseDown,
-  ]);
-
-  const textToCopy = useMemo(() => {
-    return canCopyText ? `${formattedString}\n${log.content}` : "";
-  }, [log._id, canCopyText]);
-
-  const _searchForReferenceId = () => {
-    history.push(`/org/${organization!.slug}/support?query=${log.referenceId}`);
-  };
+    return "";
+  }, [justCopied, isHovering]);
 
   const _goToOtherChannel = () => {
-    if (canJumpToNewChannel) {
-      history.push(
-        `/org/${organization!.slug}${LOGS_ROUTE_PREFIX}${log.folderFullPath}`
-      );
-    }
+    window.open(
+      `/org/${organization!.slug}${LOGS_ROUTE_PREFIX}${log.folderFullPath}`,
+      "_blank"
+    );
   };
 
   useEffect(() => {
@@ -104,7 +51,10 @@ export const Log = ({ log }: Props) => {
 
   const _onMouseLeave = useCallback(() => {
     setIsHovering(false);
-    onMouseUp();
+  }, []);
+
+  const _onJustCopied = useCallback(() => {
+    setJustCopied(true);
   }, []);
 
   return (
@@ -116,7 +66,7 @@ export const Log = ({ log }: Props) => {
             <span
               style={styles.folderFullPath}
               onClick={_goToOtherChannel}
-              className={canJumpToNewChannel ? "logFolderPath" : undefined}
+              className="logFolderPath"
             >
               {log.folderFullPath}
             </span>
@@ -126,33 +76,12 @@ export const Log = ({ log }: Props) => {
           ) : null}
           <OpenExternalLink log={log} />
           <span style={styles.copyText}>{copyText}</span>
-          <DeleteProgressBar
-            shouldShowAsDeleted={shouldShowAsDeleted}
-            isMouseDown={isMouseDown}
-            isVisibleAndAnimating={isDeleteBarVisibleAndAnimating}
-            setIsVisibleAndAnimating={setIsDeleteBarVisibleAndAnimating}
-          />
         </div>
         {log.referenceId && (
-          <Tooltip
-            title={
-              isOnGlobalSearch ? "" : "Click to do a Global Search on this ID"
-            }
-          >
-            <a
-              style={styles.rightSide}
-              onClick={isOnGlobalSearch ? undefined : _searchForReferenceId}
-              className={isOnGlobalSearch ? undefined : "referenceIdLink"}
-            >
-              id:{log.referenceId}
-            </a>
-          </Tooltip>
+          <span style={styles.rightSide}>id:{log.referenceId}</span>
         )}
       </div>
-      <CopyToClipboard
-        text={textToCopy}
-        onCopy={() => (canCopyText ? setJustCopied(true) : null)}
-      >
+      <CopyToClipboard text={textToCopy} onCopy={_onJustCopied}>
         <div style={styles.copyBtn}>
           <pre
             style={{
@@ -162,10 +91,7 @@ export const Log = ({ log }: Props) => {
             }}
             onMouseEnter={_onMouseEnter}
             onMouseLeave={_onMouseLeave}
-            onMouseDown={onMouseDown}
-            onMouseUp={onMouseUp}
           >
-            {shouldShowAsDeleted && <DeletedLogRedBox />}
             {log.content}
           </pre>
         </div>

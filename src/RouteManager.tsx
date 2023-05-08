@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 
 import { getAuthStatus } from "./redux/auth/selector";
-import { LoadingSpinner } from "./sharedComponents/LoadingSpinner";
 import { Colors } from "./utils/colors";
 import { StylesType } from "./utils/styles";
 import { getFirstPathWithSlash, usePathname } from "./utils/helpers";
@@ -26,6 +25,7 @@ import { SupportLogsScreen } from "./screens/SupportLogs";
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
 export const ORG_ROUTE_PREFIX = "/org";
+export const SUPPORT_TOOL_SUFFIX = "/genie";
 
 export const RouteManager = () => {
   const authStatus = useSelector(getAuthStatus);
@@ -33,8 +33,11 @@ export const RouteManager = () => {
   const path = getFirstPathWithSlash(activePathname);
   const sidebarWidth = useSelector(getSidebarWidth);
   const routeNeedsSidebar = useMemo(() => {
-    return ROUTES_WITH_SIDEBAR.includes(path);
-  }, [path]);
+    return (
+      ROUTES_WITH_SIDEBAR.includes(path) &&
+      !activePathname.includes(SUPPORT_TOOL_SUFFIX)
+    );
+  }, [path, activePathname]);
 
   return authStatus === "UNDETERMINED" ? null : (
     <Switch>
@@ -69,12 +72,8 @@ export const RouteManager = () => {
             component={LogsScreen}
           />
           <Route
-            path={`${ORG_ROUTE_PREFIX}/:slug/support`}
+            path={`${ORG_ROUTE_PREFIX}/:slug${SUPPORT_TOOL_SUFFIX}`}
             component={SupportLogsScreen}
-          />
-          <Route
-            path={`${ORG_ROUTE_PREFIX}/:slug/search`}
-            component={GlobalSearchScreen}
           />
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/insights`}
