@@ -35,7 +35,7 @@ const styles: StylesType = {
     outline: "none",
     border: "none",
     cursor: "pointer",
-    marginLeft: 6,
+    marginLeft: 15,
     fontSize: 12,
     backgroundColor: Colors.transparent,
   },

@@ -30,6 +30,15 @@ export const Log = ({ log }: Props) => {
     return "";
   }, [justCopied, isHovering]);
 
+  const logTagColorAndText = useMemo(() => {
+    if (!log.tag) {
+      return { color: undefined, text: "" };
+    } else if (log.tag === simplifiedLogTagEnum.Error) {
+      return { color: Colors.red, text: "Error" };
+    }
+    return { color: undefined, text: "" };
+  }, []);
+
   const _goToOtherChannel = () => {
     window.open(
       `/org/${organization!.slug}${LOGS_ROUTE_PREFIX}${log.folderFullPath}`,
@@ -73,6 +82,11 @@ export const Log = ({ log }: Props) => {
           ) : null}
           {log.sourceTitle ? (
             <span style={styles.sourceTitle}>{log.sourceTitle}</span>
+          ) : null}
+          {log.tag ? (
+            <span style={{ ...styles.logTag, color: logTagColorAndText.color }}>
+              {logTagColorAndText.text}
+            </span>
           ) : null}
           <OpenExternalLink log={log} />
           <span style={styles.copyText}>{copyText}</span>
@@ -164,6 +178,11 @@ const styles: StylesType = {
   folderFullPath: {
     paddingLeft: 15,
     fontWeight: 300,
+  },
+  logTag: {
+    paddingLeft: 15,
+    fontWeight: 500,
+    fontSize: 12,
   },
   top: {
     display: "flex",
