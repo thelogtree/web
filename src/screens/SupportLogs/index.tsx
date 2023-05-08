@@ -7,6 +7,7 @@ import { Colors } from "src/utils/colors";
 import { SearchBar } from "./components/SearchBar";
 import { TopOfSearch } from "./components/TopOfSearch";
 import { useFetchFoldersOnce } from "./lib";
+import { Placeholder } from "./components/Placeholder";
 
 export const SupportLogsScreen = () => {
   useFetchFoldersOnce();
@@ -22,7 +23,7 @@ export const SupportLogsScreen = () => {
 
   const numLogsText = useMemo(() => {
     if (shouldShowLoadingSigns) {
-      return "Fetching...this may take a few seconds";
+      return "Fetching...this may take a couple seconds";
     } else if (query && logs.length === 1) {
       return "Showing 1 log that matches your query";
     } else if (query && logs.length) {
@@ -59,6 +60,7 @@ export const SupportLogsScreen = () => {
           logs={logs}
           endOfFeedText={endOfFeedText}
         />
+        {!query && !urlQuery ? <Placeholder /> : null}
       </div>
     </>
   );

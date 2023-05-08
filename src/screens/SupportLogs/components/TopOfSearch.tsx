@@ -9,7 +9,9 @@ type Props = {
 export const TopOfSearch = ({ numLogsText }: Props) => (
   <div style={styles.container}>
     <label style={styles.title}>Genie</label>
-    <label style={styles.desc}>Enter a user's email, get their actions.</label>
+    <label style={styles.desc}>
+      Enter a user's email address above to get their journey.
+    </label>
     <label style={styles.numLogsTotalText}>{numLogsText}</label>
   </div>
 );
@@ -27,18 +29,18 @@ const styles: StylesType = {
   desc: {
     paddingBottom: 0,
     color: Colors.darkGray,
-    fontSize: 15,
-    paddingTop: 16,
+    fontSize: 18,
+    paddingTop: 8,
   },
   numLogsTotalText: {
     paddingBottom: 0,
     color: Colors.gray,
     fontSize: 13,
-    paddingTop: 16,
+    paddingTop: 30,
   },
   title: {
     fontWeight: 700,
-    fontSize: 40,
+    fontSize: 60,
     textAlign: "left",
     paddingRight: 6,
     background: "linear-gradient(268.45deg, #000000 30.54%, #424242 60.79%)",

@@ -12,7 +12,7 @@ export const SearchBar = ({ query, setQuery }: Props) => (
   <div style={styles.container}>
     <img src={SearchIcon} style={styles.icon} />
     <input
-      placeholder="Search for a user's email"
+      placeholder="Enter a user's email"
       value={query}
       onChange={(e) => setQuery(e.target.value)}
       style={styles.input}
