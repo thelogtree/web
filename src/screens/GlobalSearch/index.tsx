@@ -39,7 +39,7 @@ export const GlobalSearchScreen = () => {
       return "We're preparing your search. One moment please...";
     }
     return "";
-  }, [logs.length, numLogsInTotal, query, isSearchQueued]);
+  }, [logs.length, numLogsInTotal, query, isSearchQueued, urlQuery]);
 
   return (
     <>
