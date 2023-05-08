@@ -6,9 +6,10 @@ import { StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
 import { SearchBar } from "./components/SearchBar";
 import { TopOfSearch } from "./components/TopOfSearch";
-import { HypeDescription } from "./components/HypeDescription";
+import { useFetchFoldersOnce } from "./lib";
 
 export const SupportLogsScreen = () => {
+  useFetchFoldersOnce();
   const {
     logs,
     numLogsInTotal,
@@ -58,7 +59,6 @@ export const SupportLogsScreen = () => {
           logs={logs}
           endOfFeedText={endOfFeedText}
         />
-        {endOfFeedText ? null : <HypeDescription />}
       </div>
     </>
   );

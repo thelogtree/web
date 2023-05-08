@@ -1,6 +1,9 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { FrontendLog } from "../Logs/lib";
 import moment from "moment-timezone";
+import { useSelector } from "react-redux";
+import { getOrganization } from "src/redux/organization/selector";
+import { useFetchFolders } from "src/redux/actionIndex";
 
 export const useLogFormattedTexts = (log: FrontendLog) => {
   const formattedString = useMemo(() => {
@@ -24,4 +27,15 @@ export const useLogFormattedTexts = (log: FrontendLog) => {
   const textToCopy = `${formattedString}\n${log.content}`;
 
   return { modifiedFormattedString, textToCopy };
+};
+
+export const useFetchFoldersOnce = () => {
+  const organization = useSelector(getOrganization);
+  const { fetch } = useFetchFolders();
+
+  useEffect(() => {
+    if (organization) {
+      fetch();
+    }
+  }, [organization?._id]);
 };

@@ -8,11 +8,8 @@ type Props = {
 
 export const TopOfSearch = ({ numLogsText }: Props) => (
   <div style={styles.container}>
-    <label style={styles.title}>Global Search</label>
-    <label style={styles.desc}>
-      Use the search bar above to look for any logs and events for a specific
-      user
-    </label>
+    <label style={styles.title}>Genie</label>
+    <label style={styles.desc}>Enter a user's email, get their actions.</label>
     <label style={styles.numLogsTotalText}>{numLogsText}</label>
   </div>
 );
@@ -40,9 +37,13 @@ const styles: StylesType = {
     paddingTop: 16,
   },
   title: {
-    fontWeight: 600,
-    fontSize: 30,
+    fontWeight: 700,
+    fontSize: 40,
     textAlign: "left",
     paddingRight: 6,
+    background: "linear-gradient(268.45deg, #000000 30.54%, #424242 60.79%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
   },
 };

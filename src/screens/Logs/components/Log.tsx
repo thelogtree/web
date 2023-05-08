@@ -16,7 +16,7 @@ import { getOrganization } from "src/redux/organization/selector";
 import { useHistory } from "react-router-dom";
 import { Tooltip } from "antd";
 import { OpenExternalLink } from "./OpenExternalLink";
-import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
+import { LOGS_ROUTE_PREFIX, SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
 import { DeleteProgressBar } from "./DeleteProgressBar";
 import { DeletedLogRedBox } from "./DeletedLogRedBox";
 import { simplifiedLogTagEnum } from "logtree-types";
@@ -79,7 +79,12 @@ export const Log = ({ log }: Props) => {
   }, [log._id, canCopyText]);
 
   const _searchForReferenceId = () => {
-    history.push(`/org/${organization!.slug}/support?query=${log.referenceId}`);
+    window.open(
+      `/org/${organization!.slug}${SUPPORT_TOOL_SUFFIX}?query=${
+        log.referenceId
+      }`,
+      "_blank"
+    );
   };
 
   const _goToOtherChannel = () => {
@@ -134,11 +139,7 @@ export const Log = ({ log }: Props) => {
           />
         </div>
         {log.referenceId && (
-          <Tooltip
-            title={
-              isOnGlobalSearch ? "" : "Click to do a Global Search on this ID"
-            }
-          >
+          <Tooltip title="Click to do a Genie Search on this ID">
             <a
               style={styles.rightSide}
               onClick={isOnGlobalSearch ? undefined : _searchForReferenceId}
