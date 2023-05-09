@@ -13,6 +13,7 @@ import { Api } from "../../api";
 import { getOrganization, getUser } from "./selector";
 import { getAuthStatus } from "../auth/selector";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
+import { IntegrationsToConnectToMap } from "src/screens/Integrations/integrationsToConnectTo";
 
 const SET_SIDEBAR_WIDTH = "SET_SIDEBAR_WIDTH";
 type SET_SIDEBAR_WIDTH = typeof SET_SIDEBAR_WIDTH;
@@ -314,7 +315,12 @@ export const useFetchIntegrations = (
       const { integrations } = res.data;
       const { integrations: connectableIntegrations } = resConnectable.data;
       dispatch(setIntegrations(integrations));
-      dispatch(setConnectableIntegrations(connectableIntegrations));
+      const integrationsAlsoSupportedOnFrontend = Object.keys(
+        IntegrationsToConnectToMap
+      ).filter((type) =>
+        connectableIntegrations.includes(type)
+      ) as integrationTypeEnum[];
+      dispatch(setConnectableIntegrations(integrationsAlsoSupportedOnFrontend));
       wasSuccessful = true;
     } catch (e) {
       Sentry.captureException(e);

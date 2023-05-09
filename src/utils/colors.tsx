@@ -12,6 +12,8 @@ export const Colors = {
   black: "#000000",
   veryLightRed: "#ffe3e3",
   red: "#FF4C4C",
+  veryLightBlueishPurple: "#f0e8ff",
+  blueishPurple: "#8757e6",
   blue: "#00A3FF",
   hoverBlue: "#2ab1ff",
   lightBlue: "#ccecff",

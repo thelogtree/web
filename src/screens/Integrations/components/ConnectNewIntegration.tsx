@@ -17,7 +17,7 @@ import { StylesType } from "src/utils/styles";
 import BackArrowIcon from "src/assets/backArrow.png";
 import LockIcon from "src/assets/grayLock.png";
 
-import { keyTypePrettyNameMap } from "../lib";
+import { formatAdditionalProperties, keyTypePrettyNameMap } from "../lib";
 import { IntegrationsToConnectToMap } from "../integrationsToConnectTo";
 
 type Props = {
@@ -30,6 +30,12 @@ export type KeyInput = {
   plaintextValue: string;
 };
 
+export type AdditionalPropertyInput = {
+  key: string;
+  value: string;
+  prettyName: string;
+};
+
 export const ConnectNewIntegration = ({
   isModalOpen,
   setIsModalOpen,
@@ -38,6 +44,9 @@ export const ConnectNewIntegration = ({
   const [selectedIntegration, setSelectedIntegration] =
     useState<integrationTypeEnum | null>(null);
   const [keyInputs, setKeyInputs] = useState<KeyInput[]>([]);
+  const [additionalInputs, setAdditionalInputs] = useState<
+    AdditionalPropertyInput[]
+  >([]);
   const connectableIntegrations = useSelector(getConnectableIntegrations);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { fetch: refetchIntegrations } = useFetchIntegrations();
@@ -63,8 +72,18 @@ export const ConnectNewIntegration = ({
           })
         )
       );
+      setAdditionalInputs(
+        IntegrationsToConnectToMap[
+          selectedIntegration
+        ].additionalPropertiesNeeded.map((obj) => ({
+          key: obj.key,
+          prettyName: obj.prettyName,
+          value: "",
+        }))
+      );
     } else {
       setKeyInputs([]);
+      setAdditionalInputs([]);
     }
   }, [selectedIntegration]);
 
@@ -78,14 +97,19 @@ export const ConnectNewIntegration = ({
       if (isLoading || !selectedIntegration) {
         return;
       }
-      if (keyInputs.find((input) => !input.plaintextValue)) {
+      if (
+        keyInputs.find((input) => !input.plaintextValue) ||
+        additionalInputs.find((input) => !input.value)
+      ) {
         throw new Error("Please fill in all the fields.");
       }
       setIsLoading(true);
+      const additionalProperties = formatAdditionalProperties(additionalInputs);
       await Api.organization.addIntegration(
         organization!._id.toString(),
         keyInputs,
-        selectedIntegration
+        selectedIntegration,
+        additionalProperties
       );
       await refetchIntegrations();
       setIsModalOpen(false);
@@ -101,6 +125,13 @@ export const ConnectNewIntegration = ({
       i === index ? { plaintextValue: value, type: input.type } : input
     );
     setKeyInputs(newArray);
+  };
+
+  const _changeAdditionalInput = (value: string, index: number) => {
+    const newArray: AdditionalPropertyInput[] = additionalInputs.map(
+      (input, i) => (i === index ? { ...input, value } : input)
+    );
+    setAdditionalInputs(newArray);
   };
 
   return (
@@ -160,10 +191,19 @@ export const ConnectNewIntegration = ({
                     placeholder={keyTypePrettyNameMap[keyInput.type]}
                   />
                 ))}
+                {additionalInputs.map((additionalInput, i) => (
+                  <input
+                    key={i}
+                    style={styles.keyInput}
+                    value={additionalInput.value}
+                    onChange={(e) => _changeAdditionalInput(e.target.value, i)}
+                    placeholder={additionalInput.prettyName}
+                  />
+                ))}
                 <div style={styles.encryptionContainer}>
                   <img src={LockIcon} style={styles.icon} />
                   <label style={styles.encryptedMessage}>
-                    This information will be securely encrypted.
+                    Your sensitive information will be securely encrypted.
                   </label>
                 </div>
               </>
@@ -237,7 +277,7 @@ const styles: StylesType = {
   integrationName: {
     fontSize: 18,
     fontWeight: 500,
-    paddingTop: 10,
+    paddingTop: 18,
     cursor: "pointer",
   },
   gridContainer: {

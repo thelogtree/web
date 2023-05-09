@@ -183,11 +183,13 @@ export const organization = {
   addIntegration: (
     organizationId: string,
     keys: KeyInput[],
-    type: integrationTypeEnum
+    type: integrationTypeEnum,
+    additionalProperties?: Object
   ) =>
     axios.post(routeUrl + `/${organizationId}/integration`, {
       keys,
       type,
+      additionalProperties,
     }),
   deleteIntegration: (organizationId: string, integrationId: string) =>
     axios.post(routeUrl + `/${organizationId}/delete-integration`, {

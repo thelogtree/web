@@ -32,11 +32,21 @@ export const Log = ({ log }: Props) => {
 
   const logTagColorAndText = useMemo(() => {
     if (!log.tag) {
-      return { color: undefined, text: "" };
+      return { accentColor: undefined, backgroundColor: undefined, text: "" };
     } else if (log.tag === simplifiedLogTagEnum.Error) {
-      return { color: Colors.red, text: "Error" };
+      return {
+        accentColor: Colors.red,
+        backgroundColor: Colors.veryLightRed,
+        text: "Error",
+      };
+    } else if (log.tag === simplifiedLogTagEnum.Tracking) {
+      return {
+        accentColor: Colors.blueishPurple,
+        backgroundColor: Colors.veryLightBlueishPurple,
+        text: "",
+      };
     }
-    return { color: undefined, text: "" };
+    return { accentColor: undefined, backgroundColor: undefined, text: "" };
   }, []);
 
   const _goToOtherChannel = () => {
@@ -83,8 +93,13 @@ export const Log = ({ log }: Props) => {
           {log.sourceTitle ? (
             <span style={styles.sourceTitle}>{log.sourceTitle}</span>
           ) : null}
-          {log.tag ? (
-            <span style={{ ...styles.logTag, color: logTagColorAndText.color }}>
+          {logTagColorAndText.text ? (
+            <span
+              style={{
+                ...styles.logTag,
+                color: logTagColorAndText.accentColor,
+              }}
+            >
               {logTagColorAndText.text}
             </span>
           ) : null}
@@ -100,8 +115,12 @@ export const Log = ({ log }: Props) => {
           <pre
             style={{
               ...styles.pre,
-              ...(log.tag === simplifiedLogTagEnum.Error &&
-                styles.errorTaggedLog),
+              ...(logTagColorAndText.accentColor && {
+                borderColor: logTagColorAndText.accentColor,
+              }),
+              ...(logTagColorAndText.backgroundColor && {
+                backgroundColor: logTagColorAndText.backgroundColor,
+              }),
             }}
             onMouseEnter={_onMouseEnter}
             onMouseLeave={_onMouseLeave}
@@ -136,10 +155,6 @@ const styles: StylesType = {
     textAlign: "left",
     whiteSpace: "pre-wrap",
     position: "relative",
-  },
-  errorTaggedLog: {
-    backgroundColor: Colors.veryLightRed,
-    borderColor: Colors.red,
   },
   leftSide: {
     color: Colors.gray,
