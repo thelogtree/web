@@ -106,6 +106,8 @@ export const useLogs = (folderId?: string) => {
   const [lastSearchCompletedWithQuery, setLastSearchCompletedWithQuery] =
     useState<string>("");
   const [isSearchQueued, setIsSearchQueued] = useState<boolean>(!!urlQuery);
+  const [filtersForOnlyErrors, setFiltersForOnlyErrors] =
+    useState<boolean>(false);
   const { fetch: refetchFolders, isFetching: isFetchingFolders } =
     useFetchFolders();
   const shouldShowLoadingSigns = Boolean(
@@ -161,6 +163,9 @@ export const useLogs = (folderId?: string) => {
       };
     });
   };
+
+  const _filterLogsForOnlyErrors = (logs: FrontendLog[]) =>
+    logs.filter((log) => log.tag === simplifiedLogTagEnum.Error);
 
   const _fetchLogs = async (
     isFreshFetch?: boolean,
@@ -237,10 +242,11 @@ export const useLogs = (folderId?: string) => {
       setLastSearchCompletedWithQuery(query);
 
       setNumLogsInTotal(fetchedNumLogsInTotal);
-      const newLogsArr = _.uniqBy(
+      let newLogsArr = _.uniqBy(
         (isFreshFetch ? [] : logs).concat(fetchedLogs),
         "_id"
       );
+
       setLogs(newLogsArr);
 
       let hadUnreadLogs = isFavoritesScreen
@@ -256,6 +262,13 @@ export const useLogs = (folderId?: string) => {
     setIsLoading(false);
     setIsSearchQueued(false);
   };
+
+  const filteredLogs = useMemo(() => {
+    if (filtersForOnlyErrors) {
+      return _filterLogsForOnlyErrors(logs);
+    }
+    return logs;
+  }, [JSON.stringify(logsIds), filtersForOnlyErrors]);
 
   useEffect(() => {
     if (start !== 0) {
@@ -327,7 +340,7 @@ export const useLogs = (folderId?: string) => {
   }, [isGlobalSearchScreen, isSupportScreen, query]);
 
   return {
-    logs: lastSearchCompletedWithQuery === query ? logs : [],
+    logs: lastSearchCompletedWithQuery === query ? filteredLogs : [],
     numLogsInTotal,
     isLoading,
     attemptFetchingMoreResults,
@@ -339,6 +352,8 @@ export const useLogs = (folderId?: string) => {
     isDateFilterApplied,
     isFetchingFolders,
     shouldShowLoadingSigns,
+    setFiltersForOnlyErrors,
+    filtersForOnlyErrors,
   };
 };
 

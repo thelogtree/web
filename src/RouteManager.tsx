@@ -24,6 +24,7 @@ import { SupportLogsScreen } from "./screens/SupportLogs";
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
 export const ORG_ROUTE_PREFIX = "/org";
+
 export const SUPPORT_TOOL_SUFFIX = "/journey";
 
 export const RouteManager = () => {

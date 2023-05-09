@@ -1,3 +1,4 @@
+import { Switch } from "antd";
 import React from "react";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
@@ -6,9 +7,15 @@ import { StylesType } from "src/utils/styles";
 
 type Props = {
   numLogsText?: string;
+  setShouldOnlyShowErrors: (val: boolean) => void;
+  shouldOnlyShowErrors: boolean;
 };
 
-export const TopOfSearch = ({ numLogsText }: Props) => {
+export const TopOfSearch = ({
+  numLogsText,
+  setShouldOnlyShowErrors,
+  shouldOnlyShowErrors,
+}: Props) => {
   const organization = useSelector(getOrganization);
   return (
     <div style={styles.container}>
@@ -17,7 +24,24 @@ export const TopOfSearch = ({ numLogsText }: Props) => {
         Enter a user's email address above to get their journey through{" "}
         {organization?.name}
       </label>
-      <label style={styles.numLogsTotalText}>{numLogsText}</label>
+      {numLogsText ? (
+        <label style={styles.numLogsTotalText}>{numLogsText}</label>
+      ) : null}
+      <div style={styles.filterContainer}>
+        <Switch
+          checkedChildren="Showing only errors"
+          unCheckedChildren="Showing everything"
+          onChange={() => setShouldOnlyShowErrors(!shouldOnlyShowErrors)}
+          defaultChecked={shouldOnlyShowErrors}
+          checked={shouldOnlyShowErrors}
+          style={{
+            backgroundColor: shouldOnlyShowErrors ? Colors.red : Colors.gray,
+          }}
+        />
+        <label style={styles.chooseFilter}>
+          Choose whether to only show errors
+        </label>
+      </div>
     </div>
   );
 };
@@ -31,6 +55,23 @@ const styles: StylesType = {
     width: "100%",
     paddingBottom: 20,
     paddingTop: 60,
+  },
+  filterContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+    borderRadius: 30,
+    paddingLeft: 18,
+    paddingRight: 18,
+    paddingTop: 12,
+    paddingBottom: 12,
+    borderColor: Colors.lightGray,
+    borderWidth: 1,
+    borderStyle: "solid",
+    backgroundColor: Colors.white,
+    boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
   },
   desc: {
     paddingBottom: 0,
@@ -53,5 +94,10 @@ const styles: StylesType = {
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
     backgroundClip: "text",
+  },
+  chooseFilter: {
+    color: Colors.gray,
+    paddingLeft: 12,
+    fontSize: 13,
   },
 };

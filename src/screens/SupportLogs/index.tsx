@@ -21,6 +21,8 @@ export const SupportLogsScreen = () => {
     setQuery,
     isSearchQueued,
     shouldShowLoadingSigns,
+    filtersForOnlyErrors,
+    setFiltersForOnlyErrors,
   } = useLogs();
   const { query: urlQuery } = useSearchParams();
 
@@ -58,7 +60,11 @@ export const SupportLogsScreen = () => {
     <>
       <SearchBar query={query} setQuery={setQuery} />
       <div style={styles.container}>
-        <TopOfSearch numLogsText={numLogsText} />
+        <TopOfSearch
+          numLogsText={numLogsText}
+          shouldOnlyShowErrors={filtersForOnlyErrors}
+          setShouldOnlyShowErrors={setFiltersForOnlyErrors}
+        />
         <div style={styles.hrWrapper}>
           <hr style={styles.hr} />
         </div>
