@@ -143,14 +143,15 @@ export const useLogs = (folderId?: string) => {
     if (!logs.length) {
       return [];
     }
-    if (
-      !logs[0].folderId ||
-      (!isFavoritesScreen && !isGlobalSearchScreen && !isSupportScreen)
-    ) {
+    if (!isFavoritesScreen && !isGlobalSearchScreen && !isSupportScreen) {
       // looking inside a specific channel, return as-is
       return logs;
     }
+
     return logs.map((log) => {
+      if (!log.folderId) {
+        return log;
+      }
       const folderFullPath = flattenedFolders.find(
         (flattenedFolder) => flattenedFolder._id === log.folderId
       )?.fullPath;
