@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
+import { LOGS_ROUTE_PREFIX, SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
 import { Api } from "src/api";
 import {
   getFavoriteFolderPaths,
@@ -18,6 +18,7 @@ import { useFetchFolders } from "src/redux/actionIndex";
 import moment from "moment-timezone";
 import * as Sentry from "@sentry/react";
 import { useHistory, useLocation } from "react-router-dom";
+import { simplifiedLogTagEnum } from "logtree-types";
 
 export const useFindFrontendFolderFromUrl = () => {
   const folders = useSelector(getFolders);
@@ -64,6 +65,8 @@ export type FrontendLog = {
   folderFullPath?: string;
   referenceId?: string;
   externalLink?: string;
+  tag?: simplifiedLogTagEnum;
+  sourceTitle?: string;
 };
 
 const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 50 because the backend only returns 50
@@ -71,6 +74,7 @@ const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 50 because the b
 export const useLogs = (folderId?: string) => {
   const history = useHistory();
   const organization = useSelector(getOrganization);
+  const isSupportScreen = useIsSupportLogsScreen();
   const isFavoritesScreen = useIsFavoriteLogsScreen();
   const favoritesScreenHasUnread = useFavoritesFolderHasUnreadLogs();
   const isGlobalSearchScreen = useIsGlobalSearchScreen();
@@ -79,7 +83,11 @@ export const useLogs = (folderId?: string) => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const favoritedFolderPaths = useSelector(getFavoriteFolderPaths);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const queryParams = useSearchParams();
+  const urlQuery = queryParams.query || "";
+  const [hasSkippedFirstRender, setHasSkippedFirstRender] =
+    useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(!!urlQuery);
   const [logs, setLogs] = useState<FrontendLog[]>([]);
   const logsIds = useMemo(() => {
     return logs.map((logs) => logs._id);
@@ -94,12 +102,17 @@ export const useLogs = (folderId?: string) => {
     Date | undefined
   >(undefined);
   const [start, setStart] = useState<number>(0);
-  const { query: urlQuery } = useSearchParams();
-  const [query, setQuery] = useState<string>("");
-  const [isSearchQueued, setIsSearchQueued] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>(urlQuery);
+  const [lastSearchCompletedWithQuery, setLastSearchCompletedWithQuery] =
+    useState<string>("");
+  const [isSearchQueued, setIsSearchQueued] = useState<boolean>(!!urlQuery);
   const { fetch: refetchFolders, isFetching: isFetchingFolders } =
     useFetchFolders();
-
+  const shouldShowLoadingSigns = Boolean(
+    isLoading ||
+      isSearchQueued ||
+      (query && lastSearchCompletedWithQuery !== query)
+  );
   const attemptFetchingMoreResults = async () => {
     setStart(Math.min(logs.length, start + PAGINATION_RECORDS_INCREMENT));
   };
@@ -130,8 +143,11 @@ export const useLogs = (folderId?: string) => {
     if (!logs.length) {
       return [];
     }
-    if (!logs[0].folderId || (!isFavoritesScreen && !isGlobalSearchScreen)) {
-      // not favorites, return as-is
+    if (
+      !logs[0].folderId ||
+      (!isFavoritesScreen && !isGlobalSearchScreen && !isSupportScreen)
+    ) {
+      // looking inside a specific channel, return as-is
       return logs;
     }
     return logs.map((log) => {
@@ -154,8 +170,11 @@ export const useLogs = (folderId?: string) => {
     try {
       if (
         !organization ||
-        (!folderId && !isFavoritesScreen && !isGlobalSearchScreen) ||
-        (isGlobalSearchScreen && !query)
+        (!folderId &&
+          !isFavoritesScreen &&
+          !isGlobalSearchScreen &&
+          !isSupportScreen) ||
+        ((isGlobalSearchScreen || isSupportScreen) && !query)
       ) {
         return;
       }
@@ -184,15 +203,24 @@ export const useLogs = (folderId?: string) => {
       }
 
       let fetchedLogs: FrontendLog[] = [];
+      let fetchedNumLogsInTotal: number = 0;
       if (query) {
-        const res = await Api.organization.searchForLogs(
-          organization._id.toString(),
-          query,
-          folderId,
-          isFavoritesScreen
-        );
+        let res;
+        if (isSupportScreen) {
+          res = await Api.organization.getSupportLogs(
+            organization._id.toString(),
+            query
+          );
+        } else {
+          res = await Api.organization.searchForLogs(
+            organization._id.toString(),
+            query,
+            folderId,
+            isFavoritesScreen
+          );
+        }
         fetchedLogs = res.data.logs;
-      } else if (!isGlobalSearchScreen) {
+      } else if (!isGlobalSearchScreen && !isSupportScreen) {
         const res = await Api.organization.getLogs(
           organization._id.toString(),
           folderId,
@@ -201,10 +229,13 @@ export const useLogs = (folderId?: string) => {
           currentDateCeiling,
           currentDateFloor
         );
-        const fetchedNumLogsInTotal = res.data.numLogsInTotal;
+        fetchedNumLogsInTotal = res.data.numLogsInTotal;
         fetchedLogs = res.data.logs;
-        setNumLogsInTotal(fetchedNumLogsInTotal);
       }
+
+      setLastSearchCompletedWithQuery(query);
+
+      setNumLogsInTotal(fetchedNumLogsInTotal);
       const newLogsArr = _.uniqBy(
         (isFreshFetch ? [] : logs).concat(fetchedLogs),
         "_id"
@@ -244,6 +275,7 @@ export const useLogs = (folderId?: string) => {
   }, [
     isFavoritesScreen,
     isGlobalSearchScreen,
+    isSupportScreen,
     favoritedFolderPaths.length,
     JSON.stringify(logsIds),
   ]);
@@ -280,17 +312,21 @@ export const useLogs = (folderId?: string) => {
   }, []);
 
   useEffect(() => {
-    setQuery("");
+    if (hasSkippedFirstRender) {
+      setQuery("");
+    } else {
+      setHasSkippedFirstRender(true);
+    }
   }, [folderId]);
 
   useEffect(() => {
-    if (!query && isGlobalSearchScreen) {
+    if (!query && (isGlobalSearchScreen || isSupportScreen)) {
       setIsLoading(false);
     }
-  }, [isGlobalSearchScreen, query]);
+  }, [isGlobalSearchScreen, isSupportScreen, query]);
 
   return {
-    logs,
+    logs: lastSearchCompletedWithQuery === query ? logs : [],
     numLogsInTotal,
     isLoading,
     attemptFetchingMoreResults,
@@ -301,6 +337,7 @@ export const useLogs = (folderId?: string) => {
     setLogsNoNewerThanDate,
     isDateFilterApplied,
     isFetchingFolders,
+    shouldShowLoadingSigns,
   };
 };
 
@@ -312,6 +349,18 @@ export const useIsFavoriteLogsScreen = () => {
   }, [organization?._id, pathname]);
 
   return isFavoritesScreen;
+};
+
+export const useIsSupportLogsScreen = () => {
+  const organization = useSelector(getOrganization);
+  const pathname = usePathname();
+  const isSupportScreen = useMemo(() => {
+    return (
+      pathname.indexOf(`/org/${organization?.slug}${SUPPORT_TOOL_SUFFIX}`) === 0
+    );
+  }, [organization?._id, pathname]);
+
+  return isSupportScreen;
 };
 
 export const useIsGlobalSearchScreen = () => {
@@ -494,9 +543,13 @@ export const useDeleteLog = (logId: string) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
+  const isOnSupportScreen = useIsSupportLogsScreen();
   const shouldShowAsDeleted = isDeleted || isLoading;
 
   useEffect(() => {
+    if (isOnSupportScreen) {
+      return;
+    }
     let timeout;
     if (isMouseDown) {
       timeout = setTimeout(() => {
@@ -511,7 +564,7 @@ export const useDeleteLog = (logId: string) => {
   }, [isMouseDown]);
 
   const _deleteLog = async () => {
-    if (isLoading || isDeleted) {
+    if (isLoading || isDeleted || isOnSupportScreen) {
       return;
     }
     try {
@@ -525,13 +578,15 @@ export const useDeleteLog = (logId: string) => {
   };
 
   const onMouseDown = () => {
-    if (!isLoading && !isDeleted) {
+    if (!isLoading && !isDeleted && !isOnSupportScreen) {
       setIsMouseDown(true);
     }
   };
 
   const onMouseUp = () => {
-    setIsMouseDown(false);
+    if (!isOnSupportScreen) {
+      setIsMouseDown(false);
+    }
   };
 
   return {

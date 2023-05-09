@@ -7,19 +7,19 @@ import {
   useExternalLinkForLog,
   useIsFavoriteLogsScreen,
   useIsGlobalSearchScreen,
+  useIsSupportLogsScreen,
 } from "../lib";
 import moment from "moment-timezone";
-import { now, startCase } from "lodash";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { sentenceCase } from "src/utils/helpers";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
 import { useHistory } from "react-router-dom";
 import { Tooltip } from "antd";
 import { OpenExternalLink } from "./OpenExternalLink";
-import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
+import { LOGS_ROUTE_PREFIX, SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
 import { DeleteProgressBar } from "./DeleteProgressBar";
 import { DeletedLogRedBox } from "./DeletedLogRedBox";
+import { simplifiedLogTagEnum } from "logtree-types";
 
 type Props = {
   log: FrontendLog;
@@ -79,8 +79,11 @@ export const Log = ({ log }: Props) => {
   }, [log._id, canCopyText]);
 
   const _searchForReferenceId = () => {
-    history.push(
-      `/org/${organization!.slug}/search?query=id:${log.referenceId}`
+    window.open(
+      `/org/${organization!.slug}${SUPPORT_TOOL_SUFFIX}?query=${
+        log.referenceId
+      }`,
+      "_blank"
     );
   };
 
@@ -114,13 +117,18 @@ export const Log = ({ log }: Props) => {
       <div style={styles.top}>
         <div style={styles.leftSide}>
           <span>{modifiedFormattedString}</span>
-          <span
-            style={styles.folderFullPath}
-            onClick={_goToOtherChannel}
-            className={canJumpToNewChannel ? "logFolderPath" : undefined}
-          >
-            {log?.folderFullPath}
-          </span>
+          {log.folderFullPath ? (
+            <span
+              style={styles.folderFullPath}
+              onClick={_goToOtherChannel}
+              className={canJumpToNewChannel ? "logFolderPath" : undefined}
+            >
+              {log.folderFullPath}
+            </span>
+          ) : null}
+          {log.sourceTitle ? (
+            <span style={styles.sourceTitle}>{log.sourceTitle}</span>
+          ) : null}
           <OpenExternalLink log={log} />
           <span style={styles.copyText}>{copyText}</span>
           <DeleteProgressBar
@@ -131,11 +139,7 @@ export const Log = ({ log }: Props) => {
           />
         </div>
         {log.referenceId && (
-          <Tooltip
-            title={
-              isOnGlobalSearch ? "" : "Click to do a Global Search on this ID"
-            }
-          >
+          <Tooltip title="Click to see the journey of this ID">
             <a
               style={styles.rightSide}
               onClick={isOnGlobalSearch ? undefined : _searchForReferenceId}
@@ -152,7 +156,11 @@ export const Log = ({ log }: Props) => {
       >
         <div style={styles.copyBtn}>
           <pre
-            style={styles.pre}
+            style={{
+              ...styles.pre,
+              ...(log.tag === simplifiedLogTagEnum.Error &&
+                styles.errorTaggedLog),
+            }}
             onMouseEnter={_onMouseEnter}
             onMouseLeave={_onMouseLeave}
             onMouseDown={onMouseDown}
@@ -190,6 +198,10 @@ const styles: StylesType = {
     whiteSpace: "pre-wrap",
     position: "relative",
   },
+  errorTaggedLog: {
+    backgroundColor: Colors.veryLightRed,
+    borderColor: Colors.red,
+  },
   leftSide: {
     color: Colors.gray,
     fontSize: 12,
@@ -217,6 +229,10 @@ const styles: StylesType = {
     textAlign: "left",
   },
   copyText: {
+    paddingLeft: 15,
+    fontWeight: 300,
+  },
+  sourceTitle: {
     paddingLeft: 15,
     fontWeight: 300,
   },

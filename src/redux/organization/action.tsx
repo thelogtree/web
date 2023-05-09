@@ -1,8 +1,10 @@
 import * as Sentry from "@sentry/react";
 import {
+  IntegrationDocument,
   OrganizationDocument,
   RuleDocument,
   UserDocument,
+  integrationTypeEnum,
 } from "logtree-types";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +13,7 @@ import { Api } from "../../api";
 import { getOrganization, getUser } from "./selector";
 import { getAuthStatus } from "../auth/selector";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
+import { IntegrationsToConnectToMap } from "src/screens/Integrations/integrationsToConnectTo";
 
 const SET_SIDEBAR_WIDTH = "SET_SIDEBAR_WIDTH";
 type SET_SIDEBAR_WIDTH = typeof SET_SIDEBAR_WIDTH;
@@ -26,6 +29,10 @@ const SET_FAVORITE_FOLDER_PATHS = "SET_FAVORITE_FOLDER_PATHS";
 type SET_FAVORITE_FOLDER_PATHS = typeof SET_FAVORITE_FOLDER_PATHS;
 const SET_RULES = "SET_RULES";
 type SET_RULES = typeof SET_RULES;
+const SET_INTEGRATIONS = "SET_INTEGRATIONS";
+type SET_INTEGRATIONS = typeof SET_INTEGRATIONS;
+const SET_CONNECTABLE_INTEGRATIONS = "SET_CONNECTABLE_INTEGRATIONS";
+type SET_CONNECTABLE_INTEGRATIONS = typeof SET_CONNECTABLE_INTEGRATIONS;
 
 type ISetSidebarWidth = {
   type: SET_SIDEBAR_WIDTH;
@@ -96,6 +103,28 @@ export const setRules = (rules: RuleDocument[]): ISetRules => ({
   rules,
 });
 
+type ISetIntegrations = {
+  type: SET_INTEGRATIONS;
+  integrations: IntegrationDocument[];
+};
+export const setIntegrations = (
+  integrations: IntegrationDocument[]
+): ISetIntegrations => ({
+  type: SET_INTEGRATIONS,
+  integrations,
+});
+
+type ISetConnectableIntegrations = {
+  type: SET_CONNECTABLE_INTEGRATIONS;
+  integrationTypes: integrationTypeEnum[];
+};
+export const setConnectableIntegrations = (
+  integrationTypes: integrationTypeEnum[]
+): ISetConnectableIntegrations => ({
+  type: SET_CONNECTABLE_INTEGRATIONS,
+  integrationTypes,
+});
+
 // actions identifiable by the reducer
 export type OrganizationActionsIndex =
   | ISetOrganization
@@ -104,7 +133,9 @@ export type OrganizationActionsIndex =
   | ISetOrganizationMembers
   | ISetFavoriteFolderPaths
   | ISetRules
-  | ISetSidebarWidth;
+  | ISetSidebarWidth
+  | ISetIntegrations
+  | ISetConnectableIntegrations;
 
 // api-related actions
 export const useFetchMyOrganization = () => {
@@ -254,6 +285,47 @@ export const useFetchMyRules = () => {
     } catch (e) {
       Sentry.captureException(e);
       dispatch(setRules([]));
+    }
+    setIsFetching(false);
+    return wasSuccessful;
+  };
+
+  return { fetch, isFetching };
+};
+
+export const useFetchIntegrations = (
+  overrideInitialLoadingStateTo?: boolean
+) => {
+  const dispatch = useDispatch();
+  const organization = useSelector(getOrganization);
+  const [isFetching, setIsFetching] = useState<boolean>(
+    overrideInitialLoadingStateTo || false
+  );
+
+  const fetch = async () => {
+    let wasSuccessful = false;
+    try {
+      setIsFetching(true);
+      const res = await Api.organization.getIntegrations(
+        organization!._id.toString()
+      );
+      const resConnectable = await Api.organization.getConnectableIntegrations(
+        organization!._id.toString()
+      );
+      const { integrations } = res.data;
+      const { integrations: connectableIntegrations } = resConnectable.data;
+      dispatch(setIntegrations(integrations));
+      const integrationsAlsoSupportedOnFrontend = Object.keys(
+        IntegrationsToConnectToMap
+      ).filter((type) =>
+        connectableIntegrations.includes(type)
+      ) as integrationTypeEnum[];
+      dispatch(setConnectableIntegrations(integrationsAlsoSupportedOnFrontend));
+      wasSuccessful = true;
+    } catch (e) {
+      Sentry.captureException(e);
+      dispatch(setIntegrations([]));
+      setConnectableIntegrations([]);
     }
     setIsFetching(false);
     return wasSuccessful;

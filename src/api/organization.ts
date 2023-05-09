@@ -1,10 +1,13 @@
 import {
+  IntegrationDocument,
   comparisonTypeEnum,
+  integrationTypeEnum,
   notificationTypeEnum,
   orgPermissionLevel,
 } from "logtree-types";
 import axios from "../utils/axios";
 import moment from "moment";
+import { KeyInput } from "src/screens/Integrations/components/ConnectNewIntegration";
 
 const routeUrl = "/organization";
 
@@ -90,6 +93,12 @@ export const organization = {
       query,
       isFavorites,
     }),
+  getSupportLogs: (organizationId: string, query: string) =>
+    axios.get(routeUrl + `/${organizationId}/support-logs`, {
+      params: {
+        query,
+      },
+    }),
   deleteFolderAndEverythingInside: (organizationId: string, folderId: string) =>
     axios.post(routeUrl + `/${organizationId}/delete-folder`, {
       folderId,
@@ -166,5 +175,33 @@ export const organization = {
   deleteLog: (organizationId: string, logId: string) =>
     axios.post(routeUrl + `/${organizationId}/delete-log`, {
       logId,
+    }),
+  getIntegrations: (organizationId: string) =>
+    axios.get(routeUrl + `/${organizationId}/integrations`),
+  getConnectableIntegrations: (organizationId: string) =>
+    axios.get(routeUrl + `/${organizationId}/connectable-integrations`),
+  addIntegration: (
+    organizationId: string,
+    keys: KeyInput[],
+    type: integrationTypeEnum,
+    additionalProperties?: Object
+  ) =>
+    axios.post(routeUrl + `/${organizationId}/integration`, {
+      keys,
+      type,
+      additionalProperties,
+    }),
+  deleteIntegration: (organizationId: string, integrationId: string) =>
+    axios.post(routeUrl + `/${organizationId}/delete-integration`, {
+      integrationId,
+    }),
+  updateIntegration: (
+    organizationId: string,
+    integrationId: string,
+    fieldsToUpdate: Partial<IntegrationDocument>
+  ) =>
+    axios.put(routeUrl + `/${organizationId}/integration`, {
+      integrationId,
+      ...fieldsToUpdate,
     }),
 };

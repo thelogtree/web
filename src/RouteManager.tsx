@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 
 import { getAuthStatus } from "./redux/auth/selector";
-import { LoadingSpinner } from "./sharedComponents/LoadingSpinner";
 import { Colors } from "./utils/colors";
 import { StylesType } from "./utils/styles";
 import { getFirstPathWithSlash, usePathname } from "./utils/helpers";
@@ -14,16 +13,18 @@ import { InviteScreen } from "./screens/Invite";
 import { LogsScreen } from "./screens/Logs";
 import { TeamScreen } from "./screens/Team";
 import { SignOutScreen } from "./screens/SignOut";
-import { GlobalSearchScreen } from "./screens/GlobalSearch";
 import { InsightsScreen } from "./screens/Insights";
 import { getSidebarWidth } from "./redux/organization/selector";
 import { TermsOfServiceRenderer } from "./screens/Policies/TermsOfServiceRenderer";
 import { PrivacyPolicyRenderer } from "./screens/Policies/PrivacyPolicyRenderer";
 import { LandingPage } from "./screens/LandingPage";
+import { IntegrationsScreen } from "./screens/Integrations";
+import { SupportLogsScreen } from "./screens/SupportLogs";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
 export const ORG_ROUTE_PREFIX = "/org";
+export const SUPPORT_TOOL_SUFFIX = "/journey";
 
 export const RouteManager = () => {
   const authStatus = useSelector(getAuthStatus);
@@ -31,8 +32,11 @@ export const RouteManager = () => {
   const path = getFirstPathWithSlash(activePathname);
   const sidebarWidth = useSelector(getSidebarWidth);
   const routeNeedsSidebar = useMemo(() => {
-    return ROUTES_WITH_SIDEBAR.includes(path);
-  }, [path]);
+    return (
+      ROUTES_WITH_SIDEBAR.includes(path) &&
+      !activePathname.includes(SUPPORT_TOOL_SUFFIX)
+    );
+  }, [path, activePathname]);
 
   return authStatus === "UNDETERMINED" ? null : (
     <Switch>
@@ -67,12 +71,16 @@ export const RouteManager = () => {
             component={LogsScreen}
           />
           <Route
-            path={`${ORG_ROUTE_PREFIX}/:slug/search`}
-            component={GlobalSearchScreen}
+            path={`${ORG_ROUTE_PREFIX}/:slug${SUPPORT_TOOL_SUFFIX}`}
+            component={SupportLogsScreen}
           />
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/insights`}
             component={InsightsScreen}
+          />
+          <Route
+            path={`${ORG_ROUTE_PREFIX}/:slug/integrations`}
+            component={IntegrationsScreen}
           />
           <Route path="/invite/:slug/:id" component={InviteScreen} />
           <Route

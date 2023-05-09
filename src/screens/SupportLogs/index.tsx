@@ -1,23 +1,32 @@
 import React, { useMemo } from "react";
 import { useLogs } from "../Logs/lib";
 import { numberToNumberWithCommas, useSearchParams } from "src/utils/helpers";
-import { LogsList } from "../Logs/components/LogsList";
+import { LogsList } from "./components/LogsList";
 import { StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
-import { SearchBar } from "../Logs/components/SearchBar";
+import { SearchBar } from "./components/SearchBar";
 import { TopOfSearch } from "./components/TopOfSearch";
-import { HypeDescription } from "./components/HypeDescription";
+import { useFetchFoldersOnce } from "./lib";
+import { Placeholder } from "./components/Placeholder";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
 
-export const GlobalSearchScreen = () => {
+export const SupportLogsScreen = () => {
+  useFetchFoldersOnce();
   const organization = useSelector(getOrganization);
-  const { logs, numLogsInTotal, query, setQuery, isSearchQueued } = useLogs();
+  const {
+    logs,
+    numLogsInTotal,
+    query,
+    setQuery,
+    isSearchQueued,
+    shouldShowLoadingSigns,
+  } = useLogs();
   const { query: urlQuery } = useSearchParams();
 
   const numLogsText = useMemo(() => {
-    if (isSearchQueued) {
-      return "Fetching...";
+    if (shouldShowLoadingSigns) {
+      return "Fetching...this may take a couple seconds";
     } else if (query && logs.length === 1) {
       return "Showing 1 log that matches your query";
     } else if (query && logs.length) {
@@ -28,11 +37,11 @@ export const GlobalSearchScreen = () => {
       return "No results found.";
     }
     return "";
-  }, [numLogsInTotal, logs.length, query, isSearchQueued]);
+  }, [numLogsInTotal, logs.length, query, shouldShowLoadingSigns]);
 
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
-      return `No logs from the last ${organization?.logRetentionInDays} days match your query.`;
+      return "No logs match your query.";
     } else if (query) {
       return "There are no more results.";
     } else if (urlQuery) {
@@ -40,6 +49,10 @@ export const GlobalSearchScreen = () => {
     }
     return "";
   }, [logs.length, numLogsInTotal, query, isSearchQueued, urlQuery]);
+
+  if (!organization) {
+    return null;
+  }
 
   return (
     <>
@@ -50,12 +63,11 @@ export const GlobalSearchScreen = () => {
           <hr style={styles.hr} />
         </div>
         <LogsList
-          isLoading={isSearchQueued}
-          isSearchQueued={isSearchQueued}
+          shouldShowLoadingSigns={shouldShowLoadingSigns}
           logs={logs}
           endOfFeedText={endOfFeedText}
         />
-        {endOfFeedText ? null : <HypeDescription />}
+        {!query && !urlQuery ? <Placeholder /> : null}
       </div>
     </>
   );

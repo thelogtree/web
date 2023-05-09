@@ -10,8 +10,7 @@ export const TopOfSearch = ({ numLogsText }: Props) => (
   <div style={styles.container}>
     <label style={styles.title}>Global Search</label>
     <label style={styles.desc}>
-      Use the search bar above to look for any logs across all your folders and
-      channels.
+      Use the search bar above to look for all logs of one of your users
     </label>
     <label style={styles.numLogsTotalText}>{numLogsText}</label>
   </div>

@@ -68,13 +68,13 @@ export const useSearchParams = (): any => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
-  const resObj = useMemo(() => {
+  const _getResObj = () => {
     let res = {};
     for (const [key, value] of Array.from(params.entries())) {
       res[key] = value;
     }
     return res;
-  }, [Array.from(params.entries())]);
+  };
 
-  return resObj;
+  return _getResObj();
 };
