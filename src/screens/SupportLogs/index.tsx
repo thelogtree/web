@@ -8,9 +8,12 @@ import { SearchBar } from "./components/SearchBar";
 import { TopOfSearch } from "./components/TopOfSearch";
 import { useFetchFoldersOnce } from "./lib";
 import { Placeholder } from "./components/Placeholder";
+import { useSelector } from "react-redux";
+import { getOrganization } from "src/redux/organization/selector";
 
 export const SupportLogsScreen = () => {
   useFetchFoldersOnce();
+  const organization = useSelector(getOrganization);
   const {
     logs,
     numLogsInTotal,
@@ -46,6 +49,10 @@ export const SupportLogsScreen = () => {
     }
     return "";
   }, [logs.length, numLogsInTotal, query, isSearchQueued, urlQuery]);
+
+  if (!organization) {
+    return null;
+  }
 
   return (
     <>

@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 
@@ -6,15 +8,19 @@ type Props = {
   numLogsText?: string;
 };
 
-export const TopOfSearch = ({ numLogsText }: Props) => (
-  <div style={styles.container}>
-    <label style={styles.title}>Genie</label>
-    <label style={styles.desc}>
-      Enter a user's email address above to get their journey.
-    </label>
-    <label style={styles.numLogsTotalText}>{numLogsText}</label>
-  </div>
-);
+export const TopOfSearch = ({ numLogsText }: Props) => {
+  const organization = useSelector(getOrganization);
+  return (
+    <div style={styles.container}>
+      <label style={styles.title}>Journey Finder</label>
+      <label style={styles.desc}>
+        Enter a user's email address above to get their journey through{" "}
+        {organization?.name}
+      </label>
+      <label style={styles.numLogsTotalText}>{numLogsText}</label>
+    </div>
+  );
+};
 
 const styles: StylesType = {
   container: {
@@ -30,7 +36,7 @@ const styles: StylesType = {
     paddingBottom: 0,
     color: Colors.darkGray,
     fontSize: 18,
-    paddingTop: 8,
+    paddingTop: 14,
   },
   numLogsTotalText: {
     paddingBottom: 0,

@@ -1,10 +1,9 @@
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { getOrganization } from "src/redux/organization/selector";
 import { usePathname } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
-import GenieIcon from "src/assets/genie.png";
+import PersonSearchIcon from "src/assets/personSearch.png";
 import { Colors } from "src/utils/colors";
 import { SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
 
@@ -25,8 +24,8 @@ export const SupportSearchTab = () => {
       disabled={isOnGlobalSearch}
       className="tab"
     >
-      <img src={GenieIcon} style={styles.icon} />
-      <label style={styles.tabTitle}>Launch Genie</label>
+      <img src={PersonSearchIcon} style={styles.icon} />
+      <label style={styles.tabTitle}>Journey Finder</label>
     </button>
   );
 };

@@ -13,7 +13,6 @@ import { InviteScreen } from "./screens/Invite";
 import { LogsScreen } from "./screens/Logs";
 import { TeamScreen } from "./screens/Team";
 import { SignOutScreen } from "./screens/SignOut";
-import { GlobalSearchScreen } from "./screens/GlobalSearch";
 import { InsightsScreen } from "./screens/Insights";
 import { getSidebarWidth } from "./redux/organization/selector";
 import { TermsOfServiceRenderer } from "./screens/Policies/TermsOfServiceRenderer";
@@ -25,7 +24,7 @@ import { SupportLogsScreen } from "./screens/SupportLogs";
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
 export const ORG_ROUTE_PREFIX = "/org";
-export const SUPPORT_TOOL_SUFFIX = "/genie";
+export const SUPPORT_TOOL_SUFFIX = "/journey";
 
 export const RouteManager = () => {
   const authStatus = useSelector(getAuthStatus);

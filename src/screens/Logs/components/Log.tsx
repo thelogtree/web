@@ -139,7 +139,7 @@ export const Log = ({ log }: Props) => {
           />
         </div>
         {log.referenceId && (
-          <Tooltip title="Click to do a Genie Search on this ID">
+          <Tooltip title="Click to see the journey of this ID">
             <a
               style={styles.rightSide}
               onClick={isOnGlobalSearch ? undefined : _searchForReferenceId}
