@@ -49,7 +49,7 @@ export const SetupApp = () => {
       authStatus === "NOT_SIGNED_IN" &&
       !NO_ACTION_ROUTES.includes(path)
     ) {
-      history.push("/");
+      window.open("/", "_self");
     }
   }, [user?._id, organization?.slug, authStatus]);
 
