@@ -49,6 +49,7 @@ export const ConnectNewIntegration = ({
   >([]);
   const connectableIntegrations = useSelector(getConnectableIntegrations);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingOAuthLink, setIsLoadingOAuthLink] = useState<boolean>(false);
   const { fetch: refetchIntegrations } = useFetchIntegrations();
 
   const title = useMemo(() => {
@@ -90,6 +91,30 @@ export const ConnectNewIntegration = ({
   const _cancel = () => {
     setIsModalOpen(false);
     setSelectedIntegration(null);
+  };
+
+  const _selectIntegration = async (integrationType: integrationTypeEnum) => {
+    if (isLoadingOAuthLink) {
+      return;
+    }
+
+    if (!IntegrationsToConnectToMap[integrationType].isOAuth) {
+      setSelectedIntegration(integrationType);
+      return;
+    }
+
+    try {
+      setIsLoadingOAuthLink(true);
+      const res = await Api.organization.getOAuthConnectionUrl(
+        organization!._id.toString(),
+        integrationType
+      );
+      const { url } = res.data;
+      window.open(url, "_self");
+    } catch (e) {
+      showGenericErrorAlert(e);
+    }
+    setIsLoadingOAuthLink(false);
   };
 
   const _onSubmit = async () => {
@@ -216,9 +241,16 @@ export const ConnectNewIntegration = ({
                         IntegrationsToConnectToMap[integrationKey];
                       return (
                         <button
-                          style={styles.integrationBtn}
+                          style={{
+                            ...styles.integrationBtn,
+                            ...(isLoadingOAuthLink && {
+                              opacity: 0.4,
+                              cursor: "default",
+                            }),
+                          }}
                           className="integrationToConnect"
-                          onClick={() => setSelectedIntegration(integrationKey)}
+                          onClick={() => _selectIntegration(integrationKey)}
+                          disabled={isLoadingOAuthLink}
                         >
                           <img
                             src={integration.image}
