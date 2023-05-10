@@ -2,7 +2,7 @@ import React from "react";
 import { DynamicContainer } from "src/sharedComponents/DynamicContainer";
 import { StylesType } from "src/utils/styles";
 
-export const OAuthCallback = () => {
+export const OAuthCallbackScreen = () => {
   return (
     <DynamicContainer innerStyle={{ paddingTop: "12%" }}>
       <label style={styles.title}>
