@@ -204,4 +204,22 @@ export const organization = {
       integrationId,
       ...fieldsToUpdate,
     }),
+  finishOAuthConnection: (
+    organizationId: string,
+    sessionId: string,
+    code: string
+  ) =>
+    axios.post(routeUrl + `/${organizationId}/integration-oauth-finish`, {
+      sessionId,
+      code,
+    }),
+  getOAuthConnectionUrl: (
+    organizationId: string,
+    integrationType: integrationTypeEnum
+  ) =>
+    axios.get(routeUrl + `/${organizationId}/integration-oauth-link`, {
+      params: {
+        integrationType,
+      },
+    }),
 };

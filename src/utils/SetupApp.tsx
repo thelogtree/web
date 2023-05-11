@@ -20,7 +20,7 @@ import { ORG_ROUTE_PREFIX } from "src/RouteManager";
 const NO_ACTION_ROUTES = ["/sign-in", "/invite", "/policies", "/"];
 
 // routes where logged in users can view it and will not be redirected anywhere
-const SIGNED_IN_ROUTES = ["/policies"];
+const SIGNED_IN_ROUTES = ["/policies", "oauth-callback"];
 
 export const SetupApp = () => {
   const history = useHistory();

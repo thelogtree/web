@@ -20,6 +20,7 @@ import { PrivacyPolicyRenderer } from "./screens/Policies/PrivacyPolicyRenderer"
 import { LandingPage } from "./screens/LandingPage";
 import { IntegrationsScreen } from "./screens/Integrations";
 import { SupportLogsScreen } from "./screens/SupportLogs";
+import { OAuthCallbackScreen } from "./screens/OAuthCallback";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -55,6 +56,7 @@ export const RouteManager = () => {
         >
           <Route path="/org/sign-out" component={SignOutScreen} />
           <Route path="/sign-in" component={SignInScreen} />
+          <Route path="/oauth-callback" component={OAuthCallbackScreen} />
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/api-dashboard`}
             component={ApiDashboardScreen}

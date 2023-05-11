@@ -1,5 +1,6 @@
 import SentryLogo from "src/assets/sentryLogo.png";
 import MixpanelLogo from "src/assets/mixpanelLogo.png";
+import IntercomLogo from "src/assets/intercomLogo.png";
 import { integrationTypeEnum, keyTypeEnum } from "logtree-types";
 
 export type AdditionalPropertyObj = {
@@ -13,6 +14,7 @@ type IntegrationMapValue = {
   helpDescription: string;
   keyTypesNeeded: keyTypeEnum[];
   additionalPropertiesNeeded: AdditionalPropertyObj[];
+  isOAuth: boolean;
 };
 
 /*
@@ -34,6 +36,7 @@ export const IntegrationsToConnectToMap: {
       "You can get an Auth Token in Sentry by going to User Settings > Auth Tokens > Create New Token.",
     keyTypesNeeded: [keyTypeEnum.AuthToken],
     additionalPropertiesNeeded: [],
+    isOAuth: false,
   },
   mixpanel: {
     image: MixpanelLogo,
@@ -43,5 +46,14 @@ export const IntegrationsToConnectToMap: {
     additionalPropertiesNeeded: [
       { key: "projectId", prettyName: "Project ID" },
     ],
+    isOAuth: false,
+  },
+  intercom: {
+    image: IntercomLogo,
+    prettyName: "Intercom",
+    helpDescription: "",
+    keyTypesNeeded: [],
+    additionalPropertiesNeeded: [],
+    isOAuth: true,
   },
 };
