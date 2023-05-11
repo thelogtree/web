@@ -32,7 +32,7 @@ export const OAuthCallbackScreen = () => {
   }, [organization?._id]);
 
   return (
-    <DynamicContainer innerStyle={{ paddingTop: "30%" }}>
+    <DynamicContainer innerStyle={{ paddingTop: "22%" }}>
       <label style={styles.title}>
         Please wait one moment while we finish connecting...
       </label>
@@ -45,5 +45,6 @@ const styles: StylesType = {
     fontSize: 18,
     fontWeight: 600,
     textAlign: "center",
+    width: "100%",
   },
 };
