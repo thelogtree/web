@@ -162,7 +162,7 @@ export const ConnectNewIntegration = ({
   return (
     <Modal
       open={isModalOpen}
-      width={600}
+      width={700}
       onCancel={_cancel}
       onOk={selectedIntegration ? _onSubmit : undefined}
       okText={isLoading ? "Connecting..." : "Connect"}
@@ -235,34 +235,32 @@ export const ConnectNewIntegration = ({
             ) : (
               <Grid style={styles.gridContainer}>
                 <Row>
-                  <Col xs={3}>
-                    {connectableIntegrations.map((integrationKey) => {
-                      const integration =
-                        IntegrationsToConnectToMap[integrationKey];
-                      return (
-                        <button
-                          style={{
-                            ...styles.integrationBtn,
-                            ...(isLoadingOAuthLink && {
-                              opacity: 0.4,
-                              cursor: "default",
-                            }),
-                          }}
-                          className="integrationToConnect"
-                          onClick={() => _selectIntegration(integrationKey)}
-                          disabled={isLoadingOAuthLink}
-                        >
-                          <img
-                            src={integration.image}
-                            style={styles.integrationImg}
-                          />
-                          <label style={styles.integrationName}>
-                            {integration.prettyName}
-                          </label>
-                        </button>
-                      );
-                    })}
-                  </Col>
+                  {connectableIntegrations.map((integrationKey) => {
+                    const integration =
+                      IntegrationsToConnectToMap[integrationKey];
+                    return (
+                      <button
+                        style={{
+                          ...styles.integrationBtn,
+                          ...(isLoadingOAuthLink && {
+                            opacity: 0.4,
+                            cursor: "default",
+                          }),
+                        }}
+                        className="integrationToConnect"
+                        onClick={() => _selectIntegration(integrationKey)}
+                        disabled={isLoadingOAuthLink}
+                      >
+                        <img
+                          src={integration.image}
+                          style={styles.integrationImg}
+                        />
+                        <label style={styles.integrationName}>
+                          {integration.prettyName}
+                        </label>
+                      </button>
+                    );
+                  })}
                 </Row>
               </Grid>
             )}
@@ -296,21 +294,25 @@ const styles: StylesType = {
     width: 130,
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     borderRadius: 12,
-    marginBottom: 15,
+    margin: 14,
   },
   integrationImg: {
     maxWidth: 60,
     maxHeight: 60,
     cursor: "pointer",
+    paddingTop: 15,
+    position: "relative",
+    top: 14,
   },
   integrationName: {
     fontSize: 18,
     fontWeight: 500,
-    paddingTop: 18,
     cursor: "pointer",
+    position: "relative",
+    bottom: 20,
   },
   gridContainer: {
     width: "100%",

@@ -8,6 +8,7 @@ import { showGenericErrorAlert, useSearchParams } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 
 export const OAuthCallbackScreen = () => {
+  const history = useHistory();
   const organization = useSelector(getOrganization);
   const { code, state } = useSearchParams();
 
@@ -18,7 +19,7 @@ export const OAuthCallbackScreen = () => {
         state,
         code
       );
-      window.open(`/org/${organization?.slug}/integrations`, "_self");
+      history.replace(`/org/${organization?.slug}/integrations`);
     } catch (e) {
       showGenericErrorAlert(e);
     }
