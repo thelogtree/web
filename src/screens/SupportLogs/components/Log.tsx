@@ -40,10 +40,12 @@ export const Log = ({ log }: Props) => {
         text: "Error",
       };
     } else if (log.tag === simplifiedLogTagEnum.Tracking) {
+      return { accentColor: undefined, backgroundColor: undefined, text: "" };
+    } else if (log.tag === simplifiedLogTagEnum.Support) {
       return {
         accentColor: Colors.blueishPurple,
         backgroundColor: Colors.veryLightBlueishPurple,
-        text: "",
+        text: "Support",
       };
     }
     return { accentColor: undefined, backgroundColor: undefined, text: "" };
