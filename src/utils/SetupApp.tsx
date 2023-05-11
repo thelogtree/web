@@ -17,10 +17,10 @@ import { getFirstPathWithSlash, usePathname } from "./helpers";
 import { ORG_ROUTE_PREFIX } from "src/RouteManager";
 
 // routes where logged out users can view it and will not be redirected anywhere
-const NO_ACTION_ROUTES = ["/sign-in", "/invite", "/policies", "/"];
+const NO_ACTION_ROUTES = ["/sign-in", "/invite", "/policies", "/learn", "/"];
 
 // routes where logged in users can view it and will not be redirected anywhere
-const SIGNED_IN_ROUTES = ["/policies", "oauth-callback"];
+const SIGNED_IN_ROUTES = ["/policies", "/oauth-callback", "/learn"];
 
 export const SetupApp = () => {
   const history = useHistory();

@@ -21,6 +21,7 @@ import { LandingPage } from "./screens/LandingPage";
 import { IntegrationsScreen } from "./screens/Integrations";
 import { SupportLogsScreen } from "./screens/SupportLogs";
 import { OAuthCallbackScreen } from "./screens/OAuthCallback";
+import { IntercomLearnMoreScreen } from "./screens/IntercomLearnMore";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -94,6 +95,7 @@ export const RouteManager = () => {
             path="/policies/terms-of-service"
             component={TermsOfServiceRenderer}
           />
+          <Route path="/learn/intercom" component={IntercomLearnMoreScreen} />
           <Route exact path="/" component={LandingPage} />
         </div>
       </div>
