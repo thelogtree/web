@@ -113,8 +113,8 @@ export const ConnectNewIntegration = ({
       window.open(url, "_self");
     } catch (e) {
       showGenericErrorAlert(e);
+      setIsLoadingOAuthLink(false);
     }
-    setIsLoadingOAuthLink(false);
   };
 
   const _onSubmit = async () => {
