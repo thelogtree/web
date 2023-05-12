@@ -6,9 +6,8 @@ import { isMobile } from "react-device-detect";
 import { Col, Grid, Row } from "react-flexbox-grid";
 import { useHistory } from "react-router-dom";
 import { Api } from "src/api";
-import A16ZLogo from "src/assets/a16zLogo.jpeg";
-import ExampleChannels from "src/assets/channelsExample.png";
-import ExampleGraphic from "src/assets/exampleGraphicNew.png";
+import ExampleChannels from "src/assets/channelsGraphic.png";
+import ExampleGraphic from "src/assets/exampleGraphicCopilot.png";
 import JourneyIcon from "src/assets/journey.png";
 import KleinerPerkinsLogo from "src/assets/kleinerPerkinsLogo.png";
 import LogtreeIcon from "src/assets/logtreeLogo192.png";
@@ -146,7 +145,7 @@ export const LandingPage = () => {
                 }}
               >
                 <label style={styles.mainText}>
-                  The logging API designed to be your support engineer.
+                  The logging API designed to be your customer support co-pilot
                 </label>
                 <label style={styles.subtitle}>
                   No more digging through a mess of logs trying to figure out
@@ -167,18 +166,18 @@ export const LandingPage = () => {
               {pageLoaded && (
                 <>
                   <label style={styles.mainText2}>
-                    Organize logs into folders and channels
+                    Monitor events in organized channels
                   </label>
                   <label style={styles.subtitle}>
-                    Stop dumping everything into one feed for engineers to sort
-                    through. Find what you're looking for 10x faster compared to
-                    Logtail.
+                    Stop dumping all your logs into one feed for engineers to
+                    sort through later. Find what you're looking for 10x faster
+                    compared to any other logging solution.
                   </label>
                   <div style={styles.exampleChannelsContainer}>
                     <img src={ExampleChannels} style={styles.exampleGraphic} />
                   </div>
                   <label style={styles.gridTitle}>
-                    Intuitive like Slack, durable like Datadog
+                    Everything a logging API should be
                   </label>
                   <Grid style={styles.gridContainer}>
                     <Col style={styles.statItem}>
@@ -214,7 +213,7 @@ export const LandingPage = () => {
                     <Col style={styles.statItem}>
                       <img src={SupportPersonIcon} style={styles.statIcon} />
                       <label style={styles.statDesc}>
-                        Easy for non-technical people to use
+                        AI support agent suggests responses
                       </label>
                     </Col>
                   </Grid>
@@ -225,8 +224,8 @@ export const LandingPage = () => {
                     </label>
                   </div>
                   <label style={styles.easySetupDesc}>
-                    No week-long integration sprints. There's only one endpoint
-                    to connect to.
+                    Send your own logs with one endpoint. Connect to Sentry,
+                    Mixpanel, Sendgrid, Intercom, and more, without code.
                   </label>
                   <label style={styles.usedByTitle}>
                     Used by startups that have raised millions from
@@ -267,7 +266,8 @@ export const LandingPage = () => {
               >
                 <div style={styles.leftSide}>
                   <label style={styles.mainText}>
-                    The logging API designed to be your support engineer.
+                    The logging API designed to be your customer support
+                    co-pilot
                   </label>
                   <label style={styles.subtitle}>
                     No more digging through a mess of logs trying to figure out
@@ -291,12 +291,12 @@ export const LandingPage = () => {
                   <div style={styles.sideBySide2}>
                     <div style={styles.leftSide}>
                       <label style={styles.mainText}>
-                        Organize logs into folders and channels
+                        Monitor events in organized channels
                       </label>
                       <label style={styles.subtitle}>
-                        Stop dumping everything into one feed for engineers to
-                        sort through later. Find what you're looking for 10x
-                        faster compared to Logtail.
+                        Stop dumping all your logs into one feed for engineers
+                        to sort through later. Find what you're looking for 10x
+                        faster compared to any other logging solution.
                       </label>
                     </div>
                     <div style={styles.exampleChannelsContainer}>
@@ -307,7 +307,7 @@ export const LandingPage = () => {
                     </div>
                   </div>
                   <label style={styles.gridTitle}>
-                    Intuitive like Slack, durable like Datadog
+                    Everything a logging API should be
                   </label>
                   <Grid style={styles.gridContainer}>
                     <Row style={styles.statsHorizontalContainer}>
@@ -346,7 +346,7 @@ export const LandingPage = () => {
                       <Col style={styles.statItem}>
                         <img src={SupportPersonIcon} style={styles.statIcon} />
                         <label style={styles.statDesc}>
-                          Easy for non-technical people to use
+                          AI support agent suggests responses
                         </label>
                       </Col>
                     </Row>
@@ -358,8 +358,8 @@ export const LandingPage = () => {
                     </label>
                   </div>
                   <label style={styles.easySetupDesc}>
-                    No week-long integration sprints. There's only one endpoint
-                    to connect to.
+                    Send your own logs with one endpoint. Connect to Sentry,
+                    Mixpanel, Sendgrid, Intercom, and more, without code.
                   </label>
                   <label style={styles.usedByTitle}>
                     Used by startups that have raised millions from
@@ -590,10 +590,8 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "flex-start",
-    flex: 3,
-    maxWidth: isMobile ? "75%" : 300,
+    maxWidth: isMobile ? "75%" : 500,
     marginTop: isMobile ? 60 : 0,
-    marginRight: isMobile ? 0 : 180,
   },
   exampleGraphic1: {
     width: "100%",
@@ -637,7 +635,6 @@ const styles: StylesType = {
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    flex: 3,
     maxWidth: 800,
   },
   sideBySide: {
