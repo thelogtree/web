@@ -10,20 +10,22 @@ type Props = {
   numMembers: number;
   organizationId: string;
   invitationId: string;
+  organizationName: string;
 };
 
 export const AcceptInviteForm = ({
   numMembers,
   organizationId,
   invitationId,
+  organizationName,
 }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const joinTeamBtnText = useMemo(() => {
-    return numMembers >= 1 ? "Join team" : "Become first member";
-  }, [numMembers]);
+    return numMembers < 1 ? `Join ${organizationName} on Logtree` : `Save`;
+  }, [numMembers, organizationName]);
 
   const _submitForm = async () => {
     try {
@@ -38,8 +40,11 @@ export const AcceptInviteForm = ({
         password
       );
       await firebase.auth().signInWithEmailAndPassword(email, password);
-    } catch (e) {
-      showGenericErrorAlert(e);
+    } catch (e: any) {
+      showGenericErrorAlert({
+        message:
+          "That email is either invalid or already in use by another Logtree account.",
+      });
       setIsLoading(false); // this must stay only in the catch
     }
   };
@@ -92,13 +97,7 @@ const styles: StylesType = {
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: Colors.lightGray,
-    borderStyle: "solid",
-    backgroundColor: Colors.white,
     padding: 32,
-    boxShadow: "0px 12px 10px rgba(0,0,0,0.1)",
   },
   input: {
     backgroundColor: Colors.veryLightGray,
@@ -108,23 +107,25 @@ const styles: StylesType = {
     borderColor: Colors.lightGray,
     borderWidth: 1,
     width: "100%",
-    height: 35,
-    paddingLeft: 8,
+    height: 45,
+    paddingLeft: 10,
   },
   inputTitle: {
-    paddingBottom: 10,
+    paddingBottom: 6,
     fontWeight: 400,
+    color: Colors.darkerGray,
+    fontSize: 13,
   },
   joinTeamBtn: {
     outline: "none",
-    borderRadius: 4,
+    borderRadius: 30,
     backgroundColor: Colors.black,
     border: "none",
     width: "100%",
-    marginTop: 30,
+    marginTop: 20,
     height: 40,
     color: Colors.white,
-    fontWeight: 600,
+    fontWeight: 400,
     cursor: "pointer",
     display: "flex",
     flexDirection: "row",

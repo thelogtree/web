@@ -13,24 +13,20 @@ export const InviteScreen = () => {
   const params = useParams() as any;
   const invitationId = params["id"];
   const shouldShowLoadingSpinner = isFetchingInvitationInfo || !invitationInfo;
-  const joiningText = useMemo(
-    () =>
-      orgJoiningTextOnInviteScreen(
-        invitationInfo?.organizationName,
-        invitationInfo?.numMembers
-      ),
-    [invitationInfo?.organizationName, invitationInfo?.numMembers]
-  );
 
   return shouldShowLoadingSpinner ? (
     <LoadingSpinnerFullScreen />
   ) : (
     <DynamicContainer innerStyle={{ paddingTop: "12%" }}>
-      <label style={styles.joiningText}>{joiningText}</label>
+      <label style={styles.joiningText}>Finish creating your account</label>
+      <label style={styles.joiningTextDesc}>
+        Enter what you want your account's email and password to be below.
+      </label>
       <AcceptInviteForm
         invitationId={invitationId}
         organizationId={invitationInfo.organizationId}
         numMembers={invitationInfo.numMembers}
+        organizationName={invitationInfo?.organizationName}
       />
     </DynamicContainer>
   );
@@ -42,9 +38,17 @@ const styles: StylesType = {
     height: "100%",
   },
   joiningText: {
-    fontSize: 30,
+    fontSize: 26,
     color: Colors.black,
-    paddingBottom: 40,
+    textAlign: "center",
+    width: "100%",
+    fontWeight: 500,
+  },
+  joiningTextDesc: {
+    fontSize: 15,
+    color: Colors.darkerGray,
+    paddingTop: 10,
+    paddingBottom: 30,
     textAlign: "center",
     width: "100%",
     fontWeight: 300,
