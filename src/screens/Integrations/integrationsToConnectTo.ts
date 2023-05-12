@@ -1,6 +1,7 @@
 import SentryLogo from "src/assets/sentryLogo.png";
 import MixpanelLogo from "src/assets/mixpanelLogo.png";
 import IntercomLogo from "src/assets/intercomLogo.png";
+import SendgridLogo from "src/assets/sendgridLogo.png";
 import { integrationTypeEnum, keyTypeEnum } from "logtree-types";
 
 export type AdditionalPropertyObj = {
@@ -55,5 +56,14 @@ export const IntegrationsToConnectToMap: {
     keyTypesNeeded: [],
     additionalPropertiesNeeded: [],
     isOAuth: true,
+  },
+  sendgrid: {
+    image: SendgridLogo,
+    prettyName: "Sendgrid",
+    helpDescription:
+      "You can get your API Key in Sendgrid by going to Settings > API Keys, and creating a new API Key or by entering your existing one below.",
+    keyTypesNeeded: [keyTypeEnum.ApiKey],
+    additionalPropertiesNeeded: [],
+    isOAuth: false,
   },
 };

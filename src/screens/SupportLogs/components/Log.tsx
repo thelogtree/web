@@ -47,6 +47,12 @@ export const Log = ({ log }: Props) => {
         backgroundColor: Colors.veryLightBlueishPurple,
         text: "Support",
       };
+    } else if (log.tag === simplifiedLogTagEnum.Marketing) {
+      return {
+        accentColor: undefined,
+        backgroundColor: undefined,
+        text: "Marketing",
+      };
     }
     return { accentColor: undefined, backgroundColor: undefined, text: "" };
   }, []);
@@ -108,9 +114,6 @@ export const Log = ({ log }: Props) => {
           <OpenExternalLink log={log} />
           <span style={styles.copyText}>{copyText}</span>
         </div>
-        {log.referenceId && (
-          <span style={styles.rightSide}>id:{log.referenceId}</span>
-        )}
       </div>
       <CopyToClipboard text={textToCopy} onCopy={_onJustCopied}>
         <div style={styles.copyBtn}>

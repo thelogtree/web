@@ -30,11 +30,11 @@ export const SupportLogsScreen = () => {
     if (shouldShowLoadingSigns) {
       return "Fetching...this may take a couple seconds";
     } else if (query && logs.length === 1) {
-      return "Showing 1 log that matches your query";
+      return "Showing 1 log that for this user";
     } else if (query && logs.length) {
       return `Showing the ${numberToNumberWithCommas(
         logs.length
-      )} most recent logs that match your query`;
+      )} most recent logs for this user`;
     } else if (query) {
       return "No results found.";
     }
@@ -43,7 +43,7 @@ export const SupportLogsScreen = () => {
 
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
-      return "No logs match your query.";
+      return "There are no logs for this user.";
     } else if (query) {
       return "There are no more results.";
     } else if (urlQuery) {

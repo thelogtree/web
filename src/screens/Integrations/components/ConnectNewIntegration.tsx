@@ -239,26 +239,28 @@ export const ConnectNewIntegration = ({
                     const integration =
                       IntegrationsToConnectToMap[integrationKey];
                     return (
-                      <button
-                        style={{
-                          ...styles.integrationBtn,
-                          ...(isLoadingOAuthLink && {
-                            opacity: 0.4,
-                            cursor: "default",
-                          }),
-                        }}
-                        className="integrationToConnect"
-                        onClick={() => _selectIntegration(integrationKey)}
-                        disabled={isLoadingOAuthLink}
-                      >
-                        <img
-                          src={integration.image}
-                          style={styles.integrationImg}
-                        />
-                        <label style={styles.integrationName}>
-                          {integration.prettyName}
-                        </label>
-                      </button>
+                      <Col xs>
+                        <button
+                          style={{
+                            ...styles.integrationBtn,
+                            ...(isLoadingOAuthLink && {
+                              opacity: 0.4,
+                              cursor: "default",
+                            }),
+                          }}
+                          className="integrationToConnect"
+                          onClick={() => _selectIntegration(integrationKey)}
+                          disabled={isLoadingOAuthLink}
+                        >
+                          <img
+                            src={integration.image}
+                            style={styles.integrationImg}
+                          />
+                          <label style={styles.integrationName}>
+                            {integration.prettyName}
+                          </label>
+                        </button>
+                      </Col>
                     );
                   })}
                 </Row>
@@ -316,6 +318,13 @@ const styles: StylesType = {
   },
   gridContainer: {
     width: "100%",
+  },
+  rowContainer: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
   keyInput: {
     outline: "none",
