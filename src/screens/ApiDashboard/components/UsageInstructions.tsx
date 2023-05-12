@@ -22,7 +22,9 @@ export const UsageInstructions = () => {
         If the folderPath you specify does not exist yet, Logtree will
         automatically create it once the first log is sent to that folderPath.
         The example above is in Javascript, but you can use any programming
-        language to call this endpoint.
+        language to call this endpoint. We strongly recommend you wrap your
+        calls to Logtree in a try/catch so if a call fails, your system does not
+        fail.
       </label>
       <label style={{ ...styles.title, paddingTop: 40 }}>
         To get the most recent logs from Logtree, make an HTTP request that
