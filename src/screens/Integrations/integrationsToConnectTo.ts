@@ -61,7 +61,7 @@ export const IntegrationsToConnectToMap: {
     image: SendgridLogo,
     prettyName: "Sendgrid",
     helpDescription:
-      "You can get your API Key in Sendgrid by going to Settings > API Keys, and creating a new API Key or by entering your existing one below.",
+      "This integration will only work if you have the Pro plan or higher in Sendgrid. You can get your API Key in Sendgrid by going to Settings > API Keys, and creating a new API Key or by entering your existing one below.",
     keyTypesNeeded: [keyTypeEnum.ApiKey],
     additionalPropertiesNeeded: [],
     isOAuth: false,
