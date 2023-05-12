@@ -234,12 +234,14 @@ export const ConnectNewIntegration = ({
               </>
             ) : (
               <Grid style={styles.gridContainer}>
-                <Row>
+                <Row style={{display: "flex",
+              flexDirection: "row",
+              width: "100%", justifyContent: "center"}}>
                   {connectableIntegrations.map((integrationKey) => {
                     const integration =
                       IntegrationsToConnectToMap[integrationKey];
                     return (
-                      <Col xs>
+                      <Col>
                         <button
                           style={{
                             ...styles.integrationBtn,

@@ -2,6 +2,7 @@ import SentryLogo from "src/assets/sentryLogo.png";
 import MixpanelLogo from "src/assets/mixpanelLogo.png";
 import IntercomLogo from "src/assets/intercomLogo.png";
 import SendgridLogo from "src/assets/sendgridLogo.png";
+import CustomerioLogo from "src/assets/customerioLogo.png";
 import { integrationTypeEnum, keyTypeEnum } from "logtree-types";
 
 export type AdditionalPropertyObj = {
@@ -64,6 +65,17 @@ export const IntegrationsToConnectToMap: {
       "This integration will only work if you have the Pro plan or higher in Sendgrid. You can get your API Key in Sendgrid by going to Settings > API Keys, and creating a new API Key or by entering your existing one below.",
     keyTypesNeeded: [keyTypeEnum.ApiKey],
     additionalPropertiesNeeded: [],
+    isOAuth: false,
+  },
+  customer_io: {
+    image: CustomerioLogo,
+    prettyName: "Customer.io",
+    helpDescription:
+      "You can get an API Key in Customer.io by going to Settings > Account Settings > API Credentials > App API Keys, and creating a new App API Key. You can get your workspace ID by looking at the URL when you are logged in to customer.io which will look something like fly.customer.io/journeys/env/YOUR_WORKSPACE_ID/dashboard. Please make sure the workspace you're in when you take this ID is the one you intend to fetch data for.",
+    keyTypesNeeded: [keyTypeEnum.ApiKey],
+    additionalPropertiesNeeded: [
+      { key: "workspaceId", prettyName: "Workspace ID" },
+    ],
     isOAuth: false,
   },
 };
