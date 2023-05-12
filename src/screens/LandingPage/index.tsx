@@ -556,6 +556,7 @@ const styles: StylesType = {
     textAlign: "center",
     fontWeight: 300,
     color: Colors.darkerGray,
+    ...(isMobile && { maxWidth: "90%" }),
   },
   gridTitle: {
     fontWeight: 700,
@@ -590,7 +591,7 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "flex-start",
-    maxWidth: isMobile ? "75%" : 500,
+    maxWidth: isMobile ? "90%" : 500,
     marginTop: isMobile ? 60 : 0,
   },
   exampleGraphic1: {
