@@ -15,7 +15,7 @@ export const UsageInstructions = () => {
       </label>
       <pre style={styles.preStyle}>
         <div style={styles.codeExample}>
-          {`axios.post("${PROD_SERVER_URL}${serverSlug}/v1/logs",\n  {\n    content: string; // what you want to log\n    folderPath: string; // where you want to log it in logtree. e.g. "/transactions"\n    referenceId?: string; // (optional) refers to an ID in your database (like a userID)\n    externalLink?: string; // (optional) provide a website url that you want people to be redirected to if they click on this log.\n  },\n  {\n    headers: {\n      "x-logtree-key": "${organization?.keys.publishableApiKey}", // this is your publishable api key\n      "authorization": "your_secret_key"\n    }\n  }\n)`}
+          {`axios.post("${PROD_SERVER_URL}${serverSlug}/v1/logs",\n  {\n    content: string; // what you want to log\n    folderPath: string; // where you want to log it in logtree. e.g. "/transactions"\n    referenceId?: string; // (optional) the email address of the user related to this request.\n    externalLink?: string; // (optional) provide a website url that you want people to be redirected to if they click on this log.\n  },\n  {\n    headers: {\n      "x-logtree-key": "${organization?.keys.publishableApiKey}", // this is your publishable api key\n      "authorization": "your_secret_key"\n    }\n  }\n)`}
         </div>
       </pre>
       <label style={styles.canUseAnyLanguage}>
@@ -30,7 +30,7 @@ export const UsageInstructions = () => {
       </label>
       <pre style={styles.preStyle}>
         <div style={styles.codeExample}>
-          {`axios.get("${PROD_SERVER_URL}${serverSlug}/v1/logs",\n  {\n    folderPath?: string; // (optional) what channel you want to filter to. e.g. "/transactions"\n    referenceId?: string; // (optional) what reference ID you want to filter to.\n  },\n  {\n    headers: {\n      "x-logtree-key": "${organization?.keys.publishableApiKey}", // this is your publishable api key\n      "authorization": "your_secret_key"\n    }\n  }\n)`}
+          {`axios.get("${PROD_SERVER_URL}${serverSlug}/v1/logs",\n  {\n    folderPath?: string; // (optional) what channel you want to filter to. e.g. "/transactions"\n    referenceId?: string; // (optional) the email address of the user related to this request.\n  },\n  {\n    headers: {\n      "x-logtree-key": "${organization?.keys.publishableApiKey}", // this is your publishable api key\n      "authorization": "your_secret_key"\n    }\n  }\n)`}
         </div>
       </pre>
       <label style={styles.canUseAnyLanguage}>
