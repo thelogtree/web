@@ -30,8 +30,13 @@ export const Log = ({ log }: Props) => {
   const organization = useSelector(getOrganization);
   const isOnGlobalSearch = useIsGlobalSearchScreen();
   const isOnFavoritesScreen = useIsFavoriteLogsScreen();
-  const { shouldShowAsDeleted, onMouseDown, onMouseUp, isMouseDown } =
-    useDeleteLog(log._id);
+  const {
+    shouldShowAsDeleted,
+    onMouseDown,
+    onMouseUp,
+    isMouseDown,
+    onMouseMove,
+  } = useDeleteLog(log._id);
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [justCopied, setJustCopied] = useState<boolean>(false);
   const [isDeleteBarVisibleAndAnimating, setIsDeleteBarVisibleAndAnimating] =
@@ -165,6 +170,7 @@ export const Log = ({ log }: Props) => {
             onMouseLeave={_onMouseLeave}
             onMouseDown={onMouseDown}
             onMouseUp={onMouseUp}
+            onMouseMove={onMouseMove}
           >
             {shouldShowAsDeleted && <DeletedLogRedBox />}
             {log.content}
