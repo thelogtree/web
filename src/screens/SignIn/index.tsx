@@ -4,7 +4,6 @@ import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 
 import { SignInForm } from "./components/SignInForm";
-import LogtreeIcon from "src/assets/logtreeLogo192.png";
 import { isMobile } from "react-device-detect";
 
 export const SignInScreen = () => (
