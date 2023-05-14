@@ -222,4 +222,15 @@ export const organization = {
         integrationType,
       },
     }),
+  getIntegrationLogs: (
+    organizationId: string,
+    integrationId: string,
+    query: string
+  ) =>
+    axios.get(routeUrl + `/${organizationId}/integration-logs`, {
+      params: {
+        integrationId,
+        query,
+      },
+    }),
 };

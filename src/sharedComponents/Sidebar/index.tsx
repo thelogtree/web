@@ -15,6 +15,7 @@ import { SignedInOrganization } from "./components/SignedInOrganization";
 import { Resizer } from "./components/Resizer";
 import { SupportSearchTab } from "./components/SupportSearchTab";
 import { IntegrationsTab } from "./components/IntegrationsTab";
+import { Connections } from "./components/Connections";
 
 export const Sidebar = () => {
   const sidebarWidth = useSelector(getSidebarWidth);
@@ -29,6 +30,7 @@ export const Sidebar = () => {
         <InsightsTab />
         <IntegrationsTab />
         <SupportSearchTab />
+        <Connections />
         <Folders />
       </div>
       <Resizer />

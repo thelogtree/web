@@ -17,6 +17,7 @@ type IntegrationMapValue = {
   keyTypesNeeded: keyTypeEnum[];
   additionalPropertiesNeeded: AdditionalPropertyObj[];
   isOAuth: boolean;
+  showsLogsWhenThereIsNoQuery: boolean;
 };
 
 /*
@@ -39,6 +40,7 @@ export const IntegrationsToConnectToMap: {
     keyTypesNeeded: [keyTypeEnum.AuthToken],
     additionalPropertiesNeeded: [],
     isOAuth: false,
+    showsLogsWhenThereIsNoQuery: false,
   },
   mixpanel: {
     image: MixpanelLogo,
@@ -49,6 +51,7 @@ export const IntegrationsToConnectToMap: {
       { key: "projectId", prettyName: "Project ID" },
     ],
     isOAuth: false,
+    showsLogsWhenThereIsNoQuery: false,
   },
   intercom: {
     image: IntercomLogo,
@@ -57,6 +60,7 @@ export const IntegrationsToConnectToMap: {
     keyTypesNeeded: [],
     additionalPropertiesNeeded: [],
     isOAuth: true,
+    showsLogsWhenThereIsNoQuery: true,
   },
   sendgrid: {
     image: SendgridLogo,
@@ -66,6 +70,7 @@ export const IntegrationsToConnectToMap: {
     keyTypesNeeded: [keyTypeEnum.ApiKey],
     additionalPropertiesNeeded: [],
     isOAuth: false,
+    showsLogsWhenThereIsNoQuery: false,
   },
   customer_io: {
     image: CustomerioLogo,
@@ -77,5 +82,6 @@ export const IntegrationsToConnectToMap: {
       { key: "workspaceId", prettyName: "Workspace ID" },
     ],
     isOAuth: false,
+    showsLogsWhenThereIsNoQuery: true,
   },
 };

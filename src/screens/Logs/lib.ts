@@ -1,24 +1,30 @@
+import * as Sentry from "@sentry/react";
+import _ from "lodash";
+import { simplifiedLogTagEnum } from "logtree-types";
+import moment from "moment-timezone";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { LOGS_ROUTE_PREFIX, SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
+import { useHistory, useLocation } from "react-router-dom";
 import { Api } from "src/api";
+import { useFetchFolders } from "src/redux/actionIndex";
 import {
   getFavoriteFolderPaths,
   getFolders,
   getOrganization,
 } from "src/redux/organization/selector";
+import {
+  CONNECTION_ROUTE_PREFIX,
+  LOGS_ROUTE_PREFIX,
+  SUPPORT_TOOL_SUFFIX,
+} from "src/RouteManager";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import {
   showGenericErrorAlert,
   usePathname,
   useSearchParams,
 } from "src/utils/helpers";
-import _ from "lodash";
-import { useFetchFolders } from "src/redux/actionIndex";
-import moment from "moment-timezone";
-import * as Sentry from "@sentry/react";
-import { useHistory, useLocation } from "react-router-dom";
-import { simplifiedLogTagEnum } from "logtree-types";
+
+import { useCurrentIntegration } from "../IntegrationLogs/lib";
 
 export const useFindFrontendFolderFromUrl = () => {
   const folders = useSelector(getFolders);
@@ -57,6 +63,20 @@ export const useFullFolderPathFromUrl = () => {
   return fullFolderPath;
 };
 
+export const useConnectionPathFromUrl = () => {
+  const path = usePathname();
+
+  const connectionPath = useMemo(() => {
+    const whereConnectionPathStarts =
+      path.indexOf(CONNECTION_ROUTE_PREFIX) +
+      CONNECTION_ROUTE_PREFIX.length +
+      1;
+    return path.substring(whereConnectionPathStarts);
+  }, [path]);
+
+  return connectionPath;
+};
+
 export type FrontendLog = {
   content: string;
   _id: string;
@@ -71,7 +91,10 @@ export type FrontendLog = {
 
 const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 50 because the backend only returns 50
 
-export const useLogs = (folderId?: string) => {
+export const useLogs = (
+  folderId?: string,
+  overrideInitialLoadingState?: boolean
+) => {
   const history = useHistory();
   const organization = useSelector(getOrganization);
   const isSupportScreen = useIsSupportLogsScreen();
@@ -79,6 +102,10 @@ export const useLogs = (folderId?: string) => {
   const favoritesScreenHasUnread = useFavoritesFolderHasUnreadLogs();
   const isGlobalSearchScreen = useIsGlobalSearchScreen();
   const frontendFolder = useFindFrontendFolderFromUrl();
+  const isIntegrationsScreen = useIsIntegrationLogsScreen();
+  const connectionUrl = useConnectionPathFromUrl();
+  const { currentIntegration, currentIntegrationFromMap } =
+    useCurrentIntegration();
   const flattenedFolders = useFlattenedFolders();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -87,7 +114,9 @@ export const useLogs = (folderId?: string) => {
   const urlQuery = queryParams.query || "";
   const [hasSkippedFirstRender, setHasSkippedFirstRender] =
     useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(!!urlQuery);
+  const [isLoading, setIsLoading] = useState<boolean>(
+    overrideInitialLoadingState || !!urlQuery
+  );
   const [logs, setLogs] = useState<FrontendLog[]>([]);
   const logsIds = useMemo(() => {
     return logs.map((logs) => logs._id);
@@ -105,16 +134,27 @@ export const useLogs = (folderId?: string) => {
   const [query, setQuery] = useState<string>(urlQuery);
   const [lastSearchCompletedWithQuery, setLastSearchCompletedWithQuery] =
     useState<string>("");
+  const [
+    lastCompletedFetchWithConnectionUrl,
+    setLastCompletedFetchWithConnectionUrl,
+  ] = useState<string>("");
   const [isSearchQueued, setIsSearchQueued] = useState<boolean>(!!urlQuery);
   const [filtersForOnlyErrors, setFiltersForOnlyErrors] =
     useState<boolean>(false);
   const { fetch: refetchFolders, isFetching: isFetchingFolders } =
     useFetchFolders();
-  const shouldShowLoadingSigns = Boolean(
-    isLoading ||
-      isSearchQueued ||
-      (query && lastSearchCompletedWithQuery !== query)
-  );
+  const shouldShowLoadingSigns = connectionUrl
+    ? Boolean(
+        (isLoading ||
+          isSearchQueued ||
+          (query && lastSearchCompletedWithQuery !== query)) &&
+          (query || currentIntegrationFromMap?.showsLogsWhenThereIsNoQuery)
+      )
+    : Boolean(
+        isLoading ||
+          isSearchQueued ||
+          (query && lastSearchCompletedWithQuery !== query)
+      );
   const attemptFetchingMoreResults = async () => {
     setStart(Math.min(logs.length, start + PAGINATION_RECORDS_INCREMENT));
   };
@@ -145,7 +185,12 @@ export const useLogs = (folderId?: string) => {
     if (!logs.length) {
       return [];
     }
-    if (!isFavoritesScreen && !isGlobalSearchScreen && !isSupportScreen) {
+    if (
+      !isFavoritesScreen &&
+      !isGlobalSearchScreen &&
+      !isSupportScreen &&
+      !isIntegrationsScreen
+    ) {
       // looking inside a specific channel, return as-is
       return logs;
     }
@@ -179,8 +224,12 @@ export const useLogs = (folderId?: string) => {
         (!folderId &&
           !isFavoritesScreen &&
           !isGlobalSearchScreen &&
-          !isSupportScreen) ||
-        ((isGlobalSearchScreen || isSupportScreen) && !query)
+          !isSupportScreen &&
+          !isIntegrationsScreen) ||
+        ((isGlobalSearchScreen || isSupportScreen) && !query) ||
+        (isIntegrationsScreen &&
+          !currentIntegrationFromMap?.showsLogsWhenThereIsNoQuery &&
+          !query)
       ) {
         return;
       }
@@ -217,6 +266,12 @@ export const useLogs = (folderId?: string) => {
             organization._id.toString(),
             query
           );
+        } else if (isIntegrationsScreen) {
+          res = await Api.organization.getIntegrationLogs(
+            organization._id.toString(),
+            currentIntegration!._id.toString(),
+            query
+          );
         } else {
           res = await Api.organization.searchForLogs(
             organization._id.toString(),
@@ -227,18 +282,28 @@ export const useLogs = (folderId?: string) => {
         }
         fetchedLogs = res.data.logs;
       } else if (!isGlobalSearchScreen && !isSupportScreen) {
-        const res = await Api.organization.getLogs(
-          organization._id.toString(),
-          folderId,
-          isFavoritesScreen,
-          isFreshFetch ? 0 : start,
-          currentDateCeiling,
-          currentDateFloor
-        );
-        fetchedNumLogsInTotal = res.data.numLogsInTotal;
-        fetchedLogs = res.data.logs;
+        if (isIntegrationsScreen) {
+          const res = await Api.organization.getIntegrationLogs(
+            organization._id.toString(),
+            currentIntegration!._id.toString(),
+            query
+          );
+          fetchedLogs = res.data.logs;
+        } else {
+          const res = await Api.organization.getLogs(
+            organization._id.toString(),
+            folderId,
+            isFavoritesScreen,
+            isFreshFetch ? 0 : start,
+            currentDateCeiling,
+            currentDateFloor
+          );
+          fetchedNumLogsInTotal = res.data.numLogsInTotal;
+          fetchedLogs = res.data.logs;
+        }
       }
 
+      setLastCompletedFetchWithConnectionUrl(connectionUrl || "");
       setLastSearchCompletedWithQuery(query);
 
       setNumLogsInTotal(fetchedNumLogsInTotal);
@@ -256,6 +321,14 @@ export const useLogs = (folderId?: string) => {
         refetchFolders(); // refresh the unread status of the folder
       }
     } catch (e) {
+      setLogs([]);
+      setLastCompletedFetchWithConnectionUrl(connectionUrl || "");
+      setLastSearchCompletedWithQuery(query);
+      if (isIntegrationsScreen && currentIntegrationFromMap) {
+        showGenericErrorAlert({
+          message: `Something went wrong getting the logs for ${currentIntegrationFromMap.prettyName}. Please try again or contact support if you need help.`,
+        });
+      }
       console.error(e);
       // showGenericErrorAlert(e);
     }
@@ -290,6 +363,7 @@ export const useLogs = (folderId?: string) => {
     isFavoritesScreen,
     isGlobalSearchScreen,
     isSupportScreen,
+    isIntegrationsScreen,
     favoritedFolderPaths.length,
     JSON.stringify(logsIds),
   ]);
@@ -315,7 +389,7 @@ export const useLogs = (folderId?: string) => {
         clearTimeout(typingTimer);
       }
     };
-  }, [query, folderId, organization?._id]);
+  }, [query, folderId, currentIntegration?._id, organization?._id]);
 
   useEffect(() => {
     if ((urlQuery || "") !== query) {
@@ -331,7 +405,7 @@ export const useLogs = (folderId?: string) => {
     } else {
       setHasSkippedFirstRender(true);
     }
-  }, [folderId]);
+  }, [folderId, connectionUrl]);
 
   useEffect(() => {
     if (!query && (isGlobalSearchScreen || isSupportScreen)) {
@@ -340,7 +414,11 @@ export const useLogs = (folderId?: string) => {
   }, [isGlobalSearchScreen, isSupportScreen, query]);
 
   return {
-    logs: lastSearchCompletedWithQuery === query ? filteredLogs : [],
+    logs:
+      lastSearchCompletedWithQuery === query &&
+      lastCompletedFetchWithConnectionUrl === connectionUrl
+        ? filteredLogs
+        : [],
     numLogsInTotal,
     isLoading,
     attemptFetchingMoreResults,
@@ -387,6 +465,20 @@ export const useIsGlobalSearchScreen = () => {
   }, [organization?._id, pathname]);
 
   return isGlobalSearchScreen;
+};
+
+export const useIsIntegrationLogsScreen = () => {
+  const organization = useSelector(getOrganization);
+  const pathname = usePathname();
+  const isIntegrationsScreen = useMemo(() => {
+    return (
+      pathname.indexOf(
+        `/org/${organization?.slug}${CONNECTION_ROUTE_PREFIX}`
+      ) === 0
+    );
+  }, [organization?._id, pathname]);
+
+  return isIntegrationsScreen;
 };
 
 type FlattenedFolder = {

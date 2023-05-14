@@ -16,6 +16,7 @@ import { StylesType } from "src/utils/styles";
 
 import { FolderOrChannel } from "./FolderOrChannel";
 import _ from "lodash";
+import { ConnectionChannel } from "./ConnectionChannel";
 
 export type FrontendFolder = {
   children: FrontendFolder[];
@@ -27,50 +28,28 @@ export type FrontendFolder = {
   _id: string;
 };
 
-export const Folders = () => {
+export const Connections = () => {
   const organization = useSelector(getOrganization);
-  const { fetch: fetchFolders } = useFetchFolders();
-  const { fetch: fetchFavoriteFolderPaths } = useFetchFavoriteFolderPaths();
-  const { fetch: fetchMyRules } = useFetchMyRules();
-  const folders = useSelector(getFolders);
+  const { fetch: fetchMyIntegrations } = useFetchIntegrations();
   const integrations = useSelector(getIntegrations);
-  const sortedFolders = _.sortBy(folders, "isMuted");
 
   useEffect(() => {
-    let fetchingInterval;
     if (organization) {
-      fetchFolders();
-      fetchFavoriteFolderPaths();
-      fetchMyRules();
+      fetchMyIntegrations();
     }
-    fetchingInterval = setInterval(() => {
-      fetchFolders();
-    }, 5000);
-    return () => {
-      if (fetchingInterval) {
-        clearInterval(fetchingInterval);
-      }
-    };
   }, [organization?._id]);
 
-  return folders.length ? (
-    <div
-      style={{
-        ...styles.container,
-        ...(integrations.length ? { paddingTop: 0 } : {}),
-      }}
-    >
-      {folders.length ? (
+  return integrations.length ? (
+    <div style={styles.container}>
+      {integrations.length ? (
         <div style={styles.topContainer}>
-          <label style={styles.title}>CHANNELS</label>
+          <label style={styles.title}>CONNECTIONS</label>
         </div>
       ) : null}
-      {sortedFolders.map((folder, i) => (
-        <FolderOrChannel
-          folderOrChannel={folder}
+      {integrations.map((integration, i) => (
+        <ConnectionChannel
+          integrationType={integration.type}
           hasTopBorder={!i}
-          key={folder._id}
-          isMutedBecauseOfParent={false}
         />
       ))}
     </div>
@@ -85,7 +64,7 @@ const styles: StylesType = {
     alignItems: "flex-start",
     width: "100%",
     paddingTop: 50,
-    paddingBottom: 80,
+    paddingBottom: 25,
   },
   title: {
     color: Colors.darkGray,

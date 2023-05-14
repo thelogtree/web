@@ -1,19 +1,24 @@
-import React, { useMemo } from "react";
-import { useLogs } from "../Logs/lib";
+import React, { useEffect, useMemo, useState } from "react";
+import { useConnectionPathFromUrl, useLogs } from "../Logs/lib";
 import { numberToNumberWithCommas, useSearchParams } from "src/utils/helpers";
 import { LogsList } from "./components/LogsList";
 import { StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
 import { SearchBar } from "./components/SearchBar";
 import { TopOfSearch } from "./components/TopOfSearch";
-import { useFetchFoldersOnce } from "./lib";
-import { Placeholder } from "./components/Placeholder";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
+import { useCurrentIntegration } from "./lib";
+import { LoadingSpinnerFullScreen } from "src/sharedComponents/LoadingSpinnerFullScreen";
 
-export const SupportLogsScreen = () => {
-  useFetchFoldersOnce();
+export const IntegrationLogsScreen = () => {
   const organization = useSelector(getOrganization);
+  const { query: urlQuery } = useSearchParams();
+  const connectionUrl = useConnectionPathFromUrl();
+  const { currentIntegrationFromMap, currentIntegration } =
+    useCurrentIntegration();
+  const showsLogsWhenThereIsNoQuery =
+    currentIntegrationFromMap?.showsLogsWhenThereIsNoQuery;
   const {
     logs,
     numLogsInTotal,
@@ -21,14 +26,13 @@ export const SupportLogsScreen = () => {
     setQuery,
     isSearchQueued,
     shouldShowLoadingSigns,
-    filtersForOnlyErrors,
-    setFiltersForOnlyErrors,
   } = useLogs();
-  const { query: urlQuery } = useSearchParams();
 
   const numLogsText = useMemo(() => {
-    if (shouldShowLoadingSigns) {
+    if (shouldShowLoadingSigns && (query || showsLogsWhenThereIsNoQuery)) {
       return "Fetching...this may take a couple seconds";
+    } else if (shouldShowLoadingSigns) {
+      return "";
     } else if (query && logs.length === 1) {
       return "Showing 1 recent log for this user";
     } else if (query && logs.length) {
@@ -37,9 +41,21 @@ export const SupportLogsScreen = () => {
       )} most recent logs for this user`;
     } else if (query) {
       return "No recent results found.";
+    } else if (showsLogsWhenThereIsNoQuery && logs.length === 1) {
+      return "Showing 1 recent log";
+    } else if (showsLogsWhenThereIsNoQuery && logs.length > 1) {
+      return `Showing the ${numberToNumberWithCommas(
+        logs.length
+      )} most recent logs for all users`;
     }
     return "";
-  }, [numLogsInTotal, logs.length, query, shouldShowLoadingSigns]);
+  }, [
+    numLogsInTotal,
+    logs.length,
+    query,
+    shouldShowLoadingSigns,
+    showsLogsWhenThereIsNoQuery,
+  ]);
 
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
@@ -50,21 +66,28 @@ export const SupportLogsScreen = () => {
       return "We're preparing your search. One moment please...";
     }
     return "";
-  }, [logs.length, numLogsInTotal, query, isSearchQueued, urlQuery]);
+  }, [
+    logs.length,
+    numLogsInTotal,
+    query,
+    isSearchQueued,
+    urlQuery,
+    showsLogsWhenThereIsNoQuery,
+  ]);
 
-  if (!organization) {
-    return null;
+  if (
+    !organization ||
+    !currentIntegrationFromMap ||
+    connectionUrl !== currentIntegration?.type
+  ) {
+    return <LoadingSpinnerFullScreen />;
   }
 
   return (
     <>
       <SearchBar query={query} setQuery={setQuery} />
       <div style={styles.container}>
-        <TopOfSearch
-          numLogsText={numLogsText}
-          shouldOnlyShowErrors={filtersForOnlyErrors}
-          setShouldOnlyShowErrors={setFiltersForOnlyErrors}
-        />
+        <TopOfSearch numLogsText={numLogsText} />
         <div style={styles.hrWrapper}>
           <hr style={styles.hr} />
         </div>
@@ -73,7 +96,6 @@ export const SupportLogsScreen = () => {
           logs={logs}
           endOfFeedText={endOfFeedText}
         />
-        {!query && !urlQuery ? <Placeholder /> : null}
       </div>
     </>
   );
