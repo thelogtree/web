@@ -43,7 +43,10 @@ export const SetupApp = () => {
           )) &&
         !SIGNED_IN_ROUTES.includes(path)
       ) {
-        history.push(`${ORG_ROUTE_PREFIX}/${organization.slug}/favorites`);
+        window.open(
+          `${ORG_ROUTE_PREFIX}/${organization.slug}/favorites`,
+          "_self"
+        );
       } else {
         fetchMyOrganization();
       }
