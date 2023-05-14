@@ -37,10 +37,13 @@ export const SetupApp = () => {
     if (user && authStatus === "SIGNED_IN") {
       if (
         user.organizationId.toString() === organization?._id &&
-        path !== ORG_ROUTE_PREFIX &&
+        (path !== ORG_ROUTE_PREFIX ||
+          !activePathname.includes(
+            `${ORG_ROUTE_PREFIX}/${organization.slug}`
+          )) &&
         !SIGNED_IN_ROUTES.includes(path)
       ) {
-        history.push(`/org/${organization.slug}/favorites`);
+        history.push(`${ORG_ROUTE_PREFIX}/${organization.slug}/favorites`);
       } else {
         fetchMyOrganization();
       }
