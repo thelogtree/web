@@ -324,11 +324,6 @@ export const useLogs = (
       setLogs([]);
       setLastCompletedFetchWithConnectionUrl(connectionUrl || "");
       setLastSearchCompletedWithQuery(query);
-      if (isIntegrationsScreen && currentIntegrationFromMap) {
-        showGenericErrorAlert({
-          message: `Something went wrong getting the logs for ${currentIntegrationFromMap.prettyName}. Please try again or contact support if you need help.`,
-        });
-      }
       console.error(e);
       // showGenericErrorAlert(e);
     }
