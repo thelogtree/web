@@ -30,33 +30,6 @@ export const Log = ({ log }: Props) => {
     return "";
   }, [justCopied, isHovering]);
 
-  const logTagColorAndText = useMemo(() => {
-    if (!log.tag) {
-      return { accentColor: undefined, backgroundColor: undefined, text: "" };
-    } else if (log.tag === simplifiedLogTagEnum.Error) {
-      return {
-        accentColor: Colors.red,
-        backgroundColor: Colors.veryLightRed,
-        text: "Error",
-      };
-    } else if (log.tag === simplifiedLogTagEnum.Tracking) {
-      return { accentColor: undefined, backgroundColor: undefined, text: "" };
-    } else if (log.tag === simplifiedLogTagEnum.Support) {
-      return {
-        accentColor: Colors.blueishPurple,
-        backgroundColor: Colors.veryLightBlueishPurple,
-        text: "Support",
-      };
-    } else if (log.tag === simplifiedLogTagEnum.Marketing) {
-      return {
-        accentColor: undefined,
-        backgroundColor: undefined,
-        text: "Marketing",
-      };
-    }
-    return { accentColor: undefined, backgroundColor: undefined, text: "" };
-  }, []);
-
   const _goToOtherChannel = () => {
     window.open(
       `/org/${organization!.slug}${LOGS_ROUTE_PREFIX}${log.folderFullPath}`,
@@ -110,16 +83,6 @@ export const Log = ({ log }: Props) => {
           {log.sourceTitle ? (
             <span style={styles.sourceTitle}>{log.sourceTitle}</span>
           ) : null}
-          {logTagColorAndText.text ? (
-            <span
-              style={{
-                ...styles.logTag,
-                color: logTagColorAndText.accentColor,
-              }}
-            >
-              {logTagColorAndText.text}
-            </span>
-          ) : null}
           <OpenExternalLink log={log} />
           <span style={styles.copyText}>{copyText}</span>
         </div>
@@ -138,15 +101,7 @@ export const Log = ({ log }: Props) => {
       <CopyToClipboard text={textToCopy} onCopy={_onJustCopied}>
         <div style={styles.copyBtn}>
           <pre
-            style={{
-              ...styles.pre,
-              ...(logTagColorAndText.accentColor && {
-                borderColor: logTagColorAndText.accentColor,
-              }),
-              ...(logTagColorAndText.backgroundColor && {
-                backgroundColor: logTagColorAndText.backgroundColor,
-              }),
-            }}
+            style={styles.pre}
             onMouseEnter={_onMouseEnter}
             onMouseLeave={_onMouseLeave}
           >
