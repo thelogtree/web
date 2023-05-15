@@ -3,6 +3,7 @@ import MixpanelLogo from "src/assets/mixpanelLogo.png";
 import IntercomLogo from "src/assets/intercomLogo.png";
 import SendgridLogo from "src/assets/sendgridLogo.png";
 import CustomerioLogo from "src/assets/customerioLogo.png";
+import StripeLogo from "src/assets/stripeLogo.png";
 import { integrationTypeEnum, keyTypeEnum } from "logtree-types";
 
 export type AdditionalPropertyObj = {
@@ -81,6 +82,15 @@ export const IntegrationsToConnectToMap: {
     additionalPropertiesNeeded: [
       { key: "workspaceId", prettyName: "Workspace ID" },
     ],
+    isOAuth: false,
+    showsLogsWhenThereIsNoQuery: true,
+  },
+  stripe: {
+    image: StripeLogo,
+    prettyName: "Stripe",
+    helpDescription: `In the Stripe dashboard go to Developers > API Keys > Create restricted key > select the "Read" permission for both "Charges" and "Customers". This will make it so Logtree has read-only access to just this data. Enter the created restricted key below.`,
+    keyTypesNeeded: [keyTypeEnum.ApiKey],
+    additionalPropertiesNeeded: [],
     isOAuth: false,
     showsLogsWhenThereIsNoQuery: true,
   },
