@@ -19,6 +19,7 @@ type IntegrationMapValue = {
   additionalPropertiesNeeded: AdditionalPropertyObj[];
   isOAuth: boolean;
   showsLogsWhenThereIsNoQuery: boolean;
+  whatThisDoesDescription: string;
 };
 
 /*
@@ -42,6 +43,8 @@ export const IntegrationsToConnectToMap: {
     additionalPropertiesNeeded: [],
     isOAuth: false,
     showsLogsWhenThereIsNoQuery: false,
+    whatThisDoesDescription:
+      "You'll be able to search for the recent errors of a specific user by their email address. Make sure you have setContext set up with Sentry in order for this to work correctly.",
   },
   mixpanel: {
     image: MixpanelLogo,
@@ -53,6 +56,8 @@ export const IntegrationsToConnectToMap: {
     ],
     isOAuth: false,
     showsLogsWhenThereIsNoQuery: false,
+    whatThisDoesDescription:
+      "You'll be able to search for the recent events of a specific user by their email address.",
   },
   intercom: {
     image: IntercomLogo,
@@ -62,6 +67,8 @@ export const IntegrationsToConnectToMap: {
     additionalPropertiesNeeded: [],
     isOAuth: true,
     showsLogsWhenThereIsNoQuery: true,
+    whatThisDoesDescription:
+      "You'll be able to see all recent Intercom messages and also search for the messages of a specific user by their email address.",
   },
   sendgrid: {
     image: SendgridLogo,
@@ -72,6 +79,8 @@ export const IntegrationsToConnectToMap: {
     additionalPropertiesNeeded: [],
     isOAuth: false,
     showsLogsWhenThereIsNoQuery: false,
+    whatThisDoesDescription:
+      "You'll be able to see when emails are delivered successfully or unsuccessfully for a specific user when you search by their email address.",
   },
   customer_io: {
     image: CustomerioLogo,
@@ -84,6 +93,8 @@ export const IntegrationsToConnectToMap: {
     ],
     isOAuth: false,
     showsLogsWhenThereIsNoQuery: true,
+    whatThisDoesDescription:
+      "You'll be able to search for all message events (emails, push notifications) of a specific user by their email address.",
   },
   stripe: {
     image: StripeLogo,
@@ -93,5 +104,7 @@ export const IntegrationsToConnectToMap: {
     additionalPropertiesNeeded: [],
     isOAuth: false,
     showsLogsWhenThereIsNoQuery: true,
+    whatThisDoesDescription:
+      "You'll be able to see all your recent payment events and also search for the payments of a specific user by their email address.",
   },
 };

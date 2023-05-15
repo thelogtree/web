@@ -201,10 +201,20 @@ export const ConnectNewIntegration = ({
             )}
             {selectedIntegration ? (
               <>
+                <label style={styles.descTitle}>How to get this info</label>
                 <label style={styles.helpDescription}>
                   {
                     IntegrationsToConnectToMap[selectedIntegration]
                       .helpDescription
+                  }
+                </label>
+                <label style={styles.descTitle}>
+                  What this integration does
+                </label>
+                <label style={styles.whatThisDoesDescription}>
+                  {
+                    IntegrationsToConnectToMap[selectedIntegration]
+                      .whatThisDoesDescription
                   }
                 </label>
                 {keyInputs.map((keyInput, i) => (
@@ -234,9 +244,14 @@ export const ConnectNewIntegration = ({
               </>
             ) : (
               <Grid style={styles.gridContainer}>
-                <Row style={{display: "flex",
-              flexDirection: "row",
-              width: "100%", justifyContent: "center"}}>
+                <Row
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "100%",
+                    justifyContent: "center",
+                  }}
+                >
                   {connectableIntegrations.map((integrationKey) => {
                     const integration =
                       IntegrationsToConnectToMap[integrationKey];
@@ -288,7 +303,7 @@ const styles: StylesType = {
     fontSize: 24,
     fontWeight: 600,
     textAlign: "center",
-    paddingBottom: 20,
+    paddingBottom: 40,
   },
   integrationBtn: {
     outline: "none",
@@ -374,10 +389,17 @@ const styles: StylesType = {
   },
   helpDescription: {
     fontSize: 12,
-    width: "85%",
+    width: "100%",
     color: Colors.darkerGray,
-    textAlign: "center",
-    paddingBottom: 50,
+    textAlign: "left",
+    paddingBottom: 20,
+  },
+  whatThisDoesDescription: {
+    fontSize: 12,
+    width: "100%",
+    color: Colors.darkerGray,
+    textAlign: "left",
+    paddingBottom: 40,
   },
   encryptionContainer: {
     display: "flex",
@@ -389,5 +411,12 @@ const styles: StylesType = {
   icon: {
     width: 15,
     height: 15,
+  },
+  descTitle: {
+    fontSize: 14,
+    fontWeight: 500,
+    paddingBottom: 3,
+    color: Colors.darkGray,
+    width: "100%",
   },
 };
