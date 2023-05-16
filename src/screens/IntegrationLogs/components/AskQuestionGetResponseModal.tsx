@@ -117,6 +117,7 @@ const styles: StylesType = {
     borderRadius: 8,
     backgroundColor: Colors.white,
     marginTop: 20,
+    color: Colors.darkGray,
   },
   loadingContainer: {
     width: "100%",
