@@ -1,5 +1,5 @@
 import { Modal } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import { useCurrentIntegration } from "../lib";
@@ -23,6 +23,13 @@ export const AskQuestionGetResponseModal = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [question, setQuestion] = useState<string>("");
   const [response, setResponse] = useState<string>("");
+
+  useEffect(() => {
+    if (!isVisible) {
+      setQuestion("");
+      setResponse("");
+    }
+  }, [isVisible]);
 
   const _askQuestion = async () => {
     try {
