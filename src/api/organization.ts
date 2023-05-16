@@ -233,4 +233,13 @@ export const organization = {
         query,
       },
     }),
+  askQuestion: (
+    organizationId: string,
+    integrationId: string,
+    question: string
+  ) =>
+    axios.post(routeUrl + `/${organizationId}/question`, {
+      integrationId,
+      question,
+    }),
 };

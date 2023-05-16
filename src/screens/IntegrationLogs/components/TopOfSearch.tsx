@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import { useCurrentIntegration } from "../lib";
+import { AskQuestionGetResponseModal } from "./AskQuestionGetResponseModal";
 
 type Props = {
   numLogsText?: string;
@@ -9,19 +10,33 @@ type Props = {
 
 export const TopOfSearch = ({ numLogsText }: Props) => {
   const { currentIntegrationFromMap } = useCurrentIntegration();
+  const [isQuestionModalVisible, setIsQuestionModalVisible] =
+    useState<boolean>(false);
   return (
-    <div style={styles.container}>
-      <label style={styles.title}>
-        {currentIntegrationFromMap?.prettyName} logs
-      </label>
-      <label style={styles.desc}>
-        Enter a user's email address above to search for their{" "}
-        {currentIntegrationFromMap?.prettyName} logs
-      </label>
-      {numLogsText ? (
-        <label style={styles.numLogsTotalText}>{numLogsText}</label>
-      ) : null}
-    </div>
+    <>
+      <AskQuestionGetResponseModal
+        isVisible={isQuestionModalVisible}
+        setIsVisible={setIsQuestionModalVisible}
+      />
+      <div style={styles.container}>
+        <label style={styles.title}>
+          {currentIntegrationFromMap?.prettyName} logs
+        </label>
+        <label style={styles.desc}>
+          Enter a user's email address above to search for their{" "}
+          {currentIntegrationFromMap?.prettyName} logs, or{" "}
+          <span
+            style={styles.askQuestionSpan}
+            onClick={() => setIsQuestionModalVisible(true)}
+          >
+            ask a question about your data.
+          </span>
+        </label>
+        {numLogsText ? (
+          <label style={styles.numLogsTotalText}>{numLogsText}</label>
+        ) : null}
+      </div>
+    </>
   );
 };
 
@@ -75,5 +90,10 @@ const styles: StylesType = {
     color: Colors.gray,
     paddingLeft: 12,
     fontSize: 13,
+  },
+  askQuestionSpan: {
+    color: Colors.blue600,
+    textDecoration: "underline",
+    cursor: "hover",
   },
 };
