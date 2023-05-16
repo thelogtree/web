@@ -7,6 +7,7 @@ import { showGenericErrorAlert } from "src/utils/helpers";
 import { Api } from "src/api";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
+import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 
 type Props = {
   isVisible: boolean;
@@ -71,7 +72,12 @@ export const AskQuestionGetResponseModal = ({
           placeholder="Your question"
           style={styles.questionInput}
         />
-        {response ? (
+        {isLoading ? (
+          <div style={styles.loadingContainer}>
+            <LoadingSpinner size={30} />
+          </div>
+        ) : null}
+        {response && !isLoading ? (
           <label style={styles.responseText}>{response}</label>
         ) : null}
       </div>
@@ -111,6 +117,17 @@ const styles: StylesType = {
     borderRadius: 8,
     backgroundColor: Colors.white,
     marginTop: 20,
+  },
+  loadingContainer: {
+    width: "100%",
+    border: "none",
+    outline: "none",
+    paddingTop: 50,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: 20,
   },
   title: {
     fontSize: 20,
