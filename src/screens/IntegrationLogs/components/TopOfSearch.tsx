@@ -92,8 +92,8 @@ const styles: StylesType = {
     fontSize: 13,
   },
   askQuestionSpan: {
-    color: Colors.blue600,
+    color: Colors.black,
     textDecoration: "underline",
-    cursor: "hover",
+    cursor: "pointer",
   },
 };
