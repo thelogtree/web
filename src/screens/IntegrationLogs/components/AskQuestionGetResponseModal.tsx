@@ -53,7 +53,7 @@ export const AskQuestionGetResponseModal = ({
       width={600}
       onCancel={() => setIsVisible(false)}
       onOk={_askQuestion}
-      okButtonProps={{ disabled: isLoading }}
+      okButtonProps={{ disabled: isLoading || !question }}
       okText={isLoading ? "Asking..." : "Ask question"}
       closable={false}
       open={isVisible}
