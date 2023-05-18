@@ -23,6 +23,7 @@ import { SupportLogsScreen } from "./screens/SupportLogs";
 import { OAuthCallbackScreen } from "./screens/OAuthCallback";
 import { IntercomLearnMoreScreen } from "./screens/IntercomLearnMore";
 import { IntegrationLogsScreen } from "./screens/IntegrationLogs";
+import { GlobalSearchScreen } from "./screens/GlobalSearch";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -83,6 +84,10 @@ export const RouteManager = () => {
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug${SUPPORT_TOOL_SUFFIX}`}
             component={SupportLogsScreen}
+          />
+          <Route
+            path={`${ORG_ROUTE_PREFIX}/:slug/search`}
+            component={GlobalSearchScreen}
           />
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/insights`}

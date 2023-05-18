@@ -1,7 +1,10 @@
 import { Switch } from "antd";
 import React from "react";
 import { useSelector } from "react-redux";
-import { getOrganization } from "src/redux/organization/selector";
+import {
+  getIntegrations,
+  getOrganization,
+} from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 

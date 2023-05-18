@@ -331,13 +331,6 @@ export const useLogs = (
     setIsSearchQueued(false);
   };
 
-  const filteredLogs = useMemo(() => {
-    if (filtersForOnlyErrors) {
-      return _filterLogsForOnlyErrors(logs);
-    }
-    return logs;
-  }, [JSON.stringify(logsIds), filtersForOnlyErrors]);
-
   useEffect(() => {
     if (start !== 0) {
       // only used for fetching more results in pagination
@@ -353,13 +346,18 @@ export const useLogs = (
   }, [isDateFilterApplied]);
 
   useEffect(() => {
-    setLogs(_addFolderPathToLogsIfPossible(logs));
+    if (filtersForOnlyErrors) {
+      setLogs(_addFolderPathToLogsIfPossible(_filterLogsForOnlyErrors(logs)));
+    } else {
+      setLogs(_addFolderPathToLogsIfPossible(logs));
+    }
   }, [
     isFavoritesScreen,
     isGlobalSearchScreen,
     isSupportScreen,
     isIntegrationsScreen,
     favoritedFolderPaths.length,
+    filtersForOnlyErrors,
     JSON.stringify(logsIds),
   ]);
 
@@ -412,7 +410,7 @@ export const useLogs = (
     logs:
       lastSearchCompletedWithQuery === query &&
       lastCompletedFetchWithConnectionUrl === connectionUrl
-        ? filteredLogs
+        ? logs
         : [],
     numLogsInTotal,
     isLoading,

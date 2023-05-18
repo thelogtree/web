@@ -50,6 +50,7 @@ export const Connections = () => {
         <ConnectionChannel
           integrationType={integration.type}
           hasTopBorder={!i}
+          key={integration._id.toString()}
         />
       ))}
     </div>

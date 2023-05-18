@@ -16,6 +16,7 @@ import { Resizer } from "./components/Resizer";
 import { SupportSearchTab } from "./components/SupportSearchTab";
 import { IntegrationsTab } from "./components/IntegrationsTab";
 import { Connections } from "./components/Connections";
+import { GlobalSearchTab } from "./components/GlobalSearchTab";
 
 export const Sidebar = () => {
   const sidebarWidth = useSelector(getSidebarWidth);
@@ -29,6 +30,7 @@ export const Sidebar = () => {
         <FavoritesTab />
         <InsightsTab />
         <IntegrationsTab />
+        <GlobalSearchTab />
         <SupportSearchTab />
         <Connections />
         <Folders />

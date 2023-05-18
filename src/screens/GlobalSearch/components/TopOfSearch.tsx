@@ -1,4 +1,7 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { ORG_ROUTE_PREFIX, SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
+import { getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 
@@ -6,15 +9,26 @@ type Props = {
   numLogsText?: string;
 };
 
-export const TopOfSearch = ({ numLogsText }: Props) => (
-  <div style={styles.container}>
-    <label style={styles.title}>Global Search</label>
-    <label style={styles.desc}>
-      Use the search bar above to look for all logs of one of your users
-    </label>
-    <label style={styles.numLogsTotalText}>{numLogsText}</label>
-  </div>
-);
+export const TopOfSearch = ({ numLogsText }: Props) => {
+  const organization = useSelector(getOrganization);
+  return (
+    <div style={styles.container}>
+      <label style={styles.title}>Global Search</label>
+      <label style={styles.desc}>
+        Use the search bar above to search for logs from any of your channels.
+        If you want to see the logs from one specific user, use the{" "}
+        <a
+          href={`${ORG_ROUTE_PREFIX}/${organization?.slug}${SUPPORT_TOOL_SUFFIX}`}
+          target="_blank"
+          style={styles.journeyFinderLink}
+        >
+          Journey Finder.
+        </a>
+      </label>
+      <label style={styles.numLogsTotalText}>{numLogsText}</label>
+    </div>
+  );
+};
 
 const styles: StylesType = {
   container: {
@@ -43,5 +57,8 @@ const styles: StylesType = {
     fontSize: 30,
     textAlign: "left",
     paddingRight: 6,
+  },
+  journeyFinderLink: {
+    color: Colors.black,
   },
 };

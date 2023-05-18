@@ -4,39 +4,45 @@ import LightningIcon from "src/assets/lightning.png";
 import RewindIcon from "src/assets/rewind.png";
 import FoldersIcon from "src/assets/blueFolders.png";
 import { Colors } from "src/utils/colors";
+import { useSelector } from "react-redux";
+import { getOrganization } from "src/redux/organization/selector";
 
-export const HypeDescription = () => (
-  <div style={styles.container}>
-    <div style={{ ...styles.infoContainer, paddingTop: 0 }}>
-      <img style={styles.icon} src={LightningIcon} />
-      <div style={styles.rightContainer}>
-        <label style={styles.descLbl}>Lightning fast</label>
-        <label style={styles.smallDescLbl}>
-          Learn about your users' actions 10x faster than Slack, Logtail, and
-          Mixpanel.
-        </label>
+export const HypeDescription = () => {
+  const organization = useSelector(getOrganization);
+  return (
+    <div style={styles.container}>
+      <div style={{ ...styles.infoContainer, paddingTop: 0 }}>
+        <img style={styles.icon} src={LightningIcon} />
+        <div style={styles.rightContainer}>
+          <label style={styles.descLbl}>Lightning fast</label>
+          <label style={styles.smallDescLbl}>
+            Learn about your users' actions 10x faster than Logtail or
+            Papertrail.
+          </label>
+        </div>
+      </div>
+      <div style={styles.infoContainer}>
+        <img style={styles.icon} src={RewindIcon} />
+        <div style={styles.rightContainer}>
+          <label style={styles.descLbl}>Your personal time machine</label>
+          <label style={styles.smallDescLbl}>
+            Search for logs from up to {organization?.logRetentionInDays} days
+            ago.
+          </label>
+        </div>
+      </div>
+      <div style={styles.infoContainer}>
+        <img style={styles.icon} src={FoldersIcon} />
+        <div style={styles.rightContainer}>
+          <label style={styles.descLbl}>Powerful efficiency</label>
+          <label style={styles.smallDescLbl}>
+            Search across all your folders and channels with one query.
+          </label>
+        </div>
       </div>
     </div>
-    <div style={styles.infoContainer}>
-      <img style={styles.icon} src={RewindIcon} />
-      <div style={styles.rightContainer}>
-        <label style={styles.descLbl}>Your personal time machine</label>
-        <label style={styles.smallDescLbl}>
-          Search for logs from up to 14 days ago.
-        </label>
-      </div>
-    </div>
-    <div style={styles.infoContainer}>
-      <img style={styles.icon} src={FoldersIcon} />
-      <div style={styles.rightContainer}>
-        <label style={styles.descLbl}>Powerful efficiency</label>
-        <label style={styles.smallDescLbl}>
-          Search across all your folders and channels with one query.
-        </label>
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 const styles: StylesType = {
   container: {
