@@ -11,7 +11,15 @@ export const UsageInstructions = () => {
     <div style={styles.container}>
       <label style={styles.yourKeysSectionTitle}>USAGE INSTRUCTIONS</label>
       <label style={styles.title}>
-        To send a log to Logtree, make an HTTP request that looks like this:
+        To send a log to Logtree, you can use our{" "}
+        <a
+          href="https://github.com/thelogtree/logtree-node"
+          target="_blank"
+          style={styles.link}
+        >
+          NodeJS library
+        </a>{" "}
+        or make an HTTP request that looks like this:
       </label>
       <pre style={styles.preStyle}>
         <div style={styles.codeExample}>
@@ -96,5 +104,8 @@ const styles: StylesType = {
     backgroundColor: Colors.black,
     padding: 15,
     borderRadius: 4,
+  },
+  link: {
+    color: Colors.black,
   },
 };
