@@ -23,12 +23,15 @@ export const Log = ({ log }: Props) => {
   const organization = useSelector(getOrganization);
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [justCopied, setJustCopied] = useState<boolean>(false);
-  const { modifiedFormattedString, textToCopy } = useLogFormattedTexts(log);
   const {
     isShowingAdditionalContext,
     setIsShowingAdditionalContext,
     additionalContextString,
   } = useAdditionalContextOfLogManager(log);
+  const { modifiedFormattedString, textToCopy } = useLogFormattedTexts(
+    log,
+    isShowingAdditionalContext ? additionalContextString : ""
+  );
 
   const copyText = useMemo(() => {
     if (justCopied) {

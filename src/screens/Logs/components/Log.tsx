@@ -86,8 +86,12 @@ export const Log = ({ log }: Props) => {
   ]);
 
   const textToCopy = useMemo(() => {
-    return canCopyText ? `${formattedString}\n${log.content}` : "";
-  }, [log._id, canCopyText]);
+    return canCopyText
+      ? `${formattedString}\n${
+          isShowingAdditionalContext ? additionalContextString : log.content
+        }`
+      : "";
+  }, [log._id, canCopyText, isShowingAdditionalContext]);
 
   const _searchForReferenceId = () => {
     window.open(

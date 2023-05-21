@@ -5,7 +5,10 @@ import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
 import { useFetchFolders } from "src/redux/actionIndex";
 
-export const useLogFormattedTexts = (log: FrontendLog) => {
+export const useLogFormattedTexts = (
+  log: FrontendLog,
+  overrideTextToCopy?: string
+) => {
   const formattedString = useMemo(() => {
     const logCreatedAt = moment(log.createdAt);
     const isToday = logCreatedAt.isSame(new Date(), "day");
@@ -24,7 +27,7 @@ export const useLogFormattedTexts = (log: FrontendLog) => {
     return isRecent ? fromNow : formattedString;
   }, []);
 
-  const textToCopy = `${formattedString}\n${log.content}`;
+  const textToCopy = `${formattedString}\n${overrideTextToCopy || log.content}`;
 
   return { modifiedFormattedString, textToCopy };
 };
