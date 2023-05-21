@@ -242,6 +242,7 @@ const styles: StylesType = {
   referenceId: {
     color: Colors.gray,
     textAlign: "right",
+    marginLeft: 6,
   },
   copyBtn: {
     outline: "none",

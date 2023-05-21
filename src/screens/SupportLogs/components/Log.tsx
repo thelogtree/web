@@ -5,11 +5,15 @@ import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
 import { LOGS_ROUTE_PREFIX } from "src/RouteManager";
 import { OpenExternalLink } from "src/screens/Logs/components/OpenExternalLink";
-import { FrontendLog } from "src/screens/Logs/lib";
+import {
+  FrontendLog,
+  useAdditionalContextOfLogManager,
+} from "src/screens/Logs/lib";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 
 import { useLogFormattedTexts } from "../lib";
+import { FlipToAdditionalContextButton } from "src/screens/Logs/components/FlipToAdditionalContextButton";
 
 type Props = {
   log: FrontendLog;
@@ -20,6 +24,11 @@ export const Log = ({ log }: Props) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [justCopied, setJustCopied] = useState<boolean>(false);
   const { modifiedFormattedString, textToCopy } = useLogFormattedTexts(log);
+  const {
+    isShowingAdditionalContext,
+    setIsShowingAdditionalContext,
+    additionalContextString,
+  } = useAdditionalContextOfLogManager(log);
 
   const copyText = useMemo(() => {
     if (justCopied) {
@@ -114,6 +123,11 @@ export const Log = ({ log }: Props) => {
           <OpenExternalLink log={log} />
           <span style={styles.copyText}>{copyText}</span>
         </div>
+        <FlipToAdditionalContextButton
+          log={log}
+          isShowingAdditionalContext={isShowingAdditionalContext}
+          setIsShowingAdditionalContext={setIsShowingAdditionalContext}
+        />
       </div>
       <CopyToClipboard text={textToCopy} onCopy={_onJustCopied}>
         <div style={styles.copyBtn}>
@@ -130,7 +144,7 @@ export const Log = ({ log }: Props) => {
             onMouseEnter={_onMouseEnter}
             onMouseLeave={_onMouseLeave}
           >
-            {log.content}
+            {isShowingAdditionalContext ? additionalContextString : log.content}
           </pre>
         </div>
       </CopyToClipboard>

@@ -26,7 +26,6 @@ export const FlipToAdditionalContextButton = ({
       title={
         isShowingAdditionalContext ? "Stop showing context" : "Show context"
       }
-      style={styles.tooltipContainer}
     >
       <Switch
         checked={isShowingAdditionalContext}
@@ -43,9 +42,6 @@ export const FlipToAdditionalContextButton = ({
 };
 
 const styles: StylesType = {
-  tooltipContainer: {
-    marginRight: 12,
-  },
   switch: {
     transform: "scale(0.6)",
   },

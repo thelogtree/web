@@ -30,7 +30,7 @@ export const TopOfSearch = ({
       {numLogsText ? (
         <label style={styles.numLogsTotalText}>{numLogsText}</label>
       ) : null}
-      <div style={styles.filterContainer}>
+      {/* <div style={styles.filterContainer}>
         <Switch
           checkedChildren="Showing only errors"
           unCheckedChildren="Showing everything"
@@ -44,7 +44,7 @@ export const TopOfSearch = ({
         <label style={styles.chooseFilter}>
           Choose whether to only show errors
         </label>
-      </div>
+      </div> */}
     </div>
   );
 };
