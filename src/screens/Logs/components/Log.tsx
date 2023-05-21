@@ -1,25 +1,26 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Colors } from "src/utils/colors";
-import { StylesType } from "src/utils/styles";
-import {
-  FrontendLog,
-  useDeleteLog,
-  useExternalLinkForLog,
-  useIsFavoriteLogsScreen,
-  useIsGlobalSearchScreen,
-  useIsSupportLogsScreen,
-} from "../lib";
+import { Tooltip } from "antd";
+import { simplifiedLogTagEnum } from "logtree-types";
 import moment from "moment-timezone";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useSelector } from "react-redux";
-import { getOrganization } from "src/redux/organization/selector";
 import { useHistory } from "react-router-dom";
-import { Tooltip } from "antd";
-import { OpenExternalLink } from "./OpenExternalLink";
+import { getOrganization } from "src/redux/organization/selector";
 import { LOGS_ROUTE_PREFIX, SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
-import { DeleteProgressBar } from "./DeleteProgressBar";
+import { Colors } from "src/utils/colors";
+import { StylesType } from "src/utils/styles";
+
+import {
+  FrontendLog,
+  useAdditionalContextOfLogManager,
+  useDeleteLog,
+  useIsFavoriteLogsScreen,
+  useIsGlobalSearchScreen,
+} from "../lib";
 import { DeletedLogRedBox } from "./DeletedLogRedBox";
-import { simplifiedLogTagEnum } from "logtree-types";
+import { DeleteProgressBar } from "./DeleteProgressBar";
+import { FlipToAdditionalContextButton } from "./FlipToAdditionalContextButton";
+import { OpenExternalLink } from "./OpenExternalLink";
 
 type Props = {
   log: FrontendLog;
@@ -41,6 +42,11 @@ export const Log = ({ log }: Props) => {
   const [justCopied, setJustCopied] = useState<boolean>(false);
   const [isDeleteBarVisibleAndAnimating, setIsDeleteBarVisibleAndAnimating] =
     useState<boolean>(false);
+  const {
+    isShowingAdditionalContext,
+    setIsShowingAdditionalContext,
+    additionalContextString,
+  } = useAdditionalContextOfLogManager(log);
   const canJumpToNewChannel = isOnGlobalSearch || isOnFavoritesScreen;
   const canCopyText = !isDeleteBarVisibleAndAnimating && !shouldShowAsDeleted;
 
@@ -143,17 +149,24 @@ export const Log = ({ log }: Props) => {
             setIsVisibleAndAnimating={setIsDeleteBarVisibleAndAnimating}
           />
         </div>
-        {log.referenceId && (
-          <Tooltip title="Click to see the journey of this ID">
-            <a
-              style={styles.rightSide}
-              onClick={_searchForReferenceId}
-              className="referenceIdLink"
-            >
-              id:{log.referenceId}
-            </a>
-          </Tooltip>
-        )}
+        <div style={styles.rightSide}>
+          <FlipToAdditionalContextButton
+            log={log}
+            isShowingAdditionalContext={isShowingAdditionalContext}
+            setIsShowingAdditionalContext={setIsShowingAdditionalContext}
+          />
+          {log.referenceId && (
+            <Tooltip title="Click to see the journey of this ID">
+              <a
+                style={styles.referenceId}
+                onClick={_searchForReferenceId}
+                className="referenceIdLink"
+              >
+                id:{log.referenceId}
+              </a>
+            </Tooltip>
+          )}
+        </div>
       </div>
       <CopyToClipboard
         text={textToCopy}
@@ -173,7 +186,7 @@ export const Log = ({ log }: Props) => {
             onMouseMove={onMouseMove}
           >
             {shouldShowAsDeleted && <DeletedLogRedBox />}
-            {log.content}
+            {isShowingAdditionalContext ? additionalContextString : log.content}
           </pre>
         </div>
       </CopyToClipboard>
@@ -221,6 +234,13 @@ const styles: StylesType = {
     color: Colors.gray,
     fontSize: 12,
     paddingBottom: 6,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  referenceId: {
+    color: Colors.gray,
     textAlign: "right",
   },
   copyBtn: {

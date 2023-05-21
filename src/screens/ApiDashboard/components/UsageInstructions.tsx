@@ -23,7 +23,7 @@ export const UsageInstructions = () => {
       </label>
       <pre style={styles.preStyle}>
         <div style={styles.codeExample}>
-          {`axios.post("${PROD_SERVER_URL}${serverSlug}/v1/logs",\n  {\n    content: string; // what you want to log\n    folderPath: string; // where you want to log it in logtree. e.g. "/transactions"\n    referenceId?: string; // (optional) the email address of the user related to this request.\n    externalLink?: string; // (optional) provide a website url that you want people to be redirected to if they click on this log.\n  },\n  {\n    headers: {\n      "x-logtree-key": "${organization?.keys.publishableApiKey}", // this is your publishable api key\n      "authorization": "your_secret_key"\n    }\n  }\n)`}
+          {`axios.post("${PROD_SERVER_URL}${serverSlug}/v1/logs",\n  {\n    content: string; // what you want to log\n    folderPath: string; // where you want to log it in logtree. e.g. "/transactions"\n    referenceId?: string; // (optional) the email address of the user related to this request.\n    externalLink?: string; // (optional) provide a website url that you want people to be redirected to if they click on this log.\n    additionalContext?: Object; // (optional) any other relevant data you want to record about this log.\n  },\n  {\n    headers: {\n      "x-logtree-key": "${organization?.keys.publishableApiKey}", // this is your publishable api key\n      "authorization": "your_secret_key"\n    }\n  }\n)`}
         </div>
       </pre>
       <label style={styles.canUseAnyLanguage}>
