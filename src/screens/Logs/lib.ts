@@ -87,6 +87,7 @@ export type FrontendLog = {
   externalLink?: string;
   tag?: simplifiedLogTagEnum;
   sourceTitle?: string;
+  additionalContext?: Object;
 };
 
 const PAGINATION_RECORDS_INCREMENT = 50; // cannot be more than 50 because the backend only returns 50
@@ -708,5 +709,39 @@ export const useDeleteLog = (logId: string) => {
     isMouseDown,
     onMouseUp,
     onMouseMove,
+  };
+};
+
+export const useAdditionalContextOfLog = (log: FrontendLog) => {
+  const additionalContextString = useMemo(() => {
+    let result = "";
+    const additionalContext = log.additionalContext;
+    if (!additionalContext || !Object.keys(additionalContext).length) {
+      return result;
+    }
+    Object.keys(additionalContext).forEach((key) => {
+      if (result) {
+        result += `\n`;
+      }
+      const value = additionalContext[key];
+      result += `${key}: ${
+        typeof value === "object" ? JSON.stringify(value) : value
+      }`;
+    });
+    return result;
+  }, [log._id]);
+
+  return additionalContextString;
+};
+
+export const useAdditionalContextOfLogManager = (log: FrontendLog) => {
+  const [isShowingAdditionalContext, setIsShowingAdditionalContext] =
+    useState<boolean>(false);
+  const additionalContextString = useAdditionalContextOfLog(log);
+
+  return {
+    isShowingAdditionalContext,
+    setIsShowingAdditionalContext,
+    additionalContextString,
   };
 };
