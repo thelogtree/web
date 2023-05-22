@@ -734,6 +734,7 @@ const styles: StylesType = {
     fontWeight: 300,
     fontSize: isMobile ? 17 : 20,
     textAlign: "center",
+    ...(isMobile && { width: "90%" }),
   },
   input: {
     borderStyle: "solid",
