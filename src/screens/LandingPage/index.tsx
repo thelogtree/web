@@ -274,7 +274,7 @@ export const LandingPage = () => {
                     <img src={YCLogo} style={styles.vcLogo} />
                   </Col>
                   <label style={styles.endingText}>
-                    Join the waitlist to get access before anyone else.
+                    Join the waitlist to get early access.
                   </label>
                   <button
                     style={{ ...styles.joinBeta, marginTop: 0 }}
@@ -436,7 +436,7 @@ export const LandingPage = () => {
                     </Col>
                   </Row>
                   <label style={styles.endingText}>
-                    Join the waitlist to get access before anyone else.
+                    Join the waitlist to get early access.
                   </label>
                   <button
                     style={{ ...styles.joinBeta, marginTop: 0 }}
