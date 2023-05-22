@@ -9,7 +9,7 @@ import { isMobile } from "react-device-detect";
 export const SignInScreen = () => (
   <DynamicContainer innerStyle={{ paddingTop: isMobile ? "25%" : "12%" }}>
     <label style={styles.signInTitle}>Sign in</label>
-    <label style={styles.signInDesc}>Your co-pilot is waiting for you.</label>
+    <label style={styles.signInDesc}>We kept everything tidy for you.</label>
     <SignInForm />
   </DynamicContainer>
 );

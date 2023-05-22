@@ -145,7 +145,7 @@ export const LandingPage = () => {
                 }}
               >
                 <label style={styles.mainText}>
-                  The logging API designed to be your customer support co-pilot
+                  The Node.js logging API for early-stage startups
                 </label>
                 <label style={styles.subtitle}>
                   No more digging through a mess of logs trying to figure out
@@ -169,15 +169,15 @@ export const LandingPage = () => {
                     Monitor events in organized channels
                   </label>
                   <label style={styles.subtitle}>
-                    Stop dumping all your logs into one feed for engineers to
-                    sort through later. Find what you're looking for 10x faster
-                    compared to any other logging solution.
+                    Stop dumping all your logs into one feed you have to sort
+                    through later. Find what you're looking for 10x faster
+                    compared to Logtail or Papertrail.
                   </label>
                   <div style={styles.exampleChannelsContainer}>
                     <img src={ExampleChannels} style={styles.exampleGraphic} />
                   </div>
                   <label style={styles.gridTitle}>
-                    Everything a logging API should be
+                    Intuitive like Slack, durable like Datadog
                   </label>
                   <Grid style={styles.gridContainer}>
                     <Col style={styles.statItem}>
@@ -224,11 +224,11 @@ export const LandingPage = () => {
                     </label>
                   </div>
                   <label style={styles.easySetupDesc}>
-                    Send your own logs with one endpoint. Connect to Sentry,
+                    Send your own logs with our Node.js SDK. Connect to Sentry,
                     Mixpanel, Sendgrid, Intercom, and more, without code.
                   </label>
                   <label style={styles.usedByTitle}>
-                    Used by startups that have raised millions from
+                    Already used by founders that have raised millions from
                   </label>
                   <Col style={styles.usedByItem}>
                     <img src={KleinerPerkinsLogo} style={styles.vcLogo} />
@@ -266,8 +266,7 @@ export const LandingPage = () => {
               >
                 <div style={styles.leftSide}>
                   <label style={styles.mainText}>
-                    The logging API designed to be your customer support
-                    co-pilot
+                    The Node.js logging API for early-stage startups
                   </label>
                   <label style={styles.subtitle}>
                     No more digging through a mess of logs trying to figure out
@@ -294,9 +293,9 @@ export const LandingPage = () => {
                         Monitor events in organized channels
                       </label>
                       <label style={styles.subtitle}>
-                        Stop dumping all your logs into one feed for engineers
-                        to sort through later. Find what you're looking for 10x
-                        faster compared to any other logging solution.
+                        Stop dumping all your logs into one feed you have to
+                        sort through later. Find what you're looking for 10x
+                        faster compared to Logtail or Papertrail.
                       </label>
                     </div>
                     <div style={styles.exampleChannelsContainer}>
@@ -307,7 +306,7 @@ export const LandingPage = () => {
                     </div>
                   </div>
                   <label style={styles.gridTitle}>
-                    Everything a logging API should be
+                    Intuitive like Slack, durable like Datadog
                   </label>
                   <Grid style={styles.gridContainer}>
                     <Row style={styles.statsHorizontalContainer}>
@@ -358,11 +357,11 @@ export const LandingPage = () => {
                     </label>
                   </div>
                   <label style={styles.easySetupDesc}>
-                    Send your own logs with one endpoint. Connect to Sentry,
+                    Send your own logs with our Node.js SDK. Connect to Sentry,
                     Mixpanel, Sendgrid, Intercom, and more, without code.
                   </label>
                   <label style={styles.usedByTitle}>
-                    Used by startups that have raised millions from
+                    Already used by founders that have raised millions from
                   </label>
                   <Row style={styles.usedByHorizontalContainer}>
                     <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
@@ -630,6 +629,11 @@ const styles: StylesType = {
   copyright: {
     color: Colors.gray,
     fontSize: 11,
+  },
+  madeIn: {
+    marginRight: 10,
+    fontSize: 11,
+    color: Colors.gray,
   },
   leftSide: {
     display: "flex",

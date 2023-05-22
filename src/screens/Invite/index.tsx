@@ -20,7 +20,7 @@ export const InviteScreen = () => {
     <DynamicContainer innerStyle={{ paddingTop: "12%" }}>
       <label style={styles.joiningText}>Finish creating your account</label>
       <label style={styles.joiningTextDesc}>
-        Enter what you want your account's email and password to be below.
+        Enter what you want your account's email and password to be.
       </label>
       <AcceptInviteForm
         invitationId={invitationId}
