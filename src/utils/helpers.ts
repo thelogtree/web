@@ -78,3 +78,13 @@ export const useSearchParams = (): any => {
 
   return _getResObj();
 };
+
+// returns true if the string is a valid JSON format and can be parsed. returns false otherwise.
+export const isValidJsonString = (str: string) => {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+};

@@ -19,10 +19,12 @@ import {
 } from "src/RouteManager";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import {
+  isValidJsonString,
   showGenericErrorAlert,
   usePathname,
   useSearchParams,
 } from "src/utils/helpers";
+import stringify from "json-stringify-pretty-compact";
 
 import { useCurrentIntegration } from "../IntegrationLogs/lib";
 
@@ -724,13 +726,13 @@ export const useAdditionalContextOfLog = (log: FrontendLog) => {
       if (result) {
         result += `\n`;
       }
-      if (lastKey === "user") {
-        result += `\n`;
+      let value = additionalContext[key];
+      if (typeof value === "object") {
+        value = stringify(value, { indent: 5 });
+      } else if (isValidJsonString(value)) {
+        value = stringify(JSON.parse(value), { indent: 5 });
       }
-      const value = additionalContext[key];
-      result += `${key}: ${
-        typeof value === "object" ? JSON.stringify(value) : value
-      }`;
+      result += `${key}: ${value}`;
       lastKey = key;
     });
     return result;
