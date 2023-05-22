@@ -244,7 +244,7 @@ export const LandingPage = () => {
                     <img src={YCLogo} style={styles.vcLogo} />
                   </Col>
                   <label style={styles.endingText}>
-                    Join the waitlist for exclusive access.
+                    Join the waitlist to get access before anyone else.
                   </label>
                   <button
                     style={{ ...styles.joinBeta, marginTop: 0 }}
