@@ -359,8 +359,9 @@ export const LandingPage = () => {
                     </label>
                   </div>
                   <label style={styles.easySetupDesc}>
-                    Send your own logs with our Node.js SDK. Connect to Sentry,
-                    Mixpanel, Sendgrid, Intercom, and more, without code.
+                    Send your own logs with one call to our Node.js SDK. Connect
+                    to Sentry, Mixpanel, Sendgrid, Intercom, and more, without
+                    code.
                   </label>
                   <label style={styles.usedByTitle}>
                     Already used by founders that have raised millions from
@@ -380,7 +381,7 @@ export const LandingPage = () => {
                     </Col>
                   </Row>
                   <label style={styles.endingText}>
-                    Join the waitlist for exclusive access.
+                    Join the waitlist to get access before anyone else.
                   </label>
                   <button
                     style={{ ...styles.joinBeta, marginTop: 0 }}
