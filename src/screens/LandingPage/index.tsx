@@ -7,7 +7,7 @@ import { Col, Grid, Row } from "react-flexbox-grid";
 import { useHistory } from "react-router-dom";
 import { Api } from "src/api";
 import ExampleChannels from "src/assets/channelsGraphic.png";
-import ExampleGraphic from "src/assets/exampleGraphicCopilot.png";
+import ExampleGraphic from "src/assets/exampleGraphic.png";
 import JourneyIcon from "src/assets/journey.png";
 import KleinerPerkinsLogo from "src/assets/kleinerPerkinsLogo.png";
 import LogtreeIcon from "src/assets/logtreeLogo192.png";
@@ -23,6 +23,10 @@ import SparkleIcon from "src/assets/sparkle.png";
 import { Colors } from "src/utils/colors";
 import { showGenericErrorAlert } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
+import StripeBigLogo from "src/assets/stripeBigLogo.png";
+import MixpanelBigLogo from "src/assets/mixpanelLogoBig.png";
+import IntercomBigLogo from "src/assets/intercomLogoBig.png";
+import SentryLogoBig from "src/assets/sentryLogoBig.png";
 
 export const LandingPage = () => {
   const [pageLoaded, setPageLoaded] = useState<boolean>(false);
@@ -145,12 +149,12 @@ export const LandingPage = () => {
                 }}
               >
                 <label style={styles.mainText}>
-                  The Node.js logging SDK for early-stage startups
+                  The logging API for startups
                 </label>
                 <label style={styles.subtitle}>
-                  Find logs and debug problems 10x faster with global search,
-                  organized channels, user filtering, visibility into requests,
-                  built-in integrations, and so much more.
+                  Get answers 10x faster with global search, organized channels,
+                  user filtering, visibility into request details, built-in
+                  integrations, and more.
                 </label>
                 <button
                   style={styles.joinBeta}
@@ -167,18 +171,19 @@ export const LandingPage = () => {
               {pageLoaded && (
                 <>
                   <label style={styles.mainText2}>
-                    Monitor events in organized channels
+                    No more endless feeds.
+                    <br />
+                    Store your logs in organized channels.
                   </label>
                   <label style={styles.subtitle}>
-                    Stop dumping all your logs into one feed you have to sort
-                    through later. Instead, customize how your logs are
-                    organized.
+                    Organize your logs into folders and channels, making them
+                    easier to find later.
                   </label>
                   <div style={styles.exampleChannelsContainer}>
                     <img src={ExampleChannels} style={styles.exampleGraphic} />
                   </div>
                   <label style={styles.gridTitle}>
-                    Intuitive like Slack, durable like Datadog
+                    Powerful and easy to use.
                   </label>
                   <Grid style={styles.gridContainer}>
                     <Col style={styles.statItem}>
@@ -214,7 +219,7 @@ export const LandingPage = () => {
                     <Col style={styles.statItem}>
                       <img src={SupportPersonIcon} style={styles.statIcon} />
                       <label style={styles.statDesc}>
-                        Easy for non-technical people to use
+                        Resolve user problems quickly
                       </label>
                     </Col>
                   </Grid>
@@ -225,8 +230,33 @@ export const LandingPage = () => {
                     </label>
                   </div>
                   <label style={styles.easySetupDesc}>
-                    Send your own logs with our Node.js SDK. Connect to Sentry,
-                    Mixpanel, Sendgrid, Intercom, and more, without code.
+                    Send your logs with just one endpoint.
+                  </label>
+                  <label style={styles.usedByTitle}>
+                    View and filter events from integrations like
+                  </label>
+                  <Row style={styles.usedByHorizontalContainer}>
+                    <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
+                      <img src={SentryLogoBig} style={styles.integrationLogo} />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img
+                        src={MixpanelBigLogo}
+                        style={styles.integrationLogo}
+                      />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img
+                        src={IntercomBigLogo}
+                        style={styles.integrationLogo}
+                      />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img src={StripeBigLogo} style={styles.integrationLogo} />
+                    </Col>
+                  </Row>
+                  <label style={styles.andMoreIntegrations}>
+                    and many more...
                   </label>
                   <label style={styles.usedByTitle}>
                     Already used by founders that have raised millions from
@@ -267,12 +297,12 @@ export const LandingPage = () => {
               >
                 <div style={styles.leftSide}>
                   <label style={styles.mainText}>
-                    The Node.js logging SDK for early-stage startups
+                    The logging API for startups
                   </label>
                   <label style={styles.subtitle}>
-                    Find logs and debug problems 10x faster with global search,
-                    organized channels, user filtering, visibility into
-                    requests, built-in integrations, and so much more.
+                    Get answers 10x faster with global search, organized
+                    channels, user filtering, visibility into request details,
+                    built-in integrations, and more.
                   </label>
                   <button
                     style={styles.joinBeta}
@@ -292,12 +322,13 @@ export const LandingPage = () => {
                   <div style={styles.sideBySide2}>
                     <div style={styles.leftSide}>
                       <label style={styles.mainText}>
-                        Monitor events in organized channels
+                        No more endless feeds.
+                        <br />
+                        Store your logs in organized channels.
                       </label>
                       <label style={styles.subtitle}>
-                        Stop dumping all your logs into one feed you have to
-                        sort through later. Instead, customize how your logs are
-                        organized.
+                        Organize your logs into folders and channels, making
+                        them easier to find later.
                       </label>
                     </div>
                     <div style={styles.exampleChannelsContainer}>
@@ -308,7 +339,7 @@ export const LandingPage = () => {
                     </div>
                   </div>
                   <label style={styles.gridTitle}>
-                    Intuitive like Slack, durable like Datadog
+                    Powerful and easy to use.
                   </label>
                   <Grid style={styles.gridContainer}>
                     <Row style={styles.statsHorizontalContainer}>
@@ -347,7 +378,7 @@ export const LandingPage = () => {
                       <Col style={styles.statItem}>
                         <img src={SupportPersonIcon} style={styles.statIcon} />
                         <label style={styles.statDesc}>
-                          Easy for non-technical people to use
+                          Resolve user problems quickly
                         </label>
                       </Col>
                     </Row>
@@ -359,9 +390,33 @@ export const LandingPage = () => {
                     </label>
                   </div>
                   <label style={styles.easySetupDesc}>
-                    Send your own logs with one call to our Node.js SDK. Connect
-                    to Sentry, Mixpanel, Sendgrid, Intercom, and more, without
-                    code.
+                    Send your logs with just one endpoint.
+                  </label>
+                  <label style={styles.usedByTitle}>
+                    View and filter events from integrations like
+                  </label>
+                  <Row style={styles.usedByHorizontalContainer}>
+                    <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
+                      <img src={SentryLogoBig} style={styles.integrationLogo} />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img
+                        src={MixpanelBigLogo}
+                        style={styles.integrationLogo}
+                      />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img
+                        src={IntercomBigLogo}
+                        style={styles.integrationLogo}
+                      />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img src={StripeBigLogo} style={styles.integrationLogo} />
+                    </Col>
+                  </Row>
+                  <label style={styles.andMoreIntegrations}>
+                    and many more...
                   </label>
                   <label style={styles.usedByTitle}>
                     Already used by founders that have raised millions from
@@ -736,6 +791,15 @@ const styles: StylesType = {
     textAlign: "center",
     ...(isMobile && { width: "90%" }),
   },
+  andMoreIntegrations: {
+    color: Colors.darkerGray,
+    paddingTop: 60,
+    paddingBottom: 30,
+    fontWeight: 300,
+    fontSize: isMobile ? 17 : 20,
+    textAlign: "center",
+    ...(isMobile && { width: "90%" }),
+  },
   input: {
     borderStyle: "solid",
     borderColor: Colors.lightGray,
@@ -824,6 +888,10 @@ const styles: StylesType = {
     maxWidth: 200,
     maxHeight: 60,
     filter: "grayscale(100%)",
+  },
+  integrationLogo: {
+    maxWidth: 150,
+    maxHeight: 60,
   },
   mobileTopContainer: {
     width: "100%",
