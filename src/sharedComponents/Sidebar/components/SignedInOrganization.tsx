@@ -26,12 +26,18 @@ export const SignedInOrganization = () => {
     {
       key: "1",
       label: <label style={styles.normalBtn}>Team members</label>,
-      onClick: _goToTeamScreen,
+      onClick: (e) => {
+        e.domEvent.stopPropagation();
+        _goToTeamScreen();
+      },
     },
     {
       key: "2",
       label: <label style={styles.normalBtn}>Connect Zapier</label>,
-      onClick: _connectIntegrationsClicked,
+      onClick: (e) => {
+        e.domEvent.stopPropagation();
+        _connectIntegrationsClicked();
+      },
     },
     {
       type: "divider",
@@ -40,22 +46,34 @@ export const SignedInOrganization = () => {
     {
       key: "3",
       label: <label style={styles.signOutBtn}>Sign out</label>,
-      onClick: () => firebase.auth().signOut(),
+      onClick: (e) => {
+        e.domEvent.stopPropagation();
+        firebase.auth().signOut();
+      },
     },
     {
       key: "4",
       label: <label style={styles.helpBtn}>Contact us</label>,
-      onClick: () => window.open("mailto:hello@logtree.co", "_blank"),
+      onClick: (e) => {
+        e.domEvent.stopPropagation();
+        window.open("mailto:hello@logtree.co", "_blank");
+      },
     },
     {
       key: "5",
       label: <label style={styles.helpBtn}>Terms of service</label>,
-      onClick: () => window.open("/policies/terms-of-service", "_blank"),
+      onClick: (e) => {
+        e.domEvent.stopPropagation();
+        window.open("/policies/terms-of-service", "_blank");
+      },
     },
     {
       key: "6",
       label: <label style={styles.helpBtn}>Privacy policy</label>,
-      onClick: () => window.open("/policies/privacy-policy", "_blank"),
+      onClick: (e) => {
+        e.domEvent.stopPropagation();
+        window.open("/policies/privacy-policy", "_blank");
+      },
     },
   ];
 

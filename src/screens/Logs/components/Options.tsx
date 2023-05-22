@@ -123,7 +123,10 @@ export const Options = ({ folderOrChannel, isMutedBecauseOfParent }: Props) => {
           {
             key: "1",
             label: <label style={styles.delete}>Delete</label>,
-            onClick: _confirmDeleteFolderAndEverythingInside,
+            onClick: (e) => {
+              e.domEvent.stopPropagation();
+              _confirmDeleteFolderAndEverythingInside();
+            },
           },
         ]
       : []),
@@ -140,7 +143,12 @@ export const Options = ({ folderOrChannel, isMutedBecauseOfParent }: Props) => {
             : "Mute"}
         </label>
       ),
-      onClick: isMutedBecauseOfParent ? undefined : _muteOrUnmuteChannel,
+      onClick: (e) => {
+        e.domEvent.stopPropagation();
+        if (!isMutedBecauseOfParent) {
+          _muteOrUnmuteChannel();
+        }
+      },
     },
     ...(folderOrChannel.children.length
       ? []
@@ -152,7 +160,10 @@ export const Options = ({ folderOrChannel, isMutedBecauseOfParent }: Props) => {
                 {isFavorited ? "Remove from favorites" : "Add as favorite"}
               </label>
             ),
-            onClick: () => setIsFavorited(!isFavorited),
+            onClick: (e) => {
+              e.domEvent.stopPropagation();
+              setIsFavorited(!isFavorited);
+            },
           },
         ]),
   ];

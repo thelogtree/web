@@ -143,6 +143,7 @@ export const Log = ({ log }: Props) => {
               ...(logTagColorAndText.backgroundColor && {
                 backgroundColor: logTagColorAndText.backgroundColor,
               }),
+              ...(isShowingAdditionalContext && styles.preContext),
             }}
             onMouseEnter={_onMouseEnter}
             onMouseLeave={_onMouseLeave}
@@ -172,6 +173,20 @@ const styles: StylesType = {
     width: "100%",
     borderWidth: 1,
     borderColor: Colors.lightGray,
+    borderStyle: "solid",
+    padding: 15,
+    textAlign: "left",
+    whiteSpace: "pre-wrap",
+    position: "relative",
+  },
+  preContext: {
+    backgroundColor: Colors.white,
+    color: Colors.black,
+    borderRadius: 4,
+    fontSize: 13,
+    width: "100%",
+    borderWidth: 1,
+    borderColor: Colors.black,
     borderStyle: "solid",
     padding: 15,
     textAlign: "left",
