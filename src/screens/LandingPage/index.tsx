@@ -171,8 +171,7 @@ export const LandingPage = () => {
                   </label>
                   <label style={styles.subtitle}>
                     Stop dumping all your logs into one feed you have to sort
-                    through later. Find what you're looking for 10x faster
-                    compared to Logtail or Papertrail.
+                    through later. Instead, customize where logs get stored.
                   </label>
                   <div style={styles.exampleChannelsContainer}>
                     <img src={ExampleChannels} style={styles.exampleGraphic} />
@@ -296,8 +295,8 @@ export const LandingPage = () => {
                       </label>
                       <label style={styles.subtitle}>
                         Stop dumping all your logs into one feed you have to
-                        sort through later. Find what you're looking for 10x
-                        faster compared to Logtail or Papertrail.
+                        sort through later. Instead, customize where logs get
+                        stored.
                       </label>
                     </div>
                     <div style={styles.exampleChannelsContainer}>
