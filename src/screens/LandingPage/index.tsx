@@ -145,11 +145,12 @@ export const LandingPage = () => {
                 }}
               >
                 <label style={styles.mainText}>
-                  The Node.js logging API for early-stage startups
+                  The Node.js logging SDK for early-stage startups
                 </label>
                 <label style={styles.subtitle}>
-                  No more digging through a mess of logs trying to figure out
-                  what went wrong.
+                  Find logs and debug problems 10x faster with global search,
+                  organized channels, user filtering, visibility into requests,
+                  built-in integrations, and so much more.
                 </label>
                 <button
                   style={styles.joinBeta}
@@ -213,7 +214,7 @@ export const LandingPage = () => {
                     <Col style={styles.statItem}>
                       <img src={SupportPersonIcon} style={styles.statIcon} />
                       <label style={styles.statDesc}>
-                        AI support agent suggests responses
+                        Easy for non-technical people to use
                       </label>
                     </Col>
                   </Grid>
@@ -266,11 +267,12 @@ export const LandingPage = () => {
               >
                 <div style={styles.leftSide}>
                   <label style={styles.mainText}>
-                    The Node.js logging API for early-stage startups
+                    The Node.js logging SDK for early-stage startups
                   </label>
                   <label style={styles.subtitle}>
-                    No more digging through a mess of logs trying to figure out
-                    what went wrong.
+                    Find logs and debug problems 10x faster with global search,
+                    organized channels, user filtering, visibility into
+                    requests, built-in integrations, and so much more.
                   </label>
                   <button
                     style={styles.joinBeta}
@@ -345,7 +347,7 @@ export const LandingPage = () => {
                       <Col style={styles.statItem}>
                         <img src={SupportPersonIcon} style={styles.statIcon} />
                         <label style={styles.statDesc}>
-                          AI support agent suggests responses
+                          Easy for non-technical people to use
                         </label>
                       </Col>
                     </Row>
