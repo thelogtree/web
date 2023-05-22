@@ -719,14 +719,19 @@ export const useAdditionalContextOfLog = (log: FrontendLog) => {
     if (!additionalContext || !Object.keys(additionalContext).length) {
       return result;
     }
+    let lastKey = "";
     Object.keys(additionalContext).forEach((key) => {
       if (result) {
+        result += `\n`;
+      }
+      if (lastKey === "user") {
         result += `\n`;
       }
       const value = additionalContext[key];
       result += `${key}: ${
         typeof value === "object" ? JSON.stringify(value) : value
       }`;
+      lastKey = key;
     });
     return result;
   }, [log._id]);
