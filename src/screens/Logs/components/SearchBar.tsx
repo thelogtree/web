@@ -58,6 +58,7 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
+    width: "100%",
   },
   input: {
     outline: "none",
@@ -81,5 +82,6 @@ const styles: StylesType = {
     fontSize: 13,
     color: Colors.gray,
     marginRight: 58,
+    width: 150,
   },
 };
