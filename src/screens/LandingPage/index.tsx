@@ -14,6 +14,7 @@ import LogtreeIcon from "src/assets/logtreeLogo192.png";
 import MessageIcon from "src/assets/message.png";
 import QuickArrowRight from "src/assets/quickArrowRight.png";
 import SearchIcon from "src/assets/searchBig.png";
+import TagIcon from "src/assets/tag.png";
 import SPCLogo from "src/assets/spcLogo.svg";
 import SupportPersonIcon from "src/assets/supportPerson.png";
 import SVAngelLogo from "src/assets/svAngelLogo.png";
@@ -115,11 +116,6 @@ export const LandingPage = () => {
                 Please fill out all the fields above.
               </label>
             )}
-            <div style={styles.madeWithLogtreeContainer}>
-              <label style={styles.madeWithLogtree}>
-                ✅ This waitlist is stored in Logtree
-              </label>
-            </div>
           </>
         )}
       </Modal>
@@ -149,12 +145,12 @@ export const LandingPage = () => {
                 }}
               >
                 <label style={styles.mainText}>
-                  The lightweight logging API for startups
+                  The debugging platform for startups
                 </label>
                 <label style={styles.subtitle}>
-                  Get answers 10x faster with global search, organized channels,
-                  user filtering, visibility into request details, built-in
-                  integrations, and more.
+                  See logs and events from dozens of integrations like Sentry,
+                  Mixpanel, and Intercom to get full visibility into a user's
+                  journey and debug problems 10x faster.
                 </label>
                 <button
                   style={styles.joinBeta}
@@ -170,27 +166,54 @@ export const LandingPage = () => {
               </div>
               {pageLoaded && (
                 <>
+                  <label style={styles.usedByTitle2}>
+                    Connect to your integrations in a few clicks.
+                  </label>
+                  <label style={styles.integrationDesc}>
+                    View a user's errors, clicks, questions, and transactions
+                    from integrations like
+                  </label>
+                  <Row style={styles.usedByHorizontalContainer}>
+                    <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
+                      <img src={SentryLogoBig} style={styles.integrationLogo} />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img
+                        src={MixpanelBigLogo}
+                        style={styles.integrationLogo}
+                      />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img
+                        src={IntercomBigLogo}
+                        style={styles.integrationLogo}
+                      />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img src={StripeBigLogo} style={styles.integrationLogo} />
+                    </Col>
+                  </Row>
+                  <label style={styles.andMoreIntegrations}>
+                    and many more.
+                  </label>
                   <label style={styles.mainText2}>
-                    No more endless feeds.
-                    <br />
-                    Store your logs in organized channels.
+                    Send your own custom logs.
                   </label>
                   <label style={styles.subtitle}>
-                    Organize your logs into folders and channels, making them
-                    easier to find later.
+                    Send any data you think might help you debug a user's
+                    problem later on. Organize this data into channels like
+                    Slack so you can monitor certain events independently.
                   </label>
                   <div style={styles.exampleChannelsContainer}>
                     <img src={ExampleChannels} style={styles.exampleGraphic} />
                   </div>
                   <label style={styles.gridTitle}>
-                    Powerful and easy to use.
+                    We give you the tools to dive deeper.
                   </label>
                   <Grid style={styles.gridContainer}>
                     <Col style={styles.statItem}>
-                      <label style={styles.statTitle}>100x</label>
-                      <label style={styles.statDesc}>
-                        Rate limit compared to Slack webhooks
-                      </label>
+                      <img src={TagIcon} style={styles.statIcon} />
+                      <label style={styles.statDesc}>Filter logs by tags</label>
                     </Col>
                     <Col style={styles.statItem}>
                       <label style={styles.statTitle}>↑↓</label>
@@ -230,33 +253,7 @@ export const LandingPage = () => {
                     </label>
                   </div>
                   <label style={styles.easySetupDesc}>
-                    Send your logs with just one endpoint.
-                  </label>
-                  <label style={styles.usedByTitle}>
-                    View and filter events from integrations like
-                  </label>
-                  <Row style={styles.usedByHorizontalContainer}>
-                    <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
-                      <img src={SentryLogoBig} style={styles.integrationLogo} />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img
-                        src={MixpanelBigLogo}
-                        style={styles.integrationLogo}
-                      />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img
-                        src={IntercomBigLogo}
-                        style={styles.integrationLogo}
-                      />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img src={StripeBigLogo} style={styles.integrationLogo} />
-                    </Col>
-                  </Row>
-                  <label style={styles.andMoreIntegrations}>
-                    and many more...
+                    Send your own logs with just one endpoint.
                   </label>
                   <label style={styles.usedByTitle}>
                     Already used by founders that have raised millions from
@@ -297,12 +294,12 @@ export const LandingPage = () => {
               >
                 <div style={styles.leftSide}>
                   <label style={styles.mainText}>
-                    The lightweight logging API for startups
+                    The debugging platform for startups
                   </label>
                   <label style={styles.subtitle}>
-                    Get answers 10x faster with global search, organized
-                    channels, user filtering, visibility into request details,
-                    built-in integrations, and more.
+                    See logs and events from dozens of integrations like Sentry,
+                    Mixpanel, and Intercom to get full visibility into a user's
+                    journey and debug problems 10x faster.
                   </label>
                   <button
                     style={styles.joinBeta}
@@ -319,16 +316,45 @@ export const LandingPage = () => {
               </div>
               {pageLoaded && (
                 <>
+                  <label style={styles.usedByTitle2}>
+                    Connect to your integrations in a few clicks.
+                  </label>
+                  <label style={styles.integrationDesc}>
+                    View a user's errors, clicks, questions, and transactions
+                    from integrations like
+                  </label>
+                  <Row style={styles.usedByHorizontalContainer}>
+                    <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
+                      <img src={SentryLogoBig} style={styles.integrationLogo} />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img
+                        src={MixpanelBigLogo}
+                        style={styles.integrationLogo}
+                      />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img
+                        src={IntercomBigLogo}
+                        style={styles.integrationLogo}
+                      />
+                    </Col>
+                    <Col style={styles.usedByItem}>
+                      <img src={StripeBigLogo} style={styles.integrationLogo} />
+                    </Col>
+                  </Row>
+                  <label style={styles.andMoreIntegrations}>
+                    and many more.
+                  </label>
                   <div style={styles.sideBySide2}>
                     <div style={styles.leftSide}>
                       <label style={styles.mainText}>
-                        No more endless feeds.
-                        <br />
-                        Store your logs in organized channels.
+                        Send your own custom logs.
                       </label>
                       <label style={styles.subtitle}>
-                        Organize your logs into folders and channels, making
-                        them easier to find later.
+                        Send any data you think might help you debug a user's
+                        problem later on. Organize this data into channels like
+                        Slack so you can monitor certain events independently.
                       </label>
                     </div>
                     <div style={styles.exampleChannelsContainer}>
@@ -339,14 +365,14 @@ export const LandingPage = () => {
                     </div>
                   </div>
                   <label style={styles.gridTitle}>
-                    Powerful and easy to use.
+                    We give you the tools to dive deeper.
                   </label>
                   <Grid style={styles.gridContainer}>
                     <Row style={styles.statsHorizontalContainer}>
                       <Col style={{ ...styles.statItem, marginLeft: 0 }}>
-                        <label style={styles.statTitle}>100x</label>
+                        <img src={TagIcon} style={styles.statIcon} />
                         <label style={styles.statDesc}>
-                          Rate limit compared to Slack webhooks
+                          Filter logs by tags
                         </label>
                       </Col>
                       <Col style={styles.statItem}>
@@ -390,33 +416,7 @@ export const LandingPage = () => {
                     </label>
                   </div>
                   <label style={styles.easySetupDesc}>
-                    Send your logs with just one endpoint.
-                  </label>
-                  <label style={styles.usedByTitle}>
-                    View and filter events from integrations like
-                  </label>
-                  <Row style={styles.usedByHorizontalContainer}>
-                    <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
-                      <img src={SentryLogoBig} style={styles.integrationLogo} />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img
-                        src={MixpanelBigLogo}
-                        style={styles.integrationLogo}
-                      />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img
-                        src={IntercomBigLogo}
-                        style={styles.integrationLogo}
-                      />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img src={StripeBigLogo} style={styles.integrationLogo} />
-                    </Col>
-                  </Row>
-                  <label style={styles.andMoreIntegrations}>
-                    and many more...
+                    Send your own logs with just one endpoint.
                   </label>
                   <label style={styles.usedByTitle}>
                     Already used by founders that have raised millions from
@@ -716,7 +716,7 @@ const styles: StylesType = {
     width: "100%",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingTop: isMobile ? `calc(100vh - 630px)` : `calc(100vh - 600px)`,
+    paddingTop: isMobile ? 30 : 250,
   },
   statsHorizontalContainer: {
     display: "flex",
@@ -796,7 +796,15 @@ const styles: StylesType = {
     paddingTop: 60,
     paddingBottom: 30,
     fontWeight: 300,
-    fontSize: isMobile ? 17 : 20,
+    fontSize: isMobile ? 15 : 17,
+    textAlign: "center",
+    ...(isMobile && { width: "90%" }),
+  },
+  integrationDesc: {
+    color: Colors.darkerGray,
+    paddingBottom: isMobile ? 0 : 30,
+    fontWeight: 300,
+    fontSize: isMobile ? 15 : 17,
     textAlign: "center",
     ...(isMobile && { width: "90%" }),
   },
@@ -883,6 +891,17 @@ const styles: StylesType = {
     WebkitTextFillColor: "transparent",
     backgroundClip: "text",
     paddingBottom: isMobile ? 10 : 40,
+  },
+  usedByTitle2: {
+    fontWeight: 700,
+    fontSize: isMobile ? 25 : 38,
+    paddingTop: isMobile ? `calc(100vh - 630px)` : `calc(100vh - 600px)`,
+    textAlign: "center",
+    background: "linear-gradient(268.45deg, #000000 30.54%, #303030 60.79%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+    paddingBottom: isMobile ? 10 : 20,
   },
   vcLogo: {
     maxWidth: 200,
