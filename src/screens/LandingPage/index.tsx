@@ -149,7 +149,7 @@ export const LandingPage = () => {
                 }}
               >
                 <label style={styles.mainText}>
-                  The logging API for startups
+                  The lightweight logging API for startups
                 </label>
                 <label style={styles.subtitle}>
                   Get answers 10x faster with global search, organized channels,
@@ -297,7 +297,7 @@ export const LandingPage = () => {
               >
                 <div style={styles.leftSide}>
                   <label style={styles.mainText}>
-                    The logging API for startups
+                    The lightweight logging API for startups
                   </label>
                   <label style={styles.subtitle}>
                     Get answers 10x faster with global search, organized
