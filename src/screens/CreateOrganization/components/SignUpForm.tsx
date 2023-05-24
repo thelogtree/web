@@ -25,9 +25,6 @@ export const SignUpForm = () => {
       );
       await firebase.auth().signInWithEmailAndPassword(email, password);
     } catch (e: any) {
-        console.log(e)
-        console.log(e.message)
-        console.log(e.response.data)
       showGenericErrorAlert(e);
       setIsLoading(false); // this must stay only in the catch
     }
