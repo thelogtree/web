@@ -731,6 +731,8 @@ export const useAdditionalContextOfLog = (log: FrontendLog) => {
         value = stringify(value, { indent: 5 });
       } else if (isValidJsonString(value)) {
         value = stringify(JSON.parse(value), { indent: 5 });
+      } else if (typeof value === "string") {
+        value = `"${value}"`;
       }
       result += `${key}: ${value}`;
       lastKey = key;
