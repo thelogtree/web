@@ -12,6 +12,16 @@ import { KeyInput } from "src/screens/Integrations/components/ConnectNewIntegrat
 const routeUrl = "/organization";
 
 export const organization = {
+  createAccountAndOrganization: (
+    organizationName: string,
+    email: string,
+    password: string
+  ) =>
+    axios.post(routeUrl + `/new`, {
+      organizationName,
+      email,
+      password,
+    }),
   getOrganization: (organizationId: string) =>
     axios.get(routeUrl + `/${organizationId}`),
   getMe: () => axios.get(routeUrl + `/me`),

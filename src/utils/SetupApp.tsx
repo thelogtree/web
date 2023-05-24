@@ -17,7 +17,14 @@ import { getFirstPathWithSlash, usePathname } from "./helpers";
 import { ORG_ROUTE_PREFIX } from "src/RouteManager";
 
 // routes where logged out users can view it and will not be redirected anywhere
-const NO_ACTION_ROUTES = ["/sign-in", "/invite", "/policies", "/learn", "/"];
+const NO_ACTION_ROUTES = [
+  "/sign-in",
+  "/invite",
+  "/policies",
+  "/learn",
+  "/sign-up",
+  "/",
+];
 
 // routes where logged in users can view it and will not be redirected anywhere
 const SIGNED_IN_ROUTES = ["/policies", "/oauth-callback", "/learn"];
@@ -43,10 +50,17 @@ export const SetupApp = () => {
           )) &&
         !SIGNED_IN_ROUTES.includes(path)
       ) {
-        window.open(
-          `${ORG_ROUTE_PREFIX}/${organization.slug}/favorites`,
-          "_self"
-        );
+        if (organization.numLogsSentInPeriod) {
+          window.open(
+            `${ORG_ROUTE_PREFIX}/${organization.slug}/favorites`,
+            "_self"
+          );
+        } else {
+          window.open(
+            `${ORG_ROUTE_PREFIX}/${organization.slug}/api-dashboard`,
+            "_self"
+          );
+        }
       } else {
         fetchMyOrganization();
       }

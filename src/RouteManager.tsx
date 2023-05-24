@@ -24,6 +24,7 @@ import { OAuthCallbackScreen } from "./screens/OAuthCallback";
 import { IntercomLearnMoreScreen } from "./screens/IntercomLearnMore";
 import { IntegrationLogsScreen } from "./screens/IntegrationLogs";
 import { GlobalSearchScreen } from "./screens/GlobalSearch";
+import { CreateOrganizationScreen } from "./screens/CreateOrganization";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -60,6 +61,7 @@ export const RouteManager = () => {
         >
           <Route path="/org/sign-out" component={SignOutScreen} />
           <Route path="/sign-in" component={SignInScreen} />
+          <Route path="/sign-up" component={CreateOrganizationScreen} />
           <Route path="/oauth-callback" component={OAuthCallbackScreen} />
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/api-dashboard`}

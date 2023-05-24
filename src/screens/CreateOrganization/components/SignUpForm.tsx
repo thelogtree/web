@@ -1,62 +1,48 @@
 import firebase from "../../../firebaseConfig";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Api } from "src/api";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { Colors } from "src/utils/colors";
-import { showGenericErrorAlert } from "src/utils/helpers";
+import { getErrorMessage, showGenericErrorAlert } from "src/utils/helpers";
 import { SharedStyles, StylesType } from "src/utils/styles";
 
-type Props = {
-  numMembers: number;
-  organizationId: string;
-  invitationId: string;
-  organizationName: string;
-};
-
-const FILL_IN_DETAILS_ERROR =
-  "That email is either invalid or already in use by another Logtree account.";
-
-export const AcceptInviteForm = ({
-  numMembers,
-  organizationId,
-  invitationId,
-  organizationName,
-}: Props) => {
+export const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [organizationName, setOrganizationName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const joinTeamBtnText = useMemo(() => {
-    return numMembers < 1 ? `Join ${organizationName} on Logtree` : `Save`;
-  }, [numMembers, organizationName]);
-
   const _submitForm = async () => {
     try {
-      if (!email || !password) {
+      if (!email || !password || !organizationName) {
         throw new Error("Please fill in all the details.");
       }
       setIsLoading(true);
-      await Api.organization.acceptInvite(
-        organizationId,
-        invitationId,
+      await Api.organization.createAccountAndOrganization(
+        organizationName,
         email,
         password
       );
       await firebase.auth().signInWithEmailAndPassword(email, password);
     } catch (e: any) {
-      showGenericErrorAlert({
-        message:
-          e.message === FILL_IN_DETAILS_ERROR
-            ? FILL_IN_DETAILS_ERROR
-            : "That email is either invalid or already in use by another Logtree account.",
-      });
+        console.log(e)
+        console.log(e.message)
+        console.log(e.response.data)
+      showGenericErrorAlert(e);
       setIsLoading(false); // this must stay only in the catch
     }
   };
 
   return (
     <div style={styles.container}>
-      <label style={styles.inputTitle}>Work email</label>
+      <label style={styles.inputTitle}>Company name</label>
+      <input
+        placeholder="Robinhood"
+        value={organizationName}
+        onChange={(e) => setOrganizationName(e.target.value)}
+        style={styles.input}
+      />
+      <label style={{ ...styles.inputTitle, paddingTop: 24 }}>Work email</label>
       <input
         placeholder="john@companyname.com"
         value={email}
@@ -89,7 +75,7 @@ export const AcceptInviteForm = ({
             style={{ marginRight: 12 }}
           />
         ) : null}
-        {joinTeamBtnText}
+        Create free account
       </button>
     </div>
   );

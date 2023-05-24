@@ -47,27 +47,16 @@ export const LandingPage = () => {
     }, 300);
   }, []);
 
-  const _addToWaitlist = async () => {
-    try {
-      if (!email || !websiteUrl || !description) {
-        setError(true);
-        return;
-      }
-      setIsLoading(true);
-      await Api.organization.addToWaitlist(email, websiteUrl, description);
-      setSuccessfullySubmitted(true);
-    } catch (e) {
-      showGenericErrorAlert(e);
-    }
-    setIsLoading(false);
+  const _createAccount = async () => {
+    history.push("/sign-up");
   };
 
   return (
     <>
-      <Modal
+      {/* <Modal
         open={isVisible}
         style={styles.modalContainer}
-        onOk={_addToWaitlist}
+        onOk={_joinWaitlist}
         okText={
           isLoading
             ? "Joining..."
@@ -118,7 +107,7 @@ export const LandingPage = () => {
             )}
           </>
         )}
-      </Modal>
+      </Modal> */}
       <div style={styles.container}>
         <div style={styles.fullBackgroundColor} />
         {/* <div style={styles.backgroundColor} /> */}
@@ -155,9 +144,9 @@ export const LandingPage = () => {
                 <button
                   style={styles.joinBeta}
                   className="joinBeta"
-                  onClick={() => setIsVisible(true)}
+                  onClick={_createAccount}
                 >
-                  <label style={styles.joinBetaLbl}>Join the waitlist</label>
+                  <label style={styles.joinBetaLbl}>Get started</label>
                   <img src={QuickArrowRight} style={styles.arrowRight} />
                 </button>
                 <div style={styles.exampleContainer}>
@@ -271,14 +260,14 @@ export const LandingPage = () => {
                     <img src={YCLogo} style={styles.vcLogo} />
                   </Col>
                   <label style={styles.endingText}>
-                    Join the waitlist to get early access.
+                    Get started for free today.
                   </label>
                   <button
                     style={{ ...styles.joinBeta, marginTop: 0 }}
                     className="joinBeta"
-                    onClick={() => setIsVisible(true)}
+                    onClick={_createAccount}
                   >
-                    <label style={styles.joinBetaLbl}>Join the waitlist</label>
+                    <label style={styles.joinBetaLbl}>Get started</label>
                     <img src={QuickArrowRight} style={styles.arrowRight} />
                   </button>
                 </>
@@ -304,9 +293,9 @@ export const LandingPage = () => {
                   <button
                     style={styles.joinBeta}
                     className="joinBeta"
-                    onClick={() => setIsVisible(true)}
+                    onClick={_createAccount}
                   >
-                    <label style={styles.joinBetaLbl}>Join the waitlist</label>
+                    <label style={styles.joinBetaLbl}>Get started</label>
                     <img src={QuickArrowRight} style={styles.arrowRight} />
                   </button>
                 </div>
@@ -436,14 +425,14 @@ export const LandingPage = () => {
                     </Col>
                   </Row>
                   <label style={styles.endingText}>
-                    Join the waitlist to get early access.
+                    Get started for free today.
                   </label>
                   <button
                     style={{ ...styles.joinBeta, marginTop: 0 }}
                     className="joinBeta"
-                    onClick={() => setIsVisible(true)}
+                    onClick={_createAccount}
                   >
-                    <label style={styles.joinBetaLbl}>Join the waitlist</label>
+                    <label style={styles.joinBetaLbl}>Get started</label>
                     <img src={QuickArrowRight} style={styles.arrowRight} />
                   </button>
                 </>
