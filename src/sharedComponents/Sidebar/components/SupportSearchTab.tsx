@@ -6,8 +6,10 @@ import { StylesType } from "src/utils/styles";
 import PersonSearchIcon from "src/assets/personSearch.png";
 import { Colors } from "src/utils/colors";
 import { SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
+import { useHistory } from "react-router-dom";
 
 export const SupportSearchTab = () => {
+  const history = useHistory();
   const organization = useSelector(getOrganization);
   const pathname = usePathname();
   const globalSearchPath = `/org/${organization?.slug}${SUPPORT_TOOL_SUFFIX}`;
@@ -15,7 +17,7 @@ export const SupportSearchTab = () => {
     return pathname.includes(globalSearchPath);
   }, [pathname]);
 
-  const _goToGlobalSearchScreen = () => window.open(globalSearchPath, "_blank");
+  const _goToGlobalSearchScreen = () => history.push(globalSearchPath);
 
   return (
     <button

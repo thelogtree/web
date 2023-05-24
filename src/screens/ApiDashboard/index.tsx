@@ -7,12 +7,14 @@ import { StylesType } from "src/utils/styles";
 import { GenerateKeys } from "./components/GenerateKeys";
 import { UsageInstructions } from "./components/UsageInstructions";
 import { Billing } from "./components/Billing";
+import { Intro } from "./components/Intro";
 
 export const ApiDashboardScreen = () => {
   const organization = useSelector(getOrganization);
   return organization ? (
     <div style={styles.container}>
       <label style={styles.title}>API Dashboard</label>
+      <Intro />
       <Billing />
       <GenerateKeys />
       <UsageInstructions />
