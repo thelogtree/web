@@ -16,6 +16,7 @@ import { StylesType } from "src/utils/styles";
 
 import { FolderOrChannel } from "./FolderOrChannel";
 import _ from "lodash";
+import { AddNewChannel } from "./AddNewChannel";
 
 export type FrontendFolder = {
   children: FrontendFolder[];
@@ -63,6 +64,7 @@ export const Folders = () => {
       {folders.length ? (
         <div style={styles.topContainer}>
           <label style={styles.title}>CHANNELS</label>
+          <AddNewChannel />
         </div>
       ) : null}
       {sortedFolders.map((folder, i) => (
@@ -100,5 +102,6 @@ const styles: StylesType = {
     justifyContent: "flex-start",
     alignItems: "center",
     paddingBottom: 8,
+    width: "100%",
   },
 };

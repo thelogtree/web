@@ -249,4 +249,8 @@ export const organization = {
         folderId,
       },
     }),
+  createNewEmptyFolder: async (organizationId: string, folderPath: string) =>
+    axios.post(routeUrl + `/${organizationId}/folder`, {
+      folderPath,
+    }),
 };
