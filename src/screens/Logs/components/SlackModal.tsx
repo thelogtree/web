@@ -57,9 +57,10 @@ export const SlackModal = ({ isModalVisible, setIsModalVisible }: Props) => {
           </label>
           <br />
           <label style={SharedStyles.modalDescriptionText}>
-            Our Slack integration will forward logs in this channel from Logtree
-            to Slack. To set this up in your Slack workspace, follow the
-            instructions below.
+            Our Slack integration will forward logs from this Logtree channel to
+            Slack. This may be useful if you don't check Logtree often but still
+            want to be able to see certain Logtree logs in Slack. To set this up
+            in your Slack workspace, follow the instructions below.
           </label>
           <br />
           <br />
@@ -87,9 +88,10 @@ export const SlackModal = ({ isModalVisible, setIsModalVisible }: Props) => {
           </div>
           <br />
           <label style={SharedStyles.modalDescriptionText}>
-            Once you click the above, you will be shown a permissions screen.
-            This just gives us permission to send logs in your Slack channel.
-            Press allow to install the app to your Slack workspace.
+            Once you've clicked the button above, you will be shown a
+            permissions screen. This just gives us permission to send logs in
+            your Slack channel. Press allow to install the app in your Slack
+            workspace.
           </label>
           <br />
           <label style={{ ...SharedStyles.modalSubheaderText, marginTop: 30 }}>
@@ -117,7 +119,7 @@ export const SlackModal = ({ isModalVisible, setIsModalVisible }: Props) => {
             Once completed, we'll start sending any Logtree logs from this
             channel into the Slack channel you connected it to. Please note that
             Slack enforces a rate limit, so we cannot guarantee that every log
-            is forwarded into Slack.
+            is forwarded into Slack successfully.
           </label>
         </div>
       </div>
