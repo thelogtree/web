@@ -19,6 +19,7 @@ import {
   useLogs,
 } from "./lib";
 import { Rules } from "./components/Rules";
+import { ConnectToSlack } from "./components/ConnectToSlack";
 
 export const LogsScreen = () => {
   const organization = useSelector(getOrganization);
@@ -124,6 +125,7 @@ export const LogsScreen = () => {
                       {frontendFolder!.fullPath}
                     </label>
                   </Tooltip>
+                  <ConnectToSlack />
                 </>
               )}
               <LoadUpdatesButton

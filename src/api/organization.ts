@@ -243,4 +243,10 @@ export const organization = {
         query,
       },
     }),
+  getSlackInstallUrl: async (folderId: string) =>
+    axios.get("/slack/installation-url", {
+      params: {
+        folderId,
+      },
+    }),
 };
