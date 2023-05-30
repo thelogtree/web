@@ -22,12 +22,13 @@ import TwitterIcon from "src/assets/twitterLogo.png";
 import YCLogo from "src/assets/ycLogo.png";
 import SparkleIcon from "src/assets/sparkle.png";
 import { Colors } from "src/utils/colors";
-import { showGenericErrorAlert } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 import StripeBigLogo from "src/assets/stripeBigLogo.png";
 import MixpanelBigLogo from "src/assets/mixpanelLogoBig.png";
 import IntercomBigLogo from "src/assets/intercomLogoBig.png";
 import SentryLogoBig from "src/assets/sentryLogoBig.png";
+import IntercomExampleGraphic from "src/assets/exampleIntercomConversation.png";
+import { showGenericErrorAlert } from "src/utils/helpers";
 
 export const LandingPage = () => {
   const [pageLoaded, setPageLoaded] = useState<boolean>(false);
@@ -51,18 +52,33 @@ export const LandingPage = () => {
     history.push("/sign-up");
   };
 
+  const _joinWaitlist = async () => {
+    try {
+      if (!email || !websiteUrl || !description) {
+        setError(true);
+        return;
+      }
+      setIsLoading(true);
+      await Api.organization.addToWaitlist(email, websiteUrl, description);
+      setSuccessfullySubmitted(true);
+    } catch (e) {
+      showGenericErrorAlert(e);
+    }
+    setIsLoading(false);
+  };
+
   return (
     <>
-      {/* <Modal
+      <Modal
         open={isVisible}
         style={styles.modalContainer}
         onOk={_joinWaitlist}
         okText={
           isLoading
-            ? "Joining..."
+            ? "Loading..."
             : successfullySubmitted
-            ? "Joined waitlist!"
-            : "Join waitlist"
+            ? "Requested!"
+            : "Request access"
         }
         okButtonProps={{
           ...((successfullySubmitted || isLoading) && {
@@ -76,7 +92,7 @@ export const LandingPage = () => {
       >
         {successfullySubmitted ? (
           <label style={styles.addedToWaitlist}>
-            You've been added to the waitlist. Be sure to keep an eye on your
+            You've successfully requested access. Be sure to keep an eye on your
             email!
           </label>
         ) : (
@@ -107,7 +123,7 @@ export const LandingPage = () => {
             )}
           </>
         )}
-      </Modal> */}
+      </Modal>
       <div style={styles.container}>
         <div style={styles.fullBackgroundColor} />
         {/* <div style={styles.backgroundColor} /> */}
@@ -133,24 +149,25 @@ export const LandingPage = () => {
                   ...(pageLoaded && { opacity: 1 }),
                 }}
               >
-                <label style={styles.mainText}>
-                  The debugging platform for startups
-                </label>
+                <label style={styles.mainText}>Your AI support engineer</label>
                 <label style={styles.subtitle}>
-                  See logs and events from dozens of integrations like Sentry,
-                  Mixpanel, and Intercom to get full visibility into a user's
-                  journey and debug problems 10x faster.
+                  Our AI connects to your third-party services to look into user
+                  problems for you, saving your team hundreds of Intercom hours
+                  each year.
                 </label>
                 <button
                   style={styles.joinBeta}
                   className="joinBeta"
-                  onClick={_createAccount}
+                  onClick={() => setIsVisible(true)}
                 >
-                  <label style={styles.joinBetaLbl}>Get started</label>
+                  <label style={styles.joinBetaLbl}>Request access</label>
                   <img src={QuickArrowRight} style={styles.arrowRight} />
                 </button>
                 <div style={styles.exampleContainer}>
-                  <img src={ExampleGraphic} style={styles.exampleGraphic1} />
+                  <img
+                    src={IntercomExampleGraphic}
+                    style={styles.exampleGraphic1}
+                  />
                 </div>
               </div>
               {pageLoaded && (
@@ -158,10 +175,10 @@ export const LandingPage = () => {
                   <label style={styles.usedByTitle2}>
                     Connect to your integrations in a few clicks.
                   </label>
-                  <label style={styles.integrationDesc}>
+                  {/* <label style={styles.integrationDesc}>
                     View a user's errors, clicks, questions, and transactions
                     from integrations like
-                  </label>
+                  </label> */}
                   <Row style={styles.usedByHorizontalContainer}>
                     <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
                       <img src={SentryLogoBig} style={styles.integrationLogo} />
@@ -182,13 +199,13 @@ export const LandingPage = () => {
                       <img src={StripeBigLogo} style={styles.integrationLogo} />
                     </Col>
                   </Row>
-                  <label style={styles.andMoreIntegrations}>
+                  {/* <label style={styles.andMoreIntegrations}>
                     and many more.
                   </label>
                   <label style={styles.mainText2}>
                     Send your own custom logs.
-                  </label>
-                  <label style={styles.subtitle}>
+                  </label> */}
+                  {/* <label style={styles.subtitle}>
                     Send any data you think might help you debug a user's
                     problem later on. Organize this data into channels like
                     Slack so you can monitor certain events independently.
@@ -209,8 +226,8 @@ export const LandingPage = () => {
                       <label style={styles.statDesc}>
                         Automatic trend discovery
                       </label>
-                    </Col>
-                    <Col style={styles.statItem}>
+                    </Col> */}
+                  {/* <Col style={styles.statItem}>
                       <img src={MessageIcon} style={styles.statIcon} />
                       <label style={styles.statDesc}>
                         Configure SMS and email alerts
@@ -234,18 +251,18 @@ export const LandingPage = () => {
                         Resolve user problems quickly
                       </label>
                     </Col>
-                  </Grid>
+                  </Grid> */}
                   <div style={styles.easySetupContainer}>
-                    <img src={SparkleIcon} style={styles.sparkleIcon} />
                     <label style={styles.easySetupTitle}>
-                      Magically-easy setup
+                      Start saving time
                     </label>
                   </div>
                   <label style={styles.easySetupDesc}>
-                    Send your own logs with just one endpoint.
+                    Our AI starts posting explanations to Intercom
+                    automatically.
                   </label>
                   <label style={styles.usedByTitle}>
-                    Already used by founders that have raised millions from
+                    Already used by startups that have raised millions from
                   </label>
                   <Col style={styles.usedByItem}>
                     <img src={KleinerPerkinsLogo} style={styles.vcLogo} />
@@ -260,14 +277,14 @@ export const LandingPage = () => {
                     <img src={YCLogo} style={styles.vcLogo} />
                   </Col>
                   <label style={styles.endingText}>
-                    Get started for free today.
+                    Supercharge your support team.
                   </label>
                   <button
                     style={{ ...styles.joinBeta, marginTop: 0 }}
                     className="joinBeta"
-                    onClick={_createAccount}
+                    onClick={() => setIsVisible(true)}
                   >
-                    <label style={styles.joinBetaLbl}>Get started</label>
+                    <label style={styles.joinBetaLbl}>Request access</label>
                     <img src={QuickArrowRight} style={styles.arrowRight} />
                   </button>
                 </>
@@ -283,24 +300,27 @@ export const LandingPage = () => {
               >
                 <div style={styles.leftSide}>
                   <label style={styles.mainText}>
-                    The debugging platform for startups
+                    Your AI support engineer
                   </label>
                   <label style={styles.subtitle}>
-                    See logs and events from dozens of integrations like Sentry,
-                    Mixpanel, and Intercom to get full visibility into a user's
-                    journey and debug problems 10x faster.
+                    Our AI connects to your third-party services to look into
+                    user problems for you, saving your team hundreds of Intercom
+                    hours each year.
                   </label>
                   <button
                     style={styles.joinBeta}
                     className="joinBeta"
-                    onClick={_createAccount}
+                    onClick={() => setIsVisible(true)}
                   >
-                    <label style={styles.joinBetaLbl}>Get started</label>
+                    <label style={styles.joinBetaLbl}>Request access</label>
                     <img src={QuickArrowRight} style={styles.arrowRight} />
                   </button>
                 </div>
                 <div style={styles.exampleContainer}>
-                  <img src={ExampleGraphic} style={styles.exampleGraphic1} />
+                  <img
+                    src={IntercomExampleGraphic}
+                    style={styles.exampleGraphic1}
+                  />
                 </div>
               </div>
               {pageLoaded && (
@@ -308,10 +328,9 @@ export const LandingPage = () => {
                   <label style={styles.usedByTitle2}>
                     Connect to your integrations in a few clicks.
                   </label>
-                  <label style={styles.integrationDesc}>
-                    View a user's errors, clicks, questions, and transactions
-                    from integrations like
-                  </label>
+                  {/* <label style={styles.integrationDesc}>
+                    Our AI evaluates events from integrations like
+                  </label> */}
                   <Row style={styles.usedByHorizontalContainer}>
                     <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
                       <img src={SentryLogoBig} style={styles.integrationLogo} />
@@ -332,10 +351,10 @@ export const LandingPage = () => {
                       <img src={StripeBigLogo} style={styles.integrationLogo} />
                     </Col>
                   </Row>
-                  <label style={styles.andMoreIntegrations}>
+                  {/* <label style={styles.andMoreIntegrations}>
                     and many more.
-                  </label>
-                  <div style={styles.sideBySide2}>
+                  </label> */}
+                  {/* <div style={styles.sideBySide2}>
                     <div style={styles.leftSide}>
                       <label style={styles.mainText}>
                         Send your own custom logs.
@@ -397,18 +416,18 @@ export const LandingPage = () => {
                         </label>
                       </Col>
                     </Row>
-                  </Grid>
+                  </Grid> */}
                   <div style={styles.easySetupContainer}>
-                    <img src={SparkleIcon} style={styles.sparkleIcon} />
                     <label style={styles.easySetupTitle}>
-                      Magically-easy setup
+                      Start saving time
                     </label>
                   </div>
                   <label style={styles.easySetupDesc}>
-                    Send your own logs with just one endpoint.
+                    Our AI starts posting explanations to Intercom
+                    automatically.
                   </label>
                   <label style={styles.usedByTitle}>
-                    Already used by founders that have raised millions from
+                    Already used by startups that have raised millions from
                   </label>
                   <Row style={styles.usedByHorizontalContainer}>
                     <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
@@ -425,14 +444,14 @@ export const LandingPage = () => {
                     </Col>
                   </Row>
                   <label style={styles.endingText}>
-                    Get started for free today.
+                    Supercharge your support team.
                   </label>
                   <button
                     style={{ ...styles.joinBeta, marginTop: 0 }}
                     className="joinBeta"
-                    onClick={_createAccount}
+                    onClick={() => setIsVisible(true)}
                   >
-                    <label style={styles.joinBetaLbl}>Get started</label>
+                    <label style={styles.joinBetaLbl}>Request access</label>
                     <img src={QuickArrowRight} style={styles.arrowRight} />
                   </button>
                 </>
@@ -583,7 +602,7 @@ const styles: StylesType = {
     fontWeight: 700,
     fontSize: isMobile ? 25 : 38,
     textAlign: isMobile ? "center" : "left",
-    paddingLeft: isMobile ? 14 : 20,
+    // paddingLeft: isMobile ? 14 : 20,
   },
   sparkleIcon: {
     width: isMobile ? 35 : 50,
@@ -629,8 +648,12 @@ const styles: StylesType = {
     justifyContent: "center",
     alignItems: "flex-start",
     flex: 4,
-    maxWidth: isMobile ? "90%" : 600,
+    maxWidth: isMobile ? "90%" : 500,
     marginTop: isMobile ? 60 : 0,
+    marginRight: isMobile ? 0 : 100,
+    // boxShadow: "0px 6px 18px rgba(0,0,0,0.1)",
+    // padding: 50,
+    // borderRadius: 16,
   },
   exampleChannelsContainer: {
     display: "flex",
