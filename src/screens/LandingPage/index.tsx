@@ -170,125 +170,6 @@ export const LandingPage = () => {
                   />
                 </div>
               </div>
-              {pageLoaded && (
-                <>
-                  <label style={styles.usedByTitle2}>
-                    Connect to your integrations in a few clicks.
-                  </label>
-                  {/* <label style={styles.integrationDesc}>
-                    View a user's errors, clicks, questions, and transactions
-                    from integrations like
-                  </label> */}
-                  <Row style={styles.usedByHorizontalContainer}>
-                    <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
-                      <img src={SentryLogoBig} style={styles.integrationLogo} />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img
-                        src={MixpanelBigLogo}
-                        style={styles.integrationLogo}
-                      />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img
-                        src={IntercomBigLogo}
-                        style={styles.integrationLogo}
-                      />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img src={StripeBigLogo} style={styles.integrationLogo} />
-                    </Col>
-                  </Row>
-                  {/* <label style={styles.andMoreIntegrations}>
-                    and many more.
-                  </label>
-                  <label style={styles.mainText2}>
-                    Send your own custom logs.
-                  </label> */}
-                  {/* <label style={styles.subtitle}>
-                    Send any data you think might help you debug a user's
-                    problem later on. Organize this data into channels like
-                    Slack so you can monitor certain events independently.
-                  </label>
-                  <div style={styles.exampleChannelsContainer}>
-                    <img src={ExampleChannels} style={styles.exampleGraphic} />
-                  </div>
-                  <label style={styles.gridTitle}>
-                    We give you the tools to dive deeper.
-                  </label>
-                  <Grid style={styles.gridContainer}>
-                    <Col style={styles.statItem}>
-                      <img src={TagIcon} style={styles.statIcon} />
-                      <label style={styles.statDesc}>Filter logs by tags</label>
-                    </Col>
-                    <Col style={styles.statItem}>
-                      <label style={styles.statTitle}>↑↓</label>
-                      <label style={styles.statDesc}>
-                        Automatic trend discovery
-                      </label>
-                    </Col> */}
-                  {/* <Col style={styles.statItem}>
-                      <img src={MessageIcon} style={styles.statIcon} />
-                      <label style={styles.statDesc}>
-                        Configure SMS and email alerts
-                      </label>
-                    </Col>
-                    <Col style={styles.statItem}>
-                      <img src={SearchIcon} style={styles.statIcon} />
-                      <label style={styles.statDesc}>
-                        Search for logs across all your channels
-                      </label>
-                    </Col>
-                    <Col style={styles.statItem}>
-                      <img src={JourneyIcon} style={styles.statIcon} />
-                      <label style={styles.statDesc}>
-                        Trace a user's journey to see what went wrong
-                      </label>
-                    </Col>
-                    <Col style={styles.statItem}>
-                      <img src={SupportPersonIcon} style={styles.statIcon} />
-                      <label style={styles.statDesc}>
-                        Resolve user problems quickly
-                      </label>
-                    </Col>
-                  </Grid> */}
-                  <div style={styles.easySetupContainer}>
-                    <label style={styles.easySetupTitle}>
-                      Start saving time.
-                    </label>
-                  </div>
-                  <label style={styles.easySetupDesc}>
-                    Our AI starts posting explanations to Intercom
-                    automatically.
-                  </label>
-                  <label style={styles.usedByTitle}>
-                    Already used by startups that have raised millions from
-                  </label>
-                  <Col style={styles.usedByItem}>
-                    <img src={KleinerPerkinsLogo} style={styles.vcLogo} />
-                  </Col>
-                  <Col style={styles.usedByItem}>
-                    <img src={SVAngelLogo} style={styles.vcLogo} />
-                  </Col>
-                  <Col style={styles.usedByItem}>
-                    <img src={SPCLogo} style={styles.vcLogo} />
-                  </Col>
-                  <Col style={styles.usedByItem}>
-                    <img src={YCLogo} style={styles.vcLogo} />
-                  </Col>
-                  <label style={styles.endingText}>
-                    Supercharge your support team.
-                  </label>
-                  <button
-                    style={{ ...styles.joinBeta, marginTop: 0 }}
-                    className="joinBeta"
-                    onClick={() => setIsVisible(true)}
-                  >
-                    <label style={styles.joinBetaLbl}>Request access</label>
-                    <img src={QuickArrowRight} style={styles.arrowRight} />
-                  </button>
-                </>
-              )}
             </>
           ) : (
             <>
@@ -303,7 +184,7 @@ export const LandingPage = () => {
                     Your AI support engineer
                   </label>
                   <label style={styles.subtitle}>
-                    Our AI connects to your third-party services to look into
+                    Our AI connects to your third-party services and looks into
                     user problems for you, saving your team hundreds of Intercom
                     hours each year.
                   </label>
@@ -323,139 +204,6 @@ export const LandingPage = () => {
                   />
                 </div>
               </div>
-              {pageLoaded && (
-                <>
-                  <label style={styles.usedByTitle2}>
-                    Connect to your integrations in a few clicks.
-                  </label>
-                  {/* <label style={styles.integrationDesc}>
-                    Our AI evaluates events from integrations like
-                  </label> */}
-                  <Row style={styles.usedByHorizontalContainer}>
-                    <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
-                      <img src={SentryLogoBig} style={styles.integrationLogo} />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img
-                        src={MixpanelBigLogo}
-                        style={styles.integrationLogo}
-                      />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img
-                        src={IntercomBigLogo}
-                        style={styles.integrationLogo}
-                      />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img src={StripeBigLogo} style={styles.integrationLogo} />
-                    </Col>
-                  </Row>
-                  {/* <label style={styles.andMoreIntegrations}>
-                    and many more.
-                  </label> */}
-                  {/* <div style={styles.sideBySide2}>
-                    <div style={styles.leftSide}>
-                      <label style={styles.mainText}>
-                        Send your own custom logs.
-                      </label>
-                      <label style={styles.subtitle}>
-                        Send any data you think might help you debug a user's
-                        problem later on. Organize this data into channels like
-                        Slack so you can monitor certain events independently.
-                      </label>
-                    </div>
-                    <div style={styles.exampleChannelsContainer}>
-                      <img
-                        src={ExampleChannels}
-                        style={styles.exampleGraphic}
-                      />
-                    </div>
-                  </div>
-                  <label style={styles.gridTitle}>
-                    We give you the tools to dive deeper.
-                  </label>
-                  <Grid style={styles.gridContainer}>
-                    <Row style={styles.statsHorizontalContainer}>
-                      <Col style={{ ...styles.statItem, marginLeft: 0 }}>
-                        <img src={TagIcon} style={styles.statIcon} />
-                        <label style={styles.statDesc}>
-                          Filter logs by tags
-                        </label>
-                      </Col>
-                      <Col style={styles.statItem}>
-                        <label style={styles.statTitle}>↑↓</label>
-                        <label style={styles.statDesc}>
-                          Automatic trend discovery
-                        </label>
-                      </Col>
-                      <Col style={styles.statItem}>
-                        <img src={MessageIcon} style={styles.statIcon} />
-                        <label style={styles.statDesc}>
-                          Configure SMS and email alerts
-                        </label>
-                      </Col>
-                    </Row>
-                    <Row style={styles.statsHorizontalContainer}>
-                      <Col style={{ ...styles.statItem, marginLeft: 0 }}>
-                        <img src={SearchIcon} style={styles.statIcon} />
-                        <label style={styles.statDesc}>
-                          Search for logs across all your channels
-                        </label>
-                      </Col>
-                      <Col style={styles.statItem}>
-                        <img src={JourneyIcon} style={styles.statIcon} />
-                        <label style={styles.statDesc}>
-                          Trace a user's journey to see what went wrong
-                        </label>
-                      </Col>
-                      <Col style={styles.statItem}>
-                        <img src={SupportPersonIcon} style={styles.statIcon} />
-                        <label style={styles.statDesc}>
-                          Resolve user problems quickly
-                        </label>
-                      </Col>
-                    </Row>
-                  </Grid> */}
-                  <div style={styles.easySetupContainer}>
-                    <label style={styles.easySetupTitle}>
-                      Start saving time.
-                    </label>
-                  </div>
-                  <label style={styles.easySetupDesc}>
-                    Our AI starts posting explanations to Intercom
-                    automatically.
-                  </label>
-                  <label style={styles.usedByTitle}>
-                    Already used by startups that have raised millions from
-                  </label>
-                  <Row style={styles.usedByHorizontalContainer}>
-                    <Col style={{ ...styles.usedByItem, marginLeft: 0 }}>
-                      <img src={KleinerPerkinsLogo} style={styles.vcLogo} />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img src={SVAngelLogo} style={styles.vcLogo} />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img src={SPCLogo} style={styles.vcLogo} />
-                    </Col>
-                    <Col style={styles.usedByItem}>
-                      <img src={YCLogo} style={styles.vcLogo} />
-                    </Col>
-                  </Row>
-                  <label style={styles.endingText}>
-                    Supercharge your support team.
-                  </label>
-                  <button
-                    style={{ ...styles.joinBeta, marginTop: 0 }}
-                    className="joinBeta"
-                    onClick={() => setIsVisible(true)}
-                  >
-                    <label style={styles.joinBetaLbl}>Request access</label>
-                    <img src={QuickArrowRight} style={styles.arrowRight} />
-                  </button>
-                </>
-              )}
             </>
           )}
         </div>
@@ -524,7 +272,7 @@ const styles: StylesType = {
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",
-    paddingBottom: isMobile ? 150 : 250,
+    // paddingBottom: isMobile ? 150 : 250,
   },
   header: {
     display: "flex",
@@ -718,7 +466,7 @@ const styles: StylesType = {
     width: "100%",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingTop: 180,
+    paddingTop: 140,
     transition: "opacity 0.4s ease-in",
     opacity: 0,
   },
