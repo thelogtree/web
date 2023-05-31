@@ -151,9 +151,9 @@ export const LandingPage = () => {
               >
                 <label style={styles.mainText}>Your AI support engineer</label>
                 <label style={styles.subtitle}>
-                  Our AI connects to your third-party services to look into user
-                  problems for you, saving your team hundreds of Intercom hours
-                  each year.
+                  Our AI connects to your third-party services and looks into
+                  user problems for you, saving your team hundreds of Intercom
+                  hours each year.
                 </label>
                 <button
                   style={styles.joinBeta}
