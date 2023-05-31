@@ -254,7 +254,7 @@ export const LandingPage = () => {
                   </Grid> */}
                   <div style={styles.easySetupContainer}>
                     <label style={styles.easySetupTitle}>
-                      Start saving time
+                      Start saving time.
                     </label>
                   </div>
                   <label style={styles.easySetupDesc}>
@@ -419,7 +419,7 @@ export const LandingPage = () => {
                   </Grid> */}
                   <div style={styles.easySetupContainer}>
                     <label style={styles.easySetupTitle}>
-                      Start saving time
+                      Start saving time.
                     </label>
                   </div>
                   <label style={styles.easySetupDesc}>
