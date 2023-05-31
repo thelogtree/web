@@ -272,7 +272,7 @@ const styles: StylesType = {
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",
-    paddingBottom: isMobile ? 150 : 0,
+    paddingBottom: isMobile ? 100 : 0,
   },
   header: {
     display: "flex",
