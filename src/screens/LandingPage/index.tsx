@@ -154,9 +154,9 @@ export const LandingPage = () => {
                   The issue resolution platform for startups
                 </label>
                 <label style={styles.subtitle}>
-                  Send logs into organized channels, search for events across
-                  all your integrations, and even deploy an AI support engineer
-                  that provides context on user problems directly in Intercom.
+                  Organize logs by topic, search for events across all your
+                  integrations, and even deploy an AI support engineer directly
+                  in Intercom.
                 </label>
                 <button
                   style={styles.joinBeta}
@@ -193,10 +193,9 @@ export const LandingPage = () => {
                     The issue resolution platform for startups
                   </label>
                   <label style={styles.subtitle}>
-                    Send logs into organized channels, search for events across
-                    all your integrations, and even deploy an AI support
-                    engineer that provides context on user problems directly in
-                    Intercom.
+                    Organize logs by topic, search for events across all your
+                    integrations, and even deploy an AI support engineer
+                    directly in Intercom.
                   </label>
                   <div style={styles.trustedContainer}>
                     <img src={TrustIcon} style={styles.trustIcon} />
@@ -345,7 +344,7 @@ const styles: StylesType = {
     WebkitTextFillColor: "transparent",
     backgroundClip: "text",
     fontWeight: 700,
-    fontSize: isMobile ? 25 : 38,
+    fontSize: isMobile ? 30 : 38,
     textAlign: isMobile ? "center" : "left",
     paddingTop: isMobile ? 70 : 0,
   },
@@ -399,7 +398,7 @@ const styles: StylesType = {
     backgroundClip: "text",
   },
   subtitle: {
-    fontSize: isMobile ? 15 : 17,
+    fontSize: isMobile ? 13 : 17,
     color: Colors.darkerGray,
     paddingTop: isMobile ? 15 : 12,
     textAlign: isMobile ? "center" : "left",
@@ -414,9 +413,9 @@ const styles: StylesType = {
     alignItems: "flex-start",
     flex: 4,
     maxWidth: isMobile ? "90%" : 500,
-    marginTop: isMobile ? 60 : 0,
+    marginTop: isMobile ? 80 : 0,
     marginRight: isMobile ? 0 : 60,
-    ...(isMobile && { marginLeft: 40 }),
+    ...(!isMobile && { marginLeft: 40 }),
     // boxShadow: "0px 6px 18px rgba(0,0,0,0.1)",
     // padding: 50,
     // borderRadius: 16,
@@ -701,13 +700,14 @@ const styles: StylesType = {
     opacity: 0,
   },
   alreadyUsedBy: {
-    fontSize: isMobile ? 12 : 17,
-    color: Colors.darkerGray,
+    fontSize: isMobile ? 11 : 14,
+    color: Colors.gray,
     fontWeight: 300,
     textAlign: isMobile ? "center" : "left",
+
   },
   trustedContainer: {
-    paddingTop: 24,
+    paddingTop: isMobile ? 34 : 24,
     display: "flex",
     flexDirection: "row",
     justifyContent: isMobile ? "center" : "flex-start",
@@ -715,8 +715,8 @@ const styles: StylesType = {
     width: isMobile ? "90%" : "100%",
   },
   trustIcon: {
-    width: 22,
-    height: 22,
+    width: 18,
+    height: 18,
     marginRight: 8,
   },
 };
