@@ -149,11 +149,13 @@ export const LandingPage = () => {
                   ...(pageLoaded && { opacity: 1 }),
                 }}
               >
-                <label style={styles.mainText}>Your AI support engineer</label>
+                <label style={styles.mainText}>
+                  The issue resolution platform for startups
+                </label>
                 <label style={styles.subtitle}>
-                  Our AI connects to your third-party services and looks into
-                  user problems for you, saving your team hundreds of Intercom
-                  hours each year.
+                  Send logs into organized channels, search for events across
+                  all your integrations, and even deploy an AI support engineer
+                  that provides context on user problems directly in Intercom.
                 </label>
                 <button
                   style={styles.joinBeta}
@@ -181,12 +183,13 @@ export const LandingPage = () => {
               >
                 <div style={styles.leftSide}>
                   <label style={styles.mainText}>
-                    Your AI support engineer
+                    The issue resolution platform for startups
                   </label>
                   <label style={styles.subtitle}>
-                    Our AI connects to your third-party services and looks into
-                    user problems for you, saving your team hundreds of Intercom
-                    hours each year.
+                    Send logs into organized channels, search for events across
+                    all your integrations, and even deploy an AI support
+                    engineer that provides context on user problems directly in
+                    Intercom.
                   </label>
                   <button
                     style={styles.joinBeta}
@@ -398,7 +401,8 @@ const styles: StylesType = {
     flex: 4,
     maxWidth: isMobile ? "90%" : 500,
     marginTop: isMobile ? 60 : 0,
-    marginRight: isMobile ? 0 : 100,
+    marginRight: isMobile ? 0 : 60,
+    ...(isMobile && { marginLeft: 40 }),
     // boxShadow: "0px 6px 18px rgba(0,0,0,0.1)",
     // padding: 50,
     // borderRadius: 16,
@@ -466,7 +470,7 @@ const styles: StylesType = {
     width: "100%",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingTop: 140,
+    paddingTop: "15%",
     transition: "opacity 0.4s ease-in",
     opacity: 0,
   },
