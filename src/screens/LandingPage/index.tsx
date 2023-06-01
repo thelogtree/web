@@ -27,6 +27,7 @@ import StripeBigLogo from "src/assets/stripeBigLogo.png";
 import MixpanelBigLogo from "src/assets/mixpanelLogoBig.png";
 import IntercomBigLogo from "src/assets/intercomLogoBig.png";
 import SentryLogoBig from "src/assets/sentryLogoBig.png";
+import TrustIcon from "src/assets/guaranteeStamp.png";
 import IntercomExampleGraphic from "src/assets/exampleIntercomConversation.png";
 import { showGenericErrorAlert } from "src/utils/helpers";
 
@@ -165,6 +166,12 @@ export const LandingPage = () => {
                   <label style={styles.joinBetaLbl}>Request access</label>
                   <img src={QuickArrowRight} style={styles.arrowRight} />
                 </button>
+                <div style={styles.trustedContainer}>
+                  <label style={styles.alreadyUsedBy}>
+                    Trusted by startups like Snackpass, Fizz, Awaken, and
+                    others.
+                  </label>
+                </div>
                 <div style={styles.exampleContainer}>
                   <img
                     src={IntercomExampleGraphic}
@@ -191,6 +198,13 @@ export const LandingPage = () => {
                     engineer that provides context on user problems directly in
                     Intercom.
                   </label>
+                  <div style={styles.trustedContainer}>
+                    <img src={TrustIcon} style={styles.trustIcon} />
+                    <label style={styles.alreadyUsedBy}>
+                      Trusted by startups like Snackpass, Fizz, Awaken, and
+                      others.
+                    </label>
+                  </div>
                   <button
                     style={styles.joinBeta}
                     className="joinBeta"
@@ -685,5 +699,24 @@ const styles: StylesType = {
     alignItems: "center",
     transition: "opacity 0.4s ease-in",
     opacity: 0,
+  },
+  alreadyUsedBy: {
+    fontSize: isMobile ? 12 : 17,
+    color: Colors.darkerGray,
+    fontWeight: 300,
+    textAlign: isMobile ? "center" : "left",
+  },
+  trustedContainer: {
+    paddingTop: 24,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: isMobile ? "center" : "flex-start",
+    alignItems: "center",
+    width: isMobile ? "90%" : "100%",
+  },
+  trustIcon: {
+    width: 22,
+    height: 22,
+    marginRight: 8,
   },
 };
