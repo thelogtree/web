@@ -168,8 +168,7 @@ export const LandingPage = () => {
                 </button>
                 <div style={styles.trustedContainer}>
                   <label style={styles.alreadyUsedBy}>
-                    Trusted by startups like Snackpass, Fizz, Awaken, and
-                    others.
+                    Trusted by startups like Juicebox, Fizz, Awaken, and others.
                   </label>
                 </div>
                 <div style={styles.exampleContainer}>
@@ -200,7 +199,7 @@ export const LandingPage = () => {
                   <div style={styles.trustedContainer}>
                     <img src={TrustIcon} style={styles.trustIcon} />
                     <label style={styles.alreadyUsedBy}>
-                      Trusted by startups like Snackpass, Fizz, Awaken, and
+                      Trusted by startups like Juicebox, Fizz, Awaken, and
                       others.
                     </label>
                   </div>
@@ -704,7 +703,6 @@ const styles: StylesType = {
     color: Colors.gray,
     fontWeight: 300,
     textAlign: isMobile ? "center" : "left",
-
   },
   trustedContainer: {
     paddingTop: isMobile ? 34 : 24,
