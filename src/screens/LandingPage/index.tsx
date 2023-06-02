@@ -482,7 +482,7 @@ const styles: StylesType = {
     width: "100%",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingTop: "13%",
+    paddingTop: "14%",
     transition: "opacity 0.4s ease-in",
     opacity: 0,
   },
