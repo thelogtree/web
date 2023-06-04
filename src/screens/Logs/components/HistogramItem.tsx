@@ -55,7 +55,16 @@ type Props = {
 const MAX_CONTENT_KEY_LENGTH = 45;
 
 export const HistogramItem = ({ histogram }: Props) => {
-  const timeAgo = moment(histogram.histogramData[0].floorDate).fromNow(true);
+  const timeAgo = useMemo(() => {
+    const tempDateStr = moment(histogram.histogramData[0].floorDate)
+      .fromNow(true)
+      .replace("a ", "");
+    if (tempDateStr === "day") {
+      return "24 hours";
+    }
+    return tempDateStr;
+  }, [histogram.histogramData[0].floorDate]);
+
   const data = useMemo(() => {
     return histogram.histogramData.map((dataInterval) => ({
       date: `${moment(dataInterval.floorDate).format(
