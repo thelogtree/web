@@ -40,12 +40,16 @@ export const LogsScreen = () => {
     isDateFilterApplied,
     isFetchingFolders,
   } = useLogs(frontendFolder?._id);
-  const areHistogramsHidden = Boolean(
-    isLoading || query || isSearchQueued || isDateFilterApplied
-  );
-  const containerRef = useRef(null);
   const { logFrequencies, numLogsToday, histograms } =
     useFolderStats(numLogsInTotal);
+  const areHistogramsHidden = Boolean(
+    isLoading ||
+      query ||
+      isSearchQueued ||
+      isDateFilterApplied ||
+      !histograms.length
+  );
+  const containerRef = useRef(null);
   const [isDateFilterOpened, setIsDateFilterOpened] = useState<boolean>(false);
 
   const numLogsText = useMemo(() => {
@@ -157,9 +161,11 @@ export const LogsScreen = () => {
           </div>
         </div>
         {!areHistogramsHidden && <Histograms histograms={histograms} />}
-        <div style={styles.hrWrapper}>
-          <hr style={styles.hr} />
-        </div>
+        {areHistogramsHidden ? (
+          <div style={styles.hrWrapper}>
+            <hr style={styles.hr} />
+          </div>
+        ) : null}
         <LogsList
           isLoading={isLoading}
           isSearchQueued={isSearchQueued}

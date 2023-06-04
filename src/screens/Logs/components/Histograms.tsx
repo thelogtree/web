@@ -79,12 +79,11 @@ const styles: StylesType = {
     width: "100%",
     padding: 5,
     backgroundColor: Colors.white,
-    boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
     borderRadius: 4,
     marginBottom: 18,
     marginTop: 18,
     borderWidth: 1,
-    borderColor: Colors.veryLightGray,
+    borderColor: Colors.lightGray,
     borderStyle: "solid",
   },
   caretIcon: {
