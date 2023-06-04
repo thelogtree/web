@@ -40,6 +40,9 @@ export const LogsScreen = () => {
     isDateFilterApplied,
     isFetchingFolders,
   } = useLogs(frontendFolder?._id);
+  const areHistogramsHidden = Boolean(
+    isLoading || query || isSearchQueued || isDateFilterApplied
+  );
   const containerRef = useRef(null);
   const { logFrequencies, numLogsToday, histograms } =
     useFolderStats(numLogsInTotal);
@@ -153,7 +156,7 @@ export const LogsScreen = () => {
             </div>
           </div>
         </div>
-        <Histograms histograms={histograms} />
+        {!areHistogramsHidden && <Histograms histograms={histograms} />}
         <div style={styles.hrWrapper}>
           <hr style={styles.hr} />
         </div>

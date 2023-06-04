@@ -68,19 +68,26 @@ export const HistogramItem = ({ histogram }: Props) => {
 
   return (
     <div style={styles.container}>
-      <label style={styles.histogramTitle}>{histogramTitle}</label>
-      <label style={styles.timeAgo}>Last {timeAgo}</label>
-      <ResponsiveContainer width="100%" height={60}>
-        <BarChart data={data} margin={{ top: 0, left: 0, right: 0, bottom: 0 }}>
-          <XAxis tick={false} color={Colors.gray} />
-          <Tooltip
-            content={<CustomTooltip />}
-            cursor={false}
-            position={{ y: 28 }}
-          />
-          <Bar dataKey="count" fill={Colors.purple500} />
-        </BarChart>
-      </ResponsiveContainer>
+      <div style={styles.top}>
+        <label style={styles.histogramTitle}>{histogramTitle}</label>
+        <label style={styles.timeAgo}>Last {timeAgo}</label>
+      </div>
+      <div style={styles.graphContainer}>
+        <ResponsiveContainer width="100%" height={60}>
+          <BarChart
+            data={data}
+            margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
+          >
+            <XAxis tick={false} stroke={Colors.lightGray} />
+            <Tooltip
+              content={<CustomTooltip />}
+              cursor={false}
+              position={{ y: 28 }}
+            />
+            <Bar dataKey="count" fill={Colors.purple500} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };
@@ -89,18 +96,23 @@ const styles: StylesType = {
   container: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "flex-start",
     padding: 12,
-    borderRadius: 8,
+    borderRadius: 4,
     borderWidth: 1,
     borderColor: Colors.lightGray,
     borderStyle: "solid",
     width: "100%",
-    height: 140,
+    height: 120,
     marginBottom: 20,
-    boxShadow: "2px 2px 6px rgba(0,0,0,0.05)",
     outline: "none",
+  },
+  top: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
   tooltipContainer: {
     padding: 12,
@@ -113,7 +125,7 @@ const styles: StylesType = {
     borderColor: Colors.lightGray,
     borderWidth: 1,
     borderStyle: "solid",
-    boxShadow: "0px 3px 8px rgba(0,0,0,0.2)",
+    boxShadow: "0px 3px 12px rgba(0,0,0,0.1)",
     overflow: "hidden",
   },
   tooltipCount: {
@@ -135,6 +147,9 @@ const styles: StylesType = {
     color: Colors.darkerGray,
     fontSize: 12,
     fontWeight: 300,
-    paddingBottom: 10,
+  },
+  graphContainer: {
+    width: "100%",
+    marginBottom: -26,
   },
 };
