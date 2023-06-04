@@ -71,14 +71,14 @@ export const HistogramItem = ({ histogram }: Props) => {
       <label style={styles.histogramTitle}>{histogramTitle}</label>
       <label style={styles.timeAgo}>Last {timeAgo}</label>
       <ResponsiveContainer width="100%" height={60}>
-        <BarChart data={data}>
-          <XAxis tick={false} />
+        <BarChart data={data} margin={{ top: 0, left: 0, right: 0, bottom: 0 }}>
+          <XAxis tick={false} color={Colors.gray} />
           <Tooltip
             content={<CustomTooltip />}
             cursor={false}
             position={{ y: 28 }}
           />
-          <Bar dataKey="count" fill={Colors.black} />
+          <Bar dataKey="count" fill={Colors.purple500} />
         </BarChart>
       </ResponsiveContainer>
     </div>
