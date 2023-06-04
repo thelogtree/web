@@ -15,11 +15,13 @@ import { SearchBar } from "./components/SearchBar";
 import { Stat } from "./components/Stat";
 import {
   useFindFrontendFolderFromUrl,
+  useFolderStats,
   useIsFavoriteLogsScreen,
   useLogs,
 } from "./lib";
 import { Rules } from "./components/Rules";
 import { ConnectToSlack } from "./components/ConnectToSlack";
+import { Histograms } from "./components/Histograms";
 
 export const LogsScreen = () => {
   const organization = useSelector(getOrganization);
@@ -39,6 +41,8 @@ export const LogsScreen = () => {
     isFetchingFolders,
   } = useLogs(frontendFolder?._id);
   const containerRef = useRef(null);
+  const { logFrequencies, numLogsToday, histograms } =
+    useFolderStats(numLogsInTotal);
   const [isDateFilterOpened, setIsDateFilterOpened] = useState<boolean>(false);
 
   const numLogsText = useMemo(() => {
@@ -137,7 +141,7 @@ export const LogsScreen = () => {
             <label style={styles.numLogsTotalText}>{numLogsText}</label>
           </div>
           <div style={styles.verticalTopRight}>
-            <Stat numLogs={numLogsInTotal} />
+            <Stat numLogsToday={numLogsToday} logFrequencies={logFrequencies} />
             <div style={styles.topRightMiscItemsContainer}>
               <Rules shouldHideEverything={isDateFilterOpened} />
               <DateFilter
@@ -149,6 +153,7 @@ export const LogsScreen = () => {
             </div>
           </div>
         </div>
+        <Histograms histograms={histograms} />
         <div style={styles.hrWrapper}>
           <hr style={styles.hr} />
         </div>

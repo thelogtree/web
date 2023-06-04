@@ -1,19 +1,14 @@
 import React from "react";
-import { useFolderStats } from "../lib";
-import ArrowUpIcon from "src/assets/arrowUp.png";
-import ArrowDownIcon from "src/assets/arrowDown.png";
 import { StylesType } from "src/utils/styles";
-import { Tooltip } from "antd";
 import { MiniGraph } from "./MiniGraph";
 import { Colors } from "src/utils/colors";
 
 type Props = {
-  numLogs: number; // only used to determine when to refetch folder stats
+  numLogsToday: number;
+  logFrequencies: number[];
 };
 
-export const Stat = ({ numLogs }: Props) => {
-  const { logFrequencies, numLogsToday } = useFolderStats(numLogs);
-
+export const Stat = ({ numLogsToday, logFrequencies }: Props) => {
   return logFrequencies.length ? (
     <div style={styles.outerContainer}>
       <MiniGraph logFrequencies={logFrequencies} numLogsToday={numLogsToday} />
