@@ -9,6 +9,7 @@ import {
   Tooltip,
   TooltipProps,
 } from "recharts";
+import { Tooltip as AntdTooltip } from "antd";
 import {
   NameType,
   ValueType,
@@ -51,6 +52,8 @@ type Props = {
   histogram: StatHistogram;
 };
 
+const MAX_CONTENT_KEY_LENGTH = 45;
+
 export const HistogramItem = ({ histogram }: Props) => {
   const timeAgo = moment(histogram.histogramData[0].floorDate).fromNow(true);
   const data = useMemo(() => {
@@ -64,12 +67,23 @@ export const HistogramItem = ({ histogram }: Props) => {
     histogram.histogramData.length,
     histogram.histogramData[0].floorDate.toString(),
   ]);
-  const histogramTitle = shortenString(histogram.contentKey, 45);
+  const histogramTitle = shortenString(
+    histogram.contentKey,
+    MAX_CONTENT_KEY_LENGTH
+  );
 
   return (
     <div style={styles.container}>
       <div style={styles.top}>
-        <label style={styles.histogramTitle}>{histogramTitle}</label>
+        <AntdTooltip
+          title={
+            histogram.contentKey.length > MAX_CONTENT_KEY_LENGTH
+              ? histogram.contentKey
+              : ""
+          }
+        >
+          <label style={styles.histogramTitle}>{histogramTitle}</label>
+        </AntdTooltip>
         <label style={styles.timeAgo}>Last {timeAgo}</label>
       </div>
       <div style={styles.graphContainer}>
@@ -78,7 +92,7 @@ export const HistogramItem = ({ histogram }: Props) => {
             data={data}
             margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
           >
-            <XAxis tick={false} stroke={Colors.lightGray} />
+            <XAxis tick={false} stroke={Colors.purple300} />
             <Tooltip
               content={<CustomTooltip />}
               cursor={false}
@@ -100,7 +114,7 @@ const styles: StylesType = {
     alignItems: "flex-start",
     padding: 12,
     borderRadius: 4,
-    backgroundColor: Colors.veryLightGray,
+    backgroundColor: Colors.purple100,
     width: "100%",
     height: 120,
     marginBottom: 20,
@@ -138,8 +152,8 @@ const styles: StylesType = {
   },
   histogramTitle: {
     fontSize: 16,
-    fontWeight: 500,
-    paddingBottom: 8,
+    fontWeight: 400,
+    paddingBottom: 4,
   },
   timeAgo: {
     color: Colors.darkerGray,
