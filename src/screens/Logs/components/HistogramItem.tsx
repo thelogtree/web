@@ -14,6 +14,7 @@ import {
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
 import { Colors } from "src/utils/colors";
+import { shortenString } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 
 export type StatHistogram = {
@@ -51,8 +52,9 @@ type Props = {
 };
 
 export const HistogramItem = ({ histogram }: Props) => {
+  const timeAgo = moment(histogram.histogramData[0].floorDate).fromNow(true);
   const data = useMemo(() => {
-    return histogram.histogramData.map((dataInterval, index) => ({
+    return histogram.histogramData.map((dataInterval) => ({
       date: `${moment(dataInterval.floorDate).format(
         "MM/DD/YYYY hh:mm A"
       )} to ${moment(dataInterval.ceilingDate).format("MM/DD/YYYY hh:mm A")}`,
@@ -62,10 +64,13 @@ export const HistogramItem = ({ histogram }: Props) => {
     histogram.histogramData.length,
     histogram.histogramData[0].floorDate.toString(),
   ]);
+  const histogramTitle = shortenString(histogram.contentKey, 45);
 
   return (
     <div style={styles.container}>
-      <ResponsiveContainer width="100%" height={100}>
+      <label style={styles.histogramTitle}>{histogramTitle}</label>
+      <label style={styles.timeAgo}>Last {timeAgo}</label>
+      <ResponsiveContainer width="100%" height={60}>
         <BarChart data={data}>
           <XAxis tick={false} />
           <Tooltip
@@ -86,13 +91,13 @@ const styles: StylesType = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "flex-start",
-    padding: 20,
+    padding: 12,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: Colors.lightGray,
     borderStyle: "solid",
     width: "100%",
-    height: 120,
+    height: 140,
     marginBottom: 20,
     boxShadow: "2px 2px 6px rgba(0,0,0,0.05)",
     outline: "none",
@@ -110,6 +115,7 @@ const styles: StylesType = {
     borderWidth: 1,
     borderStyle: "solid",
     boxShadow: "0px 3px 8px rgba(0,0,0,0.2)",
+    overflow: "hidden",
   },
   tooltipCount: {
     fontSize: 15,
@@ -120,5 +126,16 @@ const styles: StylesType = {
     color: Colors.darkerGray,
     fontSize: 12,
     fontWeight: 300,
+  },
+  histogramTitle: {
+    fontSize: 16,
+    fontWeight: 500,
+    paddingBottom: 8,
+  },
+  timeAgo: {
+    color: Colors.darkerGray,
+    fontSize: 12,
+    fontWeight: 300,
+    paddingBottom: 10,
   },
 };
