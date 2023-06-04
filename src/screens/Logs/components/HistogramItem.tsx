@@ -76,7 +76,7 @@ export const HistogramItem = ({ histogram }: Props) => {
           <Tooltip
             content={<CustomTooltip />}
             cursor={false}
-            position={{ y: 60 }}
+            position={{ y: 28 }}
           />
           <Bar dataKey="count" fill={Colors.black} />
         </BarChart>
