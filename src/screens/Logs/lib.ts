@@ -402,7 +402,7 @@ export const useLogs = (
     } else {
       setHasSkippedFirstRender(true);
     }
-  }, [folderId, connectionUrl]);
+  }, [connectionUrl]);
 
   useEffect(() => {
     if (!query && (isGlobalSearchScreen || isSupportScreen)) {
