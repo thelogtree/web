@@ -52,7 +52,11 @@ export const LogsScreen = () => {
     switchTimeInterval,
   } = useFolderStats(numLogsInTotal);
   const areHistogramsHidden = Boolean(
-    isLoading || query || isSearchQueued || isDateFilterApplied
+    isLoading ||
+      query ||
+      isSearchQueued ||
+      isDateFilterApplied ||
+      isFavoriteLogsScreen
   );
   const containerRef = useRef(null);
   const [isDateFilterOpened, setIsDateFilterOpened] = useState<boolean>(false);
