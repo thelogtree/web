@@ -104,7 +104,7 @@ export const HistogramItem = ({ histogram }: Props) => {
             data={data}
             margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
           >
-            <XAxis tick={false} stroke={Colors.purple300} />
+            <XAxis tick={false} stroke={Colors.purple50} />
             <Tooltip
               content={<CustomTooltip />}
               cursor={false}
@@ -126,11 +126,14 @@ const styles: StylesType = {
     alignItems: "flex-start",
     padding: 12,
     borderRadius: 4,
-    backgroundColor: Colors.purple100,
+    backgroundColor: Colors.white,
     width: "100%",
     height: 120,
     marginBottom: 20,
     outline: "none",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: Colors.purple200,
   },
   top: {
     display: "flex",
