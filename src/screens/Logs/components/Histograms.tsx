@@ -10,11 +10,15 @@ import { Colors } from "src/utils/colors";
 
 type Props = {
   histograms: StatHistogram[];
+  moreHistogramsAreNotShown: boolean;
 };
 
 const PREVIEW_AMOUNT = 2;
 
-export const Histograms = ({ histograms }: Props) => {
+export const Histograms = ({
+  histograms,
+  moreHistogramsAreNotShown,
+}: Props) => {
   const frontendFolder = useFindFrontendFolderFromUrl();
   const [isViewingAll, setIsViewingAll] = useState<boolean>(false);
   const moreThanPreviewExist = histograms.length > PREVIEW_AMOUNT;
@@ -63,6 +67,11 @@ export const Histograms = ({ histograms }: Props) => {
           ))}
         </Row>
       </Grid>
+      {isViewingAll && moreHistogramsAreNotShown ? (
+        <label style={styles.onlySomeShownLbl}>
+          Only the 20 most active histograms are being shown.
+        </label>
+      ) : null}
     </div>
   );
 };
@@ -125,5 +134,11 @@ const styles: StylesType = {
     fontWeight: 500,
     paddingLeft: 18,
     paddingRight: 6,
+  },
+  onlySomeShownLbl: {
+    fontSize: 12,
+    color: Colors.darkerGray,
+    fontWeight: 300,
+    paddingTop: 12,
   },
 };

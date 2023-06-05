@@ -572,6 +572,8 @@ export const useFolderStats = (numLogs: number) => {
   const [logFrequencies, setLogFrequencies] = useState<number[]>([]);
   const [numLogsToday, setNumLogsToday] = useState<number>(0);
   const [histograms, setHistograms] = useState<StatHistogram[]>([]);
+  const [moreHistogramsAreNotShown, setMoreHistogramsAreNotShown] =
+    useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const extendedPhrasing = useMemo(() => {
@@ -596,17 +598,20 @@ export const useFolderStats = (numLogs: number) => {
         logFrequencies: fetchedLogFrequencies,
         numLogsToday: fetchedNumLogsToday,
         histograms: fetchedHistograms,
+        moreHistogramsAreNotShown: fetchedMoreHistogramsAreNotShown,
       } = res.data;
       setPercentageChange(fetchedPercentageChange);
       setTimeInterval(fetchedTimeInterval);
       setLogFrequencies((fetchedLogFrequencies as number[]).reverse());
       setNumLogsToday(fetchedNumLogsToday);
       setHistograms(fetchedHistograms);
+      setMoreHistogramsAreNotShown(fetchedMoreHistogramsAreNotShown);
     } catch (e) {
       setPercentageChange(0);
       setNumLogsToday(0);
       setLogFrequencies([]);
       setHistograms([]);
+      setMoreHistogramsAreNotShown(false);
       Sentry.captureException(e);
     }
     setIsLoading(false);
@@ -617,6 +622,7 @@ export const useFolderStats = (numLogs: number) => {
     setNumLogsToday(0);
     setLogFrequencies([]);
     setHistograms([]);
+    setMoreHistogramsAreNotShown(false);
     _fetch();
   }, [currentFolder?._id]);
 
@@ -631,6 +637,7 @@ export const useFolderStats = (numLogs: number) => {
     logFrequencies,
     numLogsToday,
     histograms,
+    moreHistogramsAreNotShown,
   };
 };
 

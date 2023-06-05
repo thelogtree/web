@@ -40,8 +40,12 @@ export const LogsScreen = () => {
     isDateFilterApplied,
     isFetchingFolders,
   } = useLogs(frontendFolder?._id);
-  const { logFrequencies, numLogsToday, histograms } =
-    useFolderStats(numLogsInTotal);
+  const {
+    logFrequencies,
+    numLogsToday,
+    histograms,
+    moreHistogramsAreNotShown,
+  } = useFolderStats(numLogsInTotal);
   const areHistogramsHidden = Boolean(
     isLoading ||
       query ||
@@ -160,7 +164,12 @@ export const LogsScreen = () => {
             </div>
           </div>
         </div>
-        {!areHistogramsHidden && <Histograms histograms={histograms} />}
+        {!areHistogramsHidden && (
+          <Histograms
+            histograms={histograms}
+            moreHistogramsAreNotShown={moreHistogramsAreNotShown}
+          />
+        )}
         {areHistogramsHidden ? (
           <div style={styles.hrWrapper}>
             <hr style={styles.hr} />
