@@ -211,5 +211,6 @@ const styles: StylesType = {
     color: Colors.darkerGray,
     paddingLeft: 18,
     paddingBottom: 12,
+    paddingTop: 5,
   },
 };
