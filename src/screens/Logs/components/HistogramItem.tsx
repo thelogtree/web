@@ -52,7 +52,7 @@ type Props = {
   histogram: StatHistogram;
 };
 
-const MAX_CONTENT_KEY_LENGTH = 45;
+const MAX_CONTENT_KEY_LENGTH = 55;
 
 export const HistogramItem = ({ histogram }: Props) => {
   const timeAgo = useMemo(() => {
@@ -107,7 +107,7 @@ export const HistogramItem = ({ histogram }: Props) => {
               cursor={false}
               position={{ y: 28 }}
             />
-            <Bar dataKey="count" fill={Colors.purple500} />
+            <Bar dataKey="count" fill={Colors.purple500} barSize={25}/>
           </BarChart>
         </ResponsiveContainer>
       </div>
