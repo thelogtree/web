@@ -24,7 +24,8 @@ export const Billing = () => {
       {organization!.cycleEnds ? (
         <label style={styles.usageResetNote}>
           Your usage will reset on{" "}
-          {moment(organization?.cycleEnds).format("MM/DD/YYYY")}. Email
+          {moment(organization?.cycleEnds).format("MM/DD/YYYY")}. Logs will be
+          kept for {organization?.logRetentionInDays} days. Email
           hello@logtree.co to increase your limit.
         </label>
       ) : null}
