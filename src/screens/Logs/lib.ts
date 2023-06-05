@@ -574,6 +574,9 @@ export const useFolderStats = (numLogs: number) => {
   const [histograms, setHistograms] = useState<StatHistogram[]>([]);
   const [moreHistogramsAreNotShown, setMoreHistogramsAreNotShown] =
     useState<boolean>(false);
+  const [isHistogramByReferenceId, setIsHistogramByReferenceId] =
+    useState<boolean>(false);
+  const [lastXDays, setLastXDays] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const extendedPhrasing = useMemo(() => {
@@ -582,7 +585,10 @@ export const useFolderStats = (numLogs: number) => {
     } logs in the last ${timeInterval} compared to what it is on average in the last 30 ${timeInterval}s.`;
   }, [timeInterval, percentageChange]);
 
-  const _fetch = async () => {
+  const _fetch = async (
+    isHistogramByReferenceIdTemp: boolean,
+    overrideLastXDays?: number
+  ) => {
     try {
       if (isLoading || !organization || !currentFolder?._id) {
         return;
@@ -590,7 +596,9 @@ export const useFolderStats = (numLogs: number) => {
       setIsLoading(true);
       const res = await Api.organization.getFolderStats(
         organization!._id.toString(),
-        currentFolder!._id
+        currentFolder!._id,
+        isHistogramByReferenceIdTemp,
+        overrideLastXDays || lastXDays
       );
       const {
         percentageChange: fetchedPercentageChange,
@@ -618,17 +626,29 @@ export const useFolderStats = (numLogs: number) => {
   };
 
   useEffect(() => {
+    setIsHistogramByReferenceId(false);
     setPercentageChange(0);
     setNumLogsToday(0);
     setLogFrequencies([]);
     setHistograms([]);
     setMoreHistogramsAreNotShown(false);
-    _fetch();
+    setLastXDays(1);
+    _fetch(false, 1);
   }, [currentFolder?._id]);
 
   useEffect(() => {
-    _fetch();
-  }, [numLogs]);
+    _fetch(isHistogramByReferenceId, lastXDays);
+  }, [numLogs, isHistogramByReferenceId, lastXDays]);
+
+  // for histograms
+  const switchTimeInterval = () => {
+    if (lastXDays === 1) {
+      setLastXDays(30);
+    } else {
+      setLastXDays(1);
+    }
+  };
+  const is24HourTimeframe = lastXDays === 1;
 
   return {
     percentageChange,
@@ -638,6 +658,11 @@ export const useFolderStats = (numLogs: number) => {
     numLogsToday,
     histograms,
     moreHistogramsAreNotShown,
+    isHistogramByReferenceId,
+    setIsHistogramByReferenceId,
+    isLoading,
+    is24HourTimeframe,
+    switchTimeInterval,
   };
 };
 

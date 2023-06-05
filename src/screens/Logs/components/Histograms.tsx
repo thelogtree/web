@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { HistogramItem, StatHistogram } from "./HistogramItem";
 import { StylesType } from "src/utils/styles";
 import { Col, Grid } from "react-flexbox-grid";
-import { Row } from "antd";
+import { Row, Switch } from "antd";
 import { useFindFrontendFolderFromUrl } from "../lib";
 import CaretDownIcon from "src/assets/caretDownGray.png";
 import CaretUpIcon from "src/assets/caretUpGray.png";
@@ -11,6 +11,11 @@ import { Colors } from "src/utils/colors";
 type Props = {
   histograms: StatHistogram[];
   moreHistogramsAreNotShown: boolean;
+  isHistogramByReferenceId: boolean;
+  setIsHistogramByReferenceId: (isByReferenceId: boolean) => void;
+  isLoading: boolean;
+  is24HourTimeframe: boolean;
+  switchTimeInterval: () => void;
 };
 
 const PREVIEW_AMOUNT = 2;
@@ -18,6 +23,11 @@ const PREVIEW_AMOUNT = 2;
 export const Histograms = ({
   histograms,
   moreHistogramsAreNotShown,
+  isHistogramByReferenceId,
+  setIsHistogramByReferenceId,
+  isLoading,
+  is24HourTimeframe,
+  switchTimeInterval,
 }: Props) => {
   const frontendFolder = useFindFrontendFolderFromUrl();
   const [isViewingAll, setIsViewingAll] = useState<boolean>(false);
@@ -32,17 +42,20 @@ export const Histograms = ({
       return histograms;
     }
     return histograms.slice(0, PREVIEW_AMOUNT);
-  }, [histograms.length, frontendFolder?._id, isViewingAll]);
-
-  if (!histogramsToShow.length) {
-    return null;
-  }
+  }, [
+    histograms.length,
+    frontendFolder?._id,
+    isViewingAll,
+    is24HourTimeframe,
+    isHistogramByReferenceId,
+    isLoading,
+  ]);
 
   return (
     <div style={styles.outerContainer}>
       <div style={styles.header}>
         <label style={styles.histogramsLbl}>Visualizations</label>
-        {moreThanPreviewExist ? (
+        {moreThanPreviewExist && histogramsToShow.length ? (
           <button
             onClick={() => setIsViewingAll(!isViewingAll)}
             style={styles.viewAllHistogramsBtn}
@@ -57,21 +70,57 @@ export const Histograms = ({
             </label>
           </button>
         ) : null}
+        <Switch
+          onChange={() =>
+            setIsHistogramByReferenceId(!isHistogramByReferenceId)
+          }
+          checked={isHistogramByReferenceId}
+          checkedChildren="Visualize by content"
+          unCheckedChildren="Visualize by reference ID"
+          style={{
+            textAlign: "left",
+            marginLeft: 10,
+            backgroundColor: isHistogramByReferenceId
+              ? Colors.purple500
+              : Colors.gray,
+          }}
+          disabled={isLoading}
+        />
+        <Switch
+          onChange={switchTimeInterval}
+          checked={!is24HourTimeframe}
+          checkedChildren="Show last 24 hours"
+          unCheckedChildren="Show last 30 days"
+          style={{
+            textAlign: "left",
+            marginLeft: 10,
+            backgroundColor: is24HourTimeframe ? Colors.gray : Colors.purple500,
+          }}
+          disabled={isLoading}
+        />
       </div>
-      <Grid style={styles.container}>
-        <Row>
-          {histogramsToShow.map((histogram) => (
-            <Col xs={6}>
-              <HistogramItem histogram={histogram} />
-            </Col>
-          ))}
-        </Row>
-      </Grid>
-      {isViewingAll && moreHistogramsAreNotShown ? (
-        <label style={styles.onlySomeShownLbl}>
-          Only the 20 most recently active histograms are shown.
+      {histogramsToShow.length && !isLoading ? (
+        <>
+          <Grid style={styles.container}>
+            <Row>
+              {histogramsToShow.map((histogram) => (
+                <Col xs={6}>
+                  <HistogramItem histogram={histogram} />
+                </Col>
+              ))}
+            </Row>
+          </Grid>
+          {isViewingAll && moreHistogramsAreNotShown ? (
+            <label style={styles.onlySomeShownLbl}>
+              Only the 20 most recently active histograms are shown.
+            </label>
+          ) : null}
+        </>
+      ) : (
+        <label style={styles.noResults}>
+          {isLoading ? "Looking..." : "Nothing to show."}
         </label>
-      ) : null}
+      )}
     </div>
   );
 };
@@ -79,6 +128,13 @@ export const Histograms = ({
 const styles: StylesType = {
   container: {
     width: "100%",
+  },
+  loadingContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: 70,
   },
   outerContainer: {
     display: "flex",
@@ -142,5 +198,13 @@ const styles: StylesType = {
     width: "100%",
     paddingBottom: 15,
     paddingLeft: 20,
+  },
+  noResults: {
+    width: "100%",
+    fontSize: 13,
+    fontWeight: 400,
+    color: Colors.darkerGray,
+    paddingLeft: 18,
+    paddingBottom: 12,
   },
 };

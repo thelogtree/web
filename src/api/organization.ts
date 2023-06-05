@@ -40,11 +40,18 @@ export const organization = {
         timezone: moment.tz.guess(),
       },
     }),
-  getFolderStats: (organizationId: string, folderId: string) =>
+  getFolderStats: (
+    organizationId: string,
+    folderId: string,
+    isHistogramByReferenceId: boolean,
+    lastXDays: number
+  ) =>
     axios.get(routeUrl + `/${organizationId}/folder-stats`, {
       params: {
         folderId,
         timezone: moment.tz.guess(),
+        isHistogramByReferenceId,
+        lastXDays,
       },
     }),
   getOrganizationMembers: (organizationId: string) =>

@@ -45,13 +45,14 @@ export const LogsScreen = () => {
     numLogsToday,
     histograms,
     moreHistogramsAreNotShown,
+    isHistogramByReferenceId,
+    setIsHistogramByReferenceId,
+    isLoading: isFolderStatsLoading,
+    is24HourTimeframe,
+    switchTimeInterval,
   } = useFolderStats(numLogsInTotal);
   const areHistogramsHidden = Boolean(
-    isLoading ||
-      query ||
-      isSearchQueued ||
-      isDateFilterApplied ||
-      !histograms.length
+    isLoading || query || isSearchQueued || isDateFilterApplied
   );
   const containerRef = useRef(null);
   const [isDateFilterOpened, setIsDateFilterOpened] = useState<boolean>(false);
@@ -168,6 +169,11 @@ export const LogsScreen = () => {
           <Histograms
             histograms={histograms}
             moreHistogramsAreNotShown={moreHistogramsAreNotShown}
+            isHistogramByReferenceId={isHistogramByReferenceId}
+            setIsHistogramByReferenceId={setIsHistogramByReferenceId}
+            isLoading={isFolderStatsLoading}
+            is24HourTimeframe={is24HourTimeframe}
+            switchTimeInterval={switchTimeInterval}
           />
         )}
         {areHistogramsHidden ? (
