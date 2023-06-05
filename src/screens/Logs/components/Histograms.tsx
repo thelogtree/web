@@ -41,7 +41,7 @@ export const Histograms = ({
   return (
     <div style={styles.outerContainer}>
       <div style={styles.header}>
-        <label style={styles.histogramsLbl}>Histograms</label>
+        <label style={styles.histogramsLbl}>Visualizations</label>
         {moreThanPreviewExist ? (
           <button
             onClick={() => setIsViewingAll(!isViewingAll)}

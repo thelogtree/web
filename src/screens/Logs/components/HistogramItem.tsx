@@ -62,6 +62,9 @@ export const HistogramItem = ({ histogram }: Props) => {
     if (tempDateStr === "day") {
       return "24 hours";
     }
+    if (tempDateStr === "month") {
+      return "30 days";
+    }
     return tempDateStr;
   }, [histogram.histogramData[0].floorDate]);
 
@@ -107,7 +110,7 @@ export const HistogramItem = ({ histogram }: Props) => {
               cursor={false}
               position={{ y: 28 }}
             />
-            <Bar dataKey="count" fill={Colors.purple500} barSize={25}/>
+            <Bar dataKey="count" fill={Colors.purple500} barSize={25} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -160,7 +163,7 @@ const styles: StylesType = {
     fontWeight: 300,
   },
   histogramTitle: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 400,
     paddingBottom: 4,
   },
