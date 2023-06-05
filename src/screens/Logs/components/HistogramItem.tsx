@@ -17,6 +17,9 @@ import {
 import { Colors } from "src/utils/colors";
 import { shortenString } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
+import { useSelector } from "react-redux";
+import { getOrganization } from "src/redux/organization/selector";
+import { SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
 
 export type StatHistogram = {
   contentKey: string;
@@ -30,7 +33,6 @@ export type StatHistogram = {
 const CustomTooltip = ({
   active,
   payload,
-  label,
 }: TooltipProps<ValueType, NameType>) => {
   if (!active || !payload || !payload[0].value) {
     return null;
@@ -50,11 +52,16 @@ const CustomTooltip = ({
 
 type Props = {
   histogram: StatHistogram;
+  isVisualizingByReferenceId: boolean;
 };
 
 const MAX_CONTENT_KEY_LENGTH = 55;
 
-export const HistogramItem = ({ histogram }: Props) => {
+export const HistogramItem = ({
+  histogram,
+  isVisualizingByReferenceId,
+}: Props) => {
+  const organization = useSelector(getOrganization);
   const timeAgo = useMemo(() => {
     const tempDateStr = moment(histogram.histogramData[0].floorDate)
       .fromNow(true)
@@ -84,17 +91,38 @@ export const HistogramItem = ({ histogram }: Props) => {
     MAX_CONTENT_KEY_LENGTH
   );
 
+  const _searchForReferenceId = () => {
+    window.open(
+      `/org/${organization!.slug}${SUPPORT_TOOL_SUFFIX}?query=${
+        histogram.contentKey
+      }`,
+      "_blank"
+    );
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.top}>
         <AntdTooltip
           title={
-            histogram.contentKey.length > MAX_CONTENT_KEY_LENGTH
+            isVisualizingByReferenceId
+              ? "Click to see the journey of this ID"
+              : histogram.contentKey.length > MAX_CONTENT_KEY_LENGTH
               ? histogram.contentKey
               : ""
           }
         >
-          <label style={styles.histogramTitle}>{histogramTitle}</label>
+          {isVisualizingByReferenceId ? (
+            <a
+              style={styles.histogramTitle}
+              className="referenceIdLink"
+              onClick={_searchForReferenceId}
+            >
+              {histogramTitle}
+            </a>
+          ) : (
+            <label style={styles.histogramTitle}>{histogramTitle}</label>
+          )}
         </AntdTooltip>
         <label style={styles.timeAgo}>Last {timeAgo}</label>
       </div>
@@ -169,6 +197,7 @@ const styles: StylesType = {
     fontSize: 15,
     fontWeight: 400,
     paddingBottom: 4,
+    color: Colors.black,
   },
   timeAgo: {
     color: Colors.darkerGray,

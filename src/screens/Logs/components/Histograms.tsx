@@ -66,7 +66,7 @@ export const Histograms = ({
               style={styles.caretIcon}
             />
             <label style={styles.openCloseLbl}>
-              {isViewingAll ? "Minimize" : "See all"}
+              {isViewingAll ? "Minimize" : "See more"}
             </label>
           </button>
         ) : null}
@@ -105,7 +105,10 @@ export const Histograms = ({
             <Row>
               {histogramsToShow.map((histogram) => (
                 <Col xs={6}>
-                  <HistogramItem histogram={histogram} />
+                  <HistogramItem
+                    histogram={histogram}
+                    isVisualizingByReferenceId={isHistogramByReferenceId}
+                  />
                 </Col>
               ))}
             </Row>
