@@ -121,7 +121,9 @@ export const Histograms = ({
         </>
       ) : (
         <label style={styles.noResults}>
-          {isLoading ? "Looking..." : "Nothing interesting to show."}
+          {isLoading
+            ? "Looking..."
+            : "Nothing interesting to show. Try switching the toggles above."}
         </label>
       )}
     </div>
