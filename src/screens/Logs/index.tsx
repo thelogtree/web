@@ -56,7 +56,8 @@ export const LogsScreen = () => {
       query ||
       isSearchQueued ||
       isDateFilterApplied ||
-      isFavoriteLogsScreen
+      isFavoriteLogsScreen ||
+      !numLogsInTotal
   );
   const containerRef = useRef(null);
   const [isDateFilterOpened, setIsDateFilterOpened] = useState<boolean>(false);
