@@ -27,6 +27,7 @@ import {
 import stringify from "json-stringify-pretty-compact";
 
 import { useCurrentIntegration } from "../IntegrationLogs/lib";
+import { StatHistogram } from "./components/HistogramItem";
 
 export const useFindFrontendFolderFromUrl = () => {
   const folders = useSelector(getFolders);
@@ -401,7 +402,7 @@ export const useLogs = (
     } else {
       setHasSkippedFirstRender(true);
     }
-  }, [folderId, connectionUrl]);
+  }, [connectionUrl]);
 
   useEffect(() => {
     if (!query && (isGlobalSearchScreen || isSupportScreen)) {
@@ -570,6 +571,9 @@ export const useFolderStats = (numLogs: number) => {
   const [timeInterval, setTimeInterval] = useState<"hour" | "day">("hour");
   const [logFrequencies, setLogFrequencies] = useState<number[]>([]);
   const [numLogsToday, setNumLogsToday] = useState<number>(0);
+  const [histograms, setHistograms] = useState<StatHistogram[]>([]);
+  const [moreHistogramsAreNotShown, setMoreHistogramsAreNotShown] =
+    useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const extendedPhrasing = useMemo(() => {
@@ -593,15 +597,21 @@ export const useFolderStats = (numLogs: number) => {
         timeInterval: fetchedTimeInterval,
         logFrequencies: fetchedLogFrequencies,
         numLogsToday: fetchedNumLogsToday,
+        histograms: fetchedHistograms,
+        moreHistogramsAreNotShown: fetchedMoreHistogramsAreNotShown,
       } = res.data;
       setPercentageChange(fetchedPercentageChange);
       setTimeInterval(fetchedTimeInterval);
       setLogFrequencies((fetchedLogFrequencies as number[]).reverse());
       setNumLogsToday(fetchedNumLogsToday);
+      setHistograms(fetchedHistograms);
+      setMoreHistogramsAreNotShown(fetchedMoreHistogramsAreNotShown);
     } catch (e) {
       setPercentageChange(0);
       setNumLogsToday(0);
       setLogFrequencies([]);
+      setHistograms([]);
+      setMoreHistogramsAreNotShown(false);
       Sentry.captureException(e);
     }
     setIsLoading(false);
@@ -611,6 +621,8 @@ export const useFolderStats = (numLogs: number) => {
     setPercentageChange(0);
     setNumLogsToday(0);
     setLogFrequencies([]);
+    setHistograms([]);
+    setMoreHistogramsAreNotShown(false);
     _fetch();
   }, [currentFolder?._id]);
 
@@ -624,6 +636,8 @@ export const useFolderStats = (numLogs: number) => {
     extendedPhrasing,
     logFrequencies,
     numLogsToday,
+    histograms,
+    moreHistogramsAreNotShown,
   };
 };
 

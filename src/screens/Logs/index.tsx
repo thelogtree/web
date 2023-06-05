@@ -15,11 +15,13 @@ import { SearchBar } from "./components/SearchBar";
 import { Stat } from "./components/Stat";
 import {
   useFindFrontendFolderFromUrl,
+  useFolderStats,
   useIsFavoriteLogsScreen,
   useLogs,
 } from "./lib";
 import { Rules } from "./components/Rules";
 import { ConnectToSlack } from "./components/ConnectToSlack";
+import { Histograms } from "./components/Histograms";
 
 export const LogsScreen = () => {
   const organization = useSelector(getOrganization);
@@ -38,6 +40,19 @@ export const LogsScreen = () => {
     isDateFilterApplied,
     isFetchingFolders,
   } = useLogs(frontendFolder?._id);
+  const {
+    logFrequencies,
+    numLogsToday,
+    histograms,
+    moreHistogramsAreNotShown,
+  } = useFolderStats(numLogsInTotal);
+  const areHistogramsHidden = Boolean(
+    isLoading ||
+      query ||
+      isSearchQueued ||
+      isDateFilterApplied ||
+      !histograms.length
+  );
   const containerRef = useRef(null);
   const [isDateFilterOpened, setIsDateFilterOpened] = useState<boolean>(false);
 
@@ -137,7 +152,7 @@ export const LogsScreen = () => {
             <label style={styles.numLogsTotalText}>{numLogsText}</label>
           </div>
           <div style={styles.verticalTopRight}>
-            <Stat numLogs={numLogsInTotal} />
+            <Stat numLogsToday={numLogsToday} logFrequencies={logFrequencies} />
             <div style={styles.topRightMiscItemsContainer}>
               <Rules shouldHideEverything={isDateFilterOpened} />
               <DateFilter
@@ -149,9 +164,17 @@ export const LogsScreen = () => {
             </div>
           </div>
         </div>
-        <div style={styles.hrWrapper}>
-          <hr style={styles.hr} />
-        </div>
+        {!areHistogramsHidden && (
+          <Histograms
+            histograms={histograms}
+            moreHistogramsAreNotShown={moreHistogramsAreNotShown}
+          />
+        )}
+        {areHistogramsHidden ? (
+          <div style={styles.hrWrapper}>
+            <hr style={styles.hr} />
+          </div>
+        ) : null}
         <LogsList
           isLoading={isLoading}
           isSearchQueued={isSearchQueued}

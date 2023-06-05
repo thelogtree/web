@@ -47,3 +47,11 @@
 .createRuleBtn:hover {
   text-decoration: underline;
 }
+
+.viewAllHistogramsBtn {
+  text-decoration: none;
+}
+
+.viewAllHistogramsBtn:hover {
+  text-decoration: underline;
+}
