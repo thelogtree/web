@@ -69,7 +69,7 @@ export const Histograms = ({
       </Grid>
       {isViewingAll && moreHistogramsAreNotShown ? (
         <label style={styles.onlySomeShownLbl}>
-          Only the 20 most active histograms are being shown.
+          Only the 20 most recently active histograms are shown.
         </label>
       ) : null}
     </div>
@@ -139,6 +139,8 @@ const styles: StylesType = {
     fontSize: 12,
     color: Colors.darkerGray,
     fontWeight: 300,
-    paddingTop: 12,
+    width: "100%",
+    paddingBottom: 15,
+    paddingLeft: 20,
   },
 };
