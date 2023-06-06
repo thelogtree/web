@@ -71,7 +71,7 @@ export const LandingPage = () => {
           }),
         }}
         onCancel={() => setIsVisible(false)}
-        cancelButtonProps={{ hidden: successfullySubmitted }}
+        cancelButtonProps={{ hidden: true }}
         closable={false}
       >
         {successfullySubmitted ? (
