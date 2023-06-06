@@ -61,8 +61,8 @@ export const LandingPage = () => {
           isLoading
             ? "Loading..."
             : successfullySubmitted
-            ? "Requested!"
-            : "Request access"
+            ? "Done!"
+            : "Notify me when available"
         }
         okButtonProps={{
           ...((successfullySubmitted || isLoading) && {
@@ -76,8 +76,8 @@ export const LandingPage = () => {
       >
         {successfullySubmitted ? (
           <label style={styles.addedToWaitlist}>
-            You've successfully requested access. Be sure to keep an eye on your
-            email!
+            We'll notify you when Logtree becomes publicly available. Be sure to
+            keep an eye on your email!
           </label>
         ) : (
           <>
@@ -146,7 +146,7 @@ export const LandingPage = () => {
                   className="joinBeta"
                   onClick={() => setIsVisible(true)}
                 >
-                  <label style={styles.joinBetaLbl}>Request access</label>
+                  <label style={styles.joinBetaLbl}>Notify me</label>
                   <img src={QuickArrowRight} style={styles.arrowRight} />
                 </button>
                 <div style={styles.trustedContainer}>
@@ -191,7 +191,7 @@ export const LandingPage = () => {
                     className="joinBeta"
                     onClick={() => setIsVisible(true)}
                   >
-                    <label style={styles.joinBetaLbl}>Request access</label>
+                    <label style={styles.joinBetaLbl}>Notify me</label>
                     <img src={QuickArrowRight} style={styles.arrowRight} />
                   </button>
                 </div>
