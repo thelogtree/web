@@ -6,7 +6,7 @@ import { StylesType } from "src/utils/styles";
 import { SignUpForm } from "./components/SignUpForm";
 
 export const CreateOrganizationScreen = () => (
-  <DynamicContainer innerStyle={{ paddingTop: "12%" }}>
+  <DynamicContainer innerStyle={{ paddingTop: "9%" }}>
     <label style={styles.joiningText}>Create account</label>
     <label style={styles.joiningTextDesc}>
       Start debugging 10x faster today.

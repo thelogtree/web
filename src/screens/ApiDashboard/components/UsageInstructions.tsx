@@ -9,7 +9,7 @@ export const UsageInstructions = () => {
   const organization = useSelector(getOrganization);
   return (
     <div style={styles.container}>
-      <label style={styles.yourKeysSectionTitle}>USAGE INSTRUCTIONS</label>
+      <label style={styles.yourKeysSectionTitle}>INTEGRATION GUIDE</label>
       <label style={styles.title}>
         To send a log to Logtree, you can use our{" "}
         <a

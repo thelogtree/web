@@ -59,7 +59,7 @@ export const RouteManager = () => {
         >
           <Route path="/org/sign-out" component={SignOutScreen} />
           <Route path="/sign-in" component={SignInScreen} />
-          {/* <Route path="/sign-up" component={CreateOrganizationScreen} /> */}
+          <Route path="/sign-up" component={CreateOrganizationScreen} />
           <Route path="/oauth-callback" component={OAuthCallbackScreen} />
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/api-dashboard`}

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Api } from "src/api";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { Colors } from "src/utils/colors";
-import { getErrorMessage, showGenericErrorAlert } from "src/utils/helpers";
+import { showGenericErrorAlert } from "src/utils/helpers";
 import { SharedStyles, StylesType } from "src/utils/styles";
 
 export const SignUpForm = () => {
@@ -11,6 +11,7 @@ export const SignUpForm = () => {
   const [organizationName, setOrganizationName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [promoCode, setPromoCode] = useState<string>("");
 
   const _submitForm = async () => {
     try {
@@ -21,7 +22,8 @@ export const SignUpForm = () => {
       await Api.organization.createAccountAndOrganization(
         organizationName,
         email,
-        password
+        password,
+        promoCode
       );
       await firebase.auth().signInWithEmailAndPassword(email, password);
     } catch (e: any) {
@@ -56,6 +58,15 @@ export const SignUpForm = () => {
         type="password"
         style={styles.input}
         autoComplete="new-password"
+      />
+      <label style={{ ...styles.inputTitle, paddingTop: 24 }}>
+        Promo code (optional)
+      </label>
+      <input
+        placeholder=""
+        value={promoCode}
+        onChange={(e) => setPromoCode(e.target.value)}
+        style={styles.input}
       />
       <button
         style={{

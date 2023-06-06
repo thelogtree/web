@@ -15,12 +15,14 @@ export const organization = {
   createAccountAndOrganization: (
     organizationName: string,
     email: string,
-    password: string
+    password: string,
+    promoCode?: string
   ) =>
     axios.post(routeUrl + `/new`, {
       organizationName,
       email,
       password,
+      promoCode,
     }),
   getOrganization: (organizationId: string) =>
     axios.get(routeUrl + `/${organizationId}`),
