@@ -3,33 +3,16 @@ import "./index.css";
 import { Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
-import { Col, Grid, Row } from "react-flexbox-grid";
 import { useHistory } from "react-router-dom";
 import { Api } from "src/api";
-import ExampleChannels from "src/assets/channelsGraphic.png";
-import ExampleGraphic from "src/assets/exampleGraphic.png";
-import JourneyIcon from "src/assets/journey.png";
-import KleinerPerkinsLogo from "src/assets/kleinerPerkinsLogo.png";
-import LogtreeIcon from "src/assets/logtreeLogo192.png";
-import MessageIcon from "src/assets/message.png";
-import QuickArrowRight from "src/assets/quickArrowRight.png";
-import SearchIcon from "src/assets/searchBig.png";
-import TagIcon from "src/assets/tag.png";
-import SPCLogo from "src/assets/spcLogo.svg";
-import SupportPersonIcon from "src/assets/supportPerson.png";
-import SVAngelLogo from "src/assets/svAngelLogo.png";
-import TwitterIcon from "src/assets/twitterLogo.png";
-import YCLogo from "src/assets/ycLogo.png";
-import SparkleIcon from "src/assets/sparkle.png";
-import { Colors } from "src/utils/colors";
-import { StylesType } from "src/utils/styles";
-import StripeBigLogo from "src/assets/stripeBigLogo.png";
-import MixpanelBigLogo from "src/assets/mixpanelLogoBig.png";
-import IntercomBigLogo from "src/assets/intercomLogoBig.png";
-import SentryLogoBig from "src/assets/sentryLogoBig.png";
-import TrustIcon from "src/assets/guaranteeStamp.png";
 import IntercomExampleGraphic from "src/assets/exampleIntercomConversation.png";
+import TrustIcon from "src/assets/guaranteeStamp.png";
+import LogtreeIcon from "src/assets/logtreeLogo192.png";
+import QuickArrowRight from "src/assets/quickArrowRight.png";
+import TwitterIcon from "src/assets/twitterLogo.png";
+import { Colors } from "src/utils/colors";
 import { showGenericErrorAlert } from "src/utils/helpers";
+import { StylesType } from "src/utils/styles";
 
 export const LandingPage = () => {
   const [pageLoaded, setPageLoaded] = useState<boolean>(false);
@@ -151,12 +134,12 @@ export const LandingPage = () => {
                 }}
               >
                 <label style={styles.mainText}>
-                  The issue resolution platform for startups
+                  The logging API designed for everyone on your team
                 </label>
                 <label style={styles.subtitle}>
-                  Organize logs by topic, search for events across all your
-                  integrations, and even deploy an AI support engineer directly
-                  in Intercom.
+                  Track errors, organize logs by topic, search for events across
+                  all your third-party services, and even deploy an AI support
+                  engineer directly in Intercom.
                 </label>
                 <button
                   style={styles.joinBeta}
@@ -189,12 +172,12 @@ export const LandingPage = () => {
               >
                 <div style={styles.leftSide}>
                   <label style={styles.mainText}>
-                    The issue resolution platform for startups
+                    The logging API designed for everyone on your team
                   </label>
                   <label style={styles.subtitle}>
-                    Organize logs by topic, search for events across all your
-                    integrations, and even deploy an AI support engineer
-                    directly in Intercom.
+                    Track errors, organize logs by topic, search for events
+                    across all your third-party services, and even deploy an AI
+                    support engineer directly in Intercom.
                   </label>
                   <div style={styles.trustedContainer}>
                     <img src={TrustIcon} style={styles.trustIcon} />
