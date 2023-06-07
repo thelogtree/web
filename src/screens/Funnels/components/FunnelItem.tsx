@@ -51,7 +51,7 @@ export const FunnelItem = ({ funnel }: Props) => {
       <div style={styles.topContainer}>
         <div style={styles.topLeft}>
           <label style={styles.title}>
-            Funnel to {funnel.forwardToChannelPath}
+            Output channel: {funnel.forwardToChannelPath}
           </label>
           <label style={styles.funnelDesc}>
             If logs with the same reference ID pass through the channels below
@@ -88,12 +88,12 @@ const styles: StylesType = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "flex-start",
     padding: 20,
     borderRadius: 8,
     borderStyle: "solid",
     borderWidth: 1,
-    borderColor: Colors.gray,
+    borderColor: Colors.lightGray,
     backgroundColor: Colors.white,
     marginBottom: 25,
   },
@@ -109,9 +109,10 @@ const styles: StylesType = {
     alignItems: "center",
     width: "100%",
     marginBottom: 20,
-    borderBottomColor: Colors.gray,
+    borderBottomColor: Colors.lightGray,
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
+    paddingBottom: 10,
   },
   icon: {
     width: 22,
