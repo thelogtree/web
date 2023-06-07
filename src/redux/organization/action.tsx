@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/react";
 import {
+  FunnelDocument,
   IntegrationDocument,
   OrganizationDocument,
   RuleDocument,
@@ -33,6 +34,8 @@ const SET_INTEGRATIONS = "SET_INTEGRATIONS";
 type SET_INTEGRATIONS = typeof SET_INTEGRATIONS;
 const SET_CONNECTABLE_INTEGRATIONS = "SET_CONNECTABLE_INTEGRATIONS";
 type SET_CONNECTABLE_INTEGRATIONS = typeof SET_CONNECTABLE_INTEGRATIONS;
+const SET_FUNNELS = "SET_FUNNELS";
+type SET_FUNNELS = typeof SET_FUNNELS;
 
 type ISetSidebarWidth = {
   type: SET_SIDEBAR_WIDTH;
@@ -125,6 +128,15 @@ export const setConnectableIntegrations = (
   integrationTypes,
 });
 
+type ISetFunnels = {
+  type: SET_FUNNELS;
+  funnels: FunnelDocument[];
+};
+export const setFunnels = (funnels: FunnelDocument[]): ISetFunnels => ({
+  type: SET_FUNNELS,
+  funnels,
+});
+
 // actions identifiable by the reducer
 export type OrganizationActionsIndex =
   | ISetOrganization
@@ -135,7 +147,8 @@ export type OrganizationActionsIndex =
   | ISetRules
   | ISetSidebarWidth
   | ISetIntegrations
-  | ISetConnectableIntegrations;
+  | ISetConnectableIntegrations
+  | ISetFunnels;
 
 // api-related actions
 export const useFetchMyOrganization = () => {
@@ -235,6 +248,34 @@ export const useFetchOrganizationMembers = () => {
     } catch (e) {
       Sentry.captureException(e);
       dispatch(setOrganizationMembers([]));
+    }
+    setIsFetching(false);
+    return wasSuccessful;
+  };
+
+  return { fetch, isFetching };
+};
+
+export const useFetchFunnels = (overrideInitialLoadingStateTo?: boolean) => {
+  const dispatch = useDispatch();
+  const organization = useSelector(getOrganization);
+  const [isFetching, setIsFetching] = useState<boolean>(
+    overrideInitialLoadingStateTo || false
+  );
+
+  const fetch = async () => {
+    let wasSuccessful = false;
+    try {
+      setIsFetching(true);
+      const res = await Api.organization.getFunnels(
+        organization!._id.toString()
+      );
+      const { funnels } = res.data;
+      dispatch(setFunnels(funnels));
+      wasSuccessful = true;
+    } catch (e) {
+      Sentry.captureException(e);
+      dispatch(setFunnels([]));
     }
     setIsFetching(false);
     return wasSuccessful;

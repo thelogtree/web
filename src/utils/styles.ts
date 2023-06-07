@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import Modal, { Styles } from "react-modal";
+
 import { Colors } from "./colors";
 
 export type StylesType = { [key in string]: CSSProperties };

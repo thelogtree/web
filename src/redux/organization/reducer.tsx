@@ -1,6 +1,7 @@
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import { OrganizationActionsIndex } from "./action";
 import {
+  FunnelDocument,
   IntegrationDocument,
   OrganizationDocument,
   RuleDocument,
@@ -19,6 +20,7 @@ export type OrganizationReducerType = {
   sidebarWidth: number;
   integrations: IntegrationDocument[];
   connectableIntegrations: integrationTypeEnum[];
+  funnels: FunnelDocument[];
 };
 
 const initialState: OrganizationReducerType = {
@@ -31,6 +33,7 @@ const initialState: OrganizationReducerType = {
   sidebarWidth: isMobile ? 0 : 240,
   integrations: [],
   connectableIntegrations: [],
+  funnels: [],
 };
 
 export const organizationReducer = (
@@ -56,6 +59,8 @@ export const organizationReducer = (
       return { ...state, integrations: action.integrations };
     case "SET_CONNECTABLE_INTEGRATIONS":
       return { ...state, connectableIntegrations: action.integrationTypes };
+    case "SET_FUNNELS":
+      return { ...state, funnels: action.funnels };
     default:
       return state;
   }
