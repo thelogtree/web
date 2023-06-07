@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Modal, Select } from "antd";
 import _ from "lodash";
 import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
@@ -12,7 +12,15 @@ import { Colors } from "src/utils/colors";
 import { showGenericErrorAlert } from "src/utils/helpers";
 import { SharedStyles, StylesType } from "src/utils/styles";
 
-export const CreateNewFunnel = () => {
+type Props = {
+  isModalVisible: boolean;
+  setIsModalVisible: (isVisible: boolean) => void;
+};
+
+export const CreateNewFunnel = ({
+  isModalVisible,
+  setIsModalVisible,
+}: Props) => {
   const flattenedFolders = useFlattenedFolders(undefined, true);
   const organization = useSelector(getOrganization);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -66,6 +74,7 @@ export const CreateNewFunnel = () => {
       await fetch();
       setFunnelToChannel("");
       setFolderPaths([null, null]);
+      setIsModalVisible(false);
     } catch (e) {
       showGenericErrorAlert(e);
     }
@@ -84,72 +93,78 @@ export const CreateNewFunnel = () => {
   }, [flattenedFolders.length]);
 
   return (
-    <div style={styles.container}>
-      <label style={styles.title}>Choose the funnel steps</label>
-      <label style={styles.desc}>
-        If logs with the same reference ID pass through the channels below in
-        the order of top to bottom, a new log will be sent to an output channel
-        you specify. The funnel will be executed a maximum of one time per
-        reference ID.
-      </label>
-      {folderPaths.map((folderPath, index) => (
-        <>
-          {index ? <img src={ArrowDownIcon} style={styles.arrowDown} /> : null}
-          <div style={styles.folderPathItem}>
-            <Select
-              showSearch
-              placeholder="Select a channel"
-              optionFilterProp="children"
-              onChange={(val) => _handleFolderPathChange(val, index)}
-              filterOption={(input, option) =>
-                (option?.label ?? "")
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              options={flattenedFoldersMapped}
-              disabled={isLoading}
-              value={folderPath}
-              style={{ minWidth: 230 }}
-            />
-            {folderPaths.length > 2 && (
-              <button
-                onClick={() => _handleDeleteFolderPath(index)}
+    <Modal
+      onCancel={() => setIsModalVisible(false)}
+      open={isModalVisible}
+      okButtonProps={{ disabled: isLoading }}
+      okText={isLoading ? "Saving..." : "Save"}
+      onOk={_handleCreateFunnel}
+      width={700}
+    >
+      <div style={styles.container}>
+        <label style={styles.title}>Choose the funnel steps</label>
+        <label style={styles.desc}>
+          If logs with the same reference ID pass through the channels below in
+          the order of top to bottom, a new log will be sent to an output
+          channel you specify. The funnel will be executed a maximum of one time
+          per reference ID.
+        </label>
+        {folderPaths.map((folderPath, index) => (
+          <>
+            {index ? (
+              <img src={ArrowDownIcon} style={styles.arrowDown} />
+            ) : null}
+            <div style={styles.folderPathItem}>
+              <Select
+                showSearch
+                placeholder="Select a channel"
+                optionFilterProp="children"
+                onChange={(val) => _handleFolderPathChange(val, index)}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={flattenedFoldersMapped}
                 disabled={isLoading}
-                style={styles.deleteBtn}
-              >
-                <img src={TrashIcon} style={styles.trashIcon} />
-              </button>
-            )}
-          </div>
-        </>
-      ))}
-      <button style={styles.addStepBtn} onClick={_addStep} disabled={isLoading}>
-        Add step to funnel
-      </button>
-      <hr style={styles.hr} />
-      <label style={styles.title}>Specify an output channel</label>
-      <label style={styles.desc}>
-        This channel does not already have to be created. If it doesn't exist
-        yet, we'll automatically create it when the first log in it is created.
-      </label>
-      <input
-        value={funnelToChannel}
-        onChange={(e) => setFunnelToChannel(e.target.value)}
-        style={styles.input}
-        placeholder="/channel-name"
-        disabled={isLoading}
-      />
-      <button
-        style={{
-          ...styles.createBtn,
-          ...(isLoading && SharedStyles.loadingButton),
-        }}
-        disabled={isLoading}
-        onClick={_handleCreateFunnel}
-      >
-        {isLoading ? "Saving..." : "Save funnel"}
-      </button>
-    </div>
+                value={folderPath}
+                style={{ minWidth: 230 }}
+              />
+              {folderPaths.length > 2 && (
+                <button
+                  onClick={() => _handleDeleteFolderPath(index)}
+                  disabled={isLoading}
+                  style={styles.deleteBtn}
+                >
+                  <img src={TrashIcon} style={styles.trashIcon} />
+                </button>
+              )}
+            </div>
+          </>
+        ))}
+        <button
+          style={styles.addStepBtn}
+          onClick={_addStep}
+          disabled={isLoading}
+        >
+          Add step to funnel
+        </button>
+        <hr style={styles.hr} />
+        <label style={styles.title}>Specify an output channel</label>
+        <label style={styles.desc}>
+          This channel does not already have to be created. If it doesn't exist
+          yet, we'll automatically create it when the first log in it is
+          created.
+        </label>
+        <input
+          value={funnelToChannel}
+          onChange={(e) => setFunnelToChannel(e.target.value)}
+          style={styles.input}
+          placeholder="/channel-name"
+          disabled={isLoading}
+        />
+      </div>
+    </Modal>
   );
 };
 
@@ -160,11 +175,6 @@ const styles: StylesType = {
     justifyContent: "flex-start",
     alignItems: "flex-start",
     padding: 20,
-    borderRadius: 8,
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: Colors.lightGray,
-    backgroundColor: Colors.white,
   },
   input: {
     outline: "none",
@@ -184,7 +194,7 @@ const styles: StylesType = {
     fontSize: 13,
     color: Colors.darkerGray,
     paddingBottom: 20,
-    width: "60%",
+    width: "100%",
   },
   hr: {
     backgroundColor: Colors.lightGray,
@@ -203,8 +213,8 @@ const styles: StylesType = {
     padding: 8,
   },
   arrowDown: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
     marginTop: 15,
     marginBottom: 15,
     marginLeft: 20,

@@ -126,8 +126,8 @@ const styles: StylesType = {
     backgroundColor: Colors.transparent,
   },
   arrowDown: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
     marginTop: 15,
     marginBottom: 15,
     marginLeft: 20,
