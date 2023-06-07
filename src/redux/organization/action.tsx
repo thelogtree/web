@@ -256,10 +256,12 @@ export const useFetchOrganizationMembers = () => {
   return { fetch, isFetching };
 };
 
-export const useFetchFunnels = () => {
+export const useFetchFunnels = (overrideInitialLoadingStateTo?: boolean) => {
   const dispatch = useDispatch();
   const organization = useSelector(getOrganization);
-  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [isFetching, setIsFetching] = useState<boolean>(
+    overrideInitialLoadingStateTo || false
+  );
 
   const fetch = async () => {
     let wasSuccessful = false;

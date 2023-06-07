@@ -6,17 +6,22 @@ import { StylesType } from "src/utils/styles";
 import { FunnelItem } from "./components/FunnelItem";
 import { CreateNewFunnel } from "./components/CreateNewFunnel";
 import { Colors } from "src/utils/colors";
+import { LoadingSpinnerFullScreen } from "src/sharedComponents/LoadingSpinnerFullScreen";
 
 export const FunnelsScreen = () => {
   const organization = useSelector(getOrganization);
   const funnels = useSelector(getFunnels);
-  const { fetch, isFetching } = useFetchFunnels();
+  const { fetch, isFetching } = useFetchFunnels(true);
 
   useEffect(() => {
     if (organization) {
       fetch();
     }
   }, [organization?._id]);
+
+  if (isFetching) {
+    return <LoadingSpinnerFullScreen />;
+  }
 
   return (
     <div style={styles.container}>
