@@ -25,6 +25,7 @@ import { IntercomLearnMoreScreen } from "./screens/IntercomLearnMore";
 import { IntegrationLogsScreen } from "./screens/IntegrationLogs";
 import { GlobalSearchScreen } from "./screens/GlobalSearch";
 import { CreateOrganizationScreen } from "./screens/CreateOrganization";
+import { FunnelsScreen } from "./screens/Funnels";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -80,6 +81,10 @@ export const RouteManager = () => {
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/favorites`}
             component={LogsScreen}
+          />
+          <Route
+            path={`${ORG_ROUTE_PREFIX}/:slug/funnels`}
+            component={FunnelsScreen}
           />
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug${SUPPORT_TOOL_SUFFIX}`}
