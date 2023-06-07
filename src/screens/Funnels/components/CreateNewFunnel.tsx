@@ -104,10 +104,10 @@ export const CreateNewFunnel = ({
       <div style={styles.container}>
         <label style={styles.title}>Choose the funnel steps</label>
         <label style={styles.desc}>
-          If logs with the same reference ID pass through the channels below in
-          the order of top to bottom, a new log will be sent to an output
-          channel you specify. The funnel will be executed a maximum of one time
-          per reference ID.
+          If logs with the same reference ID pass through the channels below
+          from top to bottom, a new log will be sent to an output channel you
+          specify. The funnel will be executed a maximum of once per reference
+          ID.
         </label>
         {folderPaths.map((folderPath, index) => (
           <>
@@ -152,9 +152,8 @@ export const CreateNewFunnel = ({
         <hr style={styles.hr} />
         <label style={styles.title}>Specify an output channel</label>
         <label style={styles.desc}>
-          This channel does not already have to be created. If it doesn't exist
-          yet, we'll automatically create it when the first log in it is
-          created.
+          If this channel doesn't exist yet, we'll automatically create it for
+          you when the first log in it is created.
         </label>
         <input
           value={funnelToChannel}

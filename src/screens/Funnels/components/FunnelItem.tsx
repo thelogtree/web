@@ -50,14 +50,12 @@ export const FunnelItem = ({ funnel }: Props) => {
     <div style={{ ...styles.container, ...(isLoading && { opacity: 0.4 }) }}>
       <div style={styles.topContainer}>
         <div style={styles.topLeft}>
-          <label style={styles.title}>
-            Output channel: {funnel.forwardToChannelPath}
-          </label>
+          <label style={styles.title}>{funnel.forwardToChannelPath}</label>
           <label style={styles.funnelDesc}>
             If logs with the same reference ID pass through the channels below
-            in that order from top to bottom, a new log will be sent to{" "}
+            from top to bottom, a new log will be sent to{" "}
             {funnel.forwardToChannelPath}. The funnel will be executed a maximum
-            of one time per reference ID.
+            of once per reference ID.
           </label>
         </div>
         <button
@@ -101,6 +99,7 @@ const styles: StylesType = {
     fontSize: 18,
     fontWeight: 500,
     paddingBottom: 6,
+    color: Colors.black,
   },
   topContainer: {
     display: "flex",
@@ -126,14 +125,14 @@ const styles: StylesType = {
     backgroundColor: Colors.transparent,
   },
   arrowDown: {
-    width: 25,
-    height: 25,
+    width: 18,
+    height: 18,
     marginTop: 15,
     marginBottom: 15,
     marginLeft: 20,
   },
   folderPath: {
-    fontSize: 15,
+    fontSize: 14,
   },
   topLeft: {
     display: "flex",
