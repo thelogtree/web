@@ -36,6 +36,11 @@ export const getRules = createSelector(
   (organizationReducer: OrganizationReducerType) => organizationReducer.rules
 );
 
+export const getFunnels = createSelector(
+  [getOrganizationReducer],
+  (organizationReducer: OrganizationReducerType) => organizationReducer.funnels
+);
+
 export const getSidebarWidth = createSelector(
   [getOrganizationReducer],
   (organizationReducer: OrganizationReducerType) =>

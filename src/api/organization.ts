@@ -262,4 +262,19 @@ export const organization = {
     axios.post(routeUrl + `/${organizationId}/folder`, {
       folderPath,
     }),
+  getFunnels: (organizationId: string) =>
+    axios.get(routeUrl + `/${organizationId}/funnels`),
+  deleteFunnel: (organizationId: string, funnelId: string) =>
+    axios.post(routeUrl + `/${organizationId}/delete-funnel`, {
+      funnelId,
+    }),
+  createFunnel: (
+    organizationId: string,
+    folderPathsInOrder: string[],
+    forwardToChannelPath: string
+  ) =>
+    axios.post(routeUrl + `/${organizationId}/funnel`, {
+      folderPathsInOrder,
+      forwardToChannelPath,
+    }),
 };
