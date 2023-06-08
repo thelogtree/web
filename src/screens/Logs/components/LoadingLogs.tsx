@@ -2,8 +2,17 @@ import React from "react";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { StylesType } from "src/utils/styles";
 
-export const LoadingLogs = () => (
-  <div style={styles.loadingContainer}>
+type Props = {
+  overridePaddingTop?: number;
+};
+
+export const LoadingLogs = ({ overridePaddingTop }: Props) => (
+  <div
+    style={{
+      ...styles.loadingContainer,
+      ...(overridePaddingTop && { paddingTop: overridePaddingTop }),
+    }}
+  >
     <LoadingSpinner size={40} />
   </div>
 );
