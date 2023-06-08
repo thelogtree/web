@@ -13,9 +13,7 @@ if (process.env.REACT_APP_SENTRY_DSN) {
   });
 }
 
-if (process.env.IS_PROD) {
-  LogRocket.init("vngzei/logtree");
-}
+LogRocket.init("vngzei/logtree");
 
 ReactDOM.render(
   <React.StrictMode>

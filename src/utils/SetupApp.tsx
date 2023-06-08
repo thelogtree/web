@@ -42,11 +42,9 @@ export const SetupApp = () => {
 
   useEffect(() => {
     if (user && authStatus === "SIGNED_IN") {
-      if (process.env.IS_PROD) {
-        LogRocket.identify(user._id.toString(), {
-          email: user.email,
-        });
-      }
+      LogRocket.identify(user._id.toString(), {
+        email: user.email,
+      });
       if (
         user.organizationId.toString() === organization?._id &&
         (path !== ORG_ROUTE_PREFIX ||
