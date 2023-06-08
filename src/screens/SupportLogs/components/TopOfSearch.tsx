@@ -15,6 +15,7 @@ type Props = {
   filterOptions: string[];
   query: string;
   setQuery: (newQuery: string) => void;
+  atLeastOneLog: boolean;
 };
 
 export const TopOfSearch = ({
@@ -24,6 +25,7 @@ export const TopOfSearch = ({
   setFilteredSources,
   filterOptions,
   filteredSources,
+  atLeastOneLog,
 }: Props) => {
   const organization = useSelector(getOrganization);
 
@@ -40,7 +42,7 @@ export const TopOfSearch = ({
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Enter a user's email"
       />
-      {filterOptions.length ? (
+      {filterOptions.length && atLeastOneLog ? (
         <Select
           mode="multiple"
           allowClear

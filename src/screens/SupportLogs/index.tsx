@@ -67,6 +67,7 @@ export const SupportLogsScreen = () => {
           setFilteredSources={setFilteredSources}
           query={query}
           setQuery={setQuery}
+          atLeastOneLog={!!logs.length}
         />
         <LogsList
           shouldShowLoadingSigns={shouldShowLoadingSigns}
