@@ -343,7 +343,7 @@ export const useLogs = (
   };
 
   useEffect(() => {
-    setFilteredLogs([]);
+    setFilteredLogs(logs);
   }, [logs.length, isLoading, isSearchQueued]);
 
   useEffect(() => {

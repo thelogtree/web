@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FrontendLog, useLogs } from "../Logs/lib";
 import { numberToNumberWithCommas, useSearchParams } from "src/utils/helpers";
 import { LogsList } from "./components/LogsList";
@@ -24,26 +24,66 @@ export const SupportLogsScreen = () => {
     filteredSources,
     setFilteredSources,
     logSourcesOptionsToFilterBy,
+    isLoading,
   } = useLogs();
+  const [keywordFilter, setKeywordFilter] = useState<string>("");
+  const logsToShow = useMemo(() => {
+    if (!keywordFilter) {
+      return logs;
+    }
+    return logs.filter((log) => log.content.includes(keywordFilter));
+  }, [logs.length, filteredSources.length, isSearchQueued, keywordFilter]);
   const { query: urlQuery } = useSearchParams();
+
+  useEffect(() => {
+    setKeywordFilter("");
+    setFilteredSources([]);
+  }, [query]);
 
   const numLogsText = useMemo(() => {
     if (shouldShowLoadingSigns) {
       return "Fetching...this may take a couple seconds";
-    } else if (query && logs.length === 1) {
+    } else if (
+      query &&
+      logsToShow.length &&
+      (keywordFilter || filteredSources.length)
+    ) {
+      if (logsToShow.length === 1) {
+        return "Showing 1 log under this filter for this user";
+      }
+      return `Showing ${logsToShow.length} logs under this filter for this user`;
+    } else if (
+      query &&
+      !logsToShow.length &&
+      (keywordFilter || filteredSources.length)
+    ) {
+      return "No results under this filter were found";
+    } else if (query && logsToShow.length === 1) {
       return "Showing 1 recent log for this user";
-    } else if (query && logs.length) {
+    } else if (query && logsToShow.length) {
       return `Showing the ${numberToNumberWithCommas(
-        logs.length
+        logsToShow.length
       )} most recent logs for this user`;
-    } else if (query) {
-      return "No recent results found.";
     }
     return "";
-  }, [logs.length, query, shouldShowLoadingSigns]);
+  }, [
+    logsToShow.length,
+    query,
+    shouldShowLoadingSigns,
+    filteredSources.length,
+    keywordFilter,
+  ]);
 
   const endOfFeedText = useMemo(() => {
-    if (query && !logs.length) {
+    if (logsToShow.length && (keywordFilter || filteredSources.length)) {
+      return "There are no more results under your filter.";
+    } else if (
+      (query || urlQuery) &&
+      !logsToShow.length &&
+      (keywordFilter || filteredSources.length)
+    ) {
+      return "There are no results under your filter.";
+    } else if (query && !logsToShow.length) {
       return "There are no recent logs for this user.";
     } else if (query) {
       return "There are no more recent results.";
@@ -51,7 +91,14 @@ export const SupportLogsScreen = () => {
       return "We're preparing your search. One moment please...";
     }
     return "";
-  }, [logs.length, query, isSearchQueued, urlQuery]);
+  }, [
+    logsToShow.length,
+    query,
+    isSearchQueued,
+    urlQuery,
+    filteredSources.length,
+    keywordFilter,
+  ]);
 
   if (!organization) {
     return null;
@@ -67,11 +114,13 @@ export const SupportLogsScreen = () => {
           setFilteredSources={setFilteredSources}
           query={query}
           setQuery={setQuery}
-          atLeastOneLog={!!logs.length}
+          showFilters={!!logs.length && !isLoading}
+          keywordFilter={keywordFilter}
+          setKeywordFilter={setKeywordFilter}
         />
         <LogsList
           shouldShowLoadingSigns={shouldShowLoadingSigns}
-          logs={logs}
+          logs={logsToShow}
           endOfFeedText={endOfFeedText}
         />
       </div>

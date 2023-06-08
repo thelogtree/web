@@ -15,7 +15,9 @@ type Props = {
   filterOptions: string[];
   query: string;
   setQuery: (newQuery: string) => void;
-  atLeastOneLog: boolean;
+  showFilters: boolean;
+  keywordFilter: string;
+  setKeywordFilter: (keywordFilter: string) => void;
 };
 
 export const TopOfSearch = ({
@@ -25,10 +27,10 @@ export const TopOfSearch = ({
   setFilteredSources,
   filterOptions,
   filteredSources,
-  atLeastOneLog,
+  showFilters,
+  keywordFilter,
+  setKeywordFilter,
 }: Props) => {
-  const organization = useSelector(getOrganization);
-
   const filterOptionsInPicker = filterOptions.map((option) => ({
     value: option,
     label: option,
@@ -36,23 +38,35 @@ export const TopOfSearch = ({
 
   return (
     <div style={styles.container}>
+      <label style={styles.title}>Journey Finder</label>
       <input
         style={styles.searchInput}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Enter a user's email"
       />
-      {filterOptions.length && atLeastOneLog ? (
-        <Select
-          mode="multiple"
-          allowClear
-          value={filteredSources}
-          style={styles.select}
-          placeholder="Filter sources"
-          defaultValue={[]}
-          onChange={setFilteredSources}
-          options={filterOptionsInPicker}
-        />
+      {showFilters ? (
+        <div style={styles.filterContainer}>
+          <label style={styles.moreFiltersLbl}>Add filters</label>
+          <input
+            style={styles.keywordInput}
+            value={keywordFilter}
+            onChange={(e) => setKeywordFilter(e.target.value)}
+            placeholder="Filter by a word or phrase"
+          />
+          {filterOptions.length ? (
+            <Select
+              mode="multiple"
+              allowClear
+              value={filteredSources}
+              style={styles.select}
+              placeholder="Filter sources"
+              defaultValue={[]}
+              onChange={setFilteredSources}
+              options={filterOptionsInPicker}
+            />
+          ) : null}
+        </div>
       ) : null}
       {numLogsText ? (
         <label style={styles.numLogsTotalText}>{numLogsText}</label>
@@ -68,59 +82,75 @@ const styles: StylesType = {
     justifyContent: "flex-end",
     alignItems: "center",
     width: "100%",
-    paddingBottom: 20,
-    paddingTop: 60,
+    paddingBottom: 70,
+    paddingTop: 100,
   },
   filterContainer: {
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20,
-    borderRadius: 30,
-    paddingLeft: 18,
-    paddingRight: 18,
-    paddingTop: 12,
-    paddingBottom: 12,
-    borderColor: Colors.lightGray,
-    borderWidth: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    position: "relative",
+    width: "80%",
+    maxWidth: 400,
+    top: -12,
+    borderRadius: 16,
     borderStyle: "solid",
-    backgroundColor: Colors.white,
-    boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
+    padding: 20,
+    paddingTop: 30,
+    backgroundColor: Colors.veryLightGray,
   },
   numLogsTotalText: {
     paddingBottom: 0,
     color: Colors.gray,
     fontSize: 13,
-    paddingTop: 30,
+    paddingTop: 16,
     textAlign: "center",
     width: "100%",
   },
   title: {
-    fontWeight: 700,
-    fontSize: 60,
-    textAlign: "left",
-    paddingRight: 6,
-    background: "linear-gradient(268.45deg, #000000 30.54%, #424242 60.79%)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    backgroundClip: "text",
+    fontWeight: 500,
+    fontSize: 30,
+    textAlign: "center",
+    color: Colors.black,
+    paddingBottom: 40,
   },
   searchInput: {
     outline: "none",
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: Colors.lightGray,
-    padding: 10,
+    padding: 20,
     borderRadius: 30,
     minHeight: 35,
     width: "100%",
-    maxWidth: 500,
-    paddingLeft: 16,
-    fontSize: 14,
+    maxWidth: 600,
+    paddingLeft: 25,
+    fontSize: 16,
+    zIndex: 10,
+    boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
   },
   select: {
-    width: 450,
-    marginTop: 25,
+    width: "100%",
+    marginTop: 14,
+  },
+  moreFiltersLbl: {
+    fontSize: 16,
+    fontWeight: 400,
+    paddingBottom: 10,
+    color: Colors.darkGray,
+  },
+  keywordInput: {
+    outline: "none",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
+    padding: 10,
+    borderRadius: 8,
+    width: "100%",
+    paddingLeft: 14,
+    fontSize: 14,
   },
 };
