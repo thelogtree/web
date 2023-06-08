@@ -31,14 +31,21 @@ export const TopOfSearch = ({
   keywordFilter,
   setKeywordFilter,
 }: Props) => {
+  const organization = useSelector(getOrganization);
   const filterOptionsInPicker = filterOptions.map((option) => ({
     value: option,
     label: option,
   }));
 
+  if (!organization) {
+    return null;
+  }
+
   return (
     <div style={styles.container}>
-      <label style={styles.title}>Journey Finder</label>
+      <label style={styles.title}>
+        View a user's journey through {organization?.name}
+      </label>
       <input
         style={styles.searchInput}
         value={query}
