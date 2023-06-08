@@ -31,7 +31,6 @@ const NO_ACTION_ROUTES = [
 const SIGNED_IN_ROUTES = ["/policies", "/oauth-callback", "/learn"];
 
 export const SetupApp = () => {
-  const history = useHistory();
   const activePathname = usePathname();
   const { fetch: fetchUser } = useFetchMe();
   const { fetch: fetchMyOrganization } = useFetchMyOrganization();
