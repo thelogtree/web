@@ -143,8 +143,8 @@ export const useLogs = (
     setLastCompletedFetchWithConnectionUrl,
   ] = useState<string>("");
   const [isSearchQueued, setIsSearchQueued] = useState<boolean>(!!urlQuery);
-  const [filtersForOnlyErrors, setFiltersForOnlyErrors] =
-    useState<boolean>(false);
+  const [filteredSources, setFilteredSources] = useState<string[]>([]);
+  const [filteredLogs, setFilteredLogs] = useState<FrontendLog[]>([]);
   const { fetch: refetchFolders, isFetching: isFetchingFolders } =
     useFetchFolders();
   const shouldShowLoadingSigns = connectionUrl
@@ -159,6 +159,11 @@ export const useLogs = (
           isSearchQueued ||
           (query && lastSearchCompletedWithQuery !== query)
       );
+  const logSourcesOptionsToFilterBy = useMemo(() => {
+    const sources = logs.map((log) => log.sourceTitle);
+    return _.uniq(sources).filter((v) => v) as string[];
+  }, [isSearchQueued, isLoading, logs.length]);
+
   const attemptFetchingMoreResults = async () => {
     setStart(Math.min(logs.length, start + PAGINATION_RECORDS_INCREMENT));
   };
@@ -213,8 +218,10 @@ export const useLogs = (
     });
   };
 
-  const _filterLogsForOnlyErrors = (logs: FrontendLog[]) =>
-    logs.filter((log) => log.tag === simplifiedLogTagEnum.Error);
+  const _filterLogsBySource = (logs: FrontendLog[]) =>
+    logs.filter(
+      (log) => log.sourceTitle && filteredSources.includes(log.sourceTitle)
+    );
 
   const _fetchLogs = async (
     isFreshFetch?: boolean,
@@ -336,6 +343,10 @@ export const useLogs = (
   };
 
   useEffect(() => {
+    setFilteredLogs([]);
+  }, [logs.length, isLoading, isSearchQueued]);
+
+  useEffect(() => {
     if (start !== 0) {
       // only used for fetching more results in pagination
       _fetchLogs();
@@ -350,8 +361,10 @@ export const useLogs = (
   }, [isDateFilterApplied]);
 
   useEffect(() => {
-    if (filtersForOnlyErrors) {
-      setLogs(_addFolderPathToLogsIfPossible(_filterLogsForOnlyErrors(logs)));
+    if (filteredSources.length) {
+      setFilteredLogs(
+        _addFolderPathToLogsIfPossible(_filterLogsBySource(logs))
+      );
     } else {
       setLogs(_addFolderPathToLogsIfPossible(logs));
     }
@@ -361,7 +374,7 @@ export const useLogs = (
     isSupportScreen,
     isIntegrationsScreen,
     favoritedFolderPaths.length,
-    filtersForOnlyErrors,
+    filteredSources.length,
     JSON.stringify(logsIds),
   ]);
 
@@ -410,12 +423,31 @@ export const useLogs = (
     }
   }, [isGlobalSearchScreen, isSupportScreen, query]);
 
-  return {
-    logs:
+  const logsToReturn = useMemo(() => {
+    if (
       lastSearchCompletedWithQuery === query &&
       lastCompletedFetchWithConnectionUrl === connectionUrl
-        ? logs
-        : [],
+    ) {
+      if (filteredSources.length) {
+        return filteredLogs;
+      }
+      return logs;
+    }
+    return [];
+  }, [
+    query,
+    lastSearchCompletedWithQuery,
+    lastCompletedFetchWithConnectionUrl,
+    connectionUrl,
+    logs.length,
+    isLoading,
+    isSearchQueued,
+    filteredLogs.length,
+    filteredSources.length,
+  ]);
+
+  return {
+    logs: logsToReturn,
     numLogsInTotal,
     isLoading,
     attemptFetchingMoreResults,
@@ -427,8 +459,9 @@ export const useLogs = (
     isDateFilterApplied,
     isFetchingFolders,
     shouldShowLoadingSigns,
-    setFiltersForOnlyErrors,
-    filtersForOnlyErrors,
+    setFilteredSources,
+    filteredSources,
+    logSourcesOptionsToFilterBy,
   };
 };
 

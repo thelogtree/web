@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { useLogs } from "../Logs/lib";
+import React, { useMemo, useState } from "react";
+import { FrontendLog, useLogs } from "../Logs/lib";
 import { numberToNumberWithCommas, useSearchParams } from "src/utils/helpers";
 import { LogsList } from "./components/LogsList";
 import { StylesType } from "src/utils/styles";
@@ -10,19 +10,20 @@ import { useFetchFoldersOnce } from "./lib";
 import { Placeholder } from "./components/Placeholder";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
+import _ from "lodash";
 
 export const SupportLogsScreen = () => {
   useFetchFoldersOnce();
   const organization = useSelector(getOrganization);
   const {
     logs,
-    numLogsInTotal,
     query,
     setQuery,
     isSearchQueued,
     shouldShowLoadingSigns,
-    filtersForOnlyErrors,
-    setFiltersForOnlyErrors,
+    filteredSources,
+    setFilteredSources,
+    logSourcesOptionsToFilterBy,
   } = useLogs();
   const { query: urlQuery } = useSearchParams();
 
@@ -39,7 +40,7 @@ export const SupportLogsScreen = () => {
       return "No recent results found.";
     }
     return "";
-  }, [numLogsInTotal, logs.length, query, shouldShowLoadingSigns]);
+  }, [logs.length, query, shouldShowLoadingSigns]);
 
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
@@ -50,7 +51,7 @@ export const SupportLogsScreen = () => {
       return "We're preparing your search. One moment please...";
     }
     return "";
-  }, [logs.length, numLogsInTotal, query, isSearchQueued, urlQuery]);
+  }, [logs.length, query, isSearchQueued, urlQuery]);
 
   if (!organization) {
     return null;
@@ -58,22 +59,20 @@ export const SupportLogsScreen = () => {
 
   return (
     <>
-      <SearchBar query={query} setQuery={setQuery} />
       <div style={styles.container}>
         <TopOfSearch
           numLogsText={numLogsText}
-          shouldOnlyShowErrors={filtersForOnlyErrors}
-          setShouldOnlyShowErrors={setFiltersForOnlyErrors}
+          filterOptions={logSourcesOptionsToFilterBy}
+          filteredSources={filteredSources}
+          setFilteredSources={setFilteredSources}
+          query={query}
+          setQuery={setQuery}
         />
-        <div style={styles.hrWrapper}>
-          <hr style={styles.hr} />
-        </div>
         <LogsList
           shouldShowLoadingSigns={shouldShowLoadingSigns}
           logs={logs}
           endOfFeedText={endOfFeedText}
         />
-        {!query && !urlQuery ? <Placeholder /> : null}
       </div>
     </>
   );
