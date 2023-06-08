@@ -46,6 +46,7 @@ export const TopOfSearch = ({
         <Select
           mode="multiple"
           allowClear
+          value={filteredSources}
           style={styles.select}
           placeholder="Filter sources"
           defaultValue={[]}
