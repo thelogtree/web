@@ -4,12 +4,17 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import LogRocket from "logrocket";
 
 if (process.env.REACT_APP_SENTRY_DSN) {
   Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DSN,
     tracesSampleRate: 1.0,
   });
+}
+
+if (process.env.IS_PROD) {
+  LogRocket.init("vngzei/logtree");
 }
 
 ReactDOM.render(

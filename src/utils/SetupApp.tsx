@@ -15,6 +15,7 @@ import { setAuthStatus } from "../redux/auth/action";
 import { analytics } from "../utils/segmentClient";
 import { getFirstPathWithSlash, usePathname } from "./helpers";
 import { ORG_ROUTE_PREFIX } from "src/RouteManager";
+import LogRocket from "logrocket";
 
 // routes where logged out users can view it and will not be redirected anywhere
 const NO_ACTION_ROUTES = [
@@ -42,6 +43,11 @@ export const SetupApp = () => {
 
   useEffect(() => {
     if (user && authStatus === "SIGNED_IN") {
+      if (process.env.IS_PROD) {
+        LogRocket.identify(user._id.toString(), {
+          email: user.email,
+        });
+      }
       if (
         user.organizationId.toString() === organization?._id &&
         (path !== ORG_ROUTE_PREFIX ||
