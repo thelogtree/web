@@ -23,7 +23,7 @@ export const LogsList = ({
   const firstIndexOfLogAfterToday = getIndexOfFirstLogAfterToday(logs);
 
   return shouldShowLoadingSigns ? (
-    <LoadingLogs />
+    <LoadingLogs overridePaddingTop={120} />
   ) : (
     <div style={styles.logsFeed}>
       {logs.map((log, i) => {
