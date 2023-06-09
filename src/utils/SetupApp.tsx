@@ -25,6 +25,7 @@ const NO_ACTION_ROUTES = [
   "/learn",
   "/sign-up",
   "/",
+  "/projects",
 ];
 
 // routes where logged in users can view it and will not be redirected anywhere

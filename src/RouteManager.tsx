@@ -26,6 +26,7 @@ import { IntegrationLogsScreen } from "./screens/IntegrationLogs";
 import { GlobalSearchScreen } from "./screens/GlobalSearch";
 import { CreateOrganizationScreen } from "./screens/CreateOrganization";
 import { FunnelsScreen } from "./screens/Funnels";
+import { LandingPageProjects } from "./screens/LandingPageProjects";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -113,6 +114,7 @@ export const RouteManager = () => {
           />
           <Route path="/learn/intercom" component={IntercomLearnMoreScreen} />
           <Route exact path="/" component={LandingPage} />
+          <Route exact path="/projects" component={LandingPageProjects} />
         </div>
       </div>
     </Switch>
