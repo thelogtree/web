@@ -69,11 +69,11 @@ export const HistogramItem = ({
     if (tempDateStr === "day") {
       return "24 hours";
     }
-    if (tempDateStr === "month") {
-      return "30 days";
+    if (tempDateStr.includes("days") || tempDateStr.includes("month")) {
+      return `${organization?.logRetentionInDays} days`;
     }
     return tempDateStr;
-  }, [histogram.histogramData[0].floorDate]);
+  }, [histogram.histogramData[0].floorDate, organization?.logRetentionInDays]);
 
   const data = useMemo(() => {
     return histogram.histogramData.map((dataInterval) => ({

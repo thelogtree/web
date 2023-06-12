@@ -7,6 +7,8 @@ import { useFindFrontendFolderFromUrl } from "../lib";
 import CaretDownIcon from "src/assets/caretDownGray.png";
 import CaretUpIcon from "src/assets/caretUpGray.png";
 import { Colors } from "src/utils/colors";
+import { useSelector } from "react-redux";
+import { getOrganization } from "src/redux/organization/selector";
 
 type Props = {
   histograms: StatHistogram[];
@@ -29,6 +31,7 @@ export const Histograms = ({
   is24HourTimeframe,
   switchTimeInterval,
 }: Props) => {
+  const organization = useSelector(getOrganization);
   const frontendFolder = useFindFrontendFolderFromUrl();
   const [isViewingAll, setIsViewingAll] = useState<boolean>(false);
   const moreThanPreviewExist = histograms.length > PREVIEW_AMOUNT;
@@ -90,7 +93,7 @@ export const Histograms = ({
           onChange={switchTimeInterval}
           checked={!is24HourTimeframe}
           checkedChildren="Show last 24 hours"
-          unCheckedChildren="Show last 30 days"
+          unCheckedChildren={`Show last ${organization?.logRetentionInDays} days`}
           style={{
             textAlign: "left",
             marginLeft: 10,

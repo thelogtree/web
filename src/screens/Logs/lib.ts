@@ -676,7 +676,7 @@ export const useFolderStats = (numLogs: number) => {
   // for histograms
   const switchTimeInterval = () => {
     if (lastXDays === 1) {
-      setLastXDays(30);
+      setLastXDays(organization?.logRetentionInDays || 30);
     } else {
       setLastXDays(1);
     }
