@@ -20,6 +20,7 @@ import { StylesType } from "src/utils/styles";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
 import { SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
+import { useHistory, useLocation } from "react-router-dom";
 
 export type StatHistogram = {
   contentKey: string;
@@ -61,6 +62,9 @@ export const HistogramItem = ({
   histogram,
   isVisualizingByReferenceId,
 }: Props) => {
+  const history = useHistory();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
   const organization = useSelector(getOrganization);
   const timeAgo = useMemo(() => {
     const tempDateStr = moment(histogram.histogramData[0].floorDate)
@@ -100,6 +104,15 @@ export const HistogramItem = ({
     );
   };
 
+  const _searchForContentMatch = () => {
+    params.set("query", histogram.contentKey);
+    history.replace({
+      pathname: location.pathname,
+      search: histogram.contentKey ? `?${params.toString()}` : "",
+    });
+    window.location.reload();
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.top}>
@@ -112,17 +125,17 @@ export const HistogramItem = ({
               : ""
           }
         >
-          {isVisualizingByReferenceId ? (
-            <a
-              style={styles.histogramTitle}
-              className="referenceIdLink"
-              onClick={_searchForReferenceId}
-            >
-              {histogramTitle}
-            </a>
-          ) : (
-            <label style={styles.histogramTitle}>{histogramTitle}</label>
-          )}
+          <a
+            style={styles.histogramTitle}
+            className="referenceIdLink"
+            onClick={
+              isVisualizingByReferenceId
+                ? _searchForReferenceId
+                : _searchForContentMatch
+            }
+          >
+            {histogramTitle}
+          </a>
         </AntdTooltip>
         <label style={styles.timeAgo}>Last {timeAgo}</label>
       </div>

@@ -405,7 +405,7 @@ export const useLogs = (
     if ((urlQuery || "") !== query) {
       setTimeout(() => {
         setQuery(urlQuery);
-      }, 1000);
+      }, 500);
     }
   }, []);
 
