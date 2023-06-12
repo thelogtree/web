@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useHistory } from "react-router-dom";
 import { Api } from "src/api";
-import IntercomExampleGraphic from "src/assets/exampleIntercomConversation.png";
+import IntercomExampleGraphic from "src/assets/channelsGraphic.png";
 import TrustIcon from "src/assets/guaranteeStamp.png";
 import LogtreeIcon from "src/assets/logtreeLogo192.png";
 import QuickArrowRight from "src/assets/quickArrowRight.png";
@@ -134,19 +134,19 @@ export const LandingPage = () => {
                 }}
               >
                 <label style={styles.mainText}>
-                  The logging API designed for everyone on your team
+                  The monitoring API for startups
                 </label>
                 <label style={styles.subtitle}>
-                  Track errors, organize logs by topic, search for events across
-                  all your third-party services, and even deploy an AI support
-                  engineer directly in Intercom.
+                  Sentry is disorganized. Logtree lets you record your errors
+                  and logs in a much more organized way, see auto-generated
+                  graphs of your events, and search for any of your logs easily.
                 </label>
                 <button
                   style={styles.joinBeta}
                   className="joinBeta"
-                  onClick={() => setIsVisible(true)}
+                  onClick={_createAccount}
                 >
-                  <label style={styles.joinBetaLbl}>Notify me</label>
+                  <label style={styles.joinBetaLbl}>Try it</label>
                   <img src={QuickArrowRight} style={styles.arrowRight} />
                 </button>
                 <div style={styles.trustedContainer}>
@@ -172,12 +172,13 @@ export const LandingPage = () => {
               >
                 <div style={styles.leftSide}>
                   <label style={styles.mainText}>
-                    The logging API designed for everyone on your team
+                    The monitoring API for startups
                   </label>
                   <label style={styles.subtitle}>
-                    Track errors, organize logs by topic, search for events
-                    across all your third-party services, and even deploy an AI
-                    support engineer directly in Intercom.
+                    Sentry is disorganized. Logtree lets you record your errors
+                    and logs in a much more organized way, see auto-generated
+                    graphs of your events, and search for any of your logs
+                    easily.
                   </label>
                   <div style={styles.trustedContainer}>
                     <img src={TrustIcon} style={styles.trustIcon} />
@@ -189,9 +190,9 @@ export const LandingPage = () => {
                   <button
                     style={styles.joinBeta}
                     className="joinBeta"
-                    onClick={() => setIsVisible(true)}
+                    onClick={_createAccount}
                   >
-                    <label style={styles.joinBetaLbl}>Notify me</label>
+                    <label style={styles.joinBetaLbl}>Try it</label>
                     <img src={QuickArrowRight} style={styles.arrowRight} />
                   </button>
                 </div>
