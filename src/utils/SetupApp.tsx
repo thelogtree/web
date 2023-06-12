@@ -47,21 +47,23 @@ export const SetupApp = () => {
         email: user.email,
       });
       if (
-        user.organizationId.toString() === organization?._id &&
+        organization &&
+        (user.organizationId.toString() === organization?._id ||
+          user.isAdmin) &&
         (path !== ORG_ROUTE_PREFIX ||
           !activePathname.includes(
-            `${ORG_ROUTE_PREFIX}/${organization.slug}`
+            `${ORG_ROUTE_PREFIX}/${organization?.slug}`
           )) &&
         !SIGNED_IN_ROUTES.includes(path)
       ) {
-        if (organization.numLogsSentInPeriod) {
+        if (organization?.numLogsSentInPeriod) {
           window.open(
             `${ORG_ROUTE_PREFIX}/${organization.slug}/favorites`,
             "_self"
           );
         } else {
           window.open(
-            `${ORG_ROUTE_PREFIX}/${organization.slug}/api-dashboard`,
+            `${ORG_ROUTE_PREFIX}/${organization?.slug}/api-dashboard`,
             "_self"
           );
         }

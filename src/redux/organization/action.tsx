@@ -15,6 +15,7 @@ import { getOrganization, getUser } from "./selector";
 import { getAuthStatus } from "../auth/selector";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import { IntegrationsToConnectToMap } from "src/screens/Integrations/integrationsToConnectTo";
+import { Constants } from "src/utils/constants";
 
 const SET_SIDEBAR_WIDTH = "SET_SIDEBAR_WIDTH";
 type SET_SIDEBAR_WIDTH = typeof SET_SIDEBAR_WIDTH;
@@ -163,9 +164,13 @@ export const useFetchMyOrganization = () => {
       if (!user || authStatus !== "SIGNED_IN") {
         return;
       }
+      const shouldUseOrgPathInstead =
+        user.isAdmin && Constants.overrideOrgIdForAdmins;
       setIsFetching(true);
       const res = await Api.organization.getOrganization(
-        user.organizationId as string
+        shouldUseOrgPathInstead
+          ? Constants.overrideOrgIdForAdmins
+          : (user.organizationId as string)
       );
       const organization = res.data;
       dispatch(setOrganization(organization));
