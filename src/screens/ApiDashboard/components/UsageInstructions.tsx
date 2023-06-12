@@ -34,7 +34,7 @@ export const UsageInstructions = () => {
         calls to Logtree in a try/catch so if a call fails, your system does not
         fail.
       </label>
-      <label style={{ ...styles.title, paddingTop: 40 }}>
+      {/* <label style={{ ...styles.title, paddingTop: 40 }}>
         To get the most recent logs from Logtree, make an HTTP request that
         looks like this:
       </label>
@@ -51,7 +51,7 @@ export const UsageInstructions = () => {
         regardless of where they were logged. The response will be an array
         sorted in descending order by the date the log was created at, with a
         maximum of 100 logs being returned.
-      </label>
+      </label> */}
     </div>
   );
 };
