@@ -121,7 +121,8 @@ export const Histograms = ({
           </Grid>
           {isViewingAll && moreHistogramsAreNotShown ? (
             <label style={styles.onlySomeShownLbl}>
-              Only the 20 most recently active histograms are shown.
+              Only the {histograms.length} most recently active histograms are
+              shown.
             </label>
           ) : null}
         </>
