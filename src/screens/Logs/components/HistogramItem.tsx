@@ -15,7 +15,7 @@ import {
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
 import { Colors } from "src/utils/colors";
-import { shortenString } from "src/utils/helpers";
+import { inferIdType, shortenString } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
@@ -24,6 +24,7 @@ import { useHistory, useLocation } from "react-router-dom";
 
 export type StatHistogram = {
   contentKey: string;
+  numReferenceIdsAffected: number;
   histogramData: {
     count: number;
     floorDate: Date;
@@ -54,6 +55,7 @@ const CustomTooltip = ({
 type Props = {
   histogram: StatHistogram;
   isVisualizingByReferenceId: boolean;
+  firstLogId?: string;
 };
 
 const MAX_CONTENT_KEY_LENGTH = 55;
@@ -61,6 +63,7 @@ const MAX_CONTENT_KEY_LENGTH = 55;
 export const HistogramItem = ({
   histogram,
   isVisualizingByReferenceId,
+  firstLogId,
 }: Props) => {
   const history = useHistory();
   const location = useLocation();
@@ -138,6 +141,12 @@ export const HistogramItem = ({
           </a>
         </AntdTooltip>
         <label style={styles.timeAgo}>Last {timeAgo}</label>
+        {isVisualizingByReferenceId || !firstLogId ? null : (
+          <label style={styles.numAffected}>
+            {histogram.numReferenceIdsAffected}{" "}
+            {inferIdType(firstLogId, histogram.numReferenceIdsAffected)}
+          </label>
+        )}
       </div>
       <div style={styles.graphContainer}>
         <ResponsiveContainer width="100%" height={60}>
@@ -169,7 +178,7 @@ const styles: StylesType = {
     borderRadius: 4,
     backgroundColor: Colors.white,
     width: "100%",
-    height: 120,
+    height: 150,
     marginBottom: 20,
     outline: "none",
     borderStyle: "solid",
@@ -216,6 +225,12 @@ const styles: StylesType = {
     color: Colors.darkerGray,
     fontSize: 12,
     fontWeight: 300,
+  },
+  numAffected: {
+    color: Colors.darkerGray,
+    fontSize: 12,
+    fontWeight: 300,
+    paddingTop: 3,
   },
   graphContainer: {
     width: "100%",

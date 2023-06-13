@@ -18,6 +18,7 @@ type Props = {
   isLoading: boolean;
   is24HourTimeframe: boolean;
   switchTimeInterval: () => void;
+  firstLogId?: string;
 };
 
 const PREVIEW_AMOUNT = 2;
@@ -30,6 +31,7 @@ export const Histograms = ({
   isLoading,
   is24HourTimeframe,
   switchTimeInterval,
+  firstLogId,
 }: Props) => {
   const organization = useSelector(getOrganization);
   const frontendFolder = useFindFrontendFolderFromUrl();
@@ -111,6 +113,7 @@ export const Histograms = ({
                   <HistogramItem
                     histogram={histogram}
                     isVisualizingByReferenceId={isHistogramByReferenceId}
+                    firstLogId={firstLogId}
                   />
                 </Col>
               ))}

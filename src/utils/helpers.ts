@@ -88,3 +88,20 @@ export const isValidJsonString = (str: string) => {
   }
   return true;
 };
+
+export const inferIdType = (idExample: string, count: number) => {
+  if (!idExample) {
+    return count === 1 ? "ID" : "IDs";
+  } else if (idExample.includes("@") && idExample.includes(".")) {
+    // likely email
+    return count === 1 ? "user" : "users";
+  } else if (
+    idExample.length >= 10 &&
+    idExample.length <= 15 &&
+    !isNaN(Number(idExample.slice(1)))
+  ) {
+    // likely phone number
+    return count === 1 ? "user" : "users";
+  }
+  return count === 1 ? "ID" : "IDs";
+};

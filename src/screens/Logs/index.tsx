@@ -179,6 +179,7 @@ export const LogsScreen = () => {
             isLoading={isFolderStatsLoading}
             is24HourTimeframe={is24HourTimeframe}
             switchTimeInterval={switchTimeInterval}
+            firstLogId={logs[0]?.referenceId}
           />
         )}
         {areHistogramsHidden ? (
