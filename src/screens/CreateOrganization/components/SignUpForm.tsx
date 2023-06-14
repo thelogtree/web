@@ -18,6 +18,9 @@ export const SignUpForm = () => {
       if (!email || !password || !organizationName) {
         throw new Error("Please fill in all the details.");
       }
+      if (password.length < 6) {
+        throw new Error("Your password must be at least 6 characters long.");
+      }
       setIsLoading(true);
       await Api.organization.createAccountAndOrganization(
         organizationName,
