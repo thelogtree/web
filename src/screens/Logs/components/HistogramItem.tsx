@@ -160,7 +160,7 @@ export const HistogramItem = ({
               cursor={false}
               position={{ y: 28 }}
             />
-            <Bar dataKey="count" fill={Colors.purple500} barSize={25} />
+            <Bar dataKey="count" fill={Colors.purple500} barSize={110} />
           </BarChart>
         </ResponsiveContainer>
       </div>
