@@ -8,7 +8,11 @@ import {
   useFetchMyRules,
 } from "src/redux/actionIndex";
 import { getAuthStatus } from "src/redux/auth/selector";
-import { getOrganization, getUser } from "src/redux/organization/selector";
+import {
+  getDashboards,
+  getOrganization,
+  getUser,
+} from "src/redux/organization/selector";
 
 import firebase from "../firebaseConfig";
 import { setAuthStatus } from "../redux/auth/action";
@@ -44,7 +48,7 @@ export const SetupApp = () => {
   const organization = useSelector(getOrganization);
   const authStatus = useSelector(getAuthStatus);
   const path = getFirstPathWithSlash(activePathname);
-  const currentDashboard = useCurrentDashboard(true);
+  const dashboards = useSelector(getDashboards);
   const { navigateIfLost } = useNavigateToDashboardIfLost();
 
   useEffect(() => {
@@ -84,7 +88,7 @@ export const SetupApp = () => {
     ) {
       window.open("/", "_self");
     }
-  }, [user?._id, organization?.slug, authStatus, currentDashboard?._id]);
+  }, [user?._id, organization?.slug, authStatus, !!dashboards.length]);
 
   useEffect(() => {
     if (authStatus === "SIGNED_IN") {

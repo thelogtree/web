@@ -8,6 +8,9 @@ import {
 import { Select } from "antd";
 import { useHistory } from "react-router-dom";
 import { DASHBOARD_ROUTE_PREFIX, ORG_ROUTE_PREFIX } from "src/RouteManager";
+import { StylesType } from "src/utils/styles";
+import { Colors } from "src/utils/colors";
+import "../index.css";
 
 export const DashboardPicker = () => {
   const history = useHistory();
@@ -30,12 +33,13 @@ export const DashboardPicker = () => {
     <Select
       defaultValue={currentDashboard._id.toString()}
       value={currentDashboard._id.toString()}
-      style={{ width: 120 }}
       onChange={_handleChange}
       options={dashboards.map((dashboard) => ({
         label: dashboard.title,
         value: dashboard._id.toString(),
       }))}
+      className="ant-select-selector"
+      showArrow={false}
     />
   );
 };

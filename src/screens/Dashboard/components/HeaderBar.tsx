@@ -1,7 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { getDashboards } from "src/redux/organization/selector";
+import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
+import { DashboardPicker } from "./DashboardPicker";
 
 export const HeaderBar = () => {
   const dashboards = useSelector(getDashboards);
@@ -10,12 +12,16 @@ export const HeaderBar = () => {
     return <div style={styles.container} />;
   }
 
-  return <div style={styles.container}></div>;
+  return (
+    <div style={styles.container}>
+      <DashboardPicker />
+    </div>
+  );
 };
 
 const styles: StylesType = {
   container: {
-    position: "sticky",
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
@@ -24,5 +30,9 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    backgroundColor: Colors.black,
+    zIndex: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 };

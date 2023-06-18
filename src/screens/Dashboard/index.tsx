@@ -6,6 +6,7 @@ import { useCurrentDashboard } from "./lib";
 import { StylesType } from "src/utils/styles";
 import { HeaderBar } from "./components/HeaderBar";
 import { Canvas } from "./components/Canvas";
+import "./index.css";
 
 export const DashboardScreen = () => {
   const organization = useSelector(getOrganization);
