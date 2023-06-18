@@ -58,3 +58,14 @@ export const getConnectableIntegrations = createSelector(
   (organizationReducer: OrganizationReducerType) =>
     organizationReducer.connectableIntegrations
 );
+
+export const getDashboards = createSelector(
+  [getOrganizationReducer],
+  (organizationReducer: OrganizationReducerType) =>
+    organizationReducer.dashboards
+);
+
+export const getWidgets = createSelector(
+  [getOrganizationReducer],
+  (organizationReducer: OrganizationReducerType) => organizationReducer.widgets
+);

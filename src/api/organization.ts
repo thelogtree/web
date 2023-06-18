@@ -277,4 +277,18 @@ export const organization = {
       folderPathsInOrder,
       forwardToChannelPath,
     }),
+  getDashboards: (organizationId: string) =>
+    axios.get(routeUrl + `/${organizationId}/dashboards`),
+  getWidgets: (organizationId: string, dashboardId: string) =>
+    axios.get(routeUrl + `/${organizationId}/widgets`, {
+      params: {
+        dashboardId,
+      },
+    }),
+  loadWidget: (organizationId: string, widgetId: string) =>
+    axios.get(routeUrl + `/${organizationId}/widget`, {
+      params: {
+        widgetId,
+      },
+    }),
 };

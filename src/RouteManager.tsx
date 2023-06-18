@@ -27,10 +27,12 @@ import { GlobalSearchScreen } from "./screens/GlobalSearch";
 import { CreateOrganizationScreen } from "./screens/CreateOrganization";
 import { FunnelsScreen } from "./screens/Funnels";
 import { LandingPageProjects } from "./screens/LandingPageProjects";
+import { DashboardScreen } from "./screens/Dashboard";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
 export const ORG_ROUTE_PREFIX = "/org";
+export const DASHBOARD_ROUTE_PREFIX = "/dashboard";
 export const CONNECTION_ROUTE_PREFIX = "/connection";
 
 export const SUPPORT_TOOL_SUFFIX = "/journey";
@@ -102,6 +104,10 @@ export const RouteManager = () => {
           <Route
             path={`${ORG_ROUTE_PREFIX}/:slug/integrations`}
             component={IntegrationsScreen}
+          />
+          <Route
+            path={`${ORG_ROUTE_PREFIX}/:slug${DASHBOARD_ROUTE_PREFIX}/:dashboardId`}
+            component={DashboardScreen}
           />
           <Route path="/invite/:slug/:id" component={InviteScreen} />
           <Route

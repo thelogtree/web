@@ -1,21 +1,25 @@
 import * as Sentry from "@sentry/react";
 import {
+  DashboardDocument,
   FunnelDocument,
   IntegrationDocument,
   OrganizationDocument,
   RuleDocument,
   UserDocument,
+  WidgetDocument,
   integrationTypeEnum,
 } from "logtree-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Api } from "../../api";
-import { getOrganization, getUser } from "./selector";
+import { getOrganization, getUser, getWidgets } from "./selector";
 import { getAuthStatus } from "../auth/selector";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import { IntegrationsToConnectToMap } from "src/screens/Integrations/integrationsToConnectTo";
 import { Constants } from "src/utils/constants";
+import { useCurrentDashboard } from "src/screens/Dashboard/lib";
+import { FrontendWidget } from "./reducer";
 
 const SET_SIDEBAR_WIDTH = "SET_SIDEBAR_WIDTH";
 type SET_SIDEBAR_WIDTH = typeof SET_SIDEBAR_WIDTH;
@@ -37,6 +41,10 @@ const SET_CONNECTABLE_INTEGRATIONS = "SET_CONNECTABLE_INTEGRATIONS";
 type SET_CONNECTABLE_INTEGRATIONS = typeof SET_CONNECTABLE_INTEGRATIONS;
 const SET_FUNNELS = "SET_FUNNELS";
 type SET_FUNNELS = typeof SET_FUNNELS;
+const SET_DASHBOARDS = "SET_DASHBOARDS";
+type SET_DASHBOARDS = typeof SET_DASHBOARDS;
+const SET_WIDGETS = "SET_WIDGETS";
+type SET_WIDGETS = typeof SET_WIDGETS;
 
 type ISetSidebarWidth = {
   type: SET_SIDEBAR_WIDTH;
@@ -138,6 +146,26 @@ export const setFunnels = (funnels: FunnelDocument[]): ISetFunnels => ({
   funnels,
 });
 
+type ISetDashboards = {
+  type: SET_DASHBOARDS;
+  dashboards: DashboardDocument[];
+};
+export const setDashboards = (
+  dashboards: DashboardDocument[]
+): ISetDashboards => ({
+  type: SET_DASHBOARDS,
+  dashboards,
+});
+
+type ISetWidgets = {
+  type: SET_WIDGETS;
+  widgets: FrontendWidget[];
+};
+export const setWidgets = (widgets: FrontendWidget[]): ISetWidgets => ({
+  type: SET_WIDGETS,
+  widgets,
+});
+
 // actions identifiable by the reducer
 export type OrganizationActionsIndex =
   | ISetOrganization
@@ -149,7 +177,9 @@ export type OrganizationActionsIndex =
   | ISetSidebarWidth
   | ISetIntegrations
   | ISetConnectableIntegrations
-  | ISetFunnels;
+  | ISetFunnels
+  | ISetDashboards
+  | ISetWidgets;
 
 // api-related actions
 export const useFetchMyOrganization = () => {
@@ -376,6 +406,107 @@ export const useFetchIntegrations = (
     setIsFetching(false);
     return wasSuccessful;
   };
+
+  return { fetch, isFetching };
+};
+
+export const useFetchDashboards = () => {
+  const dispatch = useDispatch();
+  const organization = useSelector(getOrganization);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  const fetch = async () => {
+    let wasSuccessful = false;
+    try {
+      setIsFetching(true);
+      const res = await Api.organization.getDashboards(
+        organization!._id.toString()
+      );
+      const { dashboards } = res.data;
+      dispatch(setDashboards(dashboards));
+      wasSuccessful = true;
+    } catch (e) {
+      Sentry.captureException(e);
+      dispatch(setDashboards([]));
+    }
+    setIsFetching(false);
+    return wasSuccessful;
+  };
+
+  return { fetch, isFetching };
+};
+
+export const useFetchWidgetsWithData = (overrideInitialIsLoading?: boolean) => {
+  const dispatch = useDispatch();
+  const organization = useSelector(getOrganization);
+  const currentDashboard = useCurrentDashboard();
+  const widgets = useSelector(getWidgets);
+  const [isFetchingWidgetData, setIsFetchingWidgetData] =
+    useState<boolean>(false);
+  const [isFetching, setIsFetching] = useState<boolean>(
+    overrideInitialIsLoading || false
+  );
+  const widgetIds = widgets.map((w) => w.widget._id);
+
+  const fetch = async () => {
+    let wasSuccessful = false;
+    try {
+      if (!currentDashboard) {
+        return;
+      }
+      setIsFetching(true);
+      const res = await Api.organization.getWidgets(
+        organization!._id.toString(),
+        currentDashboard!._id.toString()
+      );
+      const { widgets } = res.data;
+      dispatch(
+        setWidgets(
+          widgets.map((w) => ({
+            widget: w,
+            data: null,
+          }))
+        )
+      );
+      wasSuccessful = true;
+    } catch (e) {
+      Sentry.captureException(e);
+      dispatch(setWidgets([]));
+    }
+    setIsFetching(false);
+    return wasSuccessful;
+  };
+
+  const _fetchDataForWidgets = async () => {
+    if (isFetchingWidgetData) {
+      return;
+    }
+    setIsFetchingWidgetData(true);
+    const hydratedWidgets = await Promise.all(
+      widgets.map(async (w) => {
+        const { widget } = w;
+        try {
+          const res = await Api.organization.loadWidget(
+            organization!._id.toString(),
+            widget!._id.toString()
+          );
+          const data = res.data.data ?? null;
+          return { widget, data };
+        } catch (e) {
+          console.error(e);
+          return w;
+        }
+      })
+    );
+    setWidgets(hydratedWidgets);
+    setIsFetchingWidgetData(false);
+  };
+
+  useEffect(() => {
+    if (widgetIds.length) {
+      _fetchDataForWidgets();
+    }
+  }, [JSON.stringify(widgetIds)]);
 
   return { fetch, isFetching };
 };
