@@ -1,5 +1,5 @@
 import React from "react";
-import { useCurrentDashboard } from "../lib";
+import { LOCAL_STORAGE_DASHBOARD_ID_KEY, useCurrentDashboard } from "../lib";
 import { useSelector } from "react-redux";
 import {
   getDashboards,
@@ -16,6 +16,7 @@ export const DashboardPicker = () => {
   const currentDashboard = useCurrentDashboard();
 
   const _handleChange = (dashboardId: string) => {
+    localStorage.setItem(LOCAL_STORAGE_DASHBOARD_ID_KEY, dashboardId);
     history.push(
       `${ORG_ROUTE_PREFIX}/${organization?.slug}${DASHBOARD_ROUTE_PREFIX}/${dashboardId}`
     );
