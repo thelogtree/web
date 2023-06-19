@@ -3,7 +3,8 @@
   color: white !important;
   border-color: white !important;
   border-radius: 50px !important;
-  width: 120px;
+  min-width: 140px;
+  max-width: 220px;
   opacity: 1 !important;
   text-align: center;
 }
