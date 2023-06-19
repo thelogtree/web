@@ -32,14 +32,32 @@ export const DashboardPicker = () => {
   return (
     <Select
       defaultValue={currentDashboard._id.toString()}
-      value={currentDashboard._id.toString()}
+      value={
+        {
+          value: currentDashboard._id.toString(),
+          label: (
+            <label style={styles.mainSelectLabel}>
+              {currentDashboard.title}
+            </label>
+          ),
+        } as any
+      }
       onChange={_handleChange}
       options={dashboards.map((dashboard) => ({
         label: dashboard.title,
         value: dashboard._id.toString(),
       }))}
-      className="ant-select-selector"
+      labelInValue={true}
       showArrow={false}
+      dropdownStyle={{ minWidth: 200 }}
     />
   );
+};
+
+const styles: StylesType = {
+  mainSelectLabel: {
+    color: "white",
+    opacity: 1,
+    cursor: "pointer",
+  },
 };
