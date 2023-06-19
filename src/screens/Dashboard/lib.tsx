@@ -2,6 +2,7 @@ import {
   DashboardDocument,
   PositionType,
   SizeType,
+  WidgetDocument,
   widgetType,
 } from "logtree-types";
 import React, {
@@ -15,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { DASHBOARD_ROUTE_PREFIX, ORG_ROUTE_PREFIX } from "src/RouteManager";
 import { setCanAddWidget, useFetchDashboards } from "src/redux/actionIndex";
+import { FrontendWidget } from "src/redux/organization/reducer";
 import {
   getCanAddWidget,
   getDashboards,
@@ -128,7 +130,8 @@ export const useDesignWidgetShape = () => {
     };
   }, [isErrorVisible]);
 
-  const handleMouseDown = (event) => {
+  const handleMouseDown = (event: React.MouseEvent) => {
+    event.stopPropagation();
     if (!canAddWidget) {
       return;
     }
@@ -142,7 +145,8 @@ export const useDesignWidgetShape = () => {
     setBoxPosition({ x: offsetX, y: offsetY });
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (event: React.MouseEvent) => {
+    event.stopPropagation();
     if (!isDragging) {
       return;
     }
@@ -155,7 +159,8 @@ export const useDesignWidgetShape = () => {
     setIsDragging(false);
   };
 
-  const handleMouseMove = (event) => {
+  const handleMouseMove = (event: React.MouseEvent) => {
+    event.stopPropagation();
     if (!isDragging || !canAddWidget || !canvasRef.current) {
       return;
     }
@@ -206,6 +211,53 @@ export const useDesignWidgetShape = () => {
     isErrorVisible,
     newWidgets,
     setNewWidgets,
+  };
+};
+
+export const useDragWidget = (
+  widgets: NewFrontendWidget[],
+  indexInArr: number,
+  setWidgets: (widgets: NewFrontendWidget[]) => void
+) => {
+  const widget = widgets[indexInArr];
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+
+  const _changePosition = (event: React.MouseEvent) => {
+    const newX = event.clientX;
+    const newY = event.clientY;
+    const newWidgetTemp = {
+      ...widget,
+      position: {
+        x: newX,
+        y: newY,
+      },
+    };
+    let newWidgetsTemp = widgets.slice();
+    newWidgetsTemp[indexInArr] = newWidgetTemp;
+    setWidgets(newWidgetsTemp);
+  };
+
+  const onMouseDown = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const onMouseMove = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    if (!isDragging) {
+      return;
+    }
+    _changePosition(event);
+  };
+
+  const onMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  return {
+    onMouseDown,
+    onMouseMove,
+    onMouseUp,
   };
 };
 

@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { EventHandler, useMemo, useState } from "react";
 import {
   NewFrontendWidget,
   getAdjustedPositionAndSizeOfWidget,
   useCurrentDashboard,
+  useDragWidget,
 } from "../lib";
 import { SharedStyles, StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
@@ -74,8 +75,9 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     setNewWidgets(newWidgetsTemp);
   };
 
-  const _onSave = async () => {
+  const _onSave = async (e: React.MouseEvent) => {
     try {
+      e.stopPropagation();
       if (!canSave) {
         return;
       }
