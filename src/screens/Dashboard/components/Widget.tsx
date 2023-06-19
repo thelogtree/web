@@ -1,7 +1,7 @@
 import { widgetType } from "logtree-types";
 import React, { useState } from "react";
 import { FrontendWidget } from "src/redux/organization/reducer";
-import { LogsList } from "src/screens/Logs/components/LogsList";
+import { LogsList } from "src/screens/Dashboard/components/LogsList";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
@@ -31,18 +31,7 @@ export const Widget = ({ widgetObj }: Props) => {
 
     switch (widget.type) {
       case widgetType.Logs:
-        const endOfFeedText =
-          data.length >= 50
-            ? "There are more events not shown."
-            : "There are no more events to show.";
-        return (
-          <LogsList
-            logs={data}
-            isSearchQueued={false}
-            isLoading={false}
-            endOfFeedText={endOfFeedText}
-          />
-        );
+        return <LogsList logs={data} />;
       default:
         return null;
     }

@@ -30,6 +30,6 @@ const styles: StylesType = {
   label: {
     color: Colors.red,
     fontSize: 15,
-    fontFamily: "Archivo",
+    fontFamily: "Inter",
   },
 };

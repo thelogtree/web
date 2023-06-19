@@ -127,50 +127,54 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
         ...adjustedPositionAndSize,
       }}
     >
-      <input
-        value={newWidget.title}
-        onChange={(e) => _handleTitleChange(e.target.value)}
-        placeholder="Title"
-        style={styles.titleInput}
-      />
-      {newWidget.folderPaths.map((folderPath, index) => (
-        <Select
-          key={index}
-          showSearch
-          placeholder="Select a channel"
-          optionFilterProp="children"
-          onChange={(val) => _handleFolderPathChange(val, index)}
-          filterOption={(input, option) =>
-            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-          }
-          options={flattenedFoldersMapped}
-          disabled={isCreating}
-          value={folderPath}
-          style={styles.selectStyle}
+      <div style={styles.innerTop}>
+        <input
+          value={newWidget.title}
+          onChange={(e) => _handleTitleChange(e.target.value)}
+          placeholder="Add a title"
+          style={styles.titleInput}
         />
-      ))}
-      <label style={styles.queryLbl}>
-        Optionally, only show events that have a specific word or phrase
-      </label>
-      <input
-        value={newWidget.query || ""}
-        onChange={(e) => _handleQueryChange(e.target.value)}
-        placeholder="Query"
-        style={styles.queryInput}
-      />
-      <button style={styles.discardBtn} onClick={_onDiscard}>
-        Discard
-      </button>
-      <button
-        style={{
-          ...styles.saveBtn,
-          ...(!canSave && SharedStyles.loadingButton),
-        }}
-        onClick={_onSave}
-        disabled={!canSave}
-      >
-        {isCreating ? "Generating..." : "Generate"}
-      </button>
+        {newWidget.folderPaths.map((folderPath, index) => (
+          <Select
+            key={index}
+            showSearch
+            placeholder="Select a channel"
+            optionFilterProp="children"
+            onChange={(val) => _handleFolderPathChange(val, index)}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+            options={flattenedFoldersMapped}
+            disabled={isCreating}
+            value={folderPath}
+            style={styles.selectStyle}
+          />
+        ))}
+        <label style={styles.queryLbl}>
+          Optionally, only show events that have a specific word or phrase
+        </label>
+        <input
+          value={newWidget.query || ""}
+          onChange={(e) => _handleQueryChange(e.target.value)}
+          placeholder="Query"
+          style={styles.queryInput}
+        />
+      </div>
+      <div style={styles.innerBottom}>
+        <button style={styles.discardBtn} onClick={_onDiscard}>
+          Discard
+        </button>
+        <button
+          style={{
+            ...styles.saveBtn,
+            ...(!canSave && SharedStyles.loadingButton),
+          }}
+          onClick={_onSave}
+          disabled={!canSave}
+        >
+          {isCreating ? "Generating..." : "Generate"}
+        </button>
+      </div>
     </div>
   );
 };
@@ -179,7 +183,7 @@ const styles: StylesType = {
   container: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     alignItems: "flex-start",
     padding: 20,
     borderRadius: 20,
@@ -191,12 +195,27 @@ const styles: StylesType = {
     position: "absolute",
     zIndex: 11,
   },
+  innerTop: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    width: "100%",
+  },
+  innerBottom: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "flex-start",
+    width: "100%",
+  },
   titleInput: {
-    fontSize: 18,
-    fontWeight: 500,
+    fontSize: 24,
+    fontWeight: 600,
     outline: "none",
     border: "none",
     backgroundColor: Colors.transparent,
+    marginBottom: 10,
   },
   folderPathItem: {
     display: "flex",
@@ -208,26 +227,31 @@ const styles: StylesType = {
   selectStyle: {
     width: "80%",
     maxWidth: 250,
-    textAlign: "left",
     color: Colors.darkGray,
   },
   queryLbl: {
     color: Colors.darkerGray,
     fontSize: 13,
-    paddingTop: 12,
+    paddingTop: 20,
+    paddingBottom: 6,
   },
   queryInput: {
     fontSize: 14,
-    outline: "none",
-    border: "none",
     backgroundColor: Colors.transparent,
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
+    padding: 10,
+    width: "80%",
+    maxWidth: 400,
+    borderRadius: 10,
   },
   saveBtn: {
     width: "100%",
     height: 35,
     backgroundColor: Colors.black,
     color: Colors.white,
-    marginTop: 5,
+    marginTop: 12,
     outline: "none",
     border: "none",
     cursor: "pointer",
@@ -241,5 +265,6 @@ const styles: StylesType = {
     outline: "none",
     border: "none",
     cursor: "pointer",
+    fontSize: 13,
   },
 };
