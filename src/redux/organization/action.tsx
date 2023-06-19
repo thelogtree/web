@@ -45,6 +45,8 @@ const SET_DASHBOARDS = "SET_DASHBOARDS";
 type SET_DASHBOARDS = typeof SET_DASHBOARDS;
 const SET_WIDGETS = "SET_WIDGETS";
 type SET_WIDGETS = typeof SET_WIDGETS;
+const SET_CAN_ADD_WIDGET = "SET_CAN_ADD_WIDGET";
+type SET_CAN_ADD_WIDGET = typeof SET_CAN_ADD_WIDGET;
 
 type ISetSidebarWidth = {
   type: SET_SIDEBAR_WIDTH;
@@ -166,6 +168,15 @@ export const setWidgets = (widgets: FrontendWidget[]): ISetWidgets => ({
   widgets,
 });
 
+type ISetCanAddWidget = {
+  type: SET_CAN_ADD_WIDGET;
+  canAddWidget: boolean;
+};
+export const setCanAddWidget = (canAddWidget: boolean): ISetCanAddWidget => ({
+  type: SET_CAN_ADD_WIDGET,
+  canAddWidget,
+});
+
 // actions identifiable by the reducer
 export type OrganizationActionsIndex =
   | ISetOrganization
@@ -179,7 +190,8 @@ export type OrganizationActionsIndex =
   | ISetConnectableIntegrations
   | ISetFunnels
   | ISetDashboards
-  | ISetWidgets;
+  | ISetWidgets
+  | ISetCanAddWidget;
 
 // api-related actions
 export const useFetchMyOrganization = () => {

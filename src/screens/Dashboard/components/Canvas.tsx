@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { getWidgets } from "src/redux/organization/selector";
+import { getCanAddWidget, getWidgets } from "src/redux/organization/selector";
 import { StylesType } from "src/utils/styles";
 import { Widget } from "./Widget";
 import { LoadingSpinnerFullScreen } from "src/sharedComponents/LoadingSpinnerFullScreen";
@@ -11,9 +11,15 @@ type Props = {
 
 export const Canvas = ({ isFetching }: Props) => {
   const widgets = useSelector(getWidgets);
+  const isInAddWidgetMode = useSelector(getCanAddWidget);
 
   return (
-    <div style={styles.container}>
+    <div
+      style={{
+        ...styles.container,
+        ...(isInAddWidgetMode && { cursor: "crosshair" }),
+      }}
+    >
       {isFetching ? (
         <LoadingSpinnerFullScreen />
       ) : (

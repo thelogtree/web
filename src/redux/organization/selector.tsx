@@ -69,3 +69,9 @@ export const getWidgets = createSelector(
   [getOrganizationReducer],
   (organizationReducer: OrganizationReducerType) => organizationReducer.widgets
 );
+
+export const getCanAddWidget = createSelector(
+  [getOrganizationReducer],
+  (organizationReducer: OrganizationReducerType) =>
+    organizationReducer.canAddWidget
+);

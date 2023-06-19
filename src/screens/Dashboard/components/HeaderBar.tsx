@@ -4,6 +4,7 @@ import { getDashboards } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import { DashboardPicker } from "./DashboardPicker";
+import { ToggleAddWidgetMode } from "./ToggleAddWidgetMode";
 
 export const HeaderBar = () => {
   const dashboards = useSelector(getDashboards);
@@ -15,6 +16,7 @@ export const HeaderBar = () => {
   return (
     <div style={styles.container}>
       <DashboardPicker />
+      <ToggleAddWidgetMode />
     </div>
   );
 };
@@ -33,6 +35,5 @@ const styles: StylesType = {
     backgroundColor: Colors.black,
     zIndex: 10,
     paddingLeft: 20,
-    paddingRight: 20,
   },
 };
