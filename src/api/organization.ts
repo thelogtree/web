@@ -314,4 +314,8 @@ export const organization = {
       size,
       query,
     }),
+  deleteWidget: (organizationId: string, widgetId: string) =>
+    axios.post(routeUrl + `/${organizationId}/delete-widget`, {
+      widgetId,
+    }),
 };

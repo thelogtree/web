@@ -1,17 +1,19 @@
 import { widgetType } from "logtree-types";
-import React from "react";
+import React, { useState } from "react";
 import { FrontendWidget } from "src/redux/organization/reducer";
 import { LogsList } from "src/screens/Logs/components/LogsList";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import { getAdjustedPositionAndSizeOfWidget } from "../lib";
+import { DeleteWidgetButton } from "./DeleteWidgetButton";
 
 type Props = {
   widgetObj: FrontendWidget;
 };
 
 export const Widget = ({ widgetObj }: Props) => {
+  const [isHovering, setIsHovering] = useState<boolean>(false);
   const { widget, data } = widgetObj;
   const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
     widget.position,
@@ -52,8 +54,11 @@ export const Widget = ({ widgetObj }: Props) => {
         ...styles.container,
         ...adjustedPositionAndSize,
       }}
+      onMouseOver={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
     >
       <label style={styles.title}>{widget.title}</label>
+      <DeleteWidgetButton widget={widget} isVisible={isHovering} />
       <label style={styles.description}>Live</label>
       {_renderData()}
     </div>
@@ -84,9 +89,17 @@ const styles: StylesType = {
   },
   description: {
     color: Colors.gray,
-    paddingTop: 2,
+    paddingTop: 6,
+    paddingBottom: 12,
   },
   loadingContainer: {
-    width: "100%",
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 };

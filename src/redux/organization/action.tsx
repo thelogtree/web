@@ -472,14 +472,24 @@ export const useFetchWidgetsWithData = (overrideInitialIsLoading?: boolean) => {
         currentDashboard!._id.toString()
       );
       const { widgets: fetchedWidgets } = res.data;
-      dispatch(
-        setWidgets(
-          fetchedWidgets.map((w) => ({
+      const newWidgets = fetchedWidgets.map((w) => {
+        const existingWidget = widgets.find(
+          (someExistingWidget) =>
+            someExistingWidget.widget._id.toString() === w._id
+        );
+        if (existingWidget) {
+          return {
             widget: w,
-            data: null,
-          }))
-        )
-      );
+            data: existingWidget.data, // don't clear data if we had it before
+          };
+        }
+        return {
+          widget: w,
+          data: null,
+        };
+      });
+      dispatch(setWidgets(newWidgets));
+      _fetchDataForWidgets(newWidgets);
       wasSuccessful = true;
     } catch (e) {
       Sentry.captureException(e);
@@ -489,13 +499,13 @@ export const useFetchWidgetsWithData = (overrideInitialIsLoading?: boolean) => {
     return wasSuccessful;
   };
 
-  const _fetchDataForWidgets = async () => {
+  const _fetchDataForWidgets = async (inputWidgets: FrontendWidget[]) => {
     if (isFetchingWidgetData) {
       return;
     }
     setIsFetchingWidgetData(true);
     const hydratedWidgets = await Promise.all(
-      widgets.map(async (w) => {
+      inputWidgets.map(async (w) => {
         const { widget } = w;
         try {
           const res = await Api.organization.loadWidget(
@@ -513,12 +523,6 @@ export const useFetchWidgetsWithData = (overrideInitialIsLoading?: boolean) => {
     dispatch(setWidgets(hydratedWidgets));
     setIsFetchingWidgetData(false);
   };
-
-  useEffect(() => {
-    if (widgetIds.length) {
-      _fetchDataForWidgets();
-    }
-  }, [JSON.stringify(widgetIds)]);
 
   return { fetch, isFetching };
 };
