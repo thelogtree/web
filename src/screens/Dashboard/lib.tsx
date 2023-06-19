@@ -173,12 +173,14 @@ export const getAdjustedPositionAndSizeOfWidget = (
       size: { width: size.width, height: newHeight },
     };
   } else if (size.width < 0 && size.height >= 0) {
-    // need to flip the width
+    // need to flip the width and height but not the y position
+    const newHeight = Math.abs(size.height);
+    const newY = position.y;
     const newWidth = Math.abs(size.width);
     const newX = position.x + size.width;
     return {
-      position: { y: position.y, x: newX },
-      size: { width: newWidth, height: size.width },
+      position: { y: newY, x: newX },
+      size: { width: newWidth, height: newHeight },
     };
   } else {
     // need to flip both
