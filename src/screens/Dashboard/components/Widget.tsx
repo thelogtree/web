@@ -5,6 +5,7 @@ import { LogsList } from "src/screens/Logs/components/LogsList";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
+import { getAdjustedPositionAndSizeOfWidget } from "../lib";
 
 type Props = {
   widgetObj: FrontendWidget;
@@ -12,6 +13,10 @@ type Props = {
 
 export const Widget = ({ widgetObj }: Props) => {
   const { widget, data } = widgetObj;
+  const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
+    widget.position,
+    widget.size
+  );
 
   const _renderData = () => {
     if (!data) {
@@ -45,10 +50,10 @@ export const Widget = ({ widgetObj }: Props) => {
     <div
       style={{
         ...styles.container,
-        width: widget.size.width,
-        height: widget.size.height,
-        top: widget.position.y,
-        left: widget.position.x,
+        width: adjustedPositionAndSize.size.width,
+        height: adjustedPositionAndSize.size.height,
+        top: adjustedPositionAndSize.position.y,
+        left: adjustedPositionAndSize.position.x,
       }}
     >
       <label style={styles.title}>{widget.title}</label>
