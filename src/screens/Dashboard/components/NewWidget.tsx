@@ -108,6 +108,11 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     setIsCreating(false);
   };
 
+  const _onDiscard = () => {
+    const newWidgetsTemp = newWidgets.filter((_, i) => i !== indexInArr);
+    setNewWidgets(newWidgetsTemp);
+  };
+
   const flattenedFoldersMapped = useMemo(() => {
     return flattenedFolders.map((folder) => ({
       value: folder.fullPath,
@@ -153,6 +158,9 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
         placeholder="Query"
         style={styles.queryInput}
       />
+      <button style={styles.discardBtn} onClick={_onDiscard}>
+        Discard
+      </button>
       <button
         style={{
           ...styles.saveBtn,
@@ -219,10 +227,19 @@ const styles: StylesType = {
     height: 35,
     backgroundColor: Colors.black,
     color: Colors.white,
-    marginTop: 15,
+    marginTop: 5,
     outline: "none",
     border: "none",
     cursor: "pointer",
     borderRadius: 10,
+  },
+  discardBtn: {
+    width: "100%",
+    backgroundColor: Colors.transparent,
+    color: Colors.red,
+    marginTop: 15,
+    outline: "none",
+    border: "none",
+    cursor: "pointer",
   },
 };

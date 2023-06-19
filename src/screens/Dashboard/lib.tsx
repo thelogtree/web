@@ -99,7 +99,7 @@ export const useDesignWidgetShape = () => {
   const [newWidgets, setNewWidgets] = useState<NewFrontendWidget[]>([]);
   const [isErrorVisible, setIsErrorVisible] = useState<boolean>(false);
   const canvasRef = useRef(null);
-  const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
+  const placeholderWidgetAdjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
     boxPosition,
     boxSize
   );
@@ -172,20 +172,6 @@ export const useDesignWidgetShape = () => {
     setBoxSize({ width: newWidth, height: newHeight });
   };
 
-  const NewWidgetBox = () => {
-    if (!isDragging || !canAddWidget) {
-      return null;
-    }
-    return (
-      <div
-        style={{
-          ...styles.newWidgetBox,
-          ...adjustedPositionAndSize,
-        }}
-      />
-    );
-  };
-
   const _createNewFrontendWidget = () => {
     setNewWidgets(
       newWidgets.concat([
@@ -206,11 +192,12 @@ export const useDesignWidgetShape = () => {
     handleMouseMove,
     boxSize,
     boxPosition,
-    NewWidgetBox,
     canvasRef,
     isErrorVisible,
     newWidgets,
     setNewWidgets,
+    isDragging,
+    placeholderWidgetAdjustedPositionAndSize
   };
 };
 
@@ -259,15 +246,6 @@ export const useDragWidget = (
     onMouseMove,
     onMouseUp,
   };
-};
-
-const styles: StylesType = {
-  newWidgetBox: {
-    border: "1px solid gray",
-    position: "absolute",
-    borderRadius: 20,
-    zIndex: 15,
-  },
 };
 
 // adjusts the width and height for correct sizes, positions, and orientations (for UI only)

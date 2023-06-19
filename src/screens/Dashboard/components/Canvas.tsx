@@ -7,6 +7,7 @@ import { LoadingSpinnerFullScreen } from "src/sharedComponents/LoadingSpinnerFul
 import { useDesignWidgetShape } from "../lib";
 import { ErrorMessage } from "./ErrorMessage";
 import { NewWidget } from "./NewWidget";
+import { NewWidgetPlaceholderBox } from "./NewWidgetPlaceholderBox";
 
 type Props = {
   isFetching: boolean;
@@ -20,13 +21,22 @@ export const Canvas = ({ isFetching }: Props) => {
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
-    NewWidgetBox,
+    isDragging,
     canvasRef,
     isErrorVisible,
     newWidgets,
     setNewWidgets,
+    placeholderWidgetAdjustedPositionAndSize,
   } = useDesignWidgetShape();
   const canScroll = Boolean(widgets.length || newWidgets.length);
+
+  useEffect(() => {
+    if (isDragging) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "default";
+    }
+  }, [isDragging]);
 
   useEffect(() => {
     if (!isFetching) {
@@ -53,6 +63,7 @@ export const Canvas = ({ isFetching }: Props) => {
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
       ref={canvasRef}
+      className={isDragging ? "disable-text-selection" : ""}
     >
       {widgets.map((widget) => (
         <Widget widgetObj={widget} key={widget.widget._id.toString()} />
@@ -65,7 +76,10 @@ export const Canvas = ({ isFetching }: Props) => {
           key={i}
         />
       ))}
-      <NewWidgetBox />
+      <NewWidgetPlaceholderBox
+        isDragging={isDragging}
+        adjustedPositionAndSize={placeholderWidgetAdjustedPositionAndSize}
+      />
       <ErrorMessage isErrorVisible={isErrorVisible} />
     </div>
   );
