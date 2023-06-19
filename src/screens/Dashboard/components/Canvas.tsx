@@ -1,45 +1,72 @@
-import React, { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getCanAddWidget, getWidgets } from "src/redux/organization/selector";
 import { StylesType } from "src/utils/styles";
 import { Widget } from "./Widget";
 import { LoadingSpinnerFullScreen } from "src/sharedComponents/LoadingSpinnerFullScreen";
 import { useDesignWidgetShape } from "../lib";
+import { ErrorMessage } from "./ErrorMessage";
+import { NewWidget } from "./NewWidget";
 
 type Props = {
   isFetching: boolean;
 };
 
 export const Canvas = ({ isFetching }: Props) => {
+  const [loadedForFirstTime, setLoadedForFirstTime] = useState<boolean>(false);
   const widgets = useSelector(getWidgets);
   const isInAddWidgetMode = useSelector(getCanAddWidget);
-  const [isAddWidgetModalOpen, setIsAddWidgetModalOpen] =
-    useState<boolean>(false);
   const {
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
     NewWidgetBox,
     canvasRef,
-  } = useDesignWidgetShape(isAddWidgetModalOpen);
+    isErrorVisible,
+    newWidgets,
+    setNewWidgets,
+  } = useDesignWidgetShape();
+  const canScroll = Boolean(widgets.length || newWidgets.length);
+
+  useEffect(() => {
+    if (!isFetching) {
+      setLoadedForFirstTime(true);
+    }
+  }, [isFetching]);
+
+  if (!loadedForFirstTime) {
+    return (
+      <div style={styles.container}>
+        <LoadingSpinnerFullScreen />
+      </div>
+    );
+  }
 
   return (
     <div
       style={{
         ...styles.container,
         ...(isInAddWidgetMode && { cursor: "crosshair" }),
+        ...(canScroll && styles.scrollable),
       }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
       ref={canvasRef}
     >
-      {isFetching ? (
-        <LoadingSpinnerFullScreen />
-      ) : (
-        widgets.map((widget) => <Widget widgetObj={widget} />)
-      )}
+      {widgets.map((widget) => (
+        <Widget widgetObj={widget} key={widget.widget._id.toString()} />
+      ))}
+      {newWidgets.map((_, i) => (
+        <NewWidget
+          newWidgets={newWidgets}
+          indexInArr={i}
+          setNewWidgets={setNewWidgets}
+          key={i}
+        />
+      ))}
       <NewWidgetBox />
+      <ErrorMessage isErrorVisible={isErrorVisible} />
     </div>
   );
 };
@@ -47,10 +74,17 @@ export const Canvas = ({ isFetching }: Props) => {
 const styles: StylesType = {
   container: {
     position: "absolute",
-    top: -200,
-    right: -200,
-    bottom: -200,
-    left: -200,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
     backgroundColor: "#EBEBEB",
+  },
+  scrollable: {
+    // fix this later
+    // top: -200,
+    // bottom: -200,
+    // left: -200,
+    // right: -200,
   },
 };

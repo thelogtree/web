@@ -1,9 +1,20 @@
-import { DashboardDocument, PositionType, SizeType } from "logtree-types";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import {
+  DashboardDocument,
+  PositionType,
+  SizeType,
+  widgetType,
+} from "logtree-types";
+import React, {
+  CSSProperties,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { DASHBOARD_ROUTE_PREFIX, ORG_ROUTE_PREFIX } from "src/RouteManager";
-import { useFetchDashboards } from "src/redux/actionIndex";
+import { setCanAddWidget, useFetchDashboards } from "src/redux/actionIndex";
 import {
   getCanAddWidget,
   getDashboards,
@@ -69,16 +80,28 @@ export const useNavigateToDashboardIfLost = () => {
   return { navigateIfLost };
 };
 
-export const useDesignWidgetShape = (isAddWidgetModalOpen: boolean) => {
+export type NewFrontendWidget = {
+  title: string;
+  folderPaths: (string | null)[];
+  type: widgetType;
+  query?: string;
+  position: PositionType;
+  size: SizeType;
+};
+
+export const useDesignWidgetShape = () => {
   const canAddWidget = useSelector(getCanAddWidget);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [boxPosition, setBoxPosition] = useState<PositionType>({ x: 0, y: 0 });
   const [boxSize, setBoxSize] = useState<SizeType>({ width: 0, height: 0 });
+  const [newWidgets, setNewWidgets] = useState<NewFrontendWidget[]>([]);
+  const [isErrorVisible, setIsErrorVisible] = useState<boolean>(false);
   const canvasRef = useRef(null);
   const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
     boxPosition,
     boxSize
   );
+  const dispatch = useDispatch();
 
   const _resetBox = () => {
     setBoxPosition({ x: 0, y: 0 });
@@ -89,7 +112,21 @@ export const useDesignWidgetShape = (isAddWidgetModalOpen: boolean) => {
     if (!isDragging) {
       _resetBox();
     }
-  }, [isAddWidgetModalOpen, canAddWidget, isDragging]);
+  }, [canAddWidget, isDragging]);
+
+  useEffect(() => {
+    let timeout;
+    if (isErrorVisible) {
+      timeout = setTimeout(() => {
+        setIsErrorVisible(false);
+      }, 4000);
+    }
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [isErrorVisible]);
 
   const handleMouseDown = (event) => {
     if (!canAddWidget) {
@@ -106,6 +143,15 @@ export const useDesignWidgetShape = (isAddWidgetModalOpen: boolean) => {
   };
 
   const handleMouseUp = () => {
+    if (!isDragging) {
+      return;
+    }
+    if (Math.abs(boxSize.width) < 200 || Math.abs(boxSize.height) < 200) {
+      setIsErrorVisible(true);
+    } else {
+      _createNewFrontendWidget();
+      dispatch(setCanAddWidget(false));
+    }
     setIsDragging(false);
   };
 
@@ -129,12 +175,23 @@ export const useDesignWidgetShape = (isAddWidgetModalOpen: boolean) => {
       <div
         style={{
           ...styles.newWidgetBox,
-          left: adjustedPositionAndSize.position.x,
-          top: adjustedPositionAndSize.position.y,
-          width: adjustedPositionAndSize.size.width,
-          height: adjustedPositionAndSize.size.height,
+          ...adjustedPositionAndSize,
         }}
       />
+    );
+  };
+
+  const _createNewFrontendWidget = () => {
+    setNewWidgets(
+      newWidgets.concat([
+        {
+          title: "",
+          folderPaths: [null],
+          type: widgetType.Logs,
+          position: boxPosition,
+          size: boxSize,
+        },
+      ])
     );
   };
 
@@ -146,6 +203,9 @@ export const useDesignWidgetShape = (isAddWidgetModalOpen: boolean) => {
     boxPosition,
     NewWidgetBox,
     canvasRef,
+    isErrorVisible,
+    newWidgets,
+    setNewWidgets,
   };
 };
 
@@ -154,6 +214,7 @@ const styles: StylesType = {
     border: "1px solid gray",
     position: "absolute",
     borderRadius: 20,
+    zIndex: 15,
   },
 };
 
@@ -161,16 +222,23 @@ const styles: StylesType = {
 export const getAdjustedPositionAndSizeOfWidget = (
   position: PositionType,
   size: SizeType
-) => {
+): CSSProperties => {
   if (size.height >= 0 && size.width >= 0) {
-    return { position, size };
+    return {
+      top: position.y,
+      left: position.x,
+      width: size.width,
+      height: size.height,
+    };
   } else if (size.height < 0 && size.width >= 0) {
     // need to flip the height (incorrect one??)
     const newHeight = Math.abs(size.height);
     const newY = position.y + size.height;
     return {
-      position: { y: newY, x: position.x },
-      size: { width: size.width, height: newHeight },
+      top: newY,
+      left: position.x,
+      width: size.width,
+      height: newHeight,
     };
   } else if (size.width < 0 && size.height >= 0) {
     // need to flip the width and height but not the y position
@@ -179,8 +247,10 @@ export const getAdjustedPositionAndSizeOfWidget = (
     const newWidth = Math.abs(size.width);
     const newX = position.x + size.width;
     return {
-      position: { y: newY, x: newX },
-      size: { width: newWidth, height: newHeight },
+      top: newY,
+      left: newX,
+      width: newWidth,
+      height: newHeight,
     };
   } else {
     // need to flip both
@@ -189,8 +259,10 @@ export const getAdjustedPositionAndSizeOfWidget = (
     const newWidth = Math.abs(size.width);
     const newX = position.x + size.width;
     return {
-      position: { y: newY, x: newX },
-      size: { width: newWidth, height: newHeight },
+      top: newY,
+      left: newX,
+      width: newWidth,
+      height: newHeight,
     };
   }
 };

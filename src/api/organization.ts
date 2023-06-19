@@ -1,9 +1,13 @@
 import {
+  FolderType,
   IntegrationDocument,
+  PositionType,
+  SizeType,
   comparisonTypeEnum,
   integrationTypeEnum,
   notificationTypeEnum,
   orgPermissionLevel,
+  widgetType,
 } from "logtree-types";
 import axios from "../utils/axios";
 import moment from "moment";
@@ -290,5 +294,24 @@ export const organization = {
       params: {
         widgetId,
       },
+    }),
+  createWidget: (
+    organizationId: string,
+    dashboardId: string,
+    title: string,
+    type: widgetType,
+    folderPaths: FolderType[],
+    position: PositionType,
+    size: SizeType,
+    query?: string
+  ) =>
+    axios.post(routeUrl + `/${organizationId}/widget`, {
+      dashboardId,
+      title,
+      type,
+      folderPaths,
+      position,
+      size,
+      query,
     }),
 };

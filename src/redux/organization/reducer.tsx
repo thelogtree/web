@@ -74,6 +74,8 @@ export const organizationReducer = (
       return { ...state, connectableIntegrations: action.integrationTypes };
     case "SET_FUNNELS":
       return { ...state, funnels: action.funnels };
+    case "SET_WIDGETS":
+      return { ...state, widgets: action.widgets };
     case "SET_DASHBOARDS":
       return { ...state, dashboards: action.dashboards };
     case "SET_CAN_ADD_WIDGET":

@@ -471,10 +471,10 @@ export const useFetchWidgetsWithData = (overrideInitialIsLoading?: boolean) => {
         organization!._id.toString(),
         currentDashboard!._id.toString()
       );
-      const { widgets } = res.data;
+      const { widgets: fetchedWidgets } = res.data;
       dispatch(
         setWidgets(
-          widgets.map((w) => ({
+          fetchedWidgets.map((w) => ({
             widget: w,
             data: null,
           }))
@@ -510,7 +510,7 @@ export const useFetchWidgetsWithData = (overrideInitialIsLoading?: boolean) => {
         }
       })
     );
-    setWidgets(hydratedWidgets);
+    dispatch(setWidgets(hydratedWidgets));
     setIsFetchingWidgetData(false);
   };
 

@@ -1,10 +1,10 @@
 .ant-select-selector {
   background-color: transparent !important;
-  color: white !important;
-  border-color: white !important;
+  color: black !important;
+  border-color: black !important;
   border-radius: 50px !important;
   min-width: 140px;
   max-width: 220px;
   opacity: 1 !important;
-  text-align: center;
+  text-align: left;
 }

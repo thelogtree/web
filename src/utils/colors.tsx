@@ -13,6 +13,7 @@ export const Colors = {
   black: "#000000",
   veryLightRed: "#ffe3e3",
   red: "#FF4C4C",
+  darkRed: "#8C0000",
   veryLightBlueishPurple: "#f0e8ff",
   blueishPurple: "#8757e6",
   blue: "#00A3FF",

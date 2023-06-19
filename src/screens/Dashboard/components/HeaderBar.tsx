@@ -23,7 +23,7 @@ export const HeaderBar = () => {
 
 const styles: StylesType = {
   container: {
-    position: "absolute",
+    position: "fixed",
     top: 0,
     left: 0,
     right: 0,
@@ -33,7 +33,7 @@ const styles: StylesType = {
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: Colors.black,
-    zIndex: 10,
+    zIndex: 30,
     paddingLeft: 20,
   },
 };

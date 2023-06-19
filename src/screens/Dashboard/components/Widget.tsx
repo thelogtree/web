@@ -50,10 +50,7 @@ export const Widget = ({ widgetObj }: Props) => {
     <div
       style={{
         ...styles.container,
-        width: adjustedPositionAndSize.size.width,
-        height: adjustedPositionAndSize.size.height,
-        top: adjustedPositionAndSize.position.y,
-        left: adjustedPositionAndSize.position.x,
+        ...adjustedPositionAndSize,
       }}
     >
       <label style={styles.title}>{widget.title}</label>
@@ -77,6 +74,9 @@ const styles: StylesType = {
     borderColor: "#A5A5A5",
     boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
     position: "absolute",
+    zIndex: 10,
+    overflowX: "hidden",
+    overflowY: "auto",
   },
   title: {
     fontSize: 18,
