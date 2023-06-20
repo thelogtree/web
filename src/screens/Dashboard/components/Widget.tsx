@@ -8,6 +8,7 @@ import { StylesType } from "src/utils/styles";
 import { getAdjustedPositionAndSizeOfWidget, useDragWidget } from "../lib";
 import { DeleteWidgetButton } from "./DeleteWidgetButton";
 import "../Widget.css";
+import { Histogram } from "./Histogram";
 
 type Props = {
   widgetObj: FrontendWidget;
@@ -28,7 +29,7 @@ export const Widget = ({ widgetObj }: Props) => {
     if (!data) {
       return (
         <div style={styles.loadingContainer}>
-          <LoadingSpinner size={25} />
+          <LoadingSpinner size={40} />
         </div>
       );
     }
@@ -36,6 +37,17 @@ export const Widget = ({ widgetObj }: Props) => {
     switch (widget.type) {
       case widgetType.Logs:
         return <LogsList logs={data} />;
+      case widgetType.Histograms:
+        const histogram = data[0];
+        const { graphData, fullPath, numLogsTotal, suffix } = histogram;
+        return (
+          <Histogram
+            graphData={graphData}
+            fullPath={fullPath}
+            numLogsTotal={numLogsTotal}
+            suffix={suffix}
+          />
+        );
       default:
         return null;
     }
@@ -61,7 +73,6 @@ export const Widget = ({ widgetObj }: Props) => {
     >
       <label style={styles.title}>{widget.title}</label>
       <DeleteWidgetButton widget={widget} isVisible={isHovering} />
-      <label style={styles.description}>Live</label>
       {_renderData()}
     </div>
   );

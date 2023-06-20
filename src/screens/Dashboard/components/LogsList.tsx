@@ -21,6 +21,7 @@ export const LogsList = ({ logs }: Props) => {
 
   return logs.length ? (
     <div style={styles.logsFeed}>
+      <label style={styles.description}>Live</label>
       {logs.map((log, i) => (
         <LogRow
           isFirstLogAfterToday={Boolean(firstIndexOfLogAfterToday === i && i)}
@@ -43,6 +44,11 @@ const styles: StylesType = {
     alignItems: "flex-start",
     width: "100%",
     paddingBottom: 40,
+  },
+  description: {
+    color: Colors.gray,
+    paddingTop: 6,
+    paddingBottom: 12,
   },
   moreResultsLoadingText: {
     paddingTop: 20,
