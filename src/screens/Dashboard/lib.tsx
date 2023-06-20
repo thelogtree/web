@@ -15,7 +15,12 @@ import React, {
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { DASHBOARD_ROUTE_PREFIX, ORG_ROUTE_PREFIX } from "src/RouteManager";
-import { setCanAddWidget, useFetchDashboards } from "src/redux/actionIndex";
+import { Api } from "src/api";
+import {
+  setCanAddWidget,
+  setWidgets,
+  useFetchDashboards,
+} from "src/redux/actionIndex";
 import { FrontendWidget } from "src/redux/organization/reducer";
 import {
   getCanAddWidget,
@@ -99,10 +104,8 @@ export const useDesignWidgetShape = () => {
   const [newWidgets, setNewWidgets] = useState<NewFrontendWidget[]>([]);
   const [isErrorVisible, setIsErrorVisible] = useState<boolean>(false);
   const canvasRef = useRef(null);
-  const placeholderWidgetAdjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
-    boxPosition,
-    boxSize
-  );
+  const placeholderWidgetAdjustedPositionAndSize =
+    getAdjustedPositionAndSizeOfWidget(boxPosition, boxSize);
   const dispatch = useDispatch();
 
   const _resetBox = () => {
@@ -197,40 +200,71 @@ export const useDesignWidgetShape = () => {
     newWidgets,
     setNewWidgets,
     isDragging,
-    placeholderWidgetAdjustedPositionAndSize
+    placeholderWidgetAdjustedPositionAndSize,
   };
 };
 
-export const useDragWidget = (
-  widgets: NewFrontendWidget[],
-  indexInArr: number,
-  setWidgets: (widgets: NewFrontendWidget[]) => void
-) => {
-  const widget = widgets[indexInArr];
+export const useDragWidget = (widget: WidgetDocument) => {
+  const dispatch = useDispatch();
+  const widgets = useSelector(getWidgets);
+  const organization = useSelector(getOrganization);
   const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [startPositionOfDrag, setStartPositionOfDrag] =
+    useState<PositionType | null>(null);
 
   const _changePosition = (event: React.MouseEvent) => {
-    const newX = event.clientX;
-    const newY = event.clientY;
+    if (!startPositionOfDrag) {
+      return;
+    }
+    const newX = startPositionOfDrag.x + event.clientX;
+    const newY = startPositionOfDrag.y + event.clientY;
+    console.log(newX, newY);
     const newWidgetTemp = {
       ...widget,
       position: {
         x: newX,
         y: newY,
       },
-    };
-    let newWidgetsTemp = widgets.slice();
-    newWidgetsTemp[indexInArr] = newWidgetTemp;
-    setWidgets(newWidgetsTemp);
+    } as WidgetDocument;
+    dispatch(
+      setWidgets(
+        widgets.map((w) => ({
+          widget: w.widget._id === widget._id ? newWidgetTemp : w.widget,
+          data: w.data,
+        }))
+      )
+    );
   };
+
+  useEffect(() => {
+    let timeout = setTimeout(async () => {
+      try {
+        await Api.organization.updateWidget(
+          organization!._id.toString(),
+          widget._id.toString(),
+          widget.position
+        );
+      } catch (e) {
+        console.error(e);
+      }
+    }, 1500);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [widget.position.x, widget.position.y]);
 
   const onMouseDown = (event: React.MouseEvent) => {
     event.stopPropagation();
     setIsDragging(true);
+    const x = widget.position.x - event.clientX;
+    const y = widget.position.y - event.clientY;
+    setStartPositionOfDrag({ x, y });
   };
 
   const onMouseMove = (event: React.MouseEvent) => {
     event.stopPropagation();
+    event.preventDefault();
     if (!isDragging) {
       return;
     }
@@ -239,6 +273,7 @@ export const useDragWidget = (
 
   const onMouseUp = () => {
     setIsDragging(false);
+    setStartPositionOfDrag(null);
   };
 
   return {

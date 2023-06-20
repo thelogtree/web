@@ -1,11 +1,11 @@
 import { widgetType } from "logtree-types";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FrontendWidget } from "src/redux/organization/reducer";
 import { LogsList } from "src/screens/Dashboard/components/LogsList";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
-import { getAdjustedPositionAndSizeOfWidget } from "../lib";
+import { getAdjustedPositionAndSizeOfWidget, useDragWidget } from "../lib";
 import { DeleteWidgetButton } from "./DeleteWidgetButton";
 import "../Widget.css";
 
@@ -15,6 +15,9 @@ type Props = {
 
 export const Widget = ({ widgetObj }: Props) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
+  const { onMouseDown, onMouseMove, onMouseUp } = useDragWidget(
+    widgetObj.widget
+  );
   const { widget, data } = widgetObj;
   const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
     widget.position,
@@ -38,6 +41,11 @@ export const Widget = ({ widgetObj }: Props) => {
     }
   };
 
+  const _handleOnMouseLeave = useCallback(() => {
+    setIsHovering(false);
+    onMouseUp();
+  }, []);
+
   return (
     <div
       style={{
@@ -45,8 +53,11 @@ export const Widget = ({ widgetObj }: Props) => {
         ...adjustedPositionAndSize,
       }}
       onMouseOver={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      onMouseLeave={_handleOnMouseLeave}
       className="widgetContainer"
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
     >
       <label style={styles.title}>{widget.title}</label>
       <DeleteWidgetButton widget={widget} isVisible={isHovering} />

@@ -318,4 +318,17 @@ export const organization = {
     axios.post(routeUrl + `/${organizationId}/delete-widget`, {
       widgetId,
     }),
+  updateWidget: (
+    organizationId: string,
+    widgetId: string,
+    position?: PositionType,
+    size?: SizeType,
+    title?: string
+  ) =>
+    axios.put(routeUrl + `/${organizationId}/widget`, {
+      widgetId,
+      position,
+      size,
+      title,
+    }),
 };
