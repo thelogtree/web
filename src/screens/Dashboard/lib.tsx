@@ -210,6 +210,65 @@ export const useDesignWidgetShape = () => {
   };
 };
 
+export const useDragNewWidget = (
+  indexOfWidgetInArr: number,
+  widgets: NewFrontendWidget[],
+  setNewWidgets: (newWidgets: NewFrontendWidget[]) => void
+) => {
+  const widget = widgets[indexOfWidgetInArr];
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [startPositionOfDrag, setStartPositionOfDrag] =
+    useState<PositionType | null>(null);
+
+  const _changePosition = (event: React.MouseEvent) => {
+    if (!startPositionOfDrag) {
+      return;
+    }
+    const newX = startPositionOfDrag.x + event.clientX;
+    const newY = startPositionOfDrag.y + event.clientY;
+    const newWidgetTemp = {
+      ...widget,
+      position: {
+        x: newX,
+        y: newY,
+      },
+    } as NewFrontendWidget;
+    setNewWidgets(
+      widgets.map((w: NewFrontendWidget, i) =>
+        i === indexOfWidgetInArr ? newWidgetTemp : w
+      )
+    );
+  };
+
+  const onMouseDown = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsDragging(true);
+    const x = widget.position.x - event.clientX;
+    const y = widget.position.y - event.clientY;
+    setStartPositionOfDrag({ x, y });
+  };
+
+  const onMouseMove = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+    if (!isDragging) {
+      return;
+    }
+    _changePosition(event);
+  };
+
+  const onMouseUp = () => {
+    setIsDragging(false);
+    setStartPositionOfDrag(null);
+  };
+
+  return {
+    onMouseDown,
+    onMouseMove,
+    onMouseUp,
+  };
+};
+
 export const useDragWidget = (widget: WidgetDocument) => {
   const dispatch = useDispatch();
   const widgets = useSelector(getWidgets);

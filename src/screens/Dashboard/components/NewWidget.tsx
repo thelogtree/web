@@ -3,6 +3,7 @@ import {
   NewFrontendWidget,
   getAdjustedPositionAndSizeOfWidget,
   useCurrentDashboard,
+  useDragNewWidget,
   useDragWidget,
   widgetTimeframes,
 } from "../lib";
@@ -42,6 +43,11 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const currentDashboard = useCurrentDashboard(true);
   const { fetch } = useFetchWidgetsWithData();
+  const { onMouseDown, onMouseMove, onMouseUp } = useDragNewWidget(
+    indexInArr,
+    newWidgets,
+    setNewWidgets
+  );
   const canSave =
     !isCreating &&
     Boolean(
@@ -170,6 +176,9 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
         ...styles.container,
         ...adjustedPositionAndSize,
       }}
+      onMouseUp={onMouseUp}
+      onMouseMove={onMouseMove}
+      onMouseDown={onMouseDown}
     >
       <div style={styles.innerTop}>
         <input
