@@ -5,6 +5,7 @@ import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import { DashboardPicker } from "./DashboardPicker";
 import { ToggleAddWidgetMode } from "./ToggleAddWidgetMode";
+import { RefreshButton } from "src/screens/Dashboard/components/RefreshButton";
 
 export const HeaderBar = () => {
   const dashboards = useSelector(getDashboards);
@@ -15,7 +16,10 @@ export const HeaderBar = () => {
 
   return (
     <div style={styles.container}>
-      <DashboardPicker />
+      <div style={styles.leftSide}>
+        <DashboardPicker />
+        <RefreshButton />
+      </div>
       <ToggleAddWidgetMode />
     </div>
   );
@@ -35,5 +39,11 @@ const styles: StylesType = {
     backgroundColor: Colors.black,
     zIndex: 30,
     paddingLeft: 20,
+  },
+  leftSide: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
 };
