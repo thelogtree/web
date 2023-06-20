@@ -2,12 +2,8 @@ import { simplifiedLogTagEnum } from "logtree-types";
 import moment from "moment-timezone";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { FlipToAdditionalContextButton } from "src/screens/Logs/components/FlipToAdditionalContextButton";
 import { OpenExternalLink } from "src/screens/Logs/components/OpenExternalLink";
-import {
-  FrontendLog,
-  useAdditionalContextOfLogManager,
-} from "src/screens/Logs/lib";
+import { FrontendLog } from "src/screens/Logs/lib";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 

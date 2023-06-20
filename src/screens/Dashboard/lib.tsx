@@ -218,7 +218,6 @@ export const useDragWidget = (widget: WidgetDocument) => {
     }
     const newX = startPositionOfDrag.x + event.clientX;
     const newY = startPositionOfDrag.y + event.clientY;
-    console.log(newX, newY);
     const newWidgetTemp = {
       ...widget,
       position: {
