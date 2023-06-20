@@ -7,6 +7,7 @@ import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import { getAdjustedPositionAndSizeOfWidget } from "../lib";
 import { DeleteWidgetButton } from "./DeleteWidgetButton";
+import "../Widget.css";
 
 type Props = {
   widgetObj: FrontendWidget;
@@ -45,6 +46,7 @@ export const Widget = ({ widgetObj }: Props) => {
       }}
       onMouseOver={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
+      className="widgetContainer"
     >
       <label style={styles.title}>{widget.title}</label>
       <DeleteWidgetButton widget={widget} isVisible={isHovering} />

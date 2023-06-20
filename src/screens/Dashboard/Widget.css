@@ -1,0 +1,3 @@
+.widgetContainer::-webkit-scrollbar {
+  display: none;
+}

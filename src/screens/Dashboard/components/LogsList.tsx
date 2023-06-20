@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FrontendLog,
   getIndexOfFirstLogAfterToday,
 } from "src/screens/Logs/lib";
-import { LogsAfterTodayNote } from "src/screens/Logs/components/LogsAfterTodayNote";
-import { Log } from "src/screens/Logs/components/Log";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
+import { LogRow } from "./LogRow";
 
 type Props = {
   logs: FrontendLog[];
 };
 
 export const LogsList = ({ logs }: Props) => {
+  const [lastLogIndexInView, setLastLogIndexInView] = useState<number>(0);
   const firstIndexOfLogAfterToday = getIndexOfFirstLogAfterToday(logs);
   const endOfFeedText =
     logs.length >= 50
@@ -21,16 +21,15 @@ export const LogsList = ({ logs }: Props) => {
 
   return logs.length ? (
     <div style={styles.logsFeed}>
-      {logs.map((log, i) => {
-        return (
-          <React.Fragment key={`container:${log._id}`}>
-            {firstIndexOfLogAfterToday === i && i ? (
-              <LogsAfterTodayNote key={`note:${log._id}`} />
-            ) : null}
-            <Log log={log} key={log._id} />
-          </React.Fragment>
-        );
-      })}
+      {logs.map((log, i) => (
+        <LogRow
+          isFirstLogAfterToday={Boolean(firstIndexOfLogAfterToday === i && i)}
+          log={log}
+          setLastLogIndexInView={setLastLogIndexInView}
+          lastLogIndexInView={lastLogIndexInView}
+          index={i}
+        />
+      ))}
       <label style={styles.moreResultsLoadingText}>{endOfFeedText}</label>
     </div>
   ) : null;
