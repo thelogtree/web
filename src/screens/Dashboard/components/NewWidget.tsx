@@ -13,9 +13,10 @@ import { showGenericErrorAlert } from "src/utils/helpers";
 import { Api } from "src/api";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
-import { FolderType } from "logtree-types";
+import { FolderType, widgetType } from "logtree-types";
 import { useFetchWidgetsWithData } from "src/redux/actionIndex";
 import "../NewWidget.css";
+import { allowedWidgetTypes } from "../allowedWidgetTypes";
 
 type Props = {
   newWidgets: NewFrontendWidget[];
@@ -27,6 +28,9 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
   const organization = useSelector(getOrganization);
   const flattenedFolders = useFlattenedFolders(undefined, true);
   const newWidget = newWidgets[indexInArr];
+  const currentWidgetTypeAllowsQuery = newWidget.type
+    ? allowedWidgetTypes[newWidget.type].allowsQuery
+    : false;
   const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
     newWidget.position,
     newWidget.size
@@ -37,7 +41,8 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
   const canSave =
     !isCreating &&
     Boolean(
-      newWidget.title &&
+      newWidget.type &&
+        newWidget.title &&
         newWidget.type &&
         newWidget.folderPaths.length &&
         !newWidget.folderPaths.find((path) => !path)
@@ -49,6 +54,16 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     const newWidgetTemp = {
       ...newWidget,
       folderPaths: newFolderPaths,
+    };
+    const newWidgetsTemp = newWidgets.slice();
+    newWidgetsTemp[indexInArr] = newWidgetTemp;
+    setNewWidgets(newWidgetsTemp);
+  };
+
+  const _handleWidgetTypeChange = (value: widgetType) => {
+    const newWidgetTemp = {
+      ...newWidget,
+      type: value,
     };
     const newWidgetsTemp = newWidgets.slice();
     newWidgetsTemp[indexInArr] = newWidgetTemp;
@@ -93,7 +108,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
         organization!._id.toString(),
         currentDashboard!._id.toString(),
         newWidget.title,
-        newWidget.type,
+        newWidget.type as widgetType,
         hydratedFolderPaths,
         newWidget.position,
         newWidget.size,
@@ -120,6 +135,13 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     }));
   }, [flattenedFolders.length]);
 
+  const widgetTypesMapped = useMemo(() => {
+    return Object.keys(allowedWidgetTypes).map((widgetType) => ({
+      value: widgetType,
+      label: allowedWidgetTypes[widgetType].label,
+    }));
+  }, []);
+
   return (
     <div
       style={{
@@ -134,31 +156,55 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
           placeholder="Add a title"
           style={styles.titleInput}
         />
-        {newWidget.folderPaths.map((folderPath, index) => (
-          <Select
-            key={index}
-            showSearch
-            placeholder="Select a channel"
-            optionFilterProp="children"
-            onChange={(val) => _handleFolderPathChange(val, index)}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-            options={flattenedFoldersMapped}
-            disabled={isCreating}
-            value={folderPath}
-            style={styles.selectStyle}
-          />
-        ))}
-        <label style={styles.queryLbl}>
-          Optionally, only show events that have a specific word or phrase
-        </label>
-        <input
-          value={newWidget.query || ""}
-          onChange={(e) => _handleQueryChange(e.target.value)}
-          placeholder="Query"
-          style={styles.queryInput}
+        <Select
+          showSearch
+          placeholder="Type of widget"
+          optionFilterProp="children"
+          onChange={_handleWidgetTypeChange}
+          filterOption={(input, option) =>
+            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+          }
+          options={widgetTypesMapped}
+          disabled={isCreating}
+          value={newWidget.type}
+          style={styles.selectStyleWidgetType}
         />
+        {newWidget.type ? (
+          <>
+            {newWidget.folderPaths.map((folderPath, index) => (
+              <Select
+                key={index}
+                showSearch
+                placeholder="Select a channel"
+                optionFilterProp="children"
+                onChange={(val) => _handleFolderPathChange(val, index)}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={flattenedFoldersMapped}
+                disabled={isCreating}
+                value={folderPath}
+                style={styles.selectStyle}
+              />
+            ))}
+            {currentWidgetTypeAllowsQuery ? (
+              <>
+                <label style={styles.queryLbl}>
+                  Optionally, only show events that have a specific word or
+                  phrase
+                </label>
+                <input
+                  value={newWidget.query || ""}
+                  onChange={(e) => _handleQueryChange(e.target.value)}
+                  placeholder="Query"
+                  style={styles.queryInput}
+                />
+              </>
+            ) : null}
+          </>
+        ) : null}
       </div>
       <div style={styles.innerBottom}>
         <button style={styles.discardBtn} onClick={_onDiscard}>
@@ -215,7 +261,7 @@ const styles: StylesType = {
     outline: "none",
     border: "none",
     backgroundColor: Colors.transparent,
-    marginBottom: 10,
+    marginBottom: 16,
   },
   folderPathItem: {
     display: "flex",
@@ -228,6 +274,12 @@ const styles: StylesType = {
     width: "80%",
     maxWidth: 250,
     color: Colors.darkGray,
+  },
+  selectStyleWidgetType: {
+    width: "80%",
+    maxWidth: 250,
+    color: Colors.darkGray,
+    marginBottom: 12,
   },
   queryLbl: {
     color: Colors.darkerGray,

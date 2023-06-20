@@ -90,7 +90,7 @@ export const useNavigateToDashboardIfLost = () => {
 export type NewFrontendWidget = {
   title: string;
   folderPaths: (string | null)[];
-  type: widgetType;
+  type: widgetType | null;
   query?: string;
   position: PositionType;
   size: SizeType;
@@ -181,7 +181,7 @@ export const useDesignWidgetShape = () => {
         {
           title: "",
           folderPaths: [null],
-          type: widgetType.Logs,
+          type: null,
           position: boxPosition,
           size: boxSize,
         },
