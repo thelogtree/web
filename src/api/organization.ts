@@ -318,6 +318,10 @@ export const organization = {
     axios.post(routeUrl + `/${organizationId}/delete-widget`, {
       widgetId,
     }),
+  deleteDashboard: (organizationId: string, dashboardId: string) =>
+    axios.post(routeUrl + `/${organizationId}/delete-dashboard`, {
+      dashboardId,
+    }),
   updateWidget: (
     organizationId: string,
     widgetId: string,
@@ -329,6 +333,10 @@ export const organization = {
       widgetId,
       position,
       size,
+      title,
+    }),
+  createDashboard: (organizationId: string, title: string) =>
+    axios.post(routeUrl + `/${organizationId}/dashboard`, {
       title,
     }),
 };
