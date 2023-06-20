@@ -46,6 +46,7 @@ export const Widget = ({ widgetObj }: Props) => {
             fullPath={fullPath}
             numLogsTotal={numLogsTotal}
             suffix={suffix}
+            widget={widget}
           />
         );
       default:

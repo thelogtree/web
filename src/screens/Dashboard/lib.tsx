@@ -3,6 +3,7 @@ import {
   PositionType,
   SizeType,
   WidgetDocument,
+  widgetTimeframe,
   widgetType,
 } from "logtree-types";
 import React, {
@@ -21,14 +22,17 @@ import {
   setWidgets,
   useFetchDashboards,
 } from "src/redux/actionIndex";
-import { FrontendWidget } from "src/redux/organization/reducer";
 import {
   getCanAddWidget,
   getDashboards,
   getOrganization,
   getWidgets,
 } from "src/redux/organization/selector";
-import { StylesType } from "src/utils/styles";
+
+export const widgetTimeframes: { [key in widgetTimeframe]: string } = {
+  "24_hours": "24 hours",
+  "30_days": "30 days",
+};
 
 export const useCurrentDashboard = (
   doNotRefetchDashboards?: boolean
@@ -94,6 +98,7 @@ export type NewFrontendWidget = {
   query?: string;
   position: PositionType;
   size: SizeType;
+  timeframe: widgetTimeframe;
 };
 
 export const useDesignWidgetShape = () => {
@@ -184,6 +189,7 @@ export const useDesignWidgetShape = () => {
           type: null,
           position: boxPosition,
           size: boxSize,
+          timeframe: widgetTimeframe.TwentyFourHours,
         },
       ])
     );

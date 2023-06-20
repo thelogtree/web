@@ -4,6 +4,7 @@ import {
   getAdjustedPositionAndSizeOfWidget,
   useCurrentDashboard,
   useDragWidget,
+  widgetTimeframes,
 } from "../lib";
 import { SharedStyles, StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
@@ -13,7 +14,7 @@ import { showGenericErrorAlert } from "src/utils/helpers";
 import { Api } from "src/api";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
-import { FolderType, widgetType } from "logtree-types";
+import { FolderType, widgetTimeframe, widgetType } from "logtree-types";
 import { useFetchWidgetsWithData } from "src/redux/actionIndex";
 import "../NewWidget.css";
 import { allowedWidgetTypes } from "../allowedWidgetTypes";
@@ -30,6 +31,9 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
   const newWidget = newWidgets[indexInArr];
   const currentWidgetTypeAllowsQuery = newWidget.type
     ? allowedWidgetTypes[newWidget.type].allowsQuery
+    : false;
+  const currentWidgetTypeAllowsTimeframe = newWidget.type
+    ? allowedWidgetTypes[newWidget.type].chooseTimeframe
     : false;
   const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
     newWidget.position,
@@ -64,6 +68,16 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     const newWidgetTemp = {
       ...newWidget,
       type: value,
+    };
+    const newWidgetsTemp = newWidgets.slice();
+    newWidgetsTemp[indexInArr] = newWidgetTemp;
+    setNewWidgets(newWidgetsTemp);
+  };
+
+  const _handleTimeframeChange = (value: widgetTimeframe) => {
+    const newWidgetTemp = {
+      ...newWidget,
+      timeframe: value,
     };
     const newWidgetsTemp = newWidgets.slice();
     newWidgetsTemp[indexInArr] = newWidgetTemp;
@@ -112,7 +126,8 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
         hydratedFolderPaths,
         newWidget.position,
         newWidget.size,
-        newWidget.query
+        newWidget.query,
+        newWidget.timeframe
       );
       await fetch();
       const newWidgetsTemp = newWidgets.filter((_, i) => i !== indexInArr);
@@ -141,6 +156,13 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
       label: allowedWidgetTypes[widgetType].label,
     }));
   }, []);
+
+  const widgetTimeframesMapped = useMemo(() => {
+    return Object.values(widgetTimeframe).map((timeframe) => ({
+      value: timeframe,
+      label: widgetTimeframes[timeframe],
+    }));
+  }, [widgetTimeframes]);
 
   return (
     <div
@@ -189,6 +211,25 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
                 style={styles.selectStyle}
               />
             ))}
+            {currentWidgetTypeAllowsTimeframe ? (
+              <>
+                <label style={styles.queryLbl}>Select a timeframe</label>
+                <Select
+                  placeholder="Select a timeframe"
+                  optionFilterProp="children"
+                  onChange={_handleTimeframeChange}
+                  filterOption={(input, option) =>
+                    (option?.label ?? "")
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
+                  options={widgetTimeframesMapped}
+                  disabled={isCreating}
+                  value={newWidget.timeframe}
+                  style={styles.selectStyleWidgetTimeframe}
+                />
+              </>
+            ) : null}
             {currentWidgetTypeAllowsQuery ? (
               <>
                 <label style={styles.queryLbl}>
@@ -280,6 +321,12 @@ const styles: StylesType = {
     maxWidth: 250,
     color: Colors.darkGray,
     marginBottom: 12,
+  },
+  selectStyleWidgetTimeframe: {
+    width: "80%",
+    maxWidth: 250,
+    color: Colors.darkGray,
+    marginTop: 12,
   },
   queryLbl: {
     color: Colors.darkerGray,

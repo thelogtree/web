@@ -1,3 +1,4 @@
+import { WidgetDocument } from "logtree-types";
 import moment from "moment-timezone";
 import React, { useMemo } from "react";
 import {
@@ -14,6 +15,7 @@ import {
 } from "recharts/types/component/DefaultTooltipContent";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
+import { widgetTimeframes } from "../lib";
 
 export type DataBox = {
   count: number;
@@ -26,6 +28,7 @@ type Props = {
   numLogsTotal: number;
   fullPath: string;
   suffix: string;
+  widget: WidgetDocument;
 };
 
 const CustomTooltip = ({
@@ -53,6 +56,7 @@ export const Histogram = ({
   numLogsTotal,
   fullPath,
   suffix,
+  widget,
 }: Props) => {
   const data = useMemo(() => {
     return graphData.map((dataInterval) => ({
@@ -65,7 +69,9 @@ export const Histogram = ({
 
   return (
     <>
-      <label style={styles.description}>Last 24 hours</label>
+      <label style={styles.description}>
+        Last {widgetTimeframes[widget.timeframe!]}
+      </label>
       <div style={styles.graphContainer}>
         <label style={styles.numEventsLbl}>
           {numLogsTotal} {suffix}

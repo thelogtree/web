@@ -7,6 +7,7 @@ import {
   integrationTypeEnum,
   notificationTypeEnum,
   orgPermissionLevel,
+  widgetTimeframe,
   widgetType,
 } from "logtree-types";
 import axios from "../utils/axios";
@@ -303,7 +304,8 @@ export const organization = {
     folderPaths: FolderType[],
     position: PositionType,
     size: SizeType,
-    query?: string
+    query?: string,
+    timeframe?: widgetTimeframe
   ) =>
     axios.post(routeUrl + `/${organizationId}/widget`, {
       dashboardId,
@@ -313,6 +315,7 @@ export const organization = {
       position,
       size,
       query,
+      timeframe,
     }),
   deleteWidget: (organizationId: string, widgetId: string) =>
     axios.post(routeUrl + `/${organizationId}/delete-widget`, {
