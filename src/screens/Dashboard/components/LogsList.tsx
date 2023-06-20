@@ -42,6 +42,7 @@ const styles: StylesType = {
     justifyContent: "flex-start",
     alignItems: "flex-start",
     width: "100%",
+    paddingBottom: 40,
   },
   moreResultsLoadingText: {
     paddingTop: 20,
