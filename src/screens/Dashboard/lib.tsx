@@ -91,6 +91,14 @@ export const useNavigateToDashboardIfLost = (newTab: boolean = false) => {
   return { navigateIfLost };
 };
 
+export const getScrollOffset = () => {
+  const element = document.getElementById("canvas-container");
+  if (element) {
+    return { x: element.scrollLeft, y: element.scrollTop };
+  }
+  return { x: 0, y: 0 };
+};
+
 export type NewFrontendWidget = {
   title: string;
   folderPaths: (string | null)[];
@@ -148,8 +156,9 @@ export const useDesignWidgetShape = () => {
       return;
     }
     const canvasRect = (canvasRef.current as any).getBoundingClientRect();
-    const offsetX = event.clientX - canvasRect.left;
-    const offsetY = event.clientY - canvasRect.top;
+    const { x, y } = getScrollOffset();
+    const offsetX = event.clientX - canvasRect.left + x;
+    const offsetY = event.clientY - canvasRect.top + y;
     setBoxPosition({ x: offsetX, y: offsetY });
   };
 
@@ -173,8 +182,9 @@ export const useDesignWidgetShape = () => {
       return;
     }
     const canvasRect = (canvasRef.current as any).getBoundingClientRect();
-    const offsetX = event.clientX - canvasRect.left;
-    const offsetY = event.clientY - canvasRect.top;
+    const { x, y } = getScrollOffset();
+    const offsetX = event.clientX - canvasRect.left + x;
+    const offsetY = event.clientY - canvasRect.top + y;
     const newWidth = offsetX - boxPosition.x;
     const newHeight = offsetY - boxPosition.y;
     setBoxSize({ width: newWidth, height: newHeight });
@@ -224,8 +234,9 @@ export const useDragNewWidget = (
     if (!startPositionOfDrag) {
       return;
     }
-    const newX = startPositionOfDrag.x + event.clientX;
-    const newY = startPositionOfDrag.y + event.clientY;
+    const { x, y } = getScrollOffset();
+    const newX = startPositionOfDrag.x + event.clientX + x;
+    const newY = startPositionOfDrag.y + event.clientY + y;
     const newWidgetTemp = {
       ...widget,
       position: {
@@ -243,8 +254,9 @@ export const useDragNewWidget = (
   const onMouseDown = (event: React.MouseEvent) => {
     event.stopPropagation();
     setIsDragging(true);
-    const x = widget.position.x - event.clientX;
-    const y = widget.position.y - event.clientY;
+    const { x: scrollX, y: scrollY } = getScrollOffset();
+    const x = widget.position.x - event.clientX - scrollX;
+    const y = widget.position.y - event.clientY - scrollY;
     setStartPositionOfDrag({ x, y });
   };
 
@@ -281,8 +293,9 @@ export const useDragWidget = (widget: WidgetDocument) => {
     if (!startPositionOfDrag) {
       return;
     }
-    const newX = startPositionOfDrag.x + event.clientX;
-    const newY = startPositionOfDrag.y + event.clientY;
+    const { x, y } = getScrollOffset();
+    const newX = startPositionOfDrag.x + event.clientX + x;
+    const newY = startPositionOfDrag.y + event.clientY + y;
     const newWidgetTemp = {
       ...widget,
       position: {
@@ -321,8 +334,9 @@ export const useDragWidget = (widget: WidgetDocument) => {
   const onMouseDown = (event: React.MouseEvent) => {
     event.stopPropagation();
     setIsDragging(true);
-    const x = widget.position.x - event.clientX;
-    const y = widget.position.y - event.clientY;
+    const { x: scrollX, y: scrollY } = getScrollOffset();
+    const x = widget.position.x - event.clientX - scrollX;
+    const y = widget.position.y - event.clientY - scrollY;
     setStartPositionOfDrag({ x, y });
   };
 
