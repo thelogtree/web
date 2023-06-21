@@ -10,6 +10,7 @@ import { StylesType } from "src/utils/styles";
 import { HeaderBar } from "./components/HeaderBar";
 import { Canvas } from "./components/Canvas";
 import { PassiveAlert } from "./components/PassiveAlert";
+import { Colors } from "src/utils/colors";
 
 export const DashboardScreen = () => {
   const organization = useSelector(getOrganization);
@@ -44,5 +45,7 @@ const styles: StylesType = {
     left: 0,
     right: 0,
     bottom: 0,
+    overflow: "hidden",
+    backgroundColor: Colors.canvasBackground,
   },
 };

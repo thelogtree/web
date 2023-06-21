@@ -22,6 +22,7 @@ export const Colors = {
   green: "#00AE42",
   darkerGreen: "#00C092",
   transparent: "rgba(0,0,0,0)",
+  canvasBackground: "#EBEBEB",
 
   green50: "#dfffe6",
   green100: "#b7ffc6",

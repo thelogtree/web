@@ -66,6 +66,7 @@ export const Canvas = ({ isFetching }: Props) => {
         onMouseMove={handleMouseMove}
         ref={canvasRef}
         className={isDragging ? "disable-text-selection" : ""}
+        id="canvas-container"
       >
         {widgets.map((widget) => (
           <Widget widgetObj={widget} key={widget.widget._id.toString()} />
@@ -89,13 +90,12 @@ export const Canvas = ({ isFetching }: Props) => {
 
 const styles: StylesType = {
   container: {
-    position: "fixed",
+    position: "absolute",
     top: 0,
     right: 0,
     bottom: 0,
     left: 0,
-    backgroundColor: "#EBEBEB",
-    // overflow: "auto",
+    overflow: "auto",
   },
   scrollable: {
     // fix this later
