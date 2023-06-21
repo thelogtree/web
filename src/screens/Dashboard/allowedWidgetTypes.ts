@@ -17,4 +17,9 @@ export const allowedWidgetTypes: {
     allowsQuery: false,
     chooseTimeframe: true,
   },
+  pie_chart_by_content: {
+    label: "Pie chart by content",
+    allowsQuery: false,
+    chooseTimeframe: true,
+  },
 };

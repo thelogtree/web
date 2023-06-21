@@ -9,6 +9,7 @@ import { getAdjustedPositionAndSizeOfWidget, useDragWidget } from "../lib";
 import { DeleteWidgetButton } from "./DeleteWidgetButton";
 import "../Widget.css";
 import { Histogram } from "./Histogram";
+import { PieChart } from "./PieChart";
 
 type Props = {
   widgetObj: FrontendWidget;
@@ -39,13 +40,22 @@ export const Widget = ({ widgetObj }: Props) => {
         return <LogsList logs={data} />;
       case widgetType.Histograms:
         const histogram = data[0];
-        const { graphData, fullPath, numLogsTotal, suffix } = histogram;
         return (
           <Histogram
-            graphData={graphData}
-            fullPath={fullPath}
-            numLogsTotal={numLogsTotal}
-            suffix={suffix}
+            graphData={histogram.graphData}
+            fullPath={histogram.fullPath}
+            numLogsTotal={histogram.numLogsTotal}
+            suffix={histogram.suffix}
+            widget={widget}
+          />
+        );
+      case widgetType.PieChartByContent:
+        return (
+          <PieChart
+            graphData={data.graphData}
+            fullPath={data.fullPath}
+            numLogsTotal={data.numLogsTotal}
+            suffix={data.suffix}
             widget={widget}
           />
         );
