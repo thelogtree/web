@@ -42,11 +42,13 @@ export const RouteManager = () => {
   const activePathname = usePathname();
   const path = getFirstPathWithSlash(activePathname);
   const sidebarWidth = useSelector(getSidebarWidth);
-  // const routeNeedsSidebar = useMemo(() => {
-  //   return ROUTES_WITH_SIDEBAR.includes(path) /* &&
-  //     !activePathname.includes(SUPPORT_TOOL_SUFFIX)*/;
-  // }, [path, activePathname]);
-  const routeNeedsSidebar = false;
+  const routeNeedsSidebar = useMemo(() => {
+    return (
+      ROUTES_WITH_SIDEBAR.includes(path) &&
+      !activePathname.includes(DASHBOARD_ROUTE_PREFIX) /* &&
+      !activePathname.includes(SUPPORT_TOOL_SUFFIX)*/
+    );
+  }, [path, activePathname]);
 
   return authStatus === "UNDETERMINED" ? null : (
     <Switch>

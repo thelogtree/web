@@ -256,6 +256,10 @@ export const useFetchFolders = () => {
   const organization = useSelector(getOrganization);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
+  useEffect(() => {
+    dispatch(setFolders([]));
+  }, [organization?._id]);
+
   const fetch = async () => {
     let wasSuccessful = false;
     try {
@@ -268,7 +272,7 @@ export const useFetchFolders = () => {
       wasSuccessful = true;
     } catch (e) {
       Sentry.captureException(e);
-      dispatch(setFolders([]));
+      // dispatch(setFolders([]));
     }
     setIsFetching(false);
     return wasSuccessful;

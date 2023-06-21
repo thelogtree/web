@@ -62,11 +62,10 @@ export const useCurrentDashboard = (
 };
 
 export const LOCAL_STORAGE_DASHBOARD_ID_KEY = "viewing_dashboard_id";
-export const useNavigateToDashboardIfLost = () => {
+export const useNavigateToDashboardIfLost = (newTab: boolean = false) => {
   const organization = useSelector(getOrganization);
   const dashboards = useSelector(getDashboards);
   const { fetch } = useFetchDashboards();
-  const history = useHistory();
   const currentDashboard = useCurrentDashboard(true);
 
   useEffect(() => {
@@ -82,8 +81,9 @@ export const useNavigateToDashboardIfLost = () => {
         dashboardId = dashboards[0]._id.toString();
         localStorage.setItem(LOCAL_STORAGE_DASHBOARD_ID_KEY, dashboardId);
       }
-      history.push(
-        `${ORG_ROUTE_PREFIX}/${organization?.slug}${DASHBOARD_ROUTE_PREFIX}/${dashboardId}`
+      window.open(
+        `${ORG_ROUTE_PREFIX}/${organization?.slug}${DASHBOARD_ROUTE_PREFIX}/${dashboardId}`,
+        newTab ? "_blank" : "_self"
       );
     }
   };

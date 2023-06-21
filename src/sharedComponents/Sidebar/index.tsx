@@ -18,6 +18,7 @@ import { IntegrationsTab } from "./components/IntegrationsTab";
 import { Connections } from "./components/Connections";
 import { GlobalSearchTab } from "./components/GlobalSearchTab";
 import { FunnelsTab } from "./components/FunnelsTab";
+import { DashboardTab } from "./components/DashboardTab";
 
 export const Sidebar = () => {
   const sidebarWidth = useSelector(getSidebarWidth);
@@ -29,8 +30,9 @@ export const Sidebar = () => {
         <SignedInOrganization />
         <ApiTab />
         <FavoritesTab />
-        <InsightsTab />
+        {/* <InsightsTab /> */}
         <FunnelsTab />
+        <DashboardTab />
         <IntegrationsTab />
         <GlobalSearchTab />
         <SupportSearchTab />
