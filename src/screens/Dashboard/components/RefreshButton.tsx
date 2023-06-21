@@ -3,11 +3,14 @@ import { useFetchWidgetsWithData } from "src/redux/actionIndex";
 import RefreshIcon from "src/assets/refresh.png";
 import { SharedStyles, StylesType } from "src/utils/styles";
 import { Colors } from "src/utils/colors";
+import { useSelector } from "react-redux";
+import { getWidgets } from "src/redux/organization/selector";
 
 export const RefreshButton = () => {
+  const widgets = useSelector(getWidgets);
   const { fetch, isFetching } = useFetchWidgetsWithData();
 
-  return (
+  return widgets.length ? (
     <button
       style={{
         ...styles.container,
@@ -21,7 +24,7 @@ export const RefreshButton = () => {
         {isFetching ? "Pulling..." : "Pull data"}
       </label>
     </button>
-  );
+  ) : null;
 };
 
 const styles: StylesType = {

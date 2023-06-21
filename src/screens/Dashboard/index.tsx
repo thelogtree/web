@@ -9,6 +9,7 @@ import { useCurrentDashboard } from "./lib";
 import { StylesType } from "src/utils/styles";
 import { HeaderBar } from "./components/HeaderBar";
 import { Canvas } from "./components/Canvas";
+import { PassiveAlert } from "./components/PassiveAlert";
 
 export const DashboardScreen = () => {
   const organization = useSelector(getOrganization);
@@ -27,6 +28,7 @@ export const DashboardScreen = () => {
     <div style={styles.container}>
       <HeaderBar />
       <Canvas isFetching={isFetching} />
+      <PassiveAlert isFetchingWidgets={isFetching} />
     </div>
   );
 };
