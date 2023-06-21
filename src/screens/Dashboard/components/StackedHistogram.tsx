@@ -54,7 +54,7 @@ const CustomTooltip = ({
   );
 };
 
-export const HealthMonitor = ({
+export const StackedHistogram = ({
   graphDataSuccess,
   graphDataError,
   numLogsSuccess,

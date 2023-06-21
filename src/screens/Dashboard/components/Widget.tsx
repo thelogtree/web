@@ -10,7 +10,7 @@ import { DeleteWidgetButton } from "./DeleteWidgetButton";
 import "../Widget.css";
 import { Histogram } from "./Histogram";
 import { PieChart } from "./PieChart";
-import { HealthMonitor } from "./HealthMonitor";
+import { StackedHistogram } from "./StackedHistogram";
 
 type Props = {
   widgetObj: FrontendWidget;
@@ -62,7 +62,7 @@ export const Widget = ({ widgetObj }: Props) => {
         );
       case widgetType.HealthMonitor:
         return (
-          <HealthMonitor
+          <StackedHistogram
             fullPathSuccess={data[0].fullPath}
             fullPathError={data[1].fullPath}
             numLogsSuccess={data[0].numLogsTotal}
