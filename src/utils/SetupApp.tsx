@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
+  setFolders,
+  setOrganization,
   setUser,
   useFetchMe,
   useFetchMyOrganization,
@@ -104,6 +106,8 @@ export const SetupApp = () => {
       } else {
         dispatch(setUser(null));
         dispatch(setAuthStatus("NOT_SIGNED_IN"));
+        dispatch(setFolders([]));
+        dispatch(setOrganization(null));
       }
     });
   }, []);
