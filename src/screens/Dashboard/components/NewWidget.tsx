@@ -236,7 +236,10 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
                 options={flattenedFoldersMapped}
                 disabled={isCreating}
                 value={folderPath}
-                style={styles.selectStyle}
+                style={{
+                  ...styles.selectStyle,
+                  ...(index ? { marginTop: 5 } : {}),
+                }}
               />
             ))}
             {currentWidgetTypeAllowsTimeframe ? (

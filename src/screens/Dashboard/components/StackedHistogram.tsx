@@ -82,13 +82,13 @@ export const StackedHistogram = ({
       </label>
       <div style={styles.graphContainer}>
         <label style={styles.numSuccessesLbl}>
-          {numLogsSuccess} {successSuffix}
+          {numLogsSuccess} {successSuffix}{" "}
+          <span style={styles.fullPath}>{fullPathSuccess}</span>
         </label>
         <label style={styles.numErrorsLbl}>
-          {numLogsError} {errorSuffix}
+          {numLogsError} {errorSuffix}{" "}
+          <span style={styles.fullPath}>{fullPathError}</span>
         </label>
-        <label style={styles.fullPathTop}>{fullPathSuccess}</label>
-        <label style={styles.fullPathBottom}>{fullPathError}</label>
         <ResponsiveContainer width="100%" height={"85%"}>
           <BarChart
             margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
@@ -101,16 +101,18 @@ export const StackedHistogram = ({
               position={{ y: 28 }}
             />
             <Bar
-              stackId="health"
+              stackId="main"
               dataKey="successCount"
               fill={Colors.green500}
               barSize={110}
+              isAnimationActive={false}
             />
             <Bar
-              stackId="health"
+              stackId="main"
               dataKey="errorCount"
               fill={Colors.red}
               barSize={110}
+              isAnimationActive={false}
             />
           </BarChart>
         </ResponsiveContainer>
@@ -131,11 +133,11 @@ const styles: StylesType = {
   },
   numErrorsLbl: {
     color: Colors.red,
-    paddingBottom: 5,
+    paddingBottom: 8,
   },
   numSuccessesLbl: {
     color: Colors.green500,
-    paddingBottom: 10,
+    paddingBottom: 5,
   },
   description: {
     color: Colors.gray,
@@ -151,6 +153,11 @@ const styles: StylesType = {
     color: Colors.gray,
     fontSize: 12,
     paddingBottom: 12,
+  },
+  fullPath: {
+    color: Colors.gray,
+    fontSize: 12,
+    paddingLeft: 5,
   },
   tooltipContainer: {
     padding: 12,

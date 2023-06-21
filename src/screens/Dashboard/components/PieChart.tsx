@@ -76,6 +76,7 @@ export const PieChart = ({
             cy="50%"
             innerRadius={50}
             outerRadius={100}
+            isAnimationActive={false}
           >
             {graphData.map((_, index) => (
               <Cell fill={getColorFromIndex(index)} />

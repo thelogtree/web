@@ -88,7 +88,12 @@ export const Histogram = ({
               cursor={false}
               position={{ y: 28 }}
             />
-            <Bar dataKey="count" fill={Colors.blue500} barSize={110} />
+            <Bar
+              dataKey="count"
+              fill={Colors.blue500}
+              barSize={110}
+              isAnimationActive={false}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
