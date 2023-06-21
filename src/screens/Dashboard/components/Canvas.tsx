@@ -53,46 +53,49 @@ export const Canvas = ({ isFetching }: Props) => {
   }
 
   return (
-    <div
-      style={{
-        ...styles.container,
-        ...(isInAddWidgetMode && { cursor: "crosshair" }),
-        ...(canScroll && styles.scrollable),
-      }}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseMove}
-      ref={canvasRef}
-      className={isDragging ? "disable-text-selection" : ""}
-    >
-      {widgets.map((widget) => (
-        <Widget widgetObj={widget} key={widget.widget._id.toString()} />
-      ))}
-      {newWidgets.map((_, i) => (
-        <NewWidget
-          newWidgets={newWidgets}
-          indexInArr={i}
-          setNewWidgets={setNewWidgets}
-          key={i}
-        />
-      ))}
-      <NewWidgetPlaceholderBox
-        isDragging={isDragging}
-        adjustedPositionAndSize={placeholderWidgetAdjustedPositionAndSize}
-      />
+    <>
       <ErrorMessage isErrorVisible={isErrorVisible} />
-    </div>
+      <div
+        style={{
+          ...styles.container,
+          ...(isInAddWidgetMode && { cursor: "crosshair" }),
+          ...(canScroll && styles.scrollable),
+        }}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        ref={canvasRef}
+        className={isDragging ? "disable-text-selection" : ""}
+      >
+        {widgets.map((widget) => (
+          <Widget widgetObj={widget} key={widget.widget._id.toString()} />
+        ))}
+        {newWidgets.map((_, i) => (
+          <NewWidget
+            newWidgets={newWidgets}
+            indexInArr={i}
+            setNewWidgets={setNewWidgets}
+            key={i}
+          />
+        ))}
+        <NewWidgetPlaceholderBox
+          isDragging={isDragging}
+          adjustedPositionAndSize={placeholderWidgetAdjustedPositionAndSize}
+        />
+      </div>
+    </>
   );
 };
 
 const styles: StylesType = {
   container: {
-    position: "absolute",
+    position: "fixed",
     top: 0,
     right: 0,
     bottom: 0,
     left: 0,
     backgroundColor: "#EBEBEB",
+    // overflow: "auto",
   },
   scrollable: {
     // fix this later

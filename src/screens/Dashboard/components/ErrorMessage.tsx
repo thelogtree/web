@@ -55,7 +55,7 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    position: "fixed",
+    position: "absolute",
     zIndex: 50,
     top: 30,
     left: 100,
