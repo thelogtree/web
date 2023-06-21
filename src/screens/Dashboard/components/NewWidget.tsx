@@ -1,4 +1,4 @@
-import React, { EventHandler, useMemo, useState } from "react";
+import React, { EventHandler, useEffect, useMemo, useState } from "react";
 import {
   NewFrontendWidget,
   getAdjustedPositionAndSizeOfWidget,
@@ -30,12 +30,11 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
   const organization = useSelector(getOrganization);
   const flattenedFolders = useFlattenedFolders(undefined, true);
   const newWidget = newWidgets[indexInArr];
-  const currentWidgetTypeAllowsQuery = newWidget.type
-    ? allowedWidgetTypes[newWidget.type].allowsQuery
-    : false;
-  const currentWidgetTypeAllowsTimeframe = newWidget.type
-    ? allowedWidgetTypes[newWidget.type].chooseTimeframe
-    : false;
+  const widgetTemplate = newWidget.type
+    ? allowedWidgetTypes[newWidget.type]
+    : null;
+  const currentWidgetTypeAllowsQuery = !!widgetTemplate?.allowsQuery;
+  const currentWidgetTypeAllowsTimeframe = !!widgetTemplate?.chooseTimeframe;
   const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
     newWidget.position,
     newWidget.size
@@ -118,10 +117,12 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
       }
       setIsCreating(true);
       const hydratedFolderPaths = newWidget.folderPaths.map(
-        (path) =>
+        (path, i) =>
           ({
             fullPath: path,
-            overrideEventName: null,
+            overrideEventName: widgetTemplate?.overrideChannelsToChoose
+              ? widgetTemplate.overrideChannelsToChoose[i].overrideEventName
+              : null,
           } as FolderType)
       );
       await Api.organization.createWidget(
@@ -170,6 +171,20 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     }));
   }, [widgetTimeframes]);
 
+  useEffect(() => {
+    if (widgetTemplate) {
+      const newWidgetTemp = {
+        ...newWidget,
+        folderPaths: widgetTemplate.overrideChannelsToChoose
+          ? widgetTemplate.overrideChannelsToChoose.map((_) => null)
+          : [null],
+      };
+      const newWidgetsTemp = newWidgets.slice();
+      newWidgetsTemp[indexInArr] = newWidgetTemp;
+      setNewWidgets(newWidgetsTemp);
+    }
+  }, [widgetTemplate?.overrideChannelsToChoose?.length]);
+
   return (
     <div
       style={{
@@ -206,7 +221,11 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
               <Select
                 key={index}
                 showSearch
-                placeholder="Select a channel"
+                placeholder={
+                  widgetTemplate?.overrideChannelsToChoose
+                    ? widgetTemplate.overrideChannelsToChoose[index].placeholder
+                    : "Select a channel"
+                }
                 optionFilterProp="children"
                 onChange={(val) => _handleFolderPathChange(val, index)}
                 filterOption={(input, option) =>

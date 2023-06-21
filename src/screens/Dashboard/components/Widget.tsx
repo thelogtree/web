@@ -10,6 +10,7 @@ import { DeleteWidgetButton } from "./DeleteWidgetButton";
 import "../Widget.css";
 import { Histogram } from "./Histogram";
 import { PieChart } from "./PieChart";
+import { HealthMonitor } from "./HealthMonitor";
 
 type Props = {
   widgetObj: FrontendWidget;
@@ -57,6 +58,20 @@ export const Widget = ({ widgetObj }: Props) => {
             numLogsTotal={data.numLogsTotal}
             suffix={data.suffix}
             widget={widget}
+          />
+        );
+      case widgetType.HealthMonitor:
+        return (
+          <HealthMonitor
+            fullPathSuccess={data[0].fullPath}
+            fullPathError={data[1].fullPath}
+            numLogsSuccess={data[0].numLogsTotal}
+            numLogsError={data[1].numLogsTotal}
+            successSuffix={data[0].suffix}
+            errorSuffix={data[1].suffix}
+            widget={widget}
+            graphDataSuccess={data[0].graphData}
+            graphDataError={data[1].graphData}
           />
         );
       default:

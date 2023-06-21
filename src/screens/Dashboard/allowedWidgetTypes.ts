@@ -5,6 +5,10 @@ export const allowedWidgetTypes: {
     label: string;
     allowsQuery: boolean;
     chooseTimeframe: boolean;
+    overrideChannelsToChoose?: {
+      placeholder: string;
+      overrideEventName: string | null;
+    }[];
   };
 } = {
   logs: {
@@ -21,5 +25,14 @@ export const allowedWidgetTypes: {
     label: "Pie chart by content",
     allowsQuery: false,
     chooseTimeframe: true,
+  },
+  health_monitor: {
+    label: "Health monitor",
+    allowsQuery: false,
+    chooseTimeframe: true,
+    overrideChannelsToChoose: [
+      { placeholder: "Successes channel", overrideEventName: "successful" },
+      { placeholder: "Errors channel", overrideEventName: "errored" },
+    ],
   },
 };
