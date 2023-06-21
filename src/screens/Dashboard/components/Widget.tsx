@@ -18,7 +18,7 @@ type Props = {
 
 export const Widget = ({ widgetObj }: Props) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
-  const { onMouseDown, onMouseMove, onMouseUp } = useDragWidget(
+  const { onMouseDown, onMouseMove, onMouseUp, isDragging } = useDragWidget(
     widgetObj.widget
   );
   const { widget, data } = widgetObj;
@@ -89,6 +89,7 @@ export const Widget = ({ widgetObj }: Props) => {
       style={{
         ...styles.container,
         ...adjustedPositionAndSize,
+        ...(isDragging && { cursor: "grabbing" }),
       }}
       onMouseOver={() => setIsHovering(true)}
       onMouseLeave={_handleOnMouseLeave}
@@ -121,6 +122,7 @@ const styles: StylesType = {
     zIndex: 10,
     overflowX: "hidden",
     overflowY: "auto",
+    cursor: "grab",
   },
   title: {
     fontSize: 18,

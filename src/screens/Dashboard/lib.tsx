@@ -344,6 +344,7 @@ export const useDragWidget = (widget: WidgetDocument) => {
     onMouseDown,
     onMouseMove,
     onMouseUp,
+    isDragging,
   };
 };
 
