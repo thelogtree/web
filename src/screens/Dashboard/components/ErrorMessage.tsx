@@ -58,8 +58,8 @@ const styles: StylesType = {
     position: "fixed",
     zIndex: 50,
     top: 30,
-    left: 0,
-    right: 0,
+    left: 100,
+    right: 100,
     transition: `opacity 0.15s linear`,
   },
   error: {
