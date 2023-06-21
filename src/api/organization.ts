@@ -1,9 +1,14 @@
 import {
+  FolderType,
   IntegrationDocument,
+  PositionType,
+  SizeType,
   comparisonTypeEnum,
   integrationTypeEnum,
   notificationTypeEnum,
   orgPermissionLevel,
+  widgetTimeframe,
+  widgetType,
 } from "logtree-types";
 import axios from "../utils/axios";
 import moment from "moment";
@@ -276,5 +281,65 @@ export const organization = {
     axios.post(routeUrl + `/${organizationId}/funnel`, {
       folderPathsInOrder,
       forwardToChannelPath,
+    }),
+  getDashboards: (organizationId: string) =>
+    axios.get(routeUrl + `/${organizationId}/dashboards`),
+  getWidgets: (organizationId: string, dashboardId: string) =>
+    axios.get(routeUrl + `/${organizationId}/widgets`, {
+      params: {
+        dashboardId,
+      },
+    }),
+  loadWidget: (organizationId: string, widgetId: string) =>
+    axios.get(routeUrl + `/${organizationId}/widget`, {
+      params: {
+        widgetId,
+      },
+    }),
+  createWidget: (
+    organizationId: string,
+    dashboardId: string,
+    title: string,
+    type: widgetType,
+    folderPaths: FolderType[],
+    position: PositionType,
+    size: SizeType,
+    query?: string,
+    timeframe?: widgetTimeframe
+  ) =>
+    axios.post(routeUrl + `/${organizationId}/widget`, {
+      dashboardId,
+      title,
+      type,
+      folderPaths,
+      position,
+      size,
+      query,
+      timeframe,
+    }),
+  deleteWidget: (organizationId: string, widgetId: string) =>
+    axios.post(routeUrl + `/${organizationId}/delete-widget`, {
+      widgetId,
+    }),
+  deleteDashboard: (organizationId: string, dashboardId: string) =>
+    axios.post(routeUrl + `/${organizationId}/delete-dashboard`, {
+      dashboardId,
+    }),
+  updateWidget: (
+    organizationId: string,
+    widgetId: string,
+    position?: PositionType,
+    size?: SizeType,
+    title?: string
+  ) =>
+    axios.put(routeUrl + `/${organizationId}/widget`, {
+      widgetId,
+      position,
+      size,
+      title,
+    }),
+  createDashboard: (organizationId: string, title: string) =>
+    axios.post(routeUrl + `/${organizationId}/dashboard`, {
+      title,
     }),
 };

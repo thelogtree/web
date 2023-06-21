@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: "Archivo";
+  font-family: "Inter";
   font-weight: 400;
   letter-spacing: 0.5px;
 }
@@ -44,4 +44,11 @@ code {
 ::selection {
   background: rgba(54, 248, 255, 0.438);
   color: black;
+}
+
+.disable-text-selection {
+  -moz-user-select: none; /* firefox */
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE*/
+  user-select: none; /* Standard syntax */
 }

@@ -1,14 +1,21 @@
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import { OrganizationActionsIndex } from "./action";
 import {
+  DashboardDocument,
   FunnelDocument,
   IntegrationDocument,
   OrganizationDocument,
   RuleDocument,
   UserDocument,
+  WidgetDocument,
   integrationTypeEnum,
 } from "logtree-types";
 import { isMobile } from "react-device-detect";
+
+export type FrontendWidget = {
+  widget: WidgetDocument;
+  data: any;
+};
 
 export type OrganizationReducerType = {
   organization: OrganizationDocument | null;
@@ -21,6 +28,9 @@ export type OrganizationReducerType = {
   integrations: IntegrationDocument[];
   connectableIntegrations: integrationTypeEnum[];
   funnels: FunnelDocument[];
+  dashboards: DashboardDocument[];
+  widgets: FrontendWidget[];
+  canAddWidget: boolean;
 };
 
 const initialState: OrganizationReducerType = {
@@ -34,6 +44,9 @@ const initialState: OrganizationReducerType = {
   integrations: [],
   connectableIntegrations: [],
   funnels: [],
+  dashboards: [],
+  widgets: [],
+  canAddWidget: false,
 };
 
 export const organizationReducer = (
@@ -61,6 +74,12 @@ export const organizationReducer = (
       return { ...state, connectableIntegrations: action.integrationTypes };
     case "SET_FUNNELS":
       return { ...state, funnels: action.funnels };
+    case "SET_WIDGETS":
+      return { ...state, widgets: action.widgets };
+    case "SET_DASHBOARDS":
+      return { ...state, dashboards: action.dashboards };
+    case "SET_CAN_ADD_WIDGET":
+      return { ...state, canAddWidget: action.canAddWidget };
     default:
       return state;
   }
