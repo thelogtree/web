@@ -20,7 +20,12 @@ export const HeaderBar = () => {
         <DashboardPicker />
         <RefreshButton />
       </div>
-      <ToggleAddWidgetMode />
+      <div style={styles.rightSide}>
+        <label style={styles.betaLbl}>
+          This is a beta - expect some UI bugs!
+        </label>
+        <ToggleAddWidgetMode />
+      </div>
     </div>
   );
 };
@@ -45,5 +50,23 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
+  },
+  rightSide: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    height: "100%",
+  },
+  betaLbl: {
+    background: "linear-gradient(268.45deg, #383838 30.54%, #404040 60.79%)",
+    color: Colors.white,
+    borderRadius: 40,
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingTop: 6,
+    paddingBottom: 6,
+    fontSize: 11,
+    marginRight: 15,
   },
 };

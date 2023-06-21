@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCanAddWidget } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
-import DragDropIcon from "src/assets/dragDrop.png";
+import DragDropIcon from "src/assets/whiteSquare1.png";
 import { setCanAddWidget } from "src/redux/actionIndex";
 
 export const ToggleAddWidgetMode = () => {
@@ -36,8 +36,8 @@ const styles: StylesType = {
     alignItems: "center",
   },
   icon: {
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
     cursor: "pointer",
   },
 };
