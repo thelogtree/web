@@ -47,4 +47,13 @@ export const allowedWidgetTypes: {
     allowsUrl: true,
     overrideChannelsToChoose: [],
   },
+  histogram_comparison: {
+    label: "Comparison over time",
+    allowsQuery: false,
+    chooseTimeframe: true,
+    overrideChannelsToChoose: [
+      { placeholder: "First channel", overrideEventName: null },
+      { placeholder: "Second channel", overrideEventName: null },
+    ],
+  },
 };
