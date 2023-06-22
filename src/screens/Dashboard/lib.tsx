@@ -104,6 +104,7 @@ export type NewFrontendWidget = {
   folderPaths: (string | null)[];
   type: widgetType | null;
   query?: string;
+  url?: string;
   position: PositionType;
   size: SizeType;
   timeframe: widgetTimeframe;

@@ -305,7 +305,8 @@ export const organization = {
     position: PositionType,
     size: SizeType,
     query?: string,
-    timeframe?: widgetTimeframe
+    timeframe?: widgetTimeframe,
+    url?: string
   ) =>
     axios.post(routeUrl + `/${organizationId}/widget`, {
       dashboardId,
@@ -316,6 +317,7 @@ export const organization = {
       size,
       query,
       timeframe,
+      url,
     }),
   deleteWidget: (organizationId: string, widgetId: string) =>
     axios.post(routeUrl + `/${organizationId}/delete-widget`, {

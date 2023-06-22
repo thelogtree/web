@@ -1,10 +1,9 @@
-import React, { EventHandler, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   NewFrontendWidget,
   getAdjustedPositionAndSizeOfWidget,
   useCurrentDashboard,
   useDragNewWidget,
-  useDragWidget,
   widgetTimeframes,
 } from "../lib";
 import { SharedStyles, StylesType } from "src/utils/styles";
@@ -35,6 +34,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     : null;
   const currentWidgetTypeAllowsQuery = !!widgetTemplate?.allowsQuery;
   const currentWidgetTypeAllowsTimeframe = !!widgetTemplate?.chooseTimeframe;
+  const currentWidgetTypeRequiresUrl = !!widgetTemplate?.requiresUrl;
   const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
     newWidget.position,
     newWidget.size
@@ -53,8 +53,12 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
       newWidget.type &&
         newWidget.title &&
         newWidget.type &&
-        newWidget.folderPaths.length &&
-        !newWidget.folderPaths.find((path) => !path)
+        (!widgetTemplate?.overrideChannelsToChoose ||
+        widgetTemplate.overrideChannelsToChoose.length !== 0
+          ? newWidget.folderPaths.length &&
+            !newWidget.folderPaths.find((path) => !path)
+          : true) &&
+        (widgetTemplate?.requiresUrl ? newWidget.url : true)
     );
 
   const _handleFolderPathChange = (value: string, index: number) => {
@@ -109,6 +113,16 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     setNewWidgets(newWidgetsTemp);
   };
 
+  const _handleUrlChange = (newText: string) => {
+    const newWidgetTemp = {
+      ...newWidget,
+      url: newText,
+    };
+    const newWidgetsTemp = newWidgets.slice();
+    newWidgetsTemp[indexInArr] = newWidgetTemp;
+    setNewWidgets(newWidgetsTemp);
+  };
+
   const _onSave = async (e: React.MouseEvent) => {
     try {
       e.stopPropagation();
@@ -134,7 +148,8 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
         newWidget.position,
         newWidget.size,
         newWidget.query,
-        newWidget.timeframe
+        newWidget.timeframe,
+        newWidget.url
       );
       await fetch();
       const newWidgetsTemp = newWidgets.filter((_, i) => i !== indexInArr);
@@ -223,7 +238,8 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
                 showSearch
                 placeholder={
                   widgetTemplate?.overrideChannelsToChoose
-                    ? widgetTemplate.overrideChannelsToChoose[index].placeholder
+                    ? widgetTemplate.overrideChannelsToChoose[index]
+                        ?.placeholder
                     : "Select a channel"
                 }
                 optionFilterProp="children"
@@ -272,6 +288,17 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
                   onChange={(e) => _handleQueryChange(e.target.value)}
                   placeholder="Query"
                   style={styles.queryInput}
+                />
+              </>
+            ) : null}
+            {currentWidgetTypeRequiresUrl ? (
+              <>
+                <label style={styles.queryLbl}>URL</label>
+                <input
+                  value={newWidget.url || ""}
+                  onChange={(e) => _handleUrlChange(e.target.value)}
+                  placeholder="https://some_url.com"
+                  style={styles.urlInput}
                 />
               </>
             ) : null}
@@ -366,6 +393,17 @@ const styles: StylesType = {
     paddingBottom: 6,
   },
   queryInput: {
+    fontSize: 14,
+    backgroundColor: Colors.transparent,
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: Colors.lightGray,
+    padding: 10,
+    width: "80%",
+    maxWidth: 400,
+    borderRadius: 10,
+  },
+  urlInput: {
     fontSize: 14,
     backgroundColor: Colors.transparent,
     borderStyle: "solid",

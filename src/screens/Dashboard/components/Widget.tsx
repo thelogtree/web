@@ -11,6 +11,7 @@ import "../Widget.css";
 import { Histogram } from "./Histogram";
 import { PieChart } from "./PieChart";
 import { StackedHistogram } from "./StackedHistogram";
+import { EmbeddedLink } from "./EmbeddedLink";
 
 type Props = {
   widgetObj: FrontendWidget;
@@ -88,6 +89,8 @@ export const Widget = ({ widgetObj }: Props) => {
             graphDataError={data[1].graphData}
           />
         );
+      case widgetType.EmbeddedLink:
+        return <EmbeddedLink html={widgetObj.data.html} />;
       default:
         return null;
     }
