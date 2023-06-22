@@ -3,7 +3,7 @@ import { widgetType } from "logtree-types";
 export const allowedWidgetTypes: {
   [key in widgetType]: {
     label: string;
-    allowsUrl: boolean;
+    requiresUrl: boolean;
     allowsQuery: boolean;
     chooseTimeframe: boolean;
     overrideChannelsToChoose?: {
@@ -16,19 +16,19 @@ export const allowedWidgetTypes: {
     label: "Events feed",
     allowsQuery: true,
     chooseTimeframe: false,
-    allowsUrl: false,
+    requiresUrl: false,
   },
   histograms: {
     label: "Histogram",
     allowsQuery: false,
     chooseTimeframe: true,
-    allowsUrl: false,
+    requiresUrl: false,
   },
   pie_chart_by_content: {
     label: "Pie chart by content",
     allowsQuery: false,
     chooseTimeframe: true,
-    allowsUrl: false,
+    requiresUrl: false,
   },
   health_monitor: {
     label: "Health monitor",
@@ -38,19 +38,20 @@ export const allowedWidgetTypes: {
       { placeholder: "Successes channel", overrideEventName: "successful" },
       { placeholder: "Errors channel", overrideEventName: "errored" },
     ],
-    allowsUrl: false,
+    requiresUrl: false,
   },
   embedded_link: {
     label: "Embed url",
     allowsQuery: false,
     chooseTimeframe: false,
-    allowsUrl: true,
+    requiresUrl: true,
     overrideChannelsToChoose: [],
   },
   histogram_comparison: {
     label: "Comparison over time",
     allowsQuery: false,
     chooseTimeframe: true,
+    requiresUrl: false,
     overrideChannelsToChoose: [
       { placeholder: "First channel", overrideEventName: null },
       { placeholder: "Second channel", overrideEventName: null },
