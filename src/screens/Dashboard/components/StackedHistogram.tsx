@@ -98,7 +98,7 @@ export const StackedHistogram = ({
             <Tooltip
               content={<CustomTooltip />}
               cursor={false}
-              position={{ y: 28 }}
+              position={{ y: -20 }}
             />
             <Bar
               stackId="main"

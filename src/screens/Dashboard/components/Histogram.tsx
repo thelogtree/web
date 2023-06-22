@@ -86,7 +86,7 @@ export const Histogram = ({
             <Tooltip
               content={<CustomTooltip />}
               cursor={false}
-              position={{ y: 28 }}
+              position={{ y: -20 }}
             />
             <Bar
               dataKey="count"
