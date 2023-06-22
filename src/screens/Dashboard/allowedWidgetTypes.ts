@@ -35,4 +35,13 @@ export const allowedWidgetTypes: {
       { placeholder: "Errors channel", overrideEventName: "errored" },
     ],
   },
+  histogram_comparison: {
+    label: "Comparison over time",
+    allowsQuery: false,
+    chooseTimeframe: true,
+    overrideChannelsToChoose: [
+      { placeholder: "First channel", overrideEventName: null },
+      { placeholder: "Second channel", overrideEventName: null },
+    ],
+  },
 };
