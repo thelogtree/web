@@ -7,7 +7,7 @@ type Props = {
 };
 
 export const EmbeddedLink = ({ html }: Props) => (
-  <iframe srcDoc={html} style={styles.container} />
+  <iframe srcDoc={html} style={styles.container} width="100%" height="100%" />
 );
 
 const styles: StylesType = {
@@ -15,5 +15,7 @@ const styles: StylesType = {
     width: "100%",
     height: "100%",
     marginTop: 12,
+    outline: "none",
+    border: "none",
   },
 };
