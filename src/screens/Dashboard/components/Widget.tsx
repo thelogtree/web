@@ -74,6 +74,20 @@ export const Widget = ({ widgetObj }: Props) => {
             graphDataError={data[1].graphData}
           />
         );
+      case widgetType.HistogramComparison:
+        return (
+          <StackedHistogram
+            fullPathSuccess={data[0].fullPath}
+            fullPathError={data[1].fullPath}
+            numLogsSuccess={data[0].numLogsTotal}
+            numLogsError={data[1].numLogsTotal}
+            successSuffix={data[0].suffix}
+            errorSuffix={data[1].suffix}
+            widget={widget}
+            graphDataSuccess={data[0].graphData}
+            graphDataError={data[1].graphData}
+          />
+        );
       default:
         return null;
     }
