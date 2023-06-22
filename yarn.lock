@@ -8693,10 +8693,10 @@ logrocket@^4.0.2:
   resolved "https://registry.yarnpkg.com/logrocket/-/logrocket-4.0.2.tgz#73c2d903ff8e948a8fd712d04bc217055e591d49"
   integrity sha512-H3fhSUkjf2rkcBulleNq4CDHGx2moA+rSNdwg5AZBoKk7Us1Erjg20K1CBYOjYm5ttHTvYY+kW4mtj4wMMZmcQ==
 
-logtree-types@1.0.70:
-  version "1.0.70"
-  resolved "https://registry.yarnpkg.com/logtree-types/-/logtree-types-1.0.70.tgz#94e64015c920ae0ce8ee253cdcaacff3ad85223b"
-  integrity sha512-fh1vsF4zjmIab/caeP7V60E58pcPV5hAKAHFZTwotqEoX7LrvMjwk0tud1/yBVHqLZUbqzP0r9vHSuiQwYgkpg==
+logtree-types@1.0.72:
+  version "1.0.72"
+  resolved "https://registry.yarnpkg.com/logtree-types/-/logtree-types-1.0.72.tgz#14865f48b8d6b14002e34ce24ee771e0b65c6bb6"
+  integrity sha512-528ZxG3BBu0aN5UKZTWhKj2EBFSdcIgIOoSVZg3QJxZWFFkjdViLeMD+LEmZGGBWgxFwWKPe8oxCS8BrXaSYew==
   dependencies:
     lodash "^4.17.20"
     mongodb "^5.1.0"
