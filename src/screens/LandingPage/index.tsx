@@ -134,19 +134,19 @@ export const LandingPage = () => {
                 }}
               >
                 <label style={styles.mainText}>
-                  The monitoring API for startups
+                  The events API for startups
                 </label>
                 <label style={styles.subtitle}>
-                  Sentry is disorganized. Logtree lets you record your errors
-                  and logs in a much more organized way, see auto-generated
-                  graphs of your events, and search for any of your logs easily.
+                  The best Datadog alternative. Record errors or events, see
+                  auto-generated graphs, search across all your events, and even
+                  create custom dashboards.
                 </label>
                 <button
                   style={styles.joinBeta}
                   className="joinBeta"
                   onClick={_createAccount}
                 >
-                  <label style={styles.joinBetaLbl}>Try it</label>
+                  <label style={styles.joinBetaLbl}>Create free account</label>
                   <img src={QuickArrowRight} style={styles.arrowRight} />
                 </button>
                 <div style={styles.trustedContainer}>
@@ -172,13 +172,12 @@ export const LandingPage = () => {
               >
                 <div style={styles.leftSide}>
                   <label style={styles.mainText}>
-                    The monitoring API for startups
+                    The events API for startups
                   </label>
                   <label style={styles.subtitle}>
-                    Sentry is disorganized. Logtree lets you record your errors
-                    and logs in a much more organized way, see auto-generated
-                    graphs of your events, and search for any of your logs
-                    easily.
+                    The best Datadog alternative. Record errors or events, see
+                    auto-generated graphs, search across all your events, and
+                    even create custom dashboards.
                   </label>
                   <div style={styles.trustedContainer}>
                     <img src={TrustIcon} style={styles.trustIcon} />
@@ -192,7 +191,9 @@ export const LandingPage = () => {
                     className="joinBeta"
                     onClick={_createAccount}
                   >
-                    <label style={styles.joinBetaLbl}>Try it</label>
+                    <label style={styles.joinBetaLbl}>
+                      Create free account
+                    </label>
                     <img src={QuickArrowRight} style={styles.arrowRight} />
                   </button>
                 </div>
