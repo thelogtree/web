@@ -27,16 +27,21 @@ import { FrontendWidget } from "src/redux/organization/reducer";
 import {
   getCanAddWidget,
   getDashboards,
+  getLastFetchedWidgetData,
   getOrganization,
   getWidgets,
 } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
+import _ from "lodash";
 
 export const widgetTimeframes: { [key in widgetTimeframe]: string } = {
   "24_hours": "24 hours",
   "30_days": "30 days",
 };
+
+const MIN_WIDGET_WIDTH = 200;
+const MIN_WIDGET_HEIGHT = 200;
 
 export const useCurrentDashboard = (
   doNotRefetchDashboards?: boolean
@@ -172,7 +177,10 @@ export const useDesignWidgetShape = () => {
     if (!isDragging) {
       return;
     }
-    if (Math.abs(boxSize.width) < 200 || Math.abs(boxSize.height) < 200) {
+    if (
+      Math.abs(boxSize.width) < MIN_WIDGET_WIDTH ||
+      Math.abs(boxSize.height) < MIN_WIDGET_HEIGHT
+    ) {
       setIsErrorVisible(true);
     } else {
       _createNewFrontendWidget();
@@ -377,10 +385,8 @@ export const useResizeWidget = (widgetId: string) => {
   const organization = useSelector(getOrganization);
   const dispatch = useDispatch();
   const widgets = useSelector(getWidgets);
-  const widget = useMemo(() => {
-    return widgets.find((w) => w.widget._id === widgetId)
-      ?.widget as any as WidgetDocument;
-  }, []);
+  const widget = widgets.find((w) => w.widget._id === widgetId)
+    ?.widget as any as WidgetDocument;
   const [initialPosition, setInitialPosition] = useState<PositionType | null>(
     null
   );
@@ -388,16 +394,31 @@ export const useResizeWidget = (widgetId: string) => {
   const [hoveringCorner, setHoveringCorner] = useState<Corner | null>(null);
   const [cornerGettingDragged, setCornerGettingDragged] =
     useState<Corner | null>(null);
-  // const [mousePosition, setMousePosition] = useState<PositionType | null>(null)
+  const [mousePosition, setMousePosition] = useState<PositionType | null>(null);
+  const lastFetchedWidgetData = useSelector(getLastFetchedWidgetData);
 
-  // const moveMouse = (e: any) => setMousePosition({ x: e.clientX, y: e.clientY})
+  const handleMouseMove = (e) => {
+    setMousePosition({ x: e.clientX, y: e.clientY });
+  };
 
-  //   useEffect(() => {
-  //     document.addEventListener("mousemove", moveMouse)
-  //     return () => {
-  //       document.removeEventListener("mousemove", moveMouse)
-  //     }
-  //   }, [])
+  useEffect(() => {
+    if (cornerGettingDragged) {
+      document
+        .getElementById("canvas-container")
+        ?.addEventListener("mousemove", handleMouseMove);
+      document
+        .getElementById("canvas-fullscreen")
+        ?.addEventListener("mouseup", onMouseUp);
+    }
+    return () => {
+      document
+        .getElementById("canvas-container")
+        ?.removeEventListener("mousemove", handleMouseMove);
+      document
+        .getElementById("canvas-fullscreen")
+        ?.removeEventListener("mouseup", onMouseUp);
+    };
+  }, [cornerGettingDragged]);
 
   useEffect(() => {
     let timeout = setTimeout(async () => {
@@ -424,7 +445,13 @@ export const useResizeWidget = (widgetId: string) => {
 
   const _updatePosition = useCallback(
     (newPosition: PositionType, newSize: SizeType) => {
-      const newWidgets = widgets.map((widgetObj) =>
+      if (
+        newSize.width < MIN_WIDGET_WIDTH ||
+        newSize.height < MIN_WIDGET_HEIGHT
+      ) {
+        return;
+      }
+      const newWidgets = widgets.map((widgetObj, i) =>
         widgetObj.widget._id === widgetId
           ? ({
               data: widgetObj.data,
@@ -438,7 +465,7 @@ export const useResizeWidget = (widgetId: string) => {
       );
       dispatch(setWidgets(newWidgets));
     },
-    []
+    [lastFetchedWidgetData]
   );
 
   const onMouseDown = useCallback(
@@ -459,67 +486,60 @@ export const useResizeWidget = (widgetId: string) => {
     ]
   );
 
-  const onMouseUp = useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
+  const onMouseUp = useCallback(() => {
     setCornerGettingDragged(null);
     setInitialPosition(null);
     setInitialSize(null);
+    setMousePosition(null);
   }, []);
 
-  const onMouseMove = useCallback(
-    (event: React.MouseEvent) => {
-      event.stopPropagation();
-      if (!cornerGettingDragged || !initialPosition || !initialSize) {
-        return;
-      }
+  useEffect(() => {
+    if (
+      cornerGettingDragged &&
+      initialPosition &&
+      initialSize &&
+      mousePosition
+    ) {
+      const { x, y } = getScrollOffset();
 
-      switch (cornerGettingDragged) {
-        case Corner.BottomLeft:
-          //something
-          break;
-        case Corner.TopLeft:
-          //something
-          break;
-        case Corner.BottomRight:
-          const { x, y } = getScrollOffset();
-          const xDiff =
-            widget.position.x - event.clientX - x - initialPosition.x;
-          const yDiff =
-            widget.position.y - event.clientY - y - initialPosition.y;
-          const newWidth = initialSize.width - xDiff;
-          const newHeight = initialSize.height - yDiff;
-          _updatePosition(widget.position, {
-            width: newWidth,
-            height: newHeight,
-          });
-          break;
-        case Corner.TopRight:
-          //something
-          break;
+      if (cornerGettingDragged === Corner.BottomLeft) {
+        // something
+      } else if (cornerGettingDragged === Corner.TopLeft) {
+        // something
+      } else if (cornerGettingDragged === Corner.TopRight) {
+        const xDiff =
+          widget.position.x - mousePosition.x - x - initialPosition.x;
+        const yDiff =
+          widget.position.y - mousePosition.y - y - initialPosition.y;
+        const newWidth = initialSize.width - xDiff;
+        const newHeight = initialSize.height - yDiff;
+        _updatePosition(widget.position, {
+          width: newWidth,
+          height: newHeight,
+        });
+      } else if (cornerGettingDragged === Corner.BottomRight) {
+        const xDiff =
+          widget.position.x - mousePosition.x - x - initialPosition.x;
+        const yDiff =
+          widget.position.y - mousePosition.y - y - initialPosition.y;
+        const newWidth = initialSize.width - xDiff;
+        const newHeight = initialSize.height - yDiff;
+        _updatePosition(widget.position, {
+          width: newWidth,
+          height: newHeight,
+        });
       }
-    },
-    [
-      widget.position.x,
-      widget.position.y,
-      initialPosition?.x,
-      initialPosition?.y,
-      initialSize?.width,
-      initialSize?.height,
-      cornerGettingDragged,
-    ]
-  );
+    }
+  }, [mousePosition?.x, mousePosition?.y]);
 
-  const onMouseLeave = useCallback((e) => {
+  const onMouseLeave = useCallback(() => {
     setHoveringCorner(null);
-    onMouseUp(e);
   }, []);
 
   const TopLeft = useCallback(
     () => (
       <div
         onMouseDown={(e) => onMouseDown(e, Corner.TopLeft)}
-        onMouseUp={onMouseUp}
-        onMouseMove={onMouseMove}
         onMouseEnter={() => setHoveringCorner(Corner.TopLeft)}
         onMouseLeave={onMouseLeave}
         style={{
@@ -535,8 +555,6 @@ export const useResizeWidget = (widgetId: string) => {
     () => (
       <div
         onMouseDown={(e) => onMouseDown(e, Corner.TopRight)}
-        onMouseUp={onMouseUp}
-        onMouseMove={onMouseMove}
         onMouseEnter={() => setHoveringCorner(Corner.TopRight)}
         onMouseLeave={onMouseLeave}
         style={{
@@ -552,8 +570,6 @@ export const useResizeWidget = (widgetId: string) => {
     () => (
       <div
         onMouseDown={(e) => onMouseDown(e, Corner.BottomRight)}
-        onMouseUp={onMouseUp}
-        onMouseMove={onMouseMove}
         onMouseEnter={() => setHoveringCorner(Corner.BottomRight)}
         onMouseLeave={onMouseLeave}
         style={{
@@ -569,8 +585,6 @@ export const useResizeWidget = (widgetId: string) => {
     () => (
       <div
         onMouseDown={(e) => onMouseDown(e, Corner.BottomLeft)}
-        onMouseUp={onMouseUp}
-        onMouseMove={onMouseMove}
         onMouseEnter={() => setHoveringCorner(Corner.BottomLeft)}
         onMouseLeave={onMouseLeave}
         style={{

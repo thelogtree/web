@@ -75,3 +75,9 @@ export const getCanAddWidget = createSelector(
   (organizationReducer: OrganizationReducerType) =>
     organizationReducer.canAddWidget
 );
+
+export const getLastFetchedWidgetData = createSelector(
+  [getOrganizationReducer],
+  (organizationReducer: OrganizationReducerType) =>
+    organizationReducer.lastFetchedWidgetData
+);

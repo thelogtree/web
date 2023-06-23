@@ -47,6 +47,8 @@ const SET_WIDGETS = "SET_WIDGETS";
 type SET_WIDGETS = typeof SET_WIDGETS;
 const SET_CAN_ADD_WIDGET = "SET_CAN_ADD_WIDGET";
 type SET_CAN_ADD_WIDGET = typeof SET_CAN_ADD_WIDGET;
+const SET_LAST_FETCHED_WIDGET_DATAS = "SET_LAST_FETCHED_WIDGET_DATAS";
+type SET_LAST_FETCHED_WIDGET_DATAS = typeof SET_LAST_FETCHED_WIDGET_DATAS;
 
 type ISetSidebarWidth = {
   type: SET_SIDEBAR_WIDTH;
@@ -177,6 +179,17 @@ export const setCanAddWidget = (canAddWidget: boolean): ISetCanAddWidget => ({
   canAddWidget,
 });
 
+type ISetLastFetchedWidgetData = {
+  type: SET_LAST_FETCHED_WIDGET_DATAS;
+  lastFetchedWidgetData: Date;
+};
+export const setLastFetchedWidgetData = (
+  lastFetchedWidgetData: Date
+): ISetLastFetchedWidgetData => ({
+  type: SET_LAST_FETCHED_WIDGET_DATAS,
+  lastFetchedWidgetData,
+});
+
 // actions identifiable by the reducer
 export type OrganizationActionsIndex =
   | ISetOrganization
@@ -191,7 +204,8 @@ export type OrganizationActionsIndex =
   | ISetFunnels
   | ISetDashboards
   | ISetWidgets
-  | ISetCanAddWidget;
+  | ISetCanAddWidget
+  | ISetLastFetchedWidgetData;
 
 // api-related actions
 export const useFetchMyOrganization = () => {
@@ -521,6 +535,7 @@ export const useFetchWidgetsWithData = (overrideInitialIsLoading?: boolean) => {
       })
     );
     dispatch(setWidgets(hydratedWidgets));
+    dispatch(setLastFetchedWidgetData(new Date()));
     setIsFetchingWidgetData(false);
   };
 

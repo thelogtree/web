@@ -31,6 +31,7 @@ export type OrganizationReducerType = {
   dashboards: DashboardDocument[];
   widgets: FrontendWidget[];
   canAddWidget: boolean;
+  lastFetchedWidgetData: Date | null;
 };
 
 const initialState: OrganizationReducerType = {
@@ -47,6 +48,7 @@ const initialState: OrganizationReducerType = {
   dashboards: [],
   widgets: [],
   canAddWidget: false,
+  lastFetchedWidgetData: null,
 };
 
 export const organizationReducer = (
@@ -80,6 +82,8 @@ export const organizationReducer = (
       return { ...state, dashboards: action.dashboards };
     case "SET_CAN_ADD_WIDGET":
       return { ...state, canAddWidget: action.canAddWidget };
+    case "SET_LAST_FETCHED_WIDGET_DATAS":
+      return { ...state, lastFetchedWidgetData: action.lastFetchedWidgetData };
     default:
       return state;
   }
