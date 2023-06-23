@@ -27,7 +27,7 @@ export const Widget = ({ widgetObj }: Props) => {
     widgetObj.widget
   );
   const { CornerBlocks, isDragging: isResizingWidget } = useResizeWidget(
-    widgetObj.widget
+    widgetObj.widget._id as string
   );
   const { widget, data } = widgetObj;
   const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
@@ -36,14 +36,6 @@ export const Widget = ({ widgetObj }: Props) => {
   );
 
   const _renderData = () => {
-    if (isResizingWidget) {
-      return (
-        <label style={styles.dataHidden}>
-          Data is hidden while resizing widget.
-        </label>
-      );
-    }
-
     if (!data) {
       return (
         <div style={styles.loadingContainer}>
@@ -130,9 +122,17 @@ export const Widget = ({ widgetObj }: Props) => {
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
     >
-      <label style={styles.title}>{widget.title}</label>
-      <DeleteWidgetButton widget={widget} isVisible={isHovering} />
-      {_renderData()}
+      {isResizingWidget ? (
+        <label style={styles.dataHidden}>
+          Data is hidden while resizing widget.
+        </label>
+      ) : (
+        <>
+          <label style={styles.title}>{widget.title}</label>
+          <DeleteWidgetButton widget={widget} isVisible={isHovering} />
+          {_renderData()}
+        </>
+      )}
       {CornerBlocks}
     </div>
   );

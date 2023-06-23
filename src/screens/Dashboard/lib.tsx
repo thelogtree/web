@@ -373,10 +373,14 @@ enum Corner {
   BottomLeft = "bottom_left",
   TopLeft = "top_left",
 }
-export const useResizeWidget = (widget: WidgetDocument) => {
+export const useResizeWidget = (widgetId: string) => {
   const organization = useSelector(getOrganization);
   const dispatch = useDispatch();
   const widgets = useSelector(getWidgets);
+  const widget = useMemo(() => {
+    return widgets.find((w) => w.widget._id === widgetId)
+      ?.widget as any as WidgetDocument;
+  }, []);
   const [initialPosition, setInitialPosition] = useState<PositionType | null>(
     null
   );
@@ -384,6 +388,16 @@ export const useResizeWidget = (widget: WidgetDocument) => {
   const [hoveringCorner, setHoveringCorner] = useState<Corner | null>(null);
   const [cornerGettingDragged, setCornerGettingDragged] =
     useState<Corner | null>(null);
+  // const [mousePosition, setMousePosition] = useState<PositionType | null>(null)
+
+  // const moveMouse = (e: any) => setMousePosition({ x: e.clientX, y: e.clientY})
+
+  //   useEffect(() => {
+  //     document.addEventListener("mousemove", moveMouse)
+  //     return () => {
+  //       document.removeEventListener("mousemove", moveMouse)
+  //     }
+  //   }, [])
 
   useEffect(() => {
     let timeout = setTimeout(async () => {
@@ -408,68 +422,97 @@ export const useResizeWidget = (widget: WidgetDocument) => {
     widget.size.height,
   ]);
 
-  const _updatePosition = (newPosition: PositionType, newSize: SizeType) => {
-    const newWidgets = widgets.map((widgetObj) =>
-      widgetObj.widget._id === widget._id
-        ? ({
-            data: widgetObj.data,
-            widget: {
-              ...widget,
-              position: newPosition,
-              size: newSize,
-            },
-          } as FrontendWidget)
-        : widgetObj
-    );
-    dispatch(setWidgets(newWidgets));
-  };
+  const _updatePosition = useCallback(
+    (newPosition: PositionType, newSize: SizeType) => {
+      const newWidgets = widgets.map((widgetObj) =>
+        widgetObj.widget._id === widgetId
+          ? ({
+              data: widgetObj.data,
+              widget: {
+                ...widget,
+                position: newPosition,
+                size: newSize,
+              },
+            } as FrontendWidget)
+          : widgetObj
+      );
+      dispatch(setWidgets(newWidgets));
+    },
+    []
+  );
 
-  const onMouseDown = (event: React.MouseEvent, corner: Corner) => {
-    event.stopPropagation();
-    const { x: scrollX, y: scrollY } = getScrollOffset();
-    const x = widget.position.x - event.clientX - scrollX;
-    const y = widget.position.y - event.clientY - scrollY;
-    setInitialPosition({ x, y });
-    setInitialSize(widget.size);
-    setCornerGettingDragged(corner);
-  };
+  const onMouseDown = useCallback(
+    (event: React.MouseEvent, corner: Corner) => {
+      event.stopPropagation();
+      const { x: scrollX, y: scrollY } = getScrollOffset();
+      const x = widget.position.x - event.clientX - scrollX;
+      const y = widget.position.y - event.clientY - scrollY;
+      setInitialPosition({ x, y });
+      setInitialSize(widget.size);
+      setCornerGettingDragged(corner);
+    },
+    [
+      widget.position.x,
+      widget.position.y,
+      widget.size.width,
+      widget.size.height,
+    ]
+  );
 
-  const onMouseUp = (event: React.MouseEvent) => {
+  const onMouseUp = useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
     setCornerGettingDragged(null);
     setInitialPosition(null);
     setInitialSize(null);
-  };
+  }, []);
 
-  const onMouseMove = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    if (!cornerGettingDragged || !initialPosition || !initialSize) {
-      return;
-    }
+  const onMouseMove = useCallback(
+    (event: React.MouseEvent) => {
+      event.stopPropagation();
+      if (!cornerGettingDragged || !initialPosition || !initialSize) {
+        return;
+      }
 
-    switch (cornerGettingDragged) {
-      case Corner.BottomLeft:
-        //something
-        break;
-      case Corner.TopLeft:
-        //something
-        break;
-      case Corner.BottomRight:
-        const { x, y } = getScrollOffset();
-        const xDiff = widget.position.x - event.clientX - x - initialPosition.x;
-        const yDiff = widget.position.y - event.clientY - y - initialPosition.y;
-        const newWidth = initialSize.width - xDiff;
-        const newHeight = initialSize.height - yDiff;
-        _updatePosition(widget.position, {
-          width: newWidth,
-          height: newHeight,
-        });
-        break;
-      case Corner.TopRight:
-        //something
-        break;
-    }
-  };
+      switch (cornerGettingDragged) {
+        case Corner.BottomLeft:
+          //something
+          break;
+        case Corner.TopLeft:
+          //something
+          break;
+        case Corner.BottomRight:
+          const { x, y } = getScrollOffset();
+          const xDiff =
+            widget.position.x - event.clientX - x - initialPosition.x;
+          const yDiff =
+            widget.position.y - event.clientY - y - initialPosition.y;
+          const newWidth = initialSize.width - xDiff;
+          const newHeight = initialSize.height - yDiff;
+          _updatePosition(widget.position, {
+            width: newWidth,
+            height: newHeight,
+          });
+          break;
+        case Corner.TopRight:
+          //something
+          break;
+      }
+    },
+    [
+      widget.position.x,
+      widget.position.y,
+      initialPosition?.x,
+      initialPosition?.y,
+      initialSize?.width,
+      initialSize?.height,
+      cornerGettingDragged,
+    ]
+  );
+
+  const onMouseLeave = useCallback((e) => {
+    setHoveringCorner(null);
+    onMouseUp(e);
+  }, []);
 
   const TopLeft = useCallback(
     () => (
@@ -478,14 +521,14 @@ export const useResizeWidget = (widget: WidgetDocument) => {
         onMouseUp={onMouseUp}
         onMouseMove={onMouseMove}
         onMouseEnter={() => setHoveringCorner(Corner.TopLeft)}
-        onMouseLeave={() => setHoveringCorner(null)}
+        onMouseLeave={onMouseLeave}
         style={{
           ...resizeWidgetStyles.topLeftCorner,
           ...(hoveringCorner !== Corner.TopLeft && { border: "none" }),
         }}
       />
     ),
-    [hoveringCorner]
+    [hoveringCorner, cornerGettingDragged]
   );
 
   const TopRight = useCallback(
@@ -495,14 +538,14 @@ export const useResizeWidget = (widget: WidgetDocument) => {
         onMouseUp={onMouseUp}
         onMouseMove={onMouseMove}
         onMouseEnter={() => setHoveringCorner(Corner.TopRight)}
-        onMouseLeave={() => setHoveringCorner(null)}
+        onMouseLeave={onMouseLeave}
         style={{
           ...resizeWidgetStyles.topRightCorner,
           ...(hoveringCorner !== Corner.TopRight && { border: "none" }),
         }}
       />
     ),
-    [hoveringCorner]
+    [hoveringCorner, cornerGettingDragged]
   );
 
   const BottomRight = useCallback(
@@ -512,14 +555,14 @@ export const useResizeWidget = (widget: WidgetDocument) => {
         onMouseUp={onMouseUp}
         onMouseMove={onMouseMove}
         onMouseEnter={() => setHoveringCorner(Corner.BottomRight)}
-        onMouseLeave={() => setHoveringCorner(null)}
+        onMouseLeave={onMouseLeave}
         style={{
           ...resizeWidgetStyles.bottomRightCorner,
           ...(hoveringCorner !== Corner.BottomRight && { border: "none" }),
         }}
       />
     ),
-    [hoveringCorner]
+    [hoveringCorner, cornerGettingDragged]
   );
 
   const BottomLeft = useCallback(
@@ -529,14 +572,14 @@ export const useResizeWidget = (widget: WidgetDocument) => {
         onMouseUp={onMouseUp}
         onMouseMove={onMouseMove}
         onMouseEnter={() => setHoveringCorner(Corner.BottomLeft)}
-        onMouseLeave={() => setHoveringCorner(null)}
+        onMouseLeave={onMouseLeave}
         style={{
           ...resizeWidgetStyles.bottomLeftCorner,
           ...(hoveringCorner !== Corner.BottomLeft && { border: "none" }),
         }}
       />
     ),
-    [hoveringCorner]
+    [hoveringCorner, cornerGettingDragged]
   );
 
   return {
