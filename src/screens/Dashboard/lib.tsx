@@ -8,6 +8,7 @@ import {
 } from "logtree-types";
 import React, {
   CSSProperties,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -22,12 +23,15 @@ import {
   setWidgets,
   useFetchDashboards,
 } from "src/redux/actionIndex";
+import { FrontendWidget } from "src/redux/organization/reducer";
 import {
   getCanAddWidget,
   getDashboards,
   getOrganization,
   getWidgets,
 } from "src/redux/organization/selector";
+import { Colors } from "src/utils/colors";
+import { StylesType } from "src/utils/styles";
 
 export const widgetTimeframes: { [key in widgetTimeframe]: string } = {
   "24_hours": "24 hours",
@@ -361,6 +365,262 @@ export const useDragWidget = (widget: WidgetDocument) => {
     onMouseUp,
     isDragging,
   };
+};
+
+enum Corner {
+  TopRight = "top_right",
+  BottomRight = "bottom_right",
+  BottomLeft = "bottom_left",
+  TopLeft = "top_left",
+}
+export const useResizeWidget = (widget: WidgetDocument) => {
+  const organization = useSelector(getOrganization);
+  const dispatch = useDispatch();
+  const widgets = useSelector(getWidgets);
+  const [initialPosition, setInitialPosition] = useState<PositionType | null>(
+    null
+  );
+  const [initialSize, setInitialSize] = useState<SizeType | null>(null);
+  const [hoveringCorner, setHoveringCorner] = useState<Corner | null>(null);
+  const [cornerGettingDragged, setCornerGettingDragged] =
+    useState<Corner | null>(null);
+
+  useEffect(() => {
+    let timeout = setTimeout(async () => {
+      try {
+        // await Api.organization.updateWidget(
+        //   organization!._id.toString(),
+        //   widget._id.toString(),
+        //   widget.position
+        // );
+      } catch (e) {
+        console.error(e);
+      }
+    }, 1500);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [
+    widget.position.x,
+    widget.position.y,
+    widget.size.width,
+    widget.size.height,
+  ]);
+
+  const _updatePosition = (newPosition: PositionType, newSize: SizeType) => {
+    const newWidgets = widgets.map((widgetObj) =>
+      widgetObj.widget._id === widget._id
+        ? ({
+            data: widgetObj.data,
+            widget: {
+              ...widget,
+              position: newPosition,
+              size: newSize,
+            },
+          } as FrontendWidget)
+        : widgetObj
+    );
+    dispatch(setWidgets(newWidgets));
+  };
+
+  const onMouseDown = (event: React.MouseEvent, corner: Corner) => {
+    event.stopPropagation();
+    const { x: scrollX, y: scrollY } = getScrollOffset();
+    const x = widget.position.x - event.clientX - scrollX;
+    const y = widget.position.y - event.clientY - scrollY;
+    setInitialPosition({ x, y });
+    setInitialSize(widget.size);
+    setCornerGettingDragged(corner);
+  };
+
+  const onMouseUp = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setCornerGettingDragged(null);
+    setInitialPosition(null);
+    setInitialSize(null);
+  };
+
+  const onMouseMove = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    if (!cornerGettingDragged || !initialPosition || !initialSize) {
+      return;
+    }
+
+    switch (cornerGettingDragged) {
+      case Corner.BottomLeft:
+        //something
+        break;
+      case Corner.TopLeft:
+        //something
+        break;
+      case Corner.BottomRight:
+        const { x, y } = getScrollOffset();
+        const xDiff = widget.position.x - event.clientX - x - initialPosition.x;
+        const yDiff = widget.position.y - event.clientY - y - initialPosition.y;
+        const newWidth = initialSize.width - xDiff;
+        const newHeight = initialSize.height - yDiff;
+        _updatePosition(widget.position, {
+          width: newWidth,
+          height: newHeight,
+        });
+        break;
+      case Corner.TopRight:
+        //something
+        break;
+    }
+  };
+
+  const TopLeft = useCallback(
+    () => (
+      <div
+        onMouseDown={(e) => onMouseDown(e, Corner.TopLeft)}
+        onMouseUp={onMouseUp}
+        onMouseMove={onMouseMove}
+        onMouseEnter={() => setHoveringCorner(Corner.TopLeft)}
+        onMouseLeave={() => setHoveringCorner(null)}
+        style={{
+          ...resizeWidgetStyles.topLeftCorner,
+          ...(hoveringCorner !== Corner.TopLeft && { border: "none" }),
+        }}
+      />
+    ),
+    [hoveringCorner]
+  );
+
+  const TopRight = useCallback(
+    () => (
+      <div
+        onMouseDown={(e) => onMouseDown(e, Corner.TopRight)}
+        onMouseUp={onMouseUp}
+        onMouseMove={onMouseMove}
+        onMouseEnter={() => setHoveringCorner(Corner.TopRight)}
+        onMouseLeave={() => setHoveringCorner(null)}
+        style={{
+          ...resizeWidgetStyles.topRightCorner,
+          ...(hoveringCorner !== Corner.TopRight && { border: "none" }),
+        }}
+      />
+    ),
+    [hoveringCorner]
+  );
+
+  const BottomRight = useCallback(
+    () => (
+      <div
+        onMouseDown={(e) => onMouseDown(e, Corner.BottomRight)}
+        onMouseUp={onMouseUp}
+        onMouseMove={onMouseMove}
+        onMouseEnter={() => setHoveringCorner(Corner.BottomRight)}
+        onMouseLeave={() => setHoveringCorner(null)}
+        style={{
+          ...resizeWidgetStyles.bottomRightCorner,
+          ...(hoveringCorner !== Corner.BottomRight && { border: "none" }),
+        }}
+      />
+    ),
+    [hoveringCorner]
+  );
+
+  const BottomLeft = useCallback(
+    () => (
+      <div
+        onMouseDown={(e) => onMouseDown(e, Corner.BottomLeft)}
+        onMouseUp={onMouseUp}
+        onMouseMove={onMouseMove}
+        onMouseEnter={() => setHoveringCorner(Corner.BottomLeft)}
+        onMouseLeave={() => setHoveringCorner(null)}
+        style={{
+          ...resizeWidgetStyles.bottomLeftCorner,
+          ...(hoveringCorner !== Corner.BottomLeft && { border: "none" }),
+        }}
+      />
+    ),
+    [hoveringCorner]
+  );
+
+  return {
+    CornerBlocks: (
+      <>
+        <BottomRight />
+        <BottomLeft />
+        <TopLeft />
+        <TopRight />
+      </>
+    ),
+    isDragging: !!cornerGettingDragged,
+  };
+};
+
+const resizeWidgetStyles: StylesType = {
+  topLeftCorner: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: 34,
+    height: 34,
+    cursor: "nwse-resize",
+    borderTopLeftRadius: 18,
+    borderLeftColor: Colors.lightGray,
+    borderLeftWidth: 6,
+    borderLeftStyle: "solid",
+    borderTopColor: Colors.lightGray,
+    borderTopWidth: 6,
+    borderTopStyle: "solid",
+    backgroundColor: Colors.transparent,
+    zIndex: 60,
+  },
+  topRightCorner: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    width: 34,
+    height: 34,
+    cursor: "nesw-resize",
+    borderTopRightRadius: 18,
+    borderTopColor: Colors.lightGray,
+    borderTopWidth: 6,
+    borderTopStyle: "solid",
+    borderRightColor: Colors.lightGray,
+    borderRightWidth: 6,
+    borderRightStyle: "solid",
+    backgroundColor: Colors.transparent,
+    zIndex: 60,
+  },
+  bottomLeftCorner: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    width: 34,
+    height: 34,
+    cursor: "nesw-resize",
+    borderBottomLeftRadius: 18,
+    borderLeftColor: Colors.lightGray,
+    borderLeftWidth: 6,
+    borderLeftStyle: "solid",
+    borderBottomColor: Colors.lightGray,
+    borderBottomWidth: 6,
+    borderBottomStyle: "solid",
+    backgroundColor: Colors.transparent,
+    zIndex: 60,
+  },
+  bottomRightCorner: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    width: 34,
+    height: 34,
+    cursor: "nwse-resize",
+    borderBottomRightRadius: 18,
+    borderBottomColor: Colors.lightGray,
+    borderBottomWidth: 6,
+    borderBottomStyle: "solid",
+    borderRightColor: Colors.lightGray,
+    borderRightWidth: 6,
+    borderRightStyle: "solid",
+    backgroundColor: Colors.transparent,
+    zIndex: 60,
+  },
 };
 
 // adjusts the width and height for correct sizes, positions, and orientations (for UI only)

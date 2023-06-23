@@ -5,7 +5,11 @@ import { LogsList } from "src/screens/Dashboard/components/LogsList";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
-import { getAdjustedPositionAndSizeOfWidget, useDragWidget } from "../lib";
+import {
+  getAdjustedPositionAndSizeOfWidget,
+  useDragWidget,
+  useResizeWidget,
+} from "../lib";
 import { DeleteWidgetButton } from "./DeleteWidgetButton";
 import "../Widget.css";
 import { Histogram } from "./Histogram";
@@ -22,6 +26,9 @@ export const Widget = ({ widgetObj }: Props) => {
   const { onMouseDown, onMouseMove, onMouseUp, isDragging } = useDragWidget(
     widgetObj.widget
   );
+  const { CornerBlocks, isDragging: isResizingWidget } = useResizeWidget(
+    widgetObj.widget
+  );
   const { widget, data } = widgetObj;
   const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
     widget.position,
@@ -29,6 +36,14 @@ export const Widget = ({ widgetObj }: Props) => {
   );
 
   const _renderData = () => {
+    if (isResizingWidget) {
+      return (
+        <label style={styles.dataHidden}>
+          Data is hidden while resizing widget.
+        </label>
+      );
+    }
+
     if (!data) {
       return (
         <div style={styles.loadingContainer}>
@@ -118,6 +133,7 @@ export const Widget = ({ widgetObj }: Props) => {
       <label style={styles.title}>{widget.title}</label>
       <DeleteWidgetButton widget={widget} isVisible={isHovering} />
       {_renderData()}
+      {CornerBlocks}
     </div>
   );
 };
@@ -159,5 +175,14 @@ const styles: StylesType = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  dataHidden: {
+    width: "100%",
+    height: "100%",
+    textAlign: "center",
+    paddingTop: 60,
+    paddingLeft: 20,
+    paddingRight: 20,
+    fontSize: 13,
   },
 };

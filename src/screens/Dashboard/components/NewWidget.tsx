@@ -139,14 +139,18 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
               : null,
           } as FolderType)
       );
+      const { top, left, width, height } = getAdjustedPositionAndSizeOfWidget(
+        newWidget.position,
+        newWidget.size
+      );
       await Api.organization.createWidget(
         organization!._id.toString(),
         currentDashboard!._id.toString(),
         newWidget.title,
         newWidget.type as widgetType,
         hydratedFolderPaths,
-        newWidget.position,
-        newWidget.size,
+        { x: left as number, y: top as number },
+        { width: width as number, height: height as number },
         newWidget.query,
         newWidget.timeframe,
         newWidget.url
