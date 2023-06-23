@@ -4,10 +4,17 @@ import { StylesType } from "src/utils/styles";
 
 type Props = {
   html: any;
+  widget: WidgetDocument;
 };
 
-export const EmbeddedLink = ({ html }: Props) => (
-  <iframe srcDoc={html} style={styles.container} width="100%" height="100%" />
+export const EmbeddedLink = ({ html, widget }: Props) => (
+  <iframe
+    src={html ? undefined : widget.url}
+    srcDoc={html}
+    style={styles.container}
+    width="100%"
+    height="100%"
+  />
 );
 
 const styles: StylesType = {

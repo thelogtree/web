@@ -90,7 +90,7 @@ export const Widget = ({ widgetObj }: Props) => {
           />
         );
       case widgetType.EmbeddedLink:
-        return <EmbeddedLink html={widgetObj.data.html} />;
+        return <EmbeddedLink html={widgetObj.data.html} widget={widget} />;
       default:
         return null;
     }
