@@ -252,14 +252,38 @@ export const useDragNewWidget = (
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [startPositionOfDrag, setStartPositionOfDrag] =
     useState<PositionType | null>(null);
+  const [mousePosition, setMousePosition] = useState<PositionType | null>(null);
 
-  const _changePosition = (event: React.MouseEvent) => {
-    if (!startPositionOfDrag) {
+  const handleMouseMove = (e) => {
+    setMousePosition({ x: e.clientX, y: e.clientY });
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      document
+        .getElementById("canvas-container")
+        ?.addEventListener("mousemove", handleMouseMove);
+      document
+        .getElementById("canvas-fullscreen")
+        ?.addEventListener("mouseup", onMouseUp);
+    }
+    return () => {
+      document
+        .getElementById("canvas-container")
+        ?.removeEventListener("mousemove", handleMouseMove);
+      document
+        .getElementById("canvas-fullscreen")
+        ?.removeEventListener("mouseup", onMouseUp);
+    };
+  }, [isDragging]);
+
+  const _changePosition = () => {
+    if (!startPositionOfDrag || !mousePosition) {
       return;
     }
     const { x, y } = getScrollOffset();
-    const newX = startPositionOfDrag.x + event.clientX + x;
-    const newY = startPositionOfDrag.y + event.clientY + y;
+    const newX = startPositionOfDrag.x + mousePosition.x + x;
+    const newY = startPositionOfDrag.y + mousePosition.y + y;
     const newWidgetTemp = {
       ...widget,
       position: {
@@ -283,24 +307,19 @@ export const useDragNewWidget = (
     setStartPositionOfDrag({ x, y });
   };
 
-  const onMouseMove = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-    if (!isDragging) {
-      return;
-    }
-    _changePosition(event);
-  };
-
   const onMouseUp = () => {
     setIsDragging(false);
     setStartPositionOfDrag(null);
   };
 
+  useEffect(() => {
+    if (isDragging) {
+      _changePosition();
+    }
+  }, [mousePosition?.x, mousePosition?.y]);
+
   return {
     onMouseDown,
-    onMouseMove,
-    onMouseUp,
   };
 };
 
@@ -311,14 +330,38 @@ export const useDragWidget = (widget: WidgetDocument) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [startPositionOfDrag, setStartPositionOfDrag] =
     useState<PositionType | null>(null);
+  const [mousePosition, setMousePosition] = useState<PositionType | null>(null);
 
-  const _changePosition = (event: React.MouseEvent) => {
-    if (!startPositionOfDrag) {
+  const handleMouseMove = (e) => {
+    setMousePosition({ x: e.clientX, y: e.clientY });
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      document
+        .getElementById("canvas-container")
+        ?.addEventListener("mousemove", handleMouseMove);
+      document
+        .getElementById("canvas-fullscreen")
+        ?.addEventListener("mouseup", onMouseUp);
+    }
+    return () => {
+      document
+        .getElementById("canvas-container")
+        ?.removeEventListener("mousemove", handleMouseMove);
+      document
+        .getElementById("canvas-fullscreen")
+        ?.removeEventListener("mouseup", onMouseUp);
+    };
+  }, [isDragging]);
+
+  const _changePosition = () => {
+    if (!startPositionOfDrag || !mousePosition) {
       return;
     }
     const { x, y } = getScrollOffset();
-    const newX = startPositionOfDrag.x + event.clientX + x;
-    const newY = startPositionOfDrag.y + event.clientY + y;
+    const newX = startPositionOfDrag.x + mousePosition.x + x;
+    const newY = startPositionOfDrag.y + mousePosition.y + y;
     const newWidgetTemp = {
       ...widget,
       position: {
@@ -363,14 +406,11 @@ export const useDragWidget = (widget: WidgetDocument) => {
     setStartPositionOfDrag({ x, y });
   };
 
-  const onMouseMove = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-    if (!isDragging) {
-      return;
+  useEffect(() => {
+    if (isDragging) {
+      _changePosition();
     }
-    _changePosition(event);
-  };
+  }, [mousePosition?.x, mousePosition?.y]);
 
   const onMouseUp = () => {
     setIsDragging(false);
@@ -379,8 +419,6 @@ export const useDragWidget = (widget: WidgetDocument) => {
 
   return {
     onMouseDown,
-    onMouseMove,
-    onMouseUp,
     isDragging,
   };
 };

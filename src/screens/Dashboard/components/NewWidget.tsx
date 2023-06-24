@@ -43,7 +43,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const currentDashboard = useCurrentDashboard(true);
   const { fetch } = useFetchWidgetsWithData();
-  const { onMouseDown, onMouseMove, onMouseUp } = useDragNewWidget(
+  const { onMouseDown } = useDragNewWidget(
     indexInArr,
     newWidgets,
     setNewWidgets
@@ -216,8 +216,6 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
         ...styles.container,
         ...adjustedPositionAndSize,
       }}
-      onMouseUp={onMouseUp}
-      onMouseMove={onMouseMove}
       onMouseDown={onMouseDown}
     >
       <div style={styles.innerTop}>

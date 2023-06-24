@@ -23,9 +23,7 @@ type Props = {
 
 export const Widget = ({ widgetObj }: Props) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
-  const { onMouseDown, onMouseMove, onMouseUp, isDragging } = useDragWidget(
-    widgetObj.widget
-  );
+  const { onMouseDown, isDragging } = useDragWidget(widgetObj.widget);
   const { CornerBlocks, isDragging: isResizingWidget } = useResizeWidget(
     widgetObj.widget._id as string
   );
@@ -105,7 +103,6 @@ export const Widget = ({ widgetObj }: Props) => {
 
   const _handleOnMouseLeave = useCallback(() => {
     setIsHovering(false);
-    onMouseUp();
   }, []);
 
   return (
@@ -119,8 +116,6 @@ export const Widget = ({ widgetObj }: Props) => {
       onMouseLeave={_handleOnMouseLeave}
       className="widgetContainer"
       onMouseDown={onMouseDown}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
     >
       {isResizingWidget ? (
         <label style={styles.dataHidden}>
