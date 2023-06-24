@@ -265,7 +265,7 @@ export const useDragNewWidget = (
         .getElementById("canvas-container")
         ?.addEventListener("mousemove", handleMouseMove);
       document
-        .getElementById("canvas-fullscreen")
+        .getElementById("canvas-container")
         ?.addEventListener("mouseup", onMouseUp);
     }
     return () => {
@@ -273,7 +273,7 @@ export const useDragNewWidget = (
         .getElementById("canvas-container")
         ?.removeEventListener("mousemove", handleMouseMove);
       document
-        .getElementById("canvas-fullscreen")
+        .getElementById("canvas-container")
         ?.removeEventListener("mouseup", onMouseUp);
     };
   }, [isDragging]);
@@ -343,7 +343,7 @@ export const useDragWidget = (widget: WidgetDocument) => {
         .getElementById("canvas-container")
         ?.addEventListener("mousemove", handleMouseMove);
       document
-        .getElementById("canvas-fullscreen")
+        .getElementById("canvas-container")
         ?.addEventListener("mouseup", onMouseUp);
     }
     return () => {
@@ -351,7 +351,7 @@ export const useDragWidget = (widget: WidgetDocument) => {
         .getElementById("canvas-container")
         ?.removeEventListener("mousemove", handleMouseMove);
       document
-        .getElementById("canvas-fullscreen")
+        .getElementById("canvas-container")
         ?.removeEventListener("mouseup", onMouseUp);
     };
   }, [isDragging]);
@@ -455,7 +455,7 @@ export const useResizeWidget = (widgetId: string) => {
         .getElementById("canvas-container")
         ?.addEventListener("mousemove", handleMouseMove);
       document
-        .getElementById("canvas-fullscreen")
+        .getElementById("canvas-container")
         ?.addEventListener("mouseup", onMouseUp);
     }
     return () => {
@@ -463,7 +463,7 @@ export const useResizeWidget = (widgetId: string) => {
         .getElementById("canvas-container")
         ?.removeEventListener("mousemove", handleMouseMove);
       document
-        .getElementById("canvas-fullscreen")
+        .getElementById("canvas-container")
         ?.removeEventListener("mouseup", onMouseUp);
     };
   }, [cornerGettingDragged]);
@@ -698,7 +698,7 @@ export const useResizeNewWidget = (
         .getElementById("canvas-container")
         ?.addEventListener("mousemove", handleMouseMove);
       document
-        .getElementById("canvas-fullscreen")
+        .getElementById("canvas-container")
         ?.addEventListener("mouseup", onMouseUp);
     }
     return () => {
@@ -706,7 +706,7 @@ export const useResizeNewWidget = (
         .getElementById("canvas-container")
         ?.removeEventListener("mousemove", handleMouseMove);
       document
-        .getElementById("canvas-fullscreen")
+        .getElementById("canvas-container")
         ?.removeEventListener("mouseup", onMouseUp);
     };
   }, [cornerGettingDragged]);
