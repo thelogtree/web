@@ -423,11 +423,12 @@ export const useResizeWidget = (widgetId: string) => {
   useEffect(() => {
     let timeout = setTimeout(async () => {
       try {
-        // await Api.organization.updateWidget(
-        //   organization!._id.toString(),
-        //   widget._id.toString(),
-        //   widget.position
-        // );
+        await Api.organization.updateWidget(
+          organization!._id.toString(),
+          widget._id.toString(),
+          widget.position,
+          widget.size
+        );
       } catch (e) {
         console.error(e);
       }
@@ -503,20 +504,60 @@ export const useResizeWidget = (widgetId: string) => {
       const { x, y } = getScrollOffset();
 
       if (cornerGettingDragged === Corner.BottomLeft) {
-        // something
+        const xDiff =
+          widget.position.x - mousePosition.x - x - initialPosition.x;
+        const yDiff =
+          widget.position.y - mousePosition.y - y - initialPosition.y;
+        const newX = widget.position.x - xDiff;
+        const newWidth = widget.size.width + xDiff;
+        const newHeight = initialSize.height - yDiff;
+        _updatePosition(
+          {
+            x: newX,
+            y: widget.position.y,
+          },
+          {
+            width: newWidth,
+            height: newHeight,
+          }
+        );
       } else if (cornerGettingDragged === Corner.TopLeft) {
-        // something
+        const xDiff =
+          widget.position.x - mousePosition.x - x - initialPosition.x;
+        const newX = widget.position.x - xDiff;
+        const yDiff =
+          widget.position.y - mousePosition.y - y - initialPosition.y;
+        const newY = widget.position.y - yDiff;
+        const newWidth = widget.size.width + xDiff;
+        const newHeight = widget.size.height + yDiff;
+        _updatePosition(
+          {
+            x: newX,
+            y: newY,
+          },
+          {
+            width: newWidth,
+            height: newHeight,
+          }
+        );
       } else if (cornerGettingDragged === Corner.TopRight) {
         const xDiff =
           widget.position.x - mousePosition.x - x - initialPosition.x;
         const yDiff =
           widget.position.y - mousePosition.y - y - initialPosition.y;
+        const newY = widget.position.y - yDiff;
         const newWidth = initialSize.width - xDiff;
-        const newHeight = initialSize.height - yDiff;
-        _updatePosition(widget.position, {
-          width: newWidth,
-          height: newHeight,
-        });
+        const newHeight = widget.size.height + yDiff;
+        _updatePosition(
+          {
+            x: widget.position.x,
+            y: newY,
+          },
+          {
+            width: newWidth,
+            height: newHeight,
+          }
+        );
       } else if (cornerGettingDragged === Corner.BottomRight) {
         const xDiff =
           widget.position.x - mousePosition.x - x - initialPosition.x;
