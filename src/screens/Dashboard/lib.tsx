@@ -34,6 +34,7 @@ import {
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import _ from "lodash";
+import "./index.css";
 
 export const widgetTimeframes: { [key in widgetTimeframe]: string } = {
   "24_hours": "24 hours",
@@ -439,7 +440,6 @@ export const useResizeWidget = (widgetId: string) => {
     null
   );
   const [initialSize, setInitialSize] = useState<SizeType | null>(null);
-  const [hoveringCorner, setHoveringCorner] = useState<Corner | null>(null);
   const [cornerGettingDragged, setCornerGettingDragged] =
     useState<Corner | null>(null);
   const [mousePosition, setMousePosition] = useState<PositionType | null>(null);
@@ -617,68 +617,48 @@ export const useResizeWidget = (widgetId: string) => {
     }
   }, [mousePosition?.x, mousePosition?.y]);
 
-  const onMouseLeave = useCallback(() => {
-    setHoveringCorner(null);
-  }, []);
-
   const TopLeft = useCallback(
     () => (
       <div
         onMouseDown={(e) => onMouseDown(e, Corner.TopLeft)}
-        onMouseEnter={() => setHoveringCorner(Corner.TopLeft)}
-        onMouseLeave={onMouseLeave}
-        style={{
-          ...resizeWidgetStyles.topLeftCorner,
-          ...(hoveringCorner !== Corner.TopLeft && { border: "none" }),
-        }}
+        style={resizeWidgetStyles.topLeftCorner}
+        className="cornerBlock"
       />
     ),
-    [hoveringCorner, cornerGettingDragged]
+    [cornerGettingDragged]
   );
 
   const TopRight = useCallback(
     () => (
       <div
         onMouseDown={(e) => onMouseDown(e, Corner.TopRight)}
-        onMouseEnter={() => setHoveringCorner(Corner.TopRight)}
-        onMouseLeave={onMouseLeave}
-        style={{
-          ...resizeWidgetStyles.topRightCorner,
-          ...(hoveringCorner !== Corner.TopRight && { border: "none" }),
-        }}
+        style={resizeWidgetStyles.topRightCorner}
+        className="cornerBlock"
       />
     ),
-    [hoveringCorner, cornerGettingDragged]
+    [cornerGettingDragged]
   );
 
   const BottomRight = useCallback(
     () => (
       <div
         onMouseDown={(e) => onMouseDown(e, Corner.BottomRight)}
-        onMouseEnter={() => setHoveringCorner(Corner.BottomRight)}
-        onMouseLeave={onMouseLeave}
-        style={{
-          ...resizeWidgetStyles.bottomRightCorner,
-          ...(hoveringCorner !== Corner.BottomRight && { border: "none" }),
-        }}
+        style={resizeWidgetStyles.bottomRightCorner}
+        className="cornerBlock"
       />
     ),
-    [hoveringCorner, cornerGettingDragged]
+    [cornerGettingDragged]
   );
 
   const BottomLeft = useCallback(
     () => (
       <div
         onMouseDown={(e) => onMouseDown(e, Corner.BottomLeft)}
-        onMouseEnter={() => setHoveringCorner(Corner.BottomLeft)}
-        onMouseLeave={onMouseLeave}
-        style={{
-          ...resizeWidgetStyles.bottomLeftCorner,
-          ...(hoveringCorner !== Corner.BottomLeft && { border: "none" }),
-        }}
+        style={resizeWidgetStyles.bottomLeftCorner}
+        className="cornerBlock"
       />
     ),
-    [hoveringCorner, cornerGettingDragged]
+    [cornerGettingDragged]
   );
 
   return {
@@ -704,7 +684,6 @@ export const useResizeNewWidget = (
     null
   );
   const [initialSize, setInitialSize] = useState<SizeType | null>(null);
-  const [hoveringCorner, setHoveringCorner] = useState<Corner | null>(null);
   const [cornerGettingDragged, setCornerGettingDragged] =
     useState<Corner | null>(null);
   const [mousePosition, setMousePosition] = useState<PositionType | null>(null);
@@ -851,68 +830,48 @@ export const useResizeNewWidget = (
     }
   }, [mousePosition?.x, mousePosition?.y]);
 
-  const onMouseLeave = useCallback(() => {
-    setHoveringCorner(null);
-  }, []);
-
   const TopLeft = useCallback(
     () => (
       <div
         onMouseDown={(e) => onMouseDown(e, Corner.TopLeft)}
-        onMouseEnter={() => setHoveringCorner(Corner.TopLeft)}
-        onMouseLeave={onMouseLeave}
-        style={{
-          ...resizeWidgetStyles.topLeftCorner,
-          ...(hoveringCorner !== Corner.TopLeft && { border: "none" }),
-        }}
+        style={resizeWidgetStyles.topLeftCorner}
+        className="cornerBlock"
       />
     ),
-    [hoveringCorner, cornerGettingDragged]
+    [cornerGettingDragged]
   );
 
   const TopRight = useCallback(
     () => (
       <div
         onMouseDown={(e) => onMouseDown(e, Corner.TopRight)}
-        onMouseEnter={() => setHoveringCorner(Corner.TopRight)}
-        onMouseLeave={onMouseLeave}
-        style={{
-          ...resizeWidgetStyles.topRightCorner,
-          ...(hoveringCorner !== Corner.TopRight && { border: "none" }),
-        }}
+        style={resizeWidgetStyles.topRightCorner}
+        className="cornerBlock"
       />
     ),
-    [hoveringCorner, cornerGettingDragged]
+    [cornerGettingDragged]
   );
 
   const BottomRight = useCallback(
     () => (
       <div
         onMouseDown={(e) => onMouseDown(e, Corner.BottomRight)}
-        onMouseEnter={() => setHoveringCorner(Corner.BottomRight)}
-        onMouseLeave={onMouseLeave}
-        style={{
-          ...resizeWidgetStyles.bottomRightCorner,
-          ...(hoveringCorner !== Corner.BottomRight && { border: "none" }),
-        }}
+        style={resizeWidgetStyles.bottomRightCorner}
+        className="cornerBlock"
       />
     ),
-    [hoveringCorner, cornerGettingDragged]
+    [cornerGettingDragged]
   );
 
   const BottomLeft = useCallback(
     () => (
       <div
         onMouseDown={(e) => onMouseDown(e, Corner.BottomLeft)}
-        onMouseEnter={() => setHoveringCorner(Corner.BottomLeft)}
-        onMouseLeave={onMouseLeave}
-        style={{
-          ...resizeWidgetStyles.bottomLeftCorner,
-          ...(hoveringCorner !== Corner.BottomLeft && { border: "none" }),
-        }}
+        style={resizeWidgetStyles.bottomLeftCorner}
+        className="cornerBlock"
       />
     ),
-    [hoveringCorner, cornerGettingDragged]
+    [cornerGettingDragged]
   );
 
   return (

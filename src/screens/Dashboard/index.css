@@ -1,0 +1,7 @@
+.cornerBlock {
+  opacity: 0;
+}
+
+.cornerBlock:hover {
+  opacity: 1;
+}
