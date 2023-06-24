@@ -204,14 +204,24 @@ export const useDesignWidgetShape = () => {
   };
 
   const _createNewFrontendWidget = () => {
+    const { top, left, width, height } = getAdjustedPositionAndSizeOfWidget(
+      boxPosition,
+      boxSize
+    );
     setNewWidgets(
       newWidgets.concat([
         {
           title: "",
           folderPaths: [null],
           type: null,
-          position: boxPosition,
-          size: boxSize,
+          position: {
+            x: left as number,
+            y: top as number,
+          },
+          size: {
+            width: width as number,
+            height: height as number,
+          },
           timeframe: widgetTimeframe.TwentyFourHours,
         },
       ])
@@ -446,12 +456,8 @@ export const useResizeWidget = (widgetId: string) => {
 
   const _updatePosition = useCallback(
     (newPosition: PositionType, newSize: SizeType) => {
-      if (
-        newSize.width < MIN_WIDGET_WIDTH ||
-        newSize.height < MIN_WIDGET_HEIGHT
-      ) {
-        return;
-      }
+      newSize.width = Math.max(newSize.width, MIN_WIDGET_WIDTH);
+      newSize.height = Math.max(newSize.height, MIN_WIDGET_HEIGHT);
       const newWidgets = widgets.map((widgetObj, i) =>
         widgetObj.widget._id === widgetId
           ? ({
@@ -648,6 +654,237 @@ export const useResizeWidget = (widgetId: string) => {
     ),
     isDragging: !!cornerGettingDragged,
   };
+};
+
+export const useResizeNewWidget = (
+  indexInArr: number,
+  newWidgets: NewFrontendWidget[],
+  setNewWidgets: (newWidgets: NewFrontendWidget[]) => void
+) => {
+  const widget = newWidgets[indexInArr];
+  const [initialPosition, setInitialPosition] = useState<PositionType | null>(
+    null
+  );
+  const [initialSize, setInitialSize] = useState<SizeType | null>(null);
+  const [hoveringCorner, setHoveringCorner] = useState<Corner | null>(null);
+  const [cornerGettingDragged, setCornerGettingDragged] =
+    useState<Corner | null>(null);
+  const [mousePosition, setMousePosition] = useState<PositionType | null>(null);
+
+  const handleMouseMove = (e) => {
+    setMousePosition({ x: e.clientX, y: e.clientY });
+  };
+
+  useEffect(() => {
+    if (cornerGettingDragged) {
+      document
+        .getElementById("canvas-container")
+        ?.addEventListener("mousemove", handleMouseMove);
+      document
+        .getElementById("canvas-fullscreen")
+        ?.addEventListener("mouseup", onMouseUp);
+    }
+    return () => {
+      document
+        .getElementById("canvas-container")
+        ?.removeEventListener("mousemove", handleMouseMove);
+      document
+        .getElementById("canvas-fullscreen")
+        ?.removeEventListener("mouseup", onMouseUp);
+    };
+  }, [cornerGettingDragged]);
+
+  const _updatePosition = useCallback(
+    (newPosition: PositionType, newSize: SizeType) => {
+      newSize.width = Math.max(newSize.width, MIN_WIDGET_WIDTH);
+      newSize.height = Math.max(newSize.height, MIN_WIDGET_HEIGHT);
+      let newWidgetsTemp = newWidgets.slice();
+      newWidgetsTemp[indexInArr] = {
+        ...widget,
+        position: newPosition,
+        size: newSize,
+      } as NewFrontendWidget;
+      setNewWidgets(newWidgetsTemp);
+    },
+    []
+  );
+
+  const onMouseDown = useCallback(
+    (event: React.MouseEvent, corner: Corner) => {
+      event.stopPropagation();
+      const { x: scrollX, y: scrollY } = getScrollOffset();
+      const x = widget.position.x - event.clientX - scrollX;
+      const y = widget.position.y - event.clientY - scrollY;
+      setInitialPosition({ x, y });
+      setInitialSize(widget.size);
+      setCornerGettingDragged(corner);
+    },
+    [
+      widget.position.x,
+      widget.position.y,
+      widget.size.width,
+      widget.size.height,
+    ]
+  );
+
+  const onMouseUp = useCallback(() => {
+    setCornerGettingDragged(null);
+    setInitialPosition(null);
+    setInitialSize(null);
+    setMousePosition(null);
+  }, []);
+
+  useEffect(() => {
+    if (
+      cornerGettingDragged &&
+      initialPosition &&
+      initialSize &&
+      mousePosition
+    ) {
+      const { x, y } = getScrollOffset();
+
+      if (cornerGettingDragged === Corner.BottomLeft) {
+        const xDiff =
+          widget.position.x - mousePosition.x - x - initialPosition.x;
+        const yDiff =
+          widget.position.y - mousePosition.y - y - initialPosition.y;
+        const newX = widget.position.x - xDiff;
+        const newWidth = widget.size.width + xDiff;
+        const newHeight = initialSize.height - yDiff;
+        _updatePosition(
+          {
+            x: newX,
+            y: widget.position.y,
+          },
+          {
+            width: newWidth,
+            height: newHeight,
+          }
+        );
+      } else if (cornerGettingDragged === Corner.TopLeft) {
+        const xDiff =
+          widget.position.x - mousePosition.x - x - initialPosition.x;
+        const newX = widget.position.x - xDiff;
+        const yDiff =
+          widget.position.y - mousePosition.y - y - initialPosition.y;
+        const newY = widget.position.y - yDiff;
+        const newWidth = widget.size.width + xDiff;
+        const newHeight = widget.size.height + yDiff;
+        _updatePosition(
+          {
+            x: newX,
+            y: newY,
+          },
+          {
+            width: newWidth,
+            height: newHeight,
+          }
+        );
+      } else if (cornerGettingDragged === Corner.TopRight) {
+        const xDiff =
+          widget.position.x - mousePosition.x - x - initialPosition.x;
+        const yDiff =
+          widget.position.y - mousePosition.y - y - initialPosition.y;
+        const newY = widget.position.y - yDiff;
+        const newWidth = initialSize.width - xDiff;
+        const newHeight = widget.size.height + yDiff;
+        _updatePosition(
+          {
+            x: widget.position.x,
+            y: newY,
+          },
+          {
+            width: newWidth,
+            height: newHeight,
+          }
+        );
+      } else if (cornerGettingDragged === Corner.BottomRight) {
+        const xDiff =
+          widget.position.x - mousePosition.x - x - initialPosition.x;
+        const yDiff =
+          widget.position.y - mousePosition.y - y - initialPosition.y;
+        const newWidth = initialSize.width - xDiff;
+        const newHeight = initialSize.height - yDiff;
+        _updatePosition(widget.position, {
+          width: newWidth,
+          height: newHeight,
+        });
+      }
+    }
+  }, [mousePosition?.x, mousePosition?.y]);
+
+  const onMouseLeave = useCallback(() => {
+    setHoveringCorner(null);
+  }, []);
+
+  const TopLeft = useCallback(
+    () => (
+      <div
+        onMouseDown={(e) => onMouseDown(e, Corner.TopLeft)}
+        onMouseEnter={() => setHoveringCorner(Corner.TopLeft)}
+        onMouseLeave={onMouseLeave}
+        style={{
+          ...resizeWidgetStyles.topLeftCorner,
+          ...(hoveringCorner !== Corner.TopLeft && { border: "none" }),
+        }}
+      />
+    ),
+    [hoveringCorner, cornerGettingDragged]
+  );
+
+  const TopRight = useCallback(
+    () => (
+      <div
+        onMouseDown={(e) => onMouseDown(e, Corner.TopRight)}
+        onMouseEnter={() => setHoveringCorner(Corner.TopRight)}
+        onMouseLeave={onMouseLeave}
+        style={{
+          ...resizeWidgetStyles.topRightCorner,
+          ...(hoveringCorner !== Corner.TopRight && { border: "none" }),
+        }}
+      />
+    ),
+    [hoveringCorner, cornerGettingDragged]
+  );
+
+  const BottomRight = useCallback(
+    () => (
+      <div
+        onMouseDown={(e) => onMouseDown(e, Corner.BottomRight)}
+        onMouseEnter={() => setHoveringCorner(Corner.BottomRight)}
+        onMouseLeave={onMouseLeave}
+        style={{
+          ...resizeWidgetStyles.bottomRightCorner,
+          ...(hoveringCorner !== Corner.BottomRight && { border: "none" }),
+        }}
+      />
+    ),
+    [hoveringCorner, cornerGettingDragged]
+  );
+
+  const BottomLeft = useCallback(
+    () => (
+      <div
+        onMouseDown={(e) => onMouseDown(e, Corner.BottomLeft)}
+        onMouseEnter={() => setHoveringCorner(Corner.BottomLeft)}
+        onMouseLeave={onMouseLeave}
+        style={{
+          ...resizeWidgetStyles.bottomLeftCorner,
+          ...(hoveringCorner !== Corner.BottomLeft && { border: "none" }),
+        }}
+      />
+    ),
+    [hoveringCorner, cornerGettingDragged]
+  );
+
+  return (
+    <>
+      <BottomRight />
+      <BottomLeft />
+      <TopLeft />
+      <TopRight />
+    </>
+  );
 };
 
 const resizeWidgetStyles: StylesType = {

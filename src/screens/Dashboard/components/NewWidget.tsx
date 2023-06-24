@@ -4,6 +4,7 @@ import {
   getAdjustedPositionAndSizeOfWidget,
   useCurrentDashboard,
   useDragNewWidget,
+  useResizeNewWidget,
   widgetTimeframes,
 } from "../lib";
 import { SharedStyles, StylesType } from "src/utils/styles";
@@ -43,6 +44,11 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
   const currentDashboard = useCurrentDashboard(true);
   const { fetch } = useFetchWidgetsWithData();
   const { onMouseDown, onMouseMove, onMouseUp } = useDragNewWidget(
+    indexInArr,
+    newWidgets,
+    setNewWidgets
+  );
+  const CornerBlocks = useResizeNewWidget(
     indexInArr,
     newWidgets,
     setNewWidgets
@@ -324,6 +330,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
           {isCreating ? "Generating..." : "Generate"}
         </button>
       </div>
+      {CornerBlocks}
     </div>
   );
 };
