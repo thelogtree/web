@@ -1,17 +1,18 @@
 import { PositionType, SizeType, WidgetDocument } from "logtree-types";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Api } from "src/api";
+import { setWidgets } from "src/redux/actionIndex";
+import { FrontendWidget } from "src/redux/organization/reducer";
 import {
   getLastFetchedWidgetData,
   getOrganization,
   getWidgets,
 } from "src/redux/organization/selector";
-import { getScrollOffset } from "./lib";
-import { Api } from "src/api";
-import { setWidgets } from "src/redux/actionIndex";
 import { Colors } from "src/utils/colors";
-import { FrontendWidget } from "src/redux/organization/reducer";
 import { StylesType } from "src/utils/styles";
+
+import { getScrollOffset } from "./lib";
 
 export const MIN_WIDGET_WIDTH = 200;
 export const MIN_WIDGET_HEIGHT = 200;
@@ -25,8 +26,67 @@ export enum Corner {
 
 export const useResizeOrDragWidget = (widget: WidgetDocument) => {
   const organization = useSelector(getOrganization);
-  const { onMouseDown, isDragging } = useDragWidget(widget);
-  const { CornerBlocks, isResizing } = useResizeWidget(widget);
+  const [cornerGettingResized, setCornerGettingResized] =
+    useState<Corner | null>(null);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [mousePosition, setMousePosition] = useState<PositionType | null>(null);
+  const [initialPosition, setInitialPosition] = useState<PositionType | null>(
+    null
+  );
+  const [initialSize, setInitialSize] = useState<SizeType | null>(null);
+  const { onMouseDown } = useDragWidget(
+    widget,
+    mousePosition,
+    initialPosition,
+    setInitialPosition,
+    isDragging,
+    setIsDragging
+  );
+  const CornerBlocks = useResizeWidget(
+    widget,
+    mousePosition,
+    initialPosition,
+    setInitialPosition,
+    initialSize,
+    setInitialSize,
+    cornerGettingResized,
+    setCornerGettingResized
+  );
+  const isResizing = !!cornerGettingResized;
+
+  const _onMouseMove = (e) => setMousePosition({ x: e.clientX, y: e.clientY });
+
+  const _onMouseUp = useCallback(() => {
+    setInitialPosition(null);
+    setInitialSize(null);
+    setMousePosition(null);
+    setIsDragging(false);
+    setCornerGettingResized(null);
+  }, []);
+
+  useEffect(() => {
+    document
+      .getElementById("canvas-container")
+      ?.addEventListener("mouseup", _onMouseUp);
+    return () => {
+      document
+        .getElementById("canvas-container")
+        ?.removeEventListener("mouseup", _onMouseUp);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isDragging || isResizing) {
+      document
+        .getElementById("canvas-container")
+        ?.addEventListener("mousemove", _onMouseMove);
+    }
+    return () => {
+      document
+        .getElementById("canvas-container")
+        ?.removeEventListener("mousemove", _onMouseMove);
+    };
+  }, [isDragging, isResizing]);
 
   useEffect(() => {
     let timeout = setTimeout(async () => {
@@ -55,42 +115,20 @@ export const useResizeOrDragWidget = (widget: WidgetDocument) => {
   return { onMouseDown, CornerBlocks, isDragging, isResizing };
 };
 
-const useResizeWidget = (widget: WidgetDocument) => {
+// ----- RESIZING THE WIDGET ----- //
+const useResizeWidget = (
+  widget: WidgetDocument,
+  mousePosition: PositionType | null,
+  initialPosition: PositionType | null,
+  setInitialPosition: (initialPosition: PositionType | null) => void,
+  initialSize: SizeType | null,
+  setInitialSize: (initialSize: SizeType | null) => void,
+  cornerGettingDragged: Corner | null,
+  setCornerGettingDragged: (corner: Corner | null) => void
+) => {
   const dispatch = useDispatch();
   const widgets = useSelector(getWidgets);
-  const [initialPosition, setInitialPosition] = useState<PositionType | null>(
-    null
-  );
-  const [initialSize, setInitialSize] = useState<SizeType | null>(null);
-  const [cornerGettingDragged, setCornerGettingDragged] =
-    useState<Corner | null>(null);
-  const [mousePosition, setMousePosition] = useState<PositionType | null>(null);
   const lastFetchedWidgetData = useSelector(getLastFetchedWidgetData);
-
-  const handleMouseMove = (e) => {
-    setMousePosition({ x: e.clientX, y: e.clientY });
-  };
-
-  useEffect(() => {
-    if (cornerGettingDragged) {
-      document
-        .getElementById("canvas-container")
-        ?.addEventListener("mousemove", handleMouseMove);
-      document
-        .getElementById("canvas-container")
-        ?.addEventListener("mouseup", onMouseUp);
-    } else {
-      onMouseUp();
-    }
-    return () => {
-      document
-        .getElementById("canvas-container")
-        ?.removeEventListener("mousemove", handleMouseMove);
-      document
-        .getElementById("canvas-container")
-        ?.removeEventListener("mouseup", onMouseUp);
-    };
-  }, [cornerGettingDragged]);
 
   const _updatePosition = useCallback(
     (newPosition: PositionType, newSize: SizeType) => {
@@ -122,13 +160,6 @@ const useResizeWidget = (widget: WidgetDocument) => {
     setInitialSize(widget.size);
     setCornerGettingDragged(corner);
   };
-
-  const onMouseUp = useCallback(() => {
-    setCornerGettingDragged(null);
-    setInitialPosition(null);
-    setInitialSize(null);
-    setMousePosition(null);
-  }, []);
 
   useEffect(() => {
     if (
@@ -253,60 +284,35 @@ const useResizeWidget = (widget: WidgetDocument) => {
     [cornerGettingDragged]
   );
 
-  return {
-    CornerBlocks: (
-      <>
-        <BottomRight />
-        <BottomLeft />
-        <TopLeft />
-        <TopRight />
-      </>
-    ),
-    isResizing: !!cornerGettingDragged,
-  };
+  return (
+    <>
+      <BottomRight />
+      <BottomLeft />
+      <TopLeft />
+      <TopRight />
+    </>
+  );
 };
 
-const useDragWidget = (widget: WidgetDocument) => {
+// ----- DRAGGING THE WIDGET ----- //
+const useDragWidget = (
+  widget: WidgetDocument,
+  mousePosition: PositionType | null,
+  initialPosition: PositionType | null,
+  setInitialPosition: (initialPosition: PositionType | null) => void,
+  isDragging: boolean,
+  setIsDragging: (isDragging: boolean) => void
+) => {
   const dispatch = useDispatch();
   const widgets = useSelector(getWidgets);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [startPositionOfDrag, setStartPositionOfDrag] =
-    useState<PositionType | null>(null);
-  const [mousePosition, setMousePosition] = useState<PositionType | null>(null);
-
-  const handleMouseMove = (e) => {
-    setMousePosition({ x: e.clientX, y: e.clientY });
-  };
-
-  useEffect(() => {
-    if (isDragging) {
-      document
-        .getElementById("canvas-container")
-        ?.addEventListener("mousemove", handleMouseMove);
-      document
-        .getElementById("canvas-container")
-        ?.addEventListener("mouseup", onMouseUp);
-    }
-    if (!isDragging) {
-      onMouseUp();
-    }
-    return () => {
-      document
-        .getElementById("canvas-container")
-        ?.removeEventListener("mousemove", handleMouseMove);
-      document
-        .getElementById("canvas-container")
-        ?.removeEventListener("mouseup", onMouseUp);
-    };
-  }, [isDragging]);
 
   const _changePosition = () => {
-    if (!startPositionOfDrag || !mousePosition) {
+    if (!initialPosition || !mousePosition) {
       return;
     }
     const { x, y } = getScrollOffset();
-    const newX = startPositionOfDrag.x + mousePosition.x + x;
-    const newY = startPositionOfDrag.y + mousePosition.y + y;
+    const newX = initialPosition.x + mousePosition.x + x;
+    const newY = initialPosition.y + mousePosition.y + y;
     const newWidgetTemp = {
       ...widget,
       position: {
@@ -330,7 +336,7 @@ const useDragWidget = (widget: WidgetDocument) => {
     const { x: scrollX, y: scrollY } = getScrollOffset();
     const x = widget.position.x - event.clientX - scrollX;
     const y = widget.position.y - event.clientY - scrollY;
-    setStartPositionOfDrag({ x, y });
+    setInitialPosition({ x, y });
   };
 
   useEffect(() => {
@@ -339,14 +345,8 @@ const useDragWidget = (widget: WidgetDocument) => {
     }
   }, [mousePosition?.x, mousePosition?.y]);
 
-  const onMouseUp = () => {
-    setIsDragging(false);
-    setStartPositionOfDrag(null);
-  };
-
   return {
     onMouseDown,
-    isDragging,
   };
 };
 
