@@ -5,17 +5,14 @@ import { LogsList } from "src/screens/Dashboard/components/LogsList";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
-import {
-  getAdjustedPositionAndSizeOfWidget,
-  useDragWidget,
-  useResizeWidget,
-} from "../lib";
+import { getAdjustedPositionAndSizeOfWidget } from "../lib";
 import { DeleteWidgetButton } from "./DeleteWidgetButton";
 import "../Widget.css";
 import { Histogram } from "./Histogram";
 import { PieChart } from "./PieChart";
 import { StackedHistogram } from "./StackedHistogram";
 import { EmbeddedLink } from "./EmbeddedLink";
+import { useResizeOrDragWidget } from "../useResizeOrDragWidget";
 
 type Props = {
   widgetObj: FrontendWidget;
@@ -23,10 +20,8 @@ type Props = {
 
 export const Widget = ({ widgetObj }: Props) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
-  const { onMouseDown, isDragging } = useDragWidget(widgetObj.widget);
-  const { CornerBlocks, isDragging: isResizingWidget } = useResizeWidget(
-    widgetObj.widget._id as string
-  );
+  const { onMouseDown, isDragging, isResizing, CornerBlocks } =
+    useResizeOrDragWidget(widgetObj.widget);
   const { widget, data } = widgetObj;
   const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
     widget.position,
@@ -117,7 +112,7 @@ export const Widget = ({ widgetObj }: Props) => {
       className="widgetContainer"
       onMouseDown={onMouseDown}
     >
-      {isResizingWidget ? (
+      {isResizing ? (
         <label style={styles.dataHidden}>
           Data is hidden while resizing widget.
         </label>
