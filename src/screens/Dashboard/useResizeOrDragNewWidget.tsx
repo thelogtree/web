@@ -31,6 +31,7 @@ export const useResizeOrDragNewWidget = (
     indexInArr,
     setNewWidgets,
     mousePosition,
+    downMousePosition,
     initialPosition,
     setInitialPosition,
     isDragging,
@@ -41,6 +42,7 @@ export const useResizeOrDragNewWidget = (
     indexInArr,
     setNewWidgets,
     mousePosition,
+    downMousePosition,
     initialPosition,
     setInitialPosition,
     initialSize,
@@ -118,6 +120,7 @@ const useResizeWidget = (
   indexInArr: number,
   setNewWidgets: (newWidgets: NewFrontendWidget[]) => void,
   mousePosition: PositionType | null,
+  mouseDownPosition: PositionType | null,
   initialPosition: PositionType | null,
   setInitialPosition: (initialPosition: PositionType | null) => void,
   initialSize: SizeType | null,
@@ -157,7 +160,8 @@ const useResizeWidget = (
       cornerGettingDragged &&
       initialPosition &&
       initialSize &&
-      mousePosition
+      mousePosition &&
+      mouseDownPosition
     ) {
       const { x, y } = getScrollOffset();
 
@@ -291,6 +295,7 @@ const useDragWidget = (
   indexInArr: number,
   setNewWidgets: (newWidgets: NewFrontendWidget[]) => void,
   mousePosition: PositionType | null,
+  mouseDownPosition: PositionType | null,
   initialPosition: PositionType | null,
   setInitialPosition: (initialPosition: PositionType | null) => void,
   isDragging: boolean,
@@ -299,7 +304,12 @@ const useDragWidget = (
   const widget = newWidgets[indexInArr];
 
   const _changePosition = () => {
-    if (!initialPosition || !mousePosition || !isDragging) {
+    if (
+      !initialPosition ||
+      !mousePosition ||
+      !isDragging ||
+      !mouseDownPosition
+    ) {
       return;
     }
     const { x, y } = getScrollOffset();

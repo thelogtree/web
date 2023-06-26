@@ -39,6 +39,7 @@ export const useResizeOrDragWidget = (widget: WidgetDocument) => {
   const { onMouseDown } = useDragWidget(
     widget,
     mousePosition,
+    downMousePosition,
     initialPosition,
     setInitialPosition,
     isDragging,
@@ -47,6 +48,7 @@ export const useResizeOrDragWidget = (widget: WidgetDocument) => {
   const CornerBlocks = useResizeWidget(
     widget,
     mousePosition,
+    downMousePosition,
     initialPosition,
     setInitialPosition,
     initialSize,
@@ -146,6 +148,7 @@ export const useResizeOrDragWidget = (widget: WidgetDocument) => {
 const useResizeWidget = (
   widget: WidgetDocument,
   mousePosition: PositionType | null,
+  mouseDownPosition: PositionType | null,
   initialPosition: PositionType | null,
   setInitialPosition: (initialPosition: PositionType | null) => void,
   initialSize: SizeType | null,
@@ -193,7 +196,8 @@ const useResizeWidget = (
       cornerGettingDragged &&
       initialPosition &&
       initialSize &&
-      mousePosition
+      mousePosition &&
+      mouseDownPosition
     ) {
       const { x, y } = getScrollOffset();
 
@@ -325,6 +329,7 @@ const useResizeWidget = (
 const useDragWidget = (
   widget: WidgetDocument,
   mousePosition: PositionType | null,
+  mouseDownPosition: PositionType | null,
   initialPosition: PositionType | null,
   setInitialPosition: (initialPosition: PositionType | null) => void,
   isDragging: boolean,
@@ -334,7 +339,7 @@ const useDragWidget = (
   const widgets = useSelector(getWidgets);
 
   const _changePosition = () => {
-    if (!initialPosition || !mousePosition) {
+    if (!initialPosition || !mousePosition || !mouseDownPosition) {
       return;
     }
     const { x, y } = getScrollOffset();
