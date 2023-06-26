@@ -13,6 +13,7 @@ import { PieChart } from "./PieChart";
 import { StackedHistogram } from "./StackedHistogram";
 import { EmbeddedLink } from "./EmbeddedLink";
 import { useResizeOrDragWidget } from "../useResizeOrDragWidget";
+import { DataHiddenWhileDragging } from "./DataHiddenWhileDragging";
 
 type Props = {
   widgetObj: FrontendWidget;
@@ -112,10 +113,8 @@ export const Widget = ({ widgetObj }: Props) => {
       className="widgetContainer"
       onMouseDown={onMouseDown}
     >
-      {isResizing ? (
-        <label style={styles.dataHidden}>
-          Data is hidden while resizing or dragging.
-        </label>
+      {isResizing || isDragging ? (
+        <DataHiddenWhileDragging />
       ) : (
         <>
           <label style={styles.title}>{widget.title}</label>
