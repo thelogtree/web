@@ -1,33 +1,36 @@
+import "./index.css";
+
 import {
   DashboardDocument,
   PositionType,
   SizeType,
-  WidgetDocument,
   widgetTimeframe,
   widgetType,
 } from "logtree-types";
 import React, {
   CSSProperties,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
-import { DASHBOARD_ROUTE_PREFIX, ORG_ROUTE_PREFIX } from "src/RouteManager";
-import { Api } from "src/api";
+import { useParams } from "react-router-dom";
 import {
   setCanAddWidget,
-  setWidgets,
+  setNewWidgets,
   useFetchDashboards,
 } from "src/redux/actionIndex";
 import {
   getCanAddWidget,
   getDashboards,
+  getNewWidgets,
   getOrganization,
-  getWidgets,
 } from "src/redux/organization/selector";
+import { DASHBOARD_ROUTE_PREFIX, ORG_ROUTE_PREFIX } from "src/RouteManager";
+
+import { MIN_WIDGET_HEIGHT, MIN_WIDGET_WIDTH } from "./useResizeOrDragWidget";
 
 export const widgetTimeframes: { [key in widgetTimeframe]: string } = {
   "24_hours": "24 hours",
@@ -115,9 +118,9 @@ export const useDesignWidgetShape = () => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [boxPosition, setBoxPosition] = useState<PositionType>({ x: 0, y: 0 });
   const [boxSize, setBoxSize] = useState<SizeType>({ width: 0, height: 0 });
-  const [newWidgets, setNewWidgets] = useState<NewFrontendWidget[]>([]);
   const [isErrorVisible, setIsErrorVisible] = useState<boolean>(false);
   const canvasRef = useRef(null);
+  const newWidgets = useSelector(getNewWidgets);
   const placeholderWidgetAdjustedPositionAndSize =
     getAdjustedPositionAndSizeOfWidget(boxPosition, boxSize);
   const dispatch = useDispatch();
@@ -168,7 +171,10 @@ export const useDesignWidgetShape = () => {
     if (!isDragging) {
       return;
     }
-    if (Math.abs(boxSize.width) < 200 || Math.abs(boxSize.height) < 200) {
+    if (
+      Math.abs(boxSize.width) < MIN_WIDGET_WIDTH ||
+      Math.abs(boxSize.height) < MIN_WIDGET_HEIGHT
+    ) {
       setIsErrorVisible(true);
     } else {
       _createNewFrontendWidget();
@@ -192,17 +198,29 @@ export const useDesignWidgetShape = () => {
   };
 
   const _createNewFrontendWidget = () => {
-    setNewWidgets(
-      newWidgets.concat([
-        {
-          title: "",
-          folderPaths: [null],
-          type: null,
-          position: boxPosition,
-          size: boxSize,
-          timeframe: widgetTimeframe.TwentyFourHours,
-        },
-      ])
+    const { top, left, width, height } = getAdjustedPositionAndSizeOfWidget(
+      boxPosition,
+      boxSize
+    );
+    dispatch(
+      setNewWidgets(
+        newWidgets.concat([
+          {
+            title: "",
+            folderPaths: [null],
+            type: null,
+            position: {
+              x: left as number,
+              y: top as number,
+            },
+            size: {
+              width: width as number,
+              height: height as number,
+            },
+            timeframe: widgetTimeframe.TwentyFourHours,
+          },
+        ])
+      )
     );
   };
 
@@ -214,152 +232,8 @@ export const useDesignWidgetShape = () => {
     boxPosition,
     canvasRef,
     isErrorVisible,
-    newWidgets,
-    setNewWidgets,
     isDragging,
     placeholderWidgetAdjustedPositionAndSize,
-  };
-};
-
-export const useDragNewWidget = (
-  indexOfWidgetInArr: number,
-  widgets: NewFrontendWidget[],
-  setNewWidgets: (newWidgets: NewFrontendWidget[]) => void
-) => {
-  const widget = widgets[indexOfWidgetInArr];
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [startPositionOfDrag, setStartPositionOfDrag] =
-    useState<PositionType | null>(null);
-
-  const _changePosition = (event: React.MouseEvent) => {
-    if (!startPositionOfDrag) {
-      return;
-    }
-    const { x, y } = getScrollOffset();
-    const newX = startPositionOfDrag.x + event.clientX + x;
-    const newY = startPositionOfDrag.y + event.clientY + y;
-    const newWidgetTemp = {
-      ...widget,
-      position: {
-        x: newX,
-        y: newY,
-      },
-    } as NewFrontendWidget;
-    setNewWidgets(
-      widgets.map((w: NewFrontendWidget, i) =>
-        i === indexOfWidgetInArr ? newWidgetTemp : w
-      )
-    );
-  };
-
-  const onMouseDown = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    setIsDragging(true);
-    const { x: scrollX, y: scrollY } = getScrollOffset();
-    const x = widget.position.x - event.clientX - scrollX;
-    const y = widget.position.y - event.clientY - scrollY;
-    setStartPositionOfDrag({ x, y });
-  };
-
-  const onMouseMove = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-    if (!isDragging) {
-      return;
-    }
-    _changePosition(event);
-  };
-
-  const onMouseUp = () => {
-    setIsDragging(false);
-    setStartPositionOfDrag(null);
-  };
-
-  return {
-    onMouseDown,
-    onMouseMove,
-    onMouseUp,
-  };
-};
-
-export const useDragWidget = (widget: WidgetDocument) => {
-  const dispatch = useDispatch();
-  const widgets = useSelector(getWidgets);
-  const organization = useSelector(getOrganization);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [startPositionOfDrag, setStartPositionOfDrag] =
-    useState<PositionType | null>(null);
-
-  const _changePosition = (event: React.MouseEvent) => {
-    if (!startPositionOfDrag) {
-      return;
-    }
-    const { x, y } = getScrollOffset();
-    const newX = startPositionOfDrag.x + event.clientX + x;
-    const newY = startPositionOfDrag.y + event.clientY + y;
-    const newWidgetTemp = {
-      ...widget,
-      position: {
-        x: newX,
-        y: newY,
-      },
-    } as WidgetDocument;
-    dispatch(
-      setWidgets(
-        widgets.map((w) => ({
-          widget: w.widget._id === widget._id ? newWidgetTemp : w.widget,
-          data: w.data,
-        }))
-      )
-    );
-  };
-
-  useEffect(() => {
-    let timeout = setTimeout(async () => {
-      try {
-        await Api.organization.updateWidget(
-          organization!._id.toString(),
-          widget._id.toString(),
-          widget.position
-        );
-      } catch (e) {
-        console.error(e);
-      }
-    }, 1500);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [widget.position.x, widget.position.y]);
-
-  const onMouseDown = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    setIsDragging(true);
-    const { x: scrollX, y: scrollY } = getScrollOffset();
-    const x = widget.position.x - event.clientX - scrollX;
-    const y = widget.position.y - event.clientY - scrollY;
-    setStartPositionOfDrag({ x, y });
-  };
-
-  const onMouseMove = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    event.preventDefault();
-    if (!isDragging) {
-      return;
-    }
-    _changePosition(event);
-  };
-
-  const onMouseUp = () => {
-    setIsDragging(false);
-    setStartPositionOfDrag(null);
-  };
-
-  return {
-    onMouseDown,
-    onMouseMove,
-    onMouseUp,
-    isDragging,
   };
 };
 

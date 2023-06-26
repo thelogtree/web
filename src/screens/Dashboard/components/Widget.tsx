@@ -5,13 +5,15 @@ import { LogsList } from "src/screens/Dashboard/components/LogsList";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
-import { getAdjustedPositionAndSizeOfWidget, useDragWidget } from "../lib";
+import { getAdjustedPositionAndSizeOfWidget } from "../lib";
 import { DeleteWidgetButton } from "./DeleteWidgetButton";
 import "../Widget.css";
 import { Histogram } from "./Histogram";
 import { PieChart } from "./PieChart";
 import { StackedHistogram } from "./StackedHistogram";
 import { EmbeddedLink } from "./EmbeddedLink";
+import { useResizeOrDragWidget } from "../useResizeOrDragWidget";
+import { DataHiddenWhileDragging } from "./DataHiddenWhileDragging";
 
 type Props = {
   widgetObj: FrontendWidget;
@@ -19,10 +21,9 @@ type Props = {
 
 export const Widget = ({ widgetObj }: Props) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
-  const { onMouseDown, onMouseMove, onMouseUp, isDragging } = useDragWidget(
-    widgetObj.widget
-  );
   const { widget, data } = widgetObj;
+  const { onMouseDown, isDragging, isResizing, CornerBlocks } =
+    useResizeOrDragWidget(widget);
   const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
     widget.position,
     widget.size
@@ -98,7 +99,6 @@ export const Widget = ({ widgetObj }: Props) => {
 
   const _handleOnMouseLeave = useCallback(() => {
     setIsHovering(false);
-    onMouseUp();
   }, []);
 
   return (
@@ -112,12 +112,17 @@ export const Widget = ({ widgetObj }: Props) => {
       onMouseLeave={_handleOnMouseLeave}
       className="widgetContainer"
       onMouseDown={onMouseDown}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
     >
-      <label style={styles.title}>{widget.title}</label>
-      <DeleteWidgetButton widget={widget} isVisible={isHovering} />
-      {_renderData()}
+      {isResizing || isDragging ? (
+        <DataHiddenWhileDragging />
+      ) : (
+        <>
+          <label style={styles.title}>{widget.title}</label>
+          <DeleteWidgetButton widget={widget} isVisible={isHovering} />
+          {_renderData()}
+        </>
+      )}
+      {CornerBlocks}
     </div>
   );
 };
@@ -159,5 +164,14 @@ const styles: StylesType = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  dataHidden: {
+    width: "100%",
+    height: "100%",
+    textAlign: "center",
+    paddingTop: 60,
+    paddingLeft: 20,
+    paddingRight: 20,
+    fontSize: 13,
   },
 };

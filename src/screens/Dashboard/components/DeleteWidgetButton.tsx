@@ -67,8 +67,9 @@ const styles: StylesType = {
     cursor: "pointer",
     backgroundColor: Colors.transparent,
     position: "absolute",
-    top: 18,
-    right: 15,
+    top: 26,
+    right: 21,
+    zIndex: 65,
   },
   trash: {
     cursor: "pointer",

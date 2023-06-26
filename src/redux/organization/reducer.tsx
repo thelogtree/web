@@ -11,6 +11,7 @@ import {
   integrationTypeEnum,
 } from "logtree-types";
 import { isMobile } from "react-device-detect";
+import { NewFrontendWidget } from "src/screens/Dashboard/lib";
 
 export type FrontendWidget = {
   widget: WidgetDocument;
@@ -31,6 +32,8 @@ export type OrganizationReducerType = {
   dashboards: DashboardDocument[];
   widgets: FrontendWidget[];
   canAddWidget: boolean;
+  lastFetchedWidgetData: Date | null;
+  newWidgets: NewFrontendWidget[];
 };
 
 const initialState: OrganizationReducerType = {
@@ -47,6 +50,8 @@ const initialState: OrganizationReducerType = {
   dashboards: [],
   widgets: [],
   canAddWidget: false,
+  lastFetchedWidgetData: null,
+  newWidgets: [],
 };
 
 export const organizationReducer = (
@@ -80,6 +85,10 @@ export const organizationReducer = (
       return { ...state, dashboards: action.dashboards };
     case "SET_CAN_ADD_WIDGET":
       return { ...state, canAddWidget: action.canAddWidget };
+    case "SET_LAST_FETCHED_WIDGET_DATAS":
+      return { ...state, lastFetchedWidgetData: action.lastFetchedWidgetData };
+    case "SET_NEW_WIDGETS":
+      return { ...state, newWidgets: action.newWidgets };
     default:
       return state;
   }

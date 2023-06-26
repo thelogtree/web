@@ -26,7 +26,7 @@ export const DashboardScreen = () => {
   }, [organization?._id, currentDashboard?._id]);
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} id="canvas-fullscreen">
       <HeaderBar />
       <Canvas isFetching={isFetching} />
       <PassiveAlert isFetchingWidgets={isFetching} />
