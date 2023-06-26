@@ -60,24 +60,36 @@ export const DashboardPicker = () => {
     setIsLoading(false);
   };
 
-  const _deleteDashboard = async () => {
-    setIsLoading(true);
-    try {
-      const dashboardToDelete = currentDashboard;
-      await Api.organization.deleteDashboard(
-        organization!._id.toString(),
-        dashboardToDelete!._id.toString()
-      );
-      const otherDashboardToNavigateTo = dashboards.find(
-        (d) => d._id.toString() !== dashboardToDelete?._id.toString()
-      );
-      await fetchDashboards();
-      _handleChange(otherDashboardToNavigateTo!._id.toString());
-    } catch (e) {
-      showGenericErrorAlert(e);
-    }
-    setIsLoading(false);
-  };
+  const _deleteDashboard = async () =>
+    Swal.fire({
+      title: "Please confirm",
+      text: "Are you sure you want to delete this dashboard?",
+      icon: "question",
+      showConfirmButton: false,
+      showCancelButton: true,
+      cancelButtonText: "Cancel",
+      showDenyButton: true,
+      denyButtonText: "Delete",
+    }).then(async (res) => {
+      if (res.isDenied) {
+        setIsLoading(true);
+        try {
+          const dashboardToDelete = currentDashboard;
+          await Api.organization.deleteDashboard(
+            organization!._id.toString(),
+            dashboardToDelete!._id.toString()
+          );
+          const otherDashboardToNavigateTo = dashboards.find(
+            (d) => d._id.toString() !== dashboardToDelete?._id.toString()
+          );
+          await fetchDashboards();
+          _handleChange(otherDashboardToNavigateTo!._id.toString());
+        } catch (e) {
+          showGenericErrorAlert(e);
+        }
+        setIsLoading(false);
+      }
+    });
 
   if (!currentDashboard) {
     return null;
