@@ -17,9 +17,9 @@ import { useFetchDashboards } from "src/redux/actionIndex";
 import { showGenericErrorAlert } from "src/utils/helpers";
 import { Colors } from "src/utils/colors";
 import Swal from "sweetalert2";
+import { DownCircleOutlined } from "@ant-design/icons";
 
 export const DashboardPicker = () => {
-  const history = useHistory();
   const organization = useSelector(getOrganization);
   const dashboards = useSelector(getDashboards);
   const currentDashboard = useCurrentDashboard();
@@ -147,8 +147,9 @@ export const DashboardPicker = () => {
         label: dashboard.title,
         value: dashboard._id.toString(),
       }))}
-      showArrow={false}
+      showArrow={true}
       dropdownStyle={{ minWidth: 400 }}
+      suffixIcon={<DownCircleOutlined style={{ color: Colors.white }} />}
     />
   );
 };
