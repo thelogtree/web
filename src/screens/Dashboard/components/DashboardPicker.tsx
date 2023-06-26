@@ -147,6 +147,7 @@ export const DashboardPicker = () => {
         label: dashboard.title,
         value: dashboard._id.toString(),
       }))}
+      className="picker"
       showArrow={true}
       dropdownStyle={{ minWidth: 400 }}
       suffixIcon={<DownCircleOutlined style={{ color: Colors.white }} />}

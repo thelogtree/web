@@ -49,6 +49,9 @@ const styles: StylesType = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: Colors.gray,
+    borderStyle: "solid",
   },
   outerContainer: {
     display: "flex",
