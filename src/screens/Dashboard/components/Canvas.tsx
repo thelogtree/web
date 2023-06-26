@@ -13,6 +13,7 @@ import { ErrorMessage } from "./ErrorMessage";
 import { NewWidget } from "./NewWidget";
 import { NewWidgetPlaceholderBox } from "./NewWidgetPlaceholderBox";
 import { Widget } from "./Widget";
+import "../index.css";
 
 type Props = {
   isFetching: boolean;
