@@ -139,7 +139,7 @@ const useResizeWidget = (
       } as NewFrontendWidget;
       dispatch(setNewWidgets(newWidgetsTemp));
     },
-    []
+    [mouseDownPosition?.x, mouseDownPosition?.y]
   );
 
   const onMouseDown = (event: React.MouseEvent, corner: Corner) => {
