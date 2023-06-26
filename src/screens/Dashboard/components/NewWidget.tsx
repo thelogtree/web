@@ -211,6 +211,7 @@ export const NewWidget = ({ indexInArr }: Props) => {
         ...adjustedPositionAndSize,
       }}
       onMouseDown={onMouseDown}
+      className="newWidgetContainer"
     >
       <div style={styles.innerTop}>
         <input
