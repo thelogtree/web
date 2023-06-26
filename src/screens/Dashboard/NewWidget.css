@@ -6,7 +6,7 @@
   min-width: 140px;
   max-width: 220px;
   opacity: 1 !important;
-  text-align: center !important;
+  text-align: center;
 }
 
 .newWidgetContainer {
