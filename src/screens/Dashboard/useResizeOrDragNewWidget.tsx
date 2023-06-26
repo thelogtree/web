@@ -1,5 +1,8 @@
 import { PositionType, SizeType } from "logtree-types";
 import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setNewWidgets } from "src/redux/actionIndex";
+import { getNewWidgets } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 
@@ -10,11 +13,9 @@ import {
   MIN_WIDGET_WIDTH,
 } from "./useResizeOrDragWidget";
 
-export const useResizeOrDragNewWidget = (
-  newWidgets: NewFrontendWidget[],
-  indexInArr: number,
-  setNewWidgets: (newWidgets: NewFrontendWidget[]) => void
-) => {
+export const useResizeOrDragNewWidget = (indexInArr: number) => {
+  const dispatch = useDispatch();
+  const newWidgets = useSelector(getNewWidgets);
   const widget = newWidgets[indexInArr];
   const [cornerGettingResized, setCornerGettingResized] =
     useState<Corner | null>(null);
@@ -27,9 +28,7 @@ export const useResizeOrDragNewWidget = (
   const [downMousePosition, setDownMousePosition] =
     useState<PositionType | null>(null);
   const { onMouseDown } = useDragWidget(
-    newWidgets,
     indexInArr,
-    setNewWidgets,
     mousePosition,
     downMousePosition,
     initialPosition,
@@ -38,9 +37,7 @@ export const useResizeOrDragNewWidget = (
     setIsDragging
   );
   const CornerBlocks = useResizeWidget(
-    newWidgets,
     indexInArr,
-    setNewWidgets,
     mousePosition,
     downMousePosition,
     initialPosition,
@@ -116,9 +113,7 @@ export const useResizeOrDragNewWidget = (
 
 // ----- RESIZING THE WIDGET ----- //
 const useResizeWidget = (
-  newWidgets: NewFrontendWidget[],
   indexInArr: number,
-  setNewWidgets: (newWidgets: NewFrontendWidget[]) => void,
   mousePosition: PositionType | null,
   mouseDownPosition: PositionType | null,
   initialPosition: PositionType | null,
@@ -128,6 +123,8 @@ const useResizeWidget = (
   cornerGettingDragged: Corner | null,
   setCornerGettingDragged: (corner: Corner | null) => void
 ) => {
+  const dispatch = useDispatch();
+  const newWidgets = useSelector(getNewWidgets);
   const widget = newWidgets[indexInArr];
 
   const _updatePosition = useCallback(
@@ -140,7 +137,7 @@ const useResizeWidget = (
         position: newPosition,
         size: newSize,
       } as NewFrontendWidget;
-      setNewWidgets(newWidgetsTemp);
+      dispatch(setNewWidgets(newWidgetsTemp));
     },
     []
   );
@@ -291,9 +288,7 @@ const useResizeWidget = (
 
 // ----- DRAGGING THE WIDGET ----- //
 const useDragWidget = (
-  newWidgets: NewFrontendWidget[],
   indexInArr: number,
-  setNewWidgets: (newWidgets: NewFrontendWidget[]) => void,
   mousePosition: PositionType | null,
   mouseDownPosition: PositionType | null,
   initialPosition: PositionType | null,
@@ -301,6 +296,8 @@ const useDragWidget = (
   isDragging: boolean,
   setIsDragging: (isDragging: boolean) => void
 ) => {
+  const dispatch = useDispatch();
+  const newWidgets = useSelector(getNewWidgets);
   const widget = newWidgets[indexInArr];
 
   const _changePosition = () => {
@@ -315,18 +312,15 @@ const useDragWidget = (
     const { x, y } = getScrollOffset();
     const newX = initialPosition.x + mousePosition.x + x;
     const newY = initialPosition.y + mousePosition.y + y;
-    const newWidgetTemp = {
+    let newWidgetsTemp = newWidgets.slice();
+    newWidgetsTemp[indexInArr] = {
       ...widget,
       position: {
         x: newX,
         y: newY,
       },
     } as NewFrontendWidget;
-    setNewWidgets(
-      newWidgets.map((w: NewFrontendWidget, i) =>
-        i === indexInArr ? newWidgetTemp : w
-      )
-    );
+    dispatch(setNewWidgets(newWidgetsTemp));
   };
 
   const onMouseDown = (event: React.MouseEvent) => {

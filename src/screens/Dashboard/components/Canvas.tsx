@@ -1,13 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getCanAddWidget, getWidgets } from "src/redux/organization/selector";
-import { StylesType } from "src/utils/styles";
-import { Widget } from "./Widget";
+import { useSelector } from "react-redux";
+import {
+  getCanAddWidget,
+  getNewWidgets,
+  getWidgets,
+} from "src/redux/organization/selector";
 import { LoadingSpinnerFullScreen } from "src/sharedComponents/LoadingSpinnerFullScreen";
+import { StylesType } from "src/utils/styles";
+
 import { useDesignWidgetShape } from "../lib";
 import { ErrorMessage } from "./ErrorMessage";
 import { NewWidget } from "./NewWidget";
 import { NewWidgetPlaceholderBox } from "./NewWidgetPlaceholderBox";
+import { Widget } from "./Widget";
 
 type Props = {
   isFetching: boolean;
@@ -24,10 +29,9 @@ export const Canvas = ({ isFetching }: Props) => {
     isDragging,
     canvasRef,
     isErrorVisible,
-    newWidgets,
-    setNewWidgets,
     placeholderWidgetAdjustedPositionAndSize,
   } = useDesignWidgetShape();
+  const newWidgets = useSelector(getNewWidgets);
   const canScroll = Boolean(widgets.length || newWidgets.length);
 
   useEffect(() => {
@@ -72,12 +76,7 @@ export const Canvas = ({ isFetching }: Props) => {
           <Widget widgetObj={widget} key={widget.widget._id.toString()} />
         ))}
         {newWidgets.map((_, i) => (
-          <NewWidget
-            newWidgets={newWidgets}
-            indexInArr={i}
-            setNewWidgets={setNewWidgets}
-            key={i}
-          />
+          <NewWidget indexInArr={i} key={i} />
         ))}
         <NewWidgetPlaceholderBox
           isDragging={isDragging}

@@ -81,3 +81,9 @@ export const getLastFetchedWidgetData = createSelector(
   (organizationReducer: OrganizationReducerType) =>
     organizationReducer.lastFetchedWidgetData
 );
+
+export const getNewWidgets = createSelector(
+  [getOrganizationReducer],
+  (organizationReducer: OrganizationReducerType) =>
+    organizationReducer.newWidgets
+);

@@ -17,10 +17,15 @@ import React, {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { setCanAddWidget, useFetchDashboards } from "src/redux/actionIndex";
+import {
+  setCanAddWidget,
+  setNewWidgets,
+  useFetchDashboards,
+} from "src/redux/actionIndex";
 import {
   getCanAddWidget,
   getDashboards,
+  getNewWidgets,
   getOrganization,
 } from "src/redux/organization/selector";
 import { DASHBOARD_ROUTE_PREFIX, ORG_ROUTE_PREFIX } from "src/RouteManager";
@@ -113,9 +118,9 @@ export const useDesignWidgetShape = () => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [boxPosition, setBoxPosition] = useState<PositionType>({ x: 0, y: 0 });
   const [boxSize, setBoxSize] = useState<SizeType>({ width: 0, height: 0 });
-  const [newWidgets, setNewWidgets] = useState<NewFrontendWidget[]>([]);
   const [isErrorVisible, setIsErrorVisible] = useState<boolean>(false);
   const canvasRef = useRef(null);
+  const newWidgets = useSelector(getNewWidgets);
   const placeholderWidgetAdjustedPositionAndSize =
     getAdjustedPositionAndSizeOfWidget(boxPosition, boxSize);
   const dispatch = useDispatch();
@@ -197,23 +202,25 @@ export const useDesignWidgetShape = () => {
       boxPosition,
       boxSize
     );
-    setNewWidgets(
-      newWidgets.concat([
-        {
-          title: "",
-          folderPaths: [null],
-          type: null,
-          position: {
-            x: left as number,
-            y: top as number,
+    dispatch(
+      setNewWidgets(
+        newWidgets.concat([
+          {
+            title: "",
+            folderPaths: [null],
+            type: null,
+            position: {
+              x: left as number,
+              y: top as number,
+            },
+            size: {
+              width: width as number,
+              height: height as number,
+            },
+            timeframe: widgetTimeframe.TwentyFourHours,
           },
-          size: {
-            width: width as number,
-            height: height as number,
-          },
-          timeframe: widgetTimeframe.TwentyFourHours,
-        },
-      ])
+        ])
+      )
     );
   };
 
@@ -225,8 +232,6 @@ export const useDesignWidgetShape = () => {
     boxPosition,
     canvasRef,
     isErrorVisible,
-    newWidgets,
-    setNewWidgets,
     isDragging,
     placeholderWidgetAdjustedPositionAndSize,
   };

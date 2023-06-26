@@ -18,7 +18,10 @@ import { getAuthStatus } from "../auth/selector";
 import { FrontendFolder } from "src/sharedComponents/Sidebar/components/Folders";
 import { IntegrationsToConnectToMap } from "src/screens/Integrations/integrationsToConnectTo";
 import { Constants } from "src/utils/constants";
-import { useCurrentDashboard } from "src/screens/Dashboard/lib";
+import {
+  NewFrontendWidget,
+  useCurrentDashboard,
+} from "src/screens/Dashboard/lib";
 import { FrontendWidget } from "./reducer";
 
 const SET_SIDEBAR_WIDTH = "SET_SIDEBAR_WIDTH";
@@ -49,6 +52,8 @@ const SET_CAN_ADD_WIDGET = "SET_CAN_ADD_WIDGET";
 type SET_CAN_ADD_WIDGET = typeof SET_CAN_ADD_WIDGET;
 const SET_LAST_FETCHED_WIDGET_DATAS = "SET_LAST_FETCHED_WIDGET_DATAS";
 type SET_LAST_FETCHED_WIDGET_DATAS = typeof SET_LAST_FETCHED_WIDGET_DATAS;
+const SET_NEW_WIDGETS = "SET_NEW_WIDGETS";
+type SET_NEW_WIDGETS = typeof SET_NEW_WIDGETS;
 
 type ISetSidebarWidth = {
   type: SET_SIDEBAR_WIDTH;
@@ -190,6 +195,17 @@ export const setLastFetchedWidgetData = (
   lastFetchedWidgetData,
 });
 
+type ISetNewWidgets = {
+  type: SET_NEW_WIDGETS;
+  newWidgets: NewFrontendWidget[];
+};
+export const setNewWidgets = (
+  newWidgets: NewFrontendWidget[]
+): ISetNewWidgets => ({
+  type: SET_NEW_WIDGETS,
+  newWidgets,
+});
+
 // actions identifiable by the reducer
 export type OrganizationActionsIndex =
   | ISetOrganization
@@ -205,7 +221,8 @@ export type OrganizationActionsIndex =
   | ISetDashboards
   | ISetWidgets
   | ISetCanAddWidget
-  | ISetLastFetchedWidgetData;
+  | ISetLastFetchedWidgetData
+  | ISetNewWidgets;
 
 // api-related actions
 export const useFetchMyOrganization = () => {

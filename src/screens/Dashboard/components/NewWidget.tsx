@@ -1,33 +1,37 @@
+import "../NewWidget.css";
+
+import { Select } from "antd";
+import { FolderType, widgetTimeframe, widgetType } from "logtree-types";
 import React, { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Api } from "src/api";
+import { setNewWidgets, useFetchWidgetsWithData } from "src/redux/actionIndex";
 import {
-  NewFrontendWidget,
+  getNewWidgets,
+  getOrganization,
+} from "src/redux/organization/selector";
+import { useFlattenedFolders } from "src/screens/Logs/lib";
+import { Colors } from "src/utils/colors";
+import { showGenericErrorAlert } from "src/utils/helpers";
+import { SharedStyles, StylesType } from "src/utils/styles";
+
+import { allowedWidgetTypes } from "../allowedWidgetTypes";
+import {
   getAdjustedPositionAndSizeOfWidget,
   useCurrentDashboard,
   widgetTimeframes,
 } from "../lib";
-import { SharedStyles, StylesType } from "src/utils/styles";
-import { Colors } from "src/utils/colors";
-import { Select } from "antd";
-import { useFlattenedFolders } from "src/screens/Logs/lib";
-import { showGenericErrorAlert } from "src/utils/helpers";
-import { Api } from "src/api";
-import { useSelector } from "react-redux";
-import { getOrganization } from "src/redux/organization/selector";
-import { FolderType, widgetTimeframe, widgetType } from "logtree-types";
-import { useFetchWidgetsWithData } from "src/redux/actionIndex";
-import "../NewWidget.css";
-import { allowedWidgetTypes } from "../allowedWidgetTypes";
 import { useResizeOrDragNewWidget } from "../useResizeOrDragNewWidget";
 
 type Props = {
-  newWidgets: NewFrontendWidget[];
   indexInArr: number;
-  setNewWidgets: (newWidgets: NewFrontendWidget[]) => void;
 };
 
-export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
+export const NewWidget = ({ indexInArr }: Props) => {
+  const newWidgets = useSelector(getNewWidgets);
   const organization = useSelector(getOrganization);
   const flattenedFolders = useFlattenedFolders(undefined, true);
+  const dispatch = useDispatch();
   const newWidget = newWidgets[indexInArr];
   const widgetTemplate = newWidget.type
     ? allowedWidgetTypes[newWidget.type]
@@ -42,11 +46,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const currentDashboard = useCurrentDashboard(true);
   const { fetch } = useFetchWidgetsWithData();
-  const { onMouseDown, CornerBlocks } = useResizeOrDragNewWidget(
-    newWidgets,
-    indexInArr,
-    setNewWidgets
-  );
+  const { onMouseDown, CornerBlocks } = useResizeOrDragNewWidget(indexInArr);
   const canSave =
     !isCreating &&
     Boolean(
@@ -70,7 +70,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     };
     const newWidgetsTemp = newWidgets.slice();
     newWidgetsTemp[indexInArr] = newWidgetTemp;
-    setNewWidgets(newWidgetsTemp);
+    dispatch(setNewWidgets(newWidgetsTemp));
   };
 
   const _handleWidgetTypeChange = (value: widgetType) => {
@@ -80,7 +80,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     };
     const newWidgetsTemp = newWidgets.slice();
     newWidgetsTemp[indexInArr] = newWidgetTemp;
-    setNewWidgets(newWidgetsTemp);
+    dispatch(setNewWidgets(newWidgetsTemp));
   };
 
   const _handleTimeframeChange = (value: widgetTimeframe) => {
@@ -90,7 +90,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     };
     const newWidgetsTemp = newWidgets.slice();
     newWidgetsTemp[indexInArr] = newWidgetTemp;
-    setNewWidgets(newWidgetsTemp);
+    dispatch(setNewWidgets(newWidgetsTemp));
   };
 
   const _handleTitleChange = (newText: string) => {
@@ -100,7 +100,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     };
     const newWidgetsTemp = newWidgets.slice();
     newWidgetsTemp[indexInArr] = newWidgetTemp;
-    setNewWidgets(newWidgetsTemp);
+    dispatch(setNewWidgets(newWidgetsTemp));
   };
 
   const _handleQueryChange = (newText: string) => {
@@ -110,7 +110,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     };
     const newWidgetsTemp = newWidgets.slice();
     newWidgetsTemp[indexInArr] = newWidgetTemp;
-    setNewWidgets(newWidgetsTemp);
+    dispatch(setNewWidgets(newWidgetsTemp));
   };
 
   const _handleUrlChange = (newText: string) => {
@@ -120,7 +120,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
     };
     const newWidgetsTemp = newWidgets.slice();
     newWidgetsTemp[indexInArr] = newWidgetTemp;
-    setNewWidgets(newWidgetsTemp);
+    dispatch(setNewWidgets(newWidgetsTemp));
   };
 
   const _onSave = async (e: React.MouseEvent) => {
@@ -157,7 +157,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
       );
       await fetch();
       const newWidgetsTemp = newWidgets.filter((_, i) => i !== indexInArr);
-      setNewWidgets(newWidgetsTemp);
+      dispatch(setNewWidgets(newWidgetsTemp));
     } catch (e) {
       showGenericErrorAlert(e);
     }
@@ -166,7 +166,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
 
   const _onDiscard = () => {
     const newWidgetsTemp = newWidgets.filter((_, i) => i !== indexInArr);
-    setNewWidgets(newWidgetsTemp);
+    dispatch(setNewWidgets(newWidgetsTemp));
   };
 
   const flattenedFoldersMapped = useMemo(() => {
@@ -200,7 +200,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
       };
       const newWidgetsTemp = newWidgets.slice();
       newWidgetsTemp[indexInArr] = newWidgetTemp;
-      setNewWidgets(newWidgetsTemp);
+      dispatch(setNewWidgets(newWidgetsTemp));
     }
   }, [widgetTemplate?.overrideChannelsToChoose?.length]);
 
@@ -224,7 +224,6 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
           placeholder="Type of widget"
           optionFilterProp="children"
           onChange={_handleWidgetTypeChange}
-          onClick={(e) => e.stopPropagation()}
           filterOption={(input, option) =>
             (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
           }
