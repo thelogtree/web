@@ -20,9 +20,9 @@ type Props = {
 
 export const Widget = ({ widgetObj }: Props) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
-  const { onMouseDown, isDragging, isResizing, CornerBlocks } =
-    useResizeOrDragWidget(widgetObj.widget);
   const { widget, data } = widgetObj;
+  const { onMouseDown, isDragging, isResizing, CornerBlocks } =
+    useResizeOrDragWidget(widget);
   const adjustedPositionAndSize = getAdjustedPositionAndSizeOfWidget(
     widget.position,
     widget.size
