@@ -3,8 +3,6 @@ import {
   NewFrontendWidget,
   getAdjustedPositionAndSizeOfWidget,
   useCurrentDashboard,
-  useDragNewWidget,
-  useResizeNewWidget,
   widgetTimeframes,
 } from "../lib";
 import { SharedStyles, StylesType } from "src/utils/styles";
@@ -19,6 +17,7 @@ import { FolderType, widgetTimeframe, widgetType } from "logtree-types";
 import { useFetchWidgetsWithData } from "src/redux/actionIndex";
 import "../NewWidget.css";
 import { allowedWidgetTypes } from "../allowedWidgetTypes";
+import { useResizeOrDragNewWidget } from "../useResizeOrDragNewWidget";
 
 type Props = {
   newWidgets: NewFrontendWidget[];
@@ -43,14 +42,9 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const currentDashboard = useCurrentDashboard(true);
   const { fetch } = useFetchWidgetsWithData();
-  const { onMouseDown } = useDragNewWidget(
-    indexInArr,
+  const { onMouseDown, CornerBlocks } = useResizeOrDragNewWidget(
     newWidgets,
-    setNewWidgets
-  );
-  const CornerBlocks = useResizeNewWidget(
     indexInArr,
-    newWidgets,
     setNewWidgets
   );
   const canSave =
@@ -230,6 +224,7 @@ export const NewWidget = ({ newWidgets, indexInArr, setNewWidgets }: Props) => {
           placeholder="Type of widget"
           optionFilterProp="children"
           onChange={_handleWidgetTypeChange}
+          onClick={(e) => e.stopPropagation()}
           filterOption={(input, option) =>
             (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
           }

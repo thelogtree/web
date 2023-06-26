@@ -112,7 +112,7 @@ export const Widget = ({ widgetObj }: Props) => {
       className="widgetContainer"
       onMouseDown={onMouseDown}
     >
-      {isResizing || isDragging ? (
+      {isResizing ? (
         <label style={styles.dataHidden}>
           Data is hidden while resizing or dragging.
         </label>
