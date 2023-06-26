@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import { getAuthStatus } from "./redux/auth/selector";
 import { Colors } from "./utils/colors";
@@ -28,6 +28,7 @@ import { CreateOrganizationScreen } from "./screens/CreateOrganization";
 import { FunnelsScreen } from "./screens/Funnels";
 import { LandingPageProjects } from "./screens/LandingPageProjects";
 import { DashboardScreen } from "./screens/Dashboard";
+import { Constants } from "./utils/constants";
 
 const ROUTES_WITH_SIDEBAR = ["/org"];
 export const LOGS_ROUTE_PREFIX = "/logs";
@@ -122,7 +123,14 @@ export const RouteManager = () => {
             component={TermsOfServiceRenderer}
           />
           <Route path="/learn/intercom" component={IntercomLearnMoreScreen} />
-          <Route exact path="/" component={LandingPage} />
+          <Route
+            exact
+            path="/"
+            component={() => {
+              window.location.href = Constants.landingPageUrl;
+              return null;
+            }}
+          />
           <Route exact path="/projects" component={LandingPageProjects} />
         </div>
       </div>
