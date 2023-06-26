@@ -164,7 +164,7 @@ const useResizeWidget = (
     (newPosition: PositionType, newSize: SizeType) => {
       newSize.width = Math.max(newSize.width, MIN_WIDGET_WIDTH);
       newSize.height = Math.max(newSize.height, MIN_WIDGET_HEIGHT);
-      const newWidgets = widgets.map((widgetObj, i) =>
+      const newWidgets = widgets.map((widgetObj) =>
         widgetObj.widget._id === widget._id
           ? ({
               data: widgetObj.data,
@@ -178,7 +178,7 @@ const useResizeWidget = (
       );
       dispatch(setWidgets(newWidgets));
     },
-    [lastFetchedWidgetData]
+    [lastFetchedWidgetData, mouseDownPosition?.x, mouseDownPosition?.y]
   );
 
   const onMouseDown = (event: React.MouseEvent, corner: Corner) => {
