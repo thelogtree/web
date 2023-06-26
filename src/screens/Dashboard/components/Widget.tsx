@@ -1,5 +1,5 @@
 import { widgetType } from "logtree-types";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { FrontendWidget } from "src/redux/organization/reducer";
 import { LogsList } from "src/screens/Dashboard/components/widgetTypes/LogsList";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
@@ -28,6 +28,19 @@ export const Widget = ({ widgetObj }: Props) => {
     widget.position,
     widget.size
   );
+  const titleFontSize = useMemo(() => {
+    const { widget } = widgetObj;
+    const title = widget.title;
+    const width = widget.size.width;
+    if (title.length > 20 && width < 300) {
+      return 15;
+    } else if (width < 300) {
+      return 16;
+    } else if (title.length > 20 && width < 500) {
+      return 16;
+    }
+    return 18;
+  }, [widgetObj.widget.size.width, widgetObj.widget.title]);
 
   const _renderData = () => {
     if (!data) {
@@ -117,7 +130,9 @@ export const Widget = ({ widgetObj }: Props) => {
         <DataHiddenWhileDragging />
       ) : (
         <>
-          <label style={styles.title}>{widget.title}</label>
+          <label style={{ ...styles.title, fontSize: titleFontSize }}>
+            {widget.title}
+          </label>
           <DeleteWidgetButton widget={widget} isVisible={isHovering} />
           {_renderData()}
         </>
@@ -147,8 +162,12 @@ const styles: StylesType = {
     cursor: "grab",
   },
   title: {
-    fontSize: 18,
     fontWeight: 500,
+    width: "84%",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    minHeight: 20,
   },
   description: {
     color: Colors.gray,
