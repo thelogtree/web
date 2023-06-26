@@ -34,6 +34,8 @@ export const useResizeOrDragWidget = (widget: WidgetDocument) => {
     null
   );
   const [initialSize, setInitialSize] = useState<SizeType | null>(null);
+  const [downMousePosition, setDownMousePosition] =
+    useState<PositionType | null>(null);
   const { onMouseDown } = useDragWidget(
     widget,
     mousePosition,
@@ -62,6 +64,31 @@ export const useResizeOrDragWidget = (widget: WidgetDocument) => {
     setMousePosition(null);
     setIsDragging(false);
     setCornerGettingResized(null);
+    setDownMousePosition(null);
+  }, []);
+
+  const _onMouseDown = (e) =>
+    setDownMousePosition({ x: e.clientX, y: e.clientY });
+
+  useEffect(() => {
+    if (downMousePosition) {
+      const { x: scrollX, y: scrollY } = getScrollOffset();
+      const x = widget.position.x - downMousePosition.x - scrollX;
+      const y = widget.position.y - downMousePosition.y - scrollY;
+      setInitialPosition({ x, y });
+      setInitialSize(widget.size);
+    }
+  }, [downMousePosition?.x, downMousePosition?.y]);
+
+  useEffect(() => {
+    document
+      .getElementById("canvas-container")
+      ?.addEventListener("mousedown", _onMouseDown);
+    return () => {
+      document
+        .getElementById("canvas-container")
+        ?.removeEventListener("mousedown", _onMouseDown);
+    };
   }, []);
 
   useEffect(() => {

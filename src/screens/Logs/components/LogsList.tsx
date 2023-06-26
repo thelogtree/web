@@ -25,16 +25,14 @@ export const LogsList = ({
     <LoadingLogs />
   ) : (
     <div style={styles.logsFeed}>
-      {logs.map((log, i) => {
-        return (
-          <React.Fragment key={`container:${log._id}`}>
-            {firstIndexOfLogAfterToday === i && i ? (
-              <LogsAfterTodayNote key={`note:${log._id}`} />
-            ) : null}
-            <Log log={log} key={log._id} />
-          </React.Fragment>
-        );
-      })}
+      {logs.map((log, i) => (
+        <React.Fragment key={`container:${log._id}`}>
+          {firstIndexOfLogAfterToday === i && i ? (
+            <LogsAfterTodayNote key={`note:${log._id}`} />
+          ) : null}
+          <Log log={log} key={log._id} />
+        </React.Fragment>
+      ))}
       {isSearchQueued && !endOfFeedText ? null : (
         <label style={styles.moreResultsLoadingText}>{endOfFeedText}</label>
       )}
