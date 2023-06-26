@@ -14,6 +14,7 @@ import { StackedHistogram } from "./widgetTypes/StackedHistogram";
 import { EmbeddedLink } from "./widgetTypes/EmbeddedLink";
 import { useResizeOrDragWidget } from "../useResizeOrDragWidget";
 import { DataHiddenWhileDragging } from "./DataHiddenWhileDragging";
+import { Tooltip } from "antd";
 
 type Props = {
   widgetObj: FrontendWidget;
@@ -130,9 +131,11 @@ export const Widget = ({ widgetObj }: Props) => {
         <DataHiddenWhileDragging />
       ) : (
         <>
-          <label style={{ ...styles.title, fontSize: titleFontSize }}>
-            {widget.title}
-          </label>
+          <Tooltip title={widget.title}>
+            <label style={{ ...styles.title, fontSize: titleFontSize }}>
+              {widget.title}
+            </label>
+          </Tooltip>
           <DeleteWidgetButton widget={widget} isVisible={isHovering} />
           {_renderData()}
         </>
