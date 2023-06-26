@@ -20,7 +20,8 @@ export const DeleteWidgetButton = ({ widget, isVisible }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { fetch } = useFetchWidgetsWithData();
 
-  const _handleDelete = () =>
+  const _handleDelete = (event) => {
+    event.stopPropagation();
     Swal.fire({
       title: "Please confirm",
       text: `Are you sure you want to delete this widget?`,
@@ -45,6 +46,7 @@ export const DeleteWidgetButton = ({ widget, isVisible }: Props) => {
         setIsLoading(false);
       }
     });
+  };
 
   return isVisible ? (
     <button
@@ -54,6 +56,7 @@ export const DeleteWidgetButton = ({ widget, isVisible }: Props) => {
       }}
       disabled={isLoading}
       onClick={_handleDelete}
+      onMouseDown={(e) => e.stopPropagation()}
     >
       <img src={TrashIcon} style={styles.trash} />
     </button>
@@ -69,7 +72,7 @@ const styles: StylesType = {
     position: "absolute",
     top: 26,
     right: 21,
-    zIndex: 65,
+    zIndex: 70,
   },
   trash: {
     cursor: "pointer",

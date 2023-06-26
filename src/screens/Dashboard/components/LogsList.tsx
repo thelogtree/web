@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   FrontendLog,
   getIndexOfFirstLogAfterToday,
@@ -14,12 +14,16 @@ type Props = {
 export const LogsList = ({ logs }: Props) => {
   const [lastLogIndexInView, setLastLogIndexInView] = useState<number>(0);
   const firstIndexOfLogAfterToday = getIndexOfFirstLogAfterToday(logs);
-  const endOfFeedText =
-    logs.length >= 50
-      ? "There are more events not shown."
-      : "There are no more events to show.";
+  const endOfFeedText = useMemo(() => {
+    if (logs.length === 0) {
+      return "There are no events to show.";
+    } else if (logs.length >= 50) {
+      return "Only the 50 most recent events are being shown.";
+    }
+    return "There are no more events to show.";
+  }, [logs.length]);
 
-  return logs.length ? (
+  return (
     <div style={styles.logsFeed}>
       <label style={styles.description}>Live</label>
       {logs.map((log, i) => (
@@ -29,11 +33,19 @@ export const LogsList = ({ logs }: Props) => {
           setLastLogIndexInView={setLastLogIndexInView}
           lastLogIndexInView={lastLogIndexInView}
           index={i}
+          key={log._id}
         />
       ))}
-      <label style={styles.moreResultsLoadingText}>{endOfFeedText}</label>
+      <label
+        style={{
+          ...styles.moreResultsLoadingText,
+          ...(!logs.length && { paddingTop: "15%" }),
+        }}
+      >
+        {endOfFeedText}
+      </label>
     </div>
-  ) : null;
+  );
 };
 
 const styles: StylesType = {
