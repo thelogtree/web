@@ -22,5 +22,8 @@ const styles: StylesType = {
     fontSize: 16,
     fontWeight: 500,
     textAlign: "center",
+    WebkitUserSelect: "none",
+    msUserSelect: "none",
+    userSelect: "none",
   },
 };
