@@ -15,7 +15,7 @@ import {
 } from "recharts/types/component/DefaultTooltipContent";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
-import { widgetTimeframes } from "../lib";
+import { widgetTimeframes } from "../../lib";
 import { DataBox } from "./Histogram";
 
 type Props = {

@@ -4,10 +4,14 @@ import React, { useMemo } from "react";
 import {
   Bar,
   BarChart,
+  Line,
   ResponsiveContainer,
   Tooltip,
   TooltipProps,
   XAxis,
+  PieChart as RechartsPieChart,
+  Pie,
+  Cell,
 } from "recharts";
 import {
   NameType,
@@ -15,16 +19,11 @@ import {
 } from "recharts/types/component/DefaultTooltipContent";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
-import { widgetTimeframes } from "../lib";
-
-export type DataBox = {
-  count: number;
-  floorDate: Date;
-  ceilingDate: Date;
-};
+import { widgetTimeframes } from "../../lib";
+import { getColorFromIndex } from "../../colorsArr";
 
 type Props = {
-  graphData: DataBox[];
+  graphData: { name: string; value: number }[];
   numLogsTotal: number;
   fullPath: string;
   suffix: string;
@@ -39,67 +38,60 @@ const CustomTooltip = ({
     return null;
   }
 
-  const count = payload[0].payload.count;
-  const dates = payload[0].payload.date;
+  const name = payload[0].name;
+  const count = payload[0].value;
   return (
     <div style={styles.tooltipContainer}>
       <label style={styles.tooltipCount}>
         {count} {count === 1 ? "instance" : "instances"}
       </label>
-      <label style={styles.tooltipDates}>{dates}</label>
+      <label style={styles.tooltipDates}>{name}</label>
     </div>
   );
 };
 
-export const Histogram = ({
+export const PieChart = ({
   graphData,
   numLogsTotal,
   fullPath,
   suffix,
   widget,
-}: Props) => {
-  const data = useMemo(() => {
-    return graphData.map((dataInterval) => ({
-      date: `${moment(dataInterval.floorDate).format(
-        "MM/DD/YYYY hh:mm A"
-      )} to ${moment(dataInterval.ceilingDate).format("MM/DD/YYYY hh:mm A")}`,
-      count: dataInterval.count,
-    }));
-  }, [graphData.length, graphData[0]?.floorDate.toString()]);
-
-  return (
-    <>
-      <label style={styles.description}>
-        Last {widgetTimeframes[widget.timeframe!]}
+}: Props) => (
+  <>
+    <label style={styles.description}>
+      Last {widgetTimeframes[widget.timeframe!]}
+    </label>
+    <div style={styles.graphContainer}>
+      <label style={styles.numEventsLbl}>
+        {numLogsTotal} {suffix}
       </label>
-      <div style={styles.graphContainer}>
-        <label style={styles.numEventsLbl}>
-          {numLogsTotal} {suffix}
-        </label>
-        <label style={styles.fullPath}>{fullPath}</label>
-        <ResponsiveContainer width="100%" height={"85%"}>
-          <BarChart
-            data={data}
-            margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
+      <label style={styles.fullPath}>{fullPath}</label>
+      <ResponsiveContainer width="100%" height={"85%"}>
+        <RechartsPieChart margin={{ left: 0, right: 0, top: 0, bottom: 0 }}>
+          <Pie
+            data={graphData}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            innerRadius={50}
+            outerRadius={100}
+            isAnimationActive={false}
           >
-            <XAxis tick={false} stroke={Colors.blue200} />
-            <Tooltip
-              content={<CustomTooltip />}
-              cursor={false}
-              position={{ y: -20 }}
-            />
-            <Bar
-              dataKey="count"
-              fill={Colors.blue500}
-              barSize={110}
-              isAnimationActive={false}
-            />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-    </>
-  );
-};
+            {graphData.map((_, index) => (
+              <Cell fill={getColorFromIndex(index)} />
+            ))}
+          </Pie>
+          <Tooltip
+            content={<CustomTooltip />}
+            cursor={false}
+            position={{ y: 28 }}
+          />
+        </RechartsPieChart>
+      </ResponsiveContainer>
+    </div>
+  </>
+);
 
 const styles: StylesType = {
   graphContainer: {

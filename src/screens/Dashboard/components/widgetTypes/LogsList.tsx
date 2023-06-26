@@ -5,7 +5,7 @@ import {
 } from "src/screens/Logs/lib";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
-import { LogRow } from "./LogRow";
+import { LogRow } from "../LogRow";
 
 type Props = {
   logs: FrontendLog[];

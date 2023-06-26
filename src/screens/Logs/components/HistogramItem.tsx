@@ -21,7 +21,7 @@ import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
 import { SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
 import { useHistory, useLocation } from "react-router-dom";
-import { DataBox } from "src/screens/Dashboard/components/Histogram";
+import { DataBox } from "src/screens/Dashboard/components/widgetTypes/Histogram";
 
 export type StatHistogram = {
   contentKey: string;

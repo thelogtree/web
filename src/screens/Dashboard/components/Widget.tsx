@@ -1,17 +1,17 @@
 import { widgetType } from "logtree-types";
 import React, { useCallback, useState } from "react";
 import { FrontendWidget } from "src/redux/organization/reducer";
-import { LogsList } from "src/screens/Dashboard/components/LogsList";
+import { LogsList } from "src/screens/Dashboard/components/widgetTypes/LogsList";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import { getAdjustedPositionAndSizeOfWidget } from "../lib";
 import { DeleteWidgetButton } from "./DeleteWidgetButton";
 import "../Widget.css";
-import { Histogram } from "./Histogram";
-import { PieChart } from "./PieChart";
-import { StackedHistogram } from "./StackedHistogram";
-import { EmbeddedLink } from "./EmbeddedLink";
+import { Histogram } from "./widgetTypes/Histogram";
+import { PieChart } from "./widgetTypes/PieChart";
+import { StackedHistogram } from "./widgetTypes/StackedHistogram";
+import { EmbeddedLink } from "./widgetTypes/EmbeddedLink";
 import { useResizeOrDragWidget } from "../useResizeOrDragWidget";
 import { DataHiddenWhileDragging } from "./DataHiddenWhileDragging";
 
