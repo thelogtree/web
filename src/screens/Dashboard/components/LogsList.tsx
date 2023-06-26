@@ -33,6 +33,7 @@ export const LogsList = ({ logs }: Props) => {
           setLastLogIndexInView={setLastLogIndexInView}
           lastLogIndexInView={lastLogIndexInView}
           index={i}
+          key={log._id}
         />
       ))}
       <label
