@@ -13,7 +13,7 @@ export const DashboardTab = () => {
         <div style={styles.innerButtonLeftSide}>
           <img src={DashboardIcon} style={styles.icon} />
           <label style={styles.name}>
-            Dashboards <span style={styles.beta}>beta</span>
+            Dashboards{/* Dashboards <span style={styles.beta}>beta</span> */}
           </label>
         </div>
       </button>

@@ -5,7 +5,7 @@ import { StylesType } from "src/utils/styles";
 export const LogsAfterTodayNote = () => (
   <div style={styles.container}>
     <hr style={styles.hr} />
-    <label style={styles.text}>No more logs from today</label>
+    <label style={styles.text}>No more events from today</label>
     <hr style={styles.hr} />
   </div>
 );

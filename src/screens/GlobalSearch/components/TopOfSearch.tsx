@@ -15,15 +15,7 @@ export const TopOfSearch = ({ numLogsText }: Props) => {
     <div style={styles.container}>
       <label style={styles.title}>Global Search</label>
       <label style={styles.desc}>
-        Use the search bar above to search for logs from any of your channels.
-        If you want to see the logs from one specific user, use the{" "}
-        <a
-          href={`${ORG_ROUTE_PREFIX}/${organization?.slug}${SUPPORT_TOOL_SUFFIX}`}
-          target="_blank"
-          style={styles.journeyFinderLink}
-        >
-          Journey Finder.
-        </a>
+        Use the search bar above to search for events from any of your channels.
       </label>
       <label style={styles.numLogsTotalText}>{numLogsText}</label>
     </div>

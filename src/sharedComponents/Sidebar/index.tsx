@@ -32,11 +32,11 @@ export const Sidebar = () => {
         <FavoritesTab />
         {/* <InsightsTab /> */}
         <FunnelsTab />
-        <DashboardTab />
-        <IntegrationsTab />
+        {/* <IntegrationsTab /> */}
         <GlobalSearchTab />
-        <SupportSearchTab />
-        <Connections />
+        <DashboardTab />
+        {organization.slug === "fizz" ? <SupportSearchTab /> : null}
+        {/* <Connections /> */}
         <Folders />
       </div>
       <Resizer />

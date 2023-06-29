@@ -55,7 +55,7 @@ export const InsightsScreen = () => {
       ) : (
         <label style={styles.noTrends}>
           No trends yet. We'll automatically spot trends once you have a couple
-          days of log activity.
+          days of event activity.
         </label>
       )}
     </div>

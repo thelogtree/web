@@ -148,7 +148,7 @@ export const Rules = ({ shouldHideEverything }: Props) => {
                 ]}
                 disabled={isLoading}
               />{" "}
-              me if the number of logs in the last{" "}
+              me if the number of events in the last{" "}
             </label>
             <InputNumber
               min={1}

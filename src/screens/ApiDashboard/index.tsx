@@ -13,7 +13,7 @@ export const ApiDashboardScreen = () => {
   const organization = useSelector(getOrganization);
   return organization ? (
     <div style={styles.container}>
-      <label style={styles.title}>API Dashboard</label>
+      <label style={styles.title}>API Portal</label>
       <Intro />
       <Billing />
       <GenerateKeys />

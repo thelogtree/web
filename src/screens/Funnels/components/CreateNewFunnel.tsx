@@ -104,8 +104,8 @@ export const CreateNewFunnel = ({
       <div style={styles.container}>
         <label style={styles.title}>Choose the funnel steps</label>
         <label style={styles.desc}>
-          If logs with the same reference ID pass through the channels below
-          from top to bottom, a new log will be sent to an output channel you
+          If events with the same reference ID pass through the channels below
+          from top to bottom, a new event will be sent to an output channel you
           specify. The funnel will be executed a maximum of once per reference
           ID.
         </label>
@@ -153,7 +153,7 @@ export const CreateNewFunnel = ({
         <label style={styles.title}>Specify an output channel</label>
         <label style={styles.desc}>
           If this channel doesn't exist yet, we'll automatically create it for
-          you when the first log in it is created.
+          you when the first event in it is created.
         </label>
         <input
           value={funnelToChannel}

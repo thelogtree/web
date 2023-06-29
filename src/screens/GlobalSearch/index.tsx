@@ -19,11 +19,11 @@ export const GlobalSearchScreen = () => {
     if (isSearchQueued) {
       return "Fetching...";
     } else if (query && logs.length === 1) {
-      return "Showing 1 log that matches your query";
+      return "Showing 1 event that matches your query";
     } else if (query && logs.length) {
       return `Showing the ${numberToNumberWithCommas(
         logs.length
-      )} most recent logs that match your query`;
+      )} most recent events that match your query`;
     } else if (query) {
       return "No results found.";
     }
@@ -32,7 +32,7 @@ export const GlobalSearchScreen = () => {
 
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
-      return `No logs from the last ${organization?.logRetentionInDays} days match your query.`;
+      return `No events from the last ${organization?.logRetentionInDays} days match your query.`;
     } else if (query) {
       return "There are no more results.";
     } else if (urlQuery) {

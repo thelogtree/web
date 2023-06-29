@@ -76,7 +76,7 @@ export const ExistingRule = ({ rule }: Props) => {
         {rule.notificationType === notificationTypeEnum.Email
           ? "Email"
           : "Text"}{" "}
-        me if the number of logs in the last
+        me if the number of events in the last
         {value === 1 ? "" : ` ${value}`} {type}{" "}
         {rule.comparisonType === comparisonTypeEnum.CrossesAbove
           ? "crosses above"

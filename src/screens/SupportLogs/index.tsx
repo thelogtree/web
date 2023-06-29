@@ -49,9 +49,9 @@ export const SupportLogsScreen = () => {
       (keywordFilter || filteredSources.length)
     ) {
       if (logsToShow.length === 1) {
-        return "Showing 1 log under this filter for this user";
+        return "Showing 1 event under this filter for this user";
       }
-      return `Showing ${logsToShow.length} logs under this filter for this user`;
+      return `Showing ${logsToShow.length} events under this filter for this user`;
     } else if (
       query &&
       !logsToShow.length &&
@@ -59,11 +59,11 @@ export const SupportLogsScreen = () => {
     ) {
       return "No results under this filter were found";
     } else if (query && logsToShow.length === 1) {
-      return "Showing 1 recent log for this user";
+      return "Showing 1 recent event for this user";
     } else if (query && logsToShow.length) {
       return `Showing the ${numberToNumberWithCommas(
         logsToShow.length
-      )} most recent logs for this user`;
+      )} most recent events for this user`;
     }
     return "";
   }, [
@@ -84,7 +84,7 @@ export const SupportLogsScreen = () => {
     ) {
       return "There are no results under your filter.";
     } else if (query && !logsToShow.length) {
-      return "There are no recent logs for this user.";
+      return "There are no recent events for this user.";
     } else if (query) {
       return "There are no more recent results.";
     } else if (urlQuery) {

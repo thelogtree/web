@@ -38,7 +38,7 @@ export const ApiTab = () => {
           ...(!isOnApiDashboard && { cursor: "pointer" }),
         }}
       >
-        API Dashboard
+        API Portal
       </label>
     </button>
   );

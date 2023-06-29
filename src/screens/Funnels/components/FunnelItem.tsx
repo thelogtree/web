@@ -52,8 +52,8 @@ export const FunnelItem = ({ funnel }: Props) => {
         <div style={styles.topLeft}>
           <label style={styles.title}>{funnel.forwardToChannelPath}</label>
           <label style={styles.funnelDesc}>
-            If logs with the same reference ID pass through the channels below
-            from top to bottom, a new log will be sent to{" "}
+            If events with the same reference ID pass through the channels below
+            from top to bottom, a new event will be sent to{" "}
             {funnel.forwardToChannelPath}. The funnel will be executed a maximum
             of once per reference ID.
           </label>

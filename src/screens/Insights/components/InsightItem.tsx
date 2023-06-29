@@ -31,10 +31,10 @@ export const InsightItem = ({ insight }: Props) => {
 
   const numLogsRephrase = useMemo(() => {
     if (!insight.numLogsToday) {
-      return "No logs today";
+      return "No events today";
     }
     return `${insight.numLogsToday} ${
-      insight.numLogsToday === 1 ? "log" : "logs"
+      insight.numLogsToday === 1 ? "event" : "events"
     } today`;
   }, [insight.numLogsToday]);
 

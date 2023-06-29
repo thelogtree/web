@@ -34,19 +34,19 @@ export const IntegrationLogsScreen = () => {
     } else if (shouldShowLoadingSigns) {
       return "";
     } else if (query && logs.length === 1) {
-      return "Showing 1 recent log for this user";
+      return "Showing 1 recent event for this user";
     } else if (query && logs.length) {
       return `Showing the ${numberToNumberWithCommas(
         logs.length
-      )} most recent logs for this user`;
+      )} most recent events for this user`;
     } else if (query) {
       return "No recent results found.";
     } else if (showsLogsWhenThereIsNoQuery && logs.length === 1) {
-      return "Showing 1 recent log";
+      return "Showing 1 recent event";
     } else if (showsLogsWhenThereIsNoQuery && logs.length > 1) {
       return `Showing the ${numberToNumberWithCommas(
         logs.length
-      )} most recent logs for all users`;
+      )} most recent events for all users`;
     }
     return "";
   }, [
@@ -59,7 +59,7 @@ export const IntegrationLogsScreen = () => {
 
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
-      return "There are no recent logs for this user.";
+      return "There are no recent events for this user.";
     } else if (query) {
       return "There are no more recent results.";
     } else if (urlQuery) {

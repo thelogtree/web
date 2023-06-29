@@ -14,24 +14,24 @@ export const Billing = () => {
     <div style={styles.container}>
       <label style={styles.billingSectionTitle}>USAGE</label>
       <label style={styles.info}>
-        Logs sent:{" "}
+        Events sent:{" "}
         <b>{numberToNumberWithCommas(organization!.numLogsSentInPeriod)}</b>
       </label>
       <label style={{ ...styles.info, paddingTop: 8 }}>
-        Log limit:{" "}
+        Event limit:{" "}
         <b>{numberToNumberWithCommas(organization!.logLimitForPeriod)}</b>
       </label>
       {organization!.cycleEnds ? (
         <label style={styles.usageResetNote}>
           Your usage will reset on{" "}
-          {moment(organization?.cycleEnds).format("MM/DD/YYYY")}. Logs will be
+          {moment(organization?.cycleEnds).format("MM/DD/YYYY")}. Events will be
           kept for {organization?.logRetentionInDays} days. Email
           hello@logtree.co to increase your limit.
         </label>
       ) : null}
       {organization!.numLogsSentInPeriod >= organization!.logLimitForPeriod ? (
         <label style={styles.noMoreLogs}>
-          You cannot send any more logs right now.
+          You cannot send any more events right now.
         </label>
       ) : null}
     </div>

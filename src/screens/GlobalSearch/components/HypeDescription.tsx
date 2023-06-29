@@ -26,7 +26,7 @@ export const HypeDescription = () => {
         <div style={styles.rightContainer}>
           <label style={styles.descLbl}>Your personal time machine</label>
           <label style={styles.smallDescLbl}>
-            Search for logs from up to {organization?.logRetentionInDays} days
+            Search for events from up to {organization?.logRetentionInDays} days
             ago.
           </label>
         </div>

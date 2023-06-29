@@ -49,8 +49,8 @@ export const Options = ({ folderOrChannel, isMutedBecauseOfParent }: Props) => {
       const res = await Swal.fire({
         title: "Please confirm",
         text: isChannel
-          ? "This will delete the channel for everyone in your organization. Deleting this channel will delete all logs inside of it too. If logs are sent to this channel later on, the channel will be re-created. Deleting may take a few seconds."
-          : "This will delete the folder for everyone in your organization. Deleting this folder will delete everything inside of it, including logs, subfolders, and channels. If logs are sent to this folder later on, the folder will be re-created. Deleting may take a few seconds.",
+          ? "This will delete the channel for everyone in your organization. Deleting this channel will delete all events inside of it too. If events are sent to this channel later on, the channel will be re-created. Deleting may take a few seconds."
+          : "This will delete the folder for everyone in your organization. Deleting this folder will delete everything inside of it, including events, subfolders, and channels. If events are sent to this folder later on, the folder will be re-created. Deleting may take a few seconds.",
         icon: "warning",
         showCancelButton: true,
         showDenyButton: true,

@@ -66,19 +66,19 @@ export const LogsScreen = () => {
     if (isLoading || isSearchQueued) {
       return "Fetching...";
     } else if (query && logs.length === 1) {
-      return "Showing 1 log that matches your query";
+      return "Showing 1 event that matches your query";
     } else if (query && logs.length) {
       return `Showing the ${numberToNumberWithCommas(
         logs.length
-      )} most recent logs that match your query`;
+      )} most recent events that match your query`;
     } else if (numLogsInTotal === 1 && !query) {
-      return "Showing 1 log";
+      return "Showing 1 event";
     } else if (query || (isDateFilterApplied && !logs.length)) {
       return "No results found.";
     } else if (!isDateFilterApplied && numLogsInTotal) {
-      return `Showing all ${numberToNumberWithCommas(numLogsInTotal)} logs`;
+      return `Showing all ${numberToNumberWithCommas(numLogsInTotal)} events`;
     }
-    return `Showing ${numberToNumberWithCommas(numLogsInTotal)} logs`;
+    return `Showing ${numberToNumberWithCommas(numLogsInTotal)} events`;
   }, [
     numLogsInTotal,
     logs.length,
@@ -90,17 +90,17 @@ export const LogsScreen = () => {
 
   const endOfFeedText = useMemo(() => {
     if (query && !logs.length) {
-      return `No logs from the last ${organization?.logRetentionInDays} days match your query.`;
+      return `No events from the last ${organization?.logRetentionInDays} days match your query.`;
     } else if (isDateFilterApplied && !logs.length) {
-      return "No logs from this time period.";
+      return "No events from this time period.";
     } else if (
       logs.length === numLogsInTotal &&
       !numLogsInTotal &&
       !isFavoriteLogsScreen
     ) {
-      return "This channel has no logs in it.";
+      return "This channel has no events in it.";
     } else if (logs.length === numLogsInTotal && !numLogsInTotal) {
-      return "Like the channels you care most about and we'll show you those logs here.";
+      return "Like the channels you care most about and we'll show you those events here.";
     } else if (query || logs.length === numLogsInTotal) {
       return "There are no more results.";
     }
