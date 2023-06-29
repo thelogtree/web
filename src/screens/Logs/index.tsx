@@ -22,6 +22,7 @@ import {
 import { Rules } from "./components/Rules";
 import { ConnectToSlack } from "./components/ConnectToSlack";
 import { Histograms } from "./components/Histograms";
+import { isMobile } from "react-device-detect";
 
 export const LogsScreen = () => {
   const organization = useSelector(getOrganization);
@@ -203,10 +204,19 @@ const styles: StylesType = {
     justifyContent: "flex-start",
     alignItems: "flex-start",
     width: "100%",
-    paddingLeft: 60,
-    paddingRight: 60,
-    paddingBottom: 60,
-    paddingTop: 20,
+    ...(isMobile
+      ? {
+          paddingLeft: 20,
+          paddingRight: 20,
+          paddingBottom: 60,
+          paddingTop: 20,
+        }
+      : {
+          paddingLeft: 60,
+          paddingRight: 60,
+          paddingBottom: 60,
+          paddingTop: 20,
+        }),
     overflow: "scroll",
   },
   folderName: {
