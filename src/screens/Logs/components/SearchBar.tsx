@@ -3,6 +3,7 @@ import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import SearchIcon from "src/assets/search.png";
 import Swal from "sweetalert2";
+import { isMobile } from "react-device-detect";
 
 type Props = {
   query: string;
@@ -27,7 +28,7 @@ export const SearchBar = ({ query, setQuery }: Props) => {
           style={styles.input}
         />
       </div>
-      {!query && (
+      {!query && !isMobile && (
         <button onClick={_openInfo} style={styles.openInfoBtn}>
           How do I search?
         </button>
@@ -43,7 +44,7 @@ const styles: StylesType = {
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: Colors.white,
-    paddingLeft: 58,
+    paddingLeft: isMobile ? 20 : 58,
     position: "sticky",
     top: 0,
     width: "100%",
