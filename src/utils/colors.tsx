@@ -67,4 +67,15 @@ export const Colors = {
   yellow700: "#616208",
   yellow800: "#4d4e07",
   yellow900: "#3f4005",
+
+  pink50: "#fef4fb",
+  pink100: "#fce9f7",
+  pink200: "#fad4f0",
+  pink300: "#f6b6e5",
+  pink400: "#f082d3",
+  pink500: "#e83ebb",
+  pink600: "#c81799",
+  pink700: "#b01587",
+  pink800: "#8b106a",
+  pink900: "#730e58",
 };

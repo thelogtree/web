@@ -86,7 +86,7 @@ export const Histograms = ({
             textAlign: "left",
             marginLeft: 10,
             backgroundColor: isHistogramByReferenceId
-              ? Colors.purple500
+              ? Colors.pink500
               : Colors.gray,
           }}
           disabled={isLoading}
@@ -99,7 +99,7 @@ export const Histograms = ({
           style={{
             textAlign: "left",
             marginLeft: 10,
-            backgroundColor: is24HourTimeframe ? Colors.gray : Colors.purple500,
+            backgroundColor: is24HourTimeframe ? Colors.gray : Colors.pink500,
           }}
           disabled={isLoading}
         />
@@ -155,12 +155,12 @@ const styles: StylesType = {
     alignItems: "center",
     width: "100%",
     padding: 5,
-    backgroundColor: Colors.purple100,
+    backgroundColor: Colors.pink100,
     borderRadius: 4,
     marginBottom: 18,
     marginTop: 18,
     borderWidth: 1,
-    borderColor: Colors.purple200,
+    borderColor: Colors.pink200,
     borderStyle: "solid",
   },
   caretIcon: {

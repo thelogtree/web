@@ -151,13 +151,13 @@ export const HistogramItem = ({
             data={data}
             margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
           >
-            <XAxis tick={false} stroke={Colors.purple50} />
+            <XAxis tick={false} stroke={Colors.pink50} />
             <Tooltip
               content={<CustomTooltip />}
               cursor={false}
               position={{ y: 28 }}
             />
-            <Bar dataKey="count" fill={Colors.purple500} barSize={110} />
+            <Bar dataKey="count" fill={Colors.pink500} barSize={110} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -180,7 +180,7 @@ const styles: StylesType = {
     outline: "none",
     borderStyle: "solid",
     borderWidth: 1,
-    borderColor: Colors.purple200,
+    borderColor: Colors.pink200,
   },
   top: {
     display: "flex",

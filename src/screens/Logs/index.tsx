@@ -135,20 +135,18 @@ export const LogsScreen = () => {
         <div style={styles.topContainer}>
           <div style={styles.verticalTop}>
             <div style={styles.titleContainer}>
-              <label style={styles.folderName}>
-                {isFavoriteLogsScreen ? "My Favorites" : frontendFolder!.name}
-              </label>
-              {!isFavoriteLogsScreen && (
-                <>
-                  <FavoriteButton />
-                  <Tooltip title="This channel's folderPath">
-                    <label style={styles.fullPath}>
-                      {frontendFolder!.fullPath}
-                    </label>
-                  </Tooltip>
-                  <ConnectToSlack />
-                </>
-              )}
+              <Tooltip
+                title={
+                  isFavoriteLogsScreen
+                    ? ""
+                    : `This channel's folderPath is ${frontendFolder?.fullPath}`
+                }
+              >
+                <label style={styles.folderName}>
+                  {isFavoriteLogsScreen ? "My Favorites" : frontendFolder!.name}
+                </label>
+              </Tooltip>
+              {!isFavoriteLogsScreen && <ConnectToSlack />}
               <LoadUpdatesButton
                 refreshLogs={freshQueryAndReset}
                 isLoading={isLoading || isFetchingFolders}
@@ -212,10 +210,10 @@ const styles: StylesType = {
     overflow: "scroll",
   },
   folderName: {
-    fontWeight: 600,
-    fontSize: 30,
+    fontWeight: 700,
+    fontSize: 40,
     textAlign: "left",
-    paddingRight: 6,
+    paddingRight: 14,
   },
   numLogsTotalText: {
     paddingBottom: 0,
