@@ -128,7 +128,7 @@ export const CreateNewFunnel = ({
                 options={flattenedFoldersMapped}
                 disabled={isLoading}
                 value={folderPath}
-                style={{ minWidth: 230 }}
+                style={{ minWidth: 180 }}
               />
               {folderPaths.length > 2 && (
                 <button
