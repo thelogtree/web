@@ -2,11 +2,6 @@ body {
   margin: 0;
   font-family: "Inter";
   font-weight: 400;
-  letter-spacing: 0.3px;
-}
-
-button {
-  letter-spacing: 0.5px;
 }
 
 code {

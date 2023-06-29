@@ -4,7 +4,11 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
-import { LOGS_ROUTE_PREFIX, SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
+import {
+  GLOBAL_SEARCH_SUFFIX,
+  LOGS_ROUTE_PREFIX,
+  SUPPORT_TOOL_SUFFIX,
+} from "src/RouteManager";
 import { OpenExternalLink } from "src/screens/Logs/components/OpenExternalLink";
 import { FrontendLog } from "src/screens/Logs/lib";
 import { useLogFormattedTexts } from "src/screens/SupportLogs/lib";
@@ -39,7 +43,7 @@ export const Log = ({ log }: Props) => {
 
   const _searchForReferenceId = () => {
     window.open(
-      `/org/${organization!.slug}${SUPPORT_TOOL_SUFFIX}?query=${
+      `/org/${organization!.slug}${GLOBAL_SEARCH_SUFFIX}?query=id:${
         log.referenceId
       }`,
       "_blank"
@@ -87,7 +91,7 @@ export const Log = ({ log }: Props) => {
           <span style={styles.copyText}>{copyText}</span>
         </div>
         {log.referenceId && (
-          <Tooltip title="Click to see the journey of this ID">
+          <Tooltip title="Click to do a Global Search for this ID">
             <a
               style={styles.rightSide}
               onClick={_searchForReferenceId}

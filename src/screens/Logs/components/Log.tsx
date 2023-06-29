@@ -6,7 +6,11 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getOrganization } from "src/redux/organization/selector";
-import { LOGS_ROUTE_PREFIX, SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
+import {
+  GLOBAL_SEARCH_SUFFIX,
+  LOGS_ROUTE_PREFIX,
+  SUPPORT_TOOL_SUFFIX,
+} from "src/RouteManager";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 
@@ -95,7 +99,7 @@ export const Log = ({ log }: Props) => {
 
   const _searchForReferenceId = () => {
     window.open(
-      `/org/${organization!.slug}${SUPPORT_TOOL_SUFFIX}?query=${
+      `/org/${organization!.slug}${GLOBAL_SEARCH_SUFFIX}?query=id:${
         log.referenceId
       }`,
       "_blank"
@@ -160,7 +164,7 @@ export const Log = ({ log }: Props) => {
             setIsShowingAdditionalContext={setIsShowingAdditionalContext}
           />
           {log.referenceId && (
-            <Tooltip title="Click to see the journey of this ID">
+            <Tooltip title="Click to do a Global Search for this ID">
               <a
                 style={styles.referenceId}
                 onClick={_searchForReferenceId}

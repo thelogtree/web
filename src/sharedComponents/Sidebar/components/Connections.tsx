@@ -69,7 +69,6 @@ const styles: StylesType = {
   },
   title: {
     color: Colors.darkGray,
-    letterSpacing: 0.7,
     paddingLeft: 13,
     fontSize: 11,
     paddingRight: 0,

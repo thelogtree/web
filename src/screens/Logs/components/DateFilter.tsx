@@ -101,7 +101,6 @@ const styles: StylesType = {
     color: Colors.gray,
     fontWeight: 400,
     paddingBottom: 6,
-    letterSpacing: 0.8,
     cursor: "pointer",
   },
   filterBtn: {
@@ -120,7 +119,6 @@ const styles: StylesType = {
   applyFilterLbl: {
     cursor: "pointer",
     fontSize: 13,
-    letterSpacing: 0.8,
     marginLeft: 6,
   },
   icon: {

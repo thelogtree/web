@@ -19,7 +19,7 @@ import { inferIdType, shortenString } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
-import { SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
+import { GLOBAL_SEARCH_SUFFIX, SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
 import { useHistory, useLocation } from "react-router-dom";
 import { DataBox } from "src/screens/Dashboard/components/widgetTypes/Histogram";
 
@@ -97,7 +97,7 @@ export const HistogramItem = ({
 
   const _searchForReferenceId = () => {
     window.open(
-      `/org/${organization!.slug}${SUPPORT_TOOL_SUFFIX}?query=${
+      `/org/${organization!.slug}${GLOBAL_SEARCH_SUFFIX}?query=id:${
         histogram.contentKey
       }`,
       "_blank"
@@ -119,7 +119,7 @@ export const HistogramItem = ({
         <AntdTooltip
           title={
             isVisualizingByReferenceId
-              ? "Click to see the journey of this ID"
+              ? "Click to do a Global Search for this ID"
               : histogram.contentKey.length > MAX_CONTENT_KEY_LENGTH
               ? histogram.contentKey
               : ""

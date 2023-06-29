@@ -17,7 +17,6 @@ import { InsightsScreen } from "./screens/Insights";
 import { getSidebarWidth } from "./redux/organization/selector";
 import { TermsOfServiceRenderer } from "./screens/Policies/TermsOfServiceRenderer";
 import { PrivacyPolicyRenderer } from "./screens/Policies/PrivacyPolicyRenderer";
-import { LandingPage } from "./screens/LandingPage";
 import { IntegrationsScreen } from "./screens/Integrations";
 import { SupportLogsScreen } from "./screens/SupportLogs";
 import { OAuthCallbackScreen } from "./screens/OAuthCallback";
@@ -35,7 +34,7 @@ export const LOGS_ROUTE_PREFIX = "/logs";
 export const ORG_ROUTE_PREFIX = "/org";
 export const DASHBOARD_ROUTE_PREFIX = "/dashboard";
 export const CONNECTION_ROUTE_PREFIX = "/connection";
-
+export const GLOBAL_SEARCH_SUFFIX = "/search";
 export const SUPPORT_TOOL_SUFFIX = "/journey";
 
 export const RouteManager = () => {

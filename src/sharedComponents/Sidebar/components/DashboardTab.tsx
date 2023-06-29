@@ -47,7 +47,7 @@ const styles: StylesType = {
     cursor: "pointer",
     paddingRight: 6,
     fontSize: 14,
-    fontWeight: 300,
+    fontWeight: 400,
   },
   innerButtonLeftSide: {
     display: "flex",

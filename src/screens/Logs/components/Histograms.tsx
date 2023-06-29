@@ -177,7 +177,6 @@ const styles: StylesType = {
   viewAllHistogramsBtn: {
     cursor: "pointer",
     fontSize: 13,
-    letterSpacing: 0.8,
     color: Colors.gray,
     outline: "none",
     border: "none",
