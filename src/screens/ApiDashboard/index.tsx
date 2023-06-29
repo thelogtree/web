@@ -44,6 +44,7 @@ const styles: StylesType = {
     height: "100%",
     position: "relative",
     padding: isMobile ? 20 : 90,
+    ...(isMobile && { paddingTop: 60 }),
     overflowY: "scroll",
   },
   title: {
