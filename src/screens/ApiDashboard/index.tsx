@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
@@ -8,9 +8,22 @@ import { GenerateKeys } from "./components/GenerateKeys";
 import { UsageInstructions } from "./components/UsageInstructions";
 import { Billing } from "./components/Billing";
 import { Intro } from "./components/Intro";
+import { isMobile } from "react-device-detect";
+import Swal from "sweetalert2";
 
 export const ApiDashboardScreen = () => {
   const organization = useSelector(getOrganization);
+
+  useEffect(() => {
+    if (isMobile) {
+      Swal.fire({
+        title: "Please Use Desktop",
+        text: `Our site is optimized for desktop. Head over to logtree.co on your computer for a much better experience!`,
+        icon: "info",
+      });
+    }
+  }, []);
+
   return organization ? (
     <div style={styles.container}>
       <label style={styles.title}>API Portal</label>
@@ -31,7 +44,7 @@ const styles: StylesType = {
     width: "100%",
     height: "100%",
     position: "relative",
-    padding: 90,
+    padding: isMobile ? 20 : 90,
     overflowY: "scroll",
   },
   title: {
