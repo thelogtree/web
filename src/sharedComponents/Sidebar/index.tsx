@@ -62,6 +62,9 @@ const styles: StylesType = {
     bottom: 0,
     zIndex: 5,
     overflowY: "hidden",
+    borderRightStyle: "solid",
+    borderRightWidth: 1,
+    borderRightColor: Colors.lightGray,
   },
   innerContainer: {
     display: "flex",
