@@ -30,6 +30,12 @@ export const allowedWidgetTypes: {
     chooseTimeframe: true,
     requiresUrl: false,
   },
+  bar_chart_by_content: {
+    label: "Bar chart by content",
+    allowsQuery: false,
+    chooseTimeframe: true,
+    requiresUrl: false,
+  },
   health_monitor: {
     label: "Health monitor",
     allowsQuery: false,

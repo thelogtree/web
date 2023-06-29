@@ -15,6 +15,7 @@ import { EmbeddedLink } from "./widgetTypes/EmbeddedLink";
 import { useResizeOrDragWidget } from "../useResizeOrDragWidget";
 import { DataHiddenWhileDragging } from "./DataHiddenWhileDragging";
 import { Tooltip } from "antd";
+import { VerticalBarChart } from "./widgetTypes/BarChart";
 
 type Props = {
   widgetObj: FrontendWidget;
@@ -69,6 +70,16 @@ export const Widget = ({ widgetObj }: Props) => {
       case widgetType.PieChartByContent:
         return (
           <PieChart
+            graphData={data.graphData}
+            fullPath={data.fullPath}
+            numLogsTotal={data.numLogsTotal}
+            suffix={data.suffix}
+            widget={widget}
+          />
+        );
+      case widgetType.BarChartByContent:
+        return (
+          <VerticalBarChart
             graphData={data.graphData}
             fullPath={data.fullPath}
             numLogsTotal={data.numLogsTotal}
