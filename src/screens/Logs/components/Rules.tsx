@@ -299,15 +299,12 @@ const styles: StylesType = {
     color: Colors.darkGray,
   },
   lookbackUnits: {
-    width: 120,
     marginRight: 5,
   },
   comparisonType: {
-    width: 160,
     marginRight: 5,
   },
   notificationType: {
-    width: 100,
     marginRight: 5,
   },
   lookbackValue: {
