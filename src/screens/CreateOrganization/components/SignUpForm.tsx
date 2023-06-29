@@ -99,7 +99,8 @@ const styles: StylesType = {
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    padding: 32,
+    paddingTop: 30,
+    paddingBottom: 30
   },
   input: {
     backgroundColor: Colors.veryLightGray,
@@ -125,9 +126,9 @@ const styles: StylesType = {
     border: "none",
     width: "100%",
     marginTop: 20,
-    height: 40,
+    height: 50,
     color: Colors.white,
-    fontWeight: 400,
+    fontWeight: 500,
     cursor: "pointer",
     display: "flex",
     flexDirection: "row",

@@ -4,9 +4,10 @@ import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 
 import { SignUpForm } from "./components/SignUpForm";
+import { isMobile } from "react-device-detect";
 
 export const CreateOrganizationScreen = () => (
-  <DynamicContainer innerStyle={{ paddingTop: "9%" }}>
+  <DynamicContainer innerStyle={{ paddingTop: isMobile ? 120 : "9%" }}>
     <label style={styles.joiningText}>Create account</label>
     <label style={styles.joiningTextDesc}>
       Start debugging 10x faster today.
@@ -17,7 +18,7 @@ export const CreateOrganizationScreen = () => (
 
 const styles: StylesType = {
   container: {
-    width: "90%",
+    width: "95%",
     height: "100%",
   },
   joiningText: {
@@ -25,7 +26,7 @@ const styles: StylesType = {
     color: Colors.black,
     textAlign: "center",
     width: "100%",
-    fontWeight: 500,
+    fontWeight: 700,
   },
   joiningTextDesc: {
     fontSize: 15,

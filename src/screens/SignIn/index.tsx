@@ -7,7 +7,7 @@ import { SignInForm } from "./components/SignInForm";
 import { isMobile } from "react-device-detect";
 
 export const SignInScreen = () => (
-  <DynamicContainer innerStyle={{ paddingTop: isMobile ? "25%" : "12%" }}>
+  <DynamicContainer innerStyle={{ paddingTop: isMobile ? 120 : "12%" }}>
     <label style={styles.signInTitle}>Sign in</label>
     <label style={styles.signInDesc}>We kept everything tidy for you.</label>
     <SignInForm />
@@ -16,7 +16,7 @@ export const SignInScreen = () => (
 
 const styles: StylesType = {
   container: {
-    width: "90%",
+    width: "95%",
     height: "100%",
   },
   signInTitle: {
@@ -24,7 +24,7 @@ const styles: StylesType = {
     color: Colors.black,
     textAlign: "center",
     width: "100%",
-    fontWeight: 500,
+    fontWeight: 700,
   },
   signInDesc: {
     fontSize: 15,
