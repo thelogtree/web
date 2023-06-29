@@ -10,7 +10,7 @@ export const CreateOrganizationScreen = () => (
   <DynamicContainer innerStyle={{ paddingTop: isMobile ? 120 : "9%" }}>
     <label style={styles.joiningText}>Create account</label>
     <label style={styles.joiningTextDesc}>
-      Start debugging 10x faster today.
+      Already used by dozens of Y Combinator founders.
     </label>
     <SignUpForm />
   </DynamicContainer>

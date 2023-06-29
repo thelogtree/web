@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
-import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { LoadingSpinnerFullScreen } from "src/sharedComponents/LoadingSpinnerFullScreen";
 import { StylesType } from "src/utils/styles";
 import { GenerateKeys } from "./components/GenerateKeys";
