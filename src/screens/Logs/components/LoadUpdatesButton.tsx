@@ -74,7 +74,7 @@ export const LoadUpdatesButton = ({ isLoading, refreshLogs }: Props) => {
       className="buttonToPress"
     >
       <img src={SyncIcon} style={styles.icon} />
-      <label style={styles.text}>See new logs</label>
+      <label style={styles.text}>See new events</label>
     </button>
   ) : null;
 };
@@ -94,6 +94,10 @@ const styles: StylesType = {
     paddingTop: 2,
     paddingBottom: 2,
     boxShadow: "0px 2px 1px rgba(0,0,0,0.05)",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   icon: {
     width: 13,

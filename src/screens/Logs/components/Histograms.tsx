@@ -59,7 +59,11 @@ export const Histograms = ({
   return (
     <div style={styles.outerContainer}>
       <div style={styles.header}>
-        <label style={styles.histogramsLbl}>Visualizations</label>
+        {histogramsToShow.length ? (
+          <label style={styles.histogramsLbl}>
+            Our AI analyst made some graphs for you 🪄
+          </label>
+        ) : null}
         {moreThanPreviewExist && histogramsToShow.length ? (
           <button
             onClick={() => setIsViewingAll(!isViewingAll)}
@@ -197,10 +201,11 @@ const styles: StylesType = {
     paddingTop: 10,
   },
   histogramsLbl: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 500,
-    paddingLeft: 18,
+    paddingLeft: 15,
     paddingRight: 6,
+    color: Colors.black,
   },
   onlySomeShownLbl: {
     fontSize: 12,
