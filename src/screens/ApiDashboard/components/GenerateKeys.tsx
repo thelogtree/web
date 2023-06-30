@@ -244,9 +244,9 @@ const styles: StylesType = {
     marginLeft: 4,
   },
   yourKeysSectionTitle: {
-    fontWeight: 300,
+    fontWeight: 500,
     backgroundColor: Colors.white,
-    color: Colors.darkGray,
+    color: Colors.black,
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: Colors.lightGray,
@@ -260,6 +260,5 @@ const styles: StylesType = {
     paddingBottom: 4,
     fontSize: 14,
     boxShadow: "0px 2px 5px rgba(0,0,0,0.1)",
-    letterSpacing: 1,
   },
 };

@@ -9,9 +9,9 @@ export const UsageInstructions = () => {
   const organization = useSelector(getOrganization);
   return (
     <div style={styles.container}>
-      <label style={styles.yourKeysSectionTitle}>INTEGRATION GUIDE</label>
+      <label style={styles.yourKeysSectionTitle}>SEND AN EVENT</label>
       <label style={styles.title}>
-        To send an event to Logtree, you can use our{" "}
+        To send an event, you can use our{" "}
         <a
           href="https://github.com/thelogtree/logtree-node"
           target="_blank"
@@ -19,7 +19,7 @@ export const UsageInstructions = () => {
         >
           NodeJS library
         </a>{" "}
-        or make an HTTP request that looks like this:
+        or make a POST request that looks like this:
       </label>
       <pre style={styles.preStyle}>
         <div style={styles.codeExample}>
@@ -70,9 +70,9 @@ const styles: StylesType = {
     marginTop: 50,
   },
   yourKeysSectionTitle: {
-    fontWeight: 300,
+    fontWeight: 500,
     backgroundColor: Colors.white,
-    color: Colors.darkGray,
+    color: Colors.black,
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: Colors.lightGray,
@@ -86,7 +86,6 @@ const styles: StylesType = {
     paddingBottom: 4,
     fontSize: 14,
     boxShadow: "0px 2px 5px rgba(0,0,0,0.1)",
-    letterSpacing: 1,
   },
   title: {
     paddingBottom: 15,

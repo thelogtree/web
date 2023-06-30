@@ -9,7 +9,7 @@ import { Colors } from "src/utils/colors";
 import { shortenString } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 
-const ZAPIER_INVITE_LINK =
+export const ZAPIER_INVITE_LINK =
   "https://zapier.com/developer/public-invite/180777/c6de2f8899d569621d0ffb574a601391/";
 
 export const SignedInOrganization = () => {

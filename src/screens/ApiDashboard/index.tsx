@@ -27,9 +27,9 @@ export const ApiDashboardScreen = () => {
     <div style={styles.container}>
       <label style={styles.title}>API Portal</label>
       <Intro />
-      <Billing />
-      <GenerateKeys />
       <UsageInstructions />
+      <GenerateKeys />
+      <Billing />
     </div>
   ) : (
     <LoadingSpinnerFullScreen />
@@ -48,8 +48,8 @@ const styles: StylesType = {
     overflowY: "scroll",
   },
   title: {
-    fontWeight: 600,
-    fontSize: 30,
-    paddingBottom: 40,
+    fontWeight: 700,
+    fontSize: 36,
+    paddingBottom: 30,
   },
 };
