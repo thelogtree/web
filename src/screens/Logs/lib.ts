@@ -757,6 +757,12 @@ export const useDeleteLog = (logId: string) => {
     if (!isLoading && !isDeleted && !isOnSupportScreen) {
       setIsMouseDown(true);
     }
+
+    // don't delete any logs if the user is currently highlighting text
+    const isTextHighlightedBoolean = Boolean(window.getSelection()?.toString());
+    if (isTextHighlightedBoolean) {
+      onMouseUp();
+    }
   };
 
   const onMouseUp = () => {

@@ -81,6 +81,7 @@ const styles: StylesType = {
     justifyContent: "space-between",
     alignItems: "center",
     height: 60,
+    minHeight: 60,
     width: "100%",
     borderTopColor: Colors.lightGray,
     borderTopWidth: 1,
