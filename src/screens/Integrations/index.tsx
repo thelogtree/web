@@ -10,12 +10,16 @@ import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 import { IntegrationRow } from "./components/IntegrationRow";
 import { ConnectNewIntegration } from "./components/ConnectNewIntegration";
+import { SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
+import { useHistory } from "react-router-dom";
 
 export const IntegrationsScreen = () => {
+  const history = useHistory();
   const organization = useSelector(getOrganization);
   const { fetch, isFetching } = useFetchIntegrations(true);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState<boolean>(false);
   const integrations = useSelector(getIntegrations);
+  const globalSearchPath = `/org/${organization?.slug}${SUPPORT_TOOL_SUFFIX}`;
 
   useEffect(() => {
     if (organization) {
@@ -33,7 +37,20 @@ export const IntegrationsScreen = () => {
       />
       <div style={styles.container}>
         <div style={styles.header}>
-          <label style={styles.title}>Connections</label>
+          <div style={styles.topLeft}>
+            <label style={styles.title}>Connections</label>
+            <label style={styles.desc}>
+              View a user's activity from these integrations in the{" "}
+              <a
+                href={globalSearchPath}
+                style={styles.userActivityLink}
+                target="_self"
+              >
+                User Activity
+              </a>{" "}
+              tab.
+            </label>
+          </div>
           {integrations.length ? (
             <button
               style={styles.connectBtn}
@@ -132,8 +149,8 @@ const styles: StylesType = {
     fontSize: 14,
   },
   title: {
-    fontWeight: 600,
-    fontSize: 30,
+    fontWeight: 700,
+    fontSize: 36,
   },
   connectBtn: {
     outline: "none",
@@ -150,6 +167,20 @@ const styles: StylesType = {
     borderWidth: 1,
     borderColor: Colors.black,
     fontWeight: 500,
+    fontSize: 14,
+  },
+  topLeft: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "flex-start",
+  },
+  userActivityLink: {
+    color: Colors.gray,
+  },
+  desc: {
+    color: Colors.gray,
+    paddingTop: 8,
     fontSize: 14,
   },
 };
