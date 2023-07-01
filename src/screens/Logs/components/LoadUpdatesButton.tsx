@@ -12,6 +12,7 @@ import {
   useFindFrontendFolderFromUrl,
   useIsFavoriteLogsScreen,
 } from "../lib";
+import { isMobile } from "react-device-detect";
 
 type Props = {
   isLoading: boolean;
@@ -66,7 +67,7 @@ export const LoadUpdatesButton = ({ isLoading, refreshLogs }: Props) => {
     }
   }, [shouldShowButton]);
 
-  return shouldShowButton ? (
+  return shouldShowButton && !isMobile ? (
     <button
       style={styles.container}
       onClick={_refresh}

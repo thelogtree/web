@@ -60,8 +60,8 @@ const styles: StylesType = {
     overflowY: "scroll",
   },
   title: {
-    fontWeight: 600,
-    fontSize: 30,
+    fontWeight: 700,
+    fontSize: 36,
   },
   hr: {
     backgroundColor: Colors.lightGray,

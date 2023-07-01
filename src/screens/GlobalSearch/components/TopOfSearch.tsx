@@ -45,8 +45,8 @@ const styles: StylesType = {
     paddingTop: 16,
   },
   title: {
-    fontWeight: 600,
-    fontSize: 30,
+    fontWeight: 700,
+    fontSize: 36,
     textAlign: "left",
     paddingRight: 6,
   },
