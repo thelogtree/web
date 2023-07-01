@@ -21,7 +21,13 @@ export const SupportSearchTab = () => {
 
   return (
     <button
-      style={styles.container}
+      style={{
+        ...styles.container,
+        ...(isOnGlobalSearch && {
+          backgroundColor: Colors.lightGray,
+          cursor: "default",
+        }),
+      }}
       onClick={_goToGlobalSearchScreen}
       disabled={isOnGlobalSearch}
       className="tab"
