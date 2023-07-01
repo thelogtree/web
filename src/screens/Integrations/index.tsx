@@ -180,7 +180,7 @@ const styles: StylesType = {
   },
   desc: {
     color: Colors.gray,
-    paddingTop: 8,
+    paddingTop: 10,
     fontSize: 14,
   },
 };
