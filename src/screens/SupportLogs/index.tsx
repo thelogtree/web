@@ -117,6 +117,7 @@ export const SupportLogsScreen = () => {
           showFilters={!!logs.length && !isLoading}
           keywordFilter={keywordFilter}
           setKeywordFilter={setKeywordFilter}
+          isLoading={shouldShowLoadingSigns}
         />
         <LogsList
           shouldShowLoadingSigns={shouldShowLoadingSigns}

@@ -1,10 +1,11 @@
 import { Select, Switch } from "antd";
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import {
   getIntegrations,
   getOrganization,
 } from "src/redux/organization/selector";
+import { IntegrationsToConnectToMap } from "src/screens/Integrations/integrationsToConnectTo";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 
@@ -18,6 +19,7 @@ type Props = {
   showFilters: boolean;
   keywordFilter: string;
   setKeywordFilter: (keywordFilter: string) => void;
+  isLoading: boolean;
 };
 
 export const TopOfSearch = ({
@@ -30,8 +32,23 @@ export const TopOfSearch = ({
   showFilters,
   keywordFilter,
   setKeywordFilter,
+  isLoading,
 }: Props) => {
+  const integrations = useSelector(getIntegrations);
   const organization = useSelector(getOrganization);
+  const prettyIntegrations = useMemo(() => {
+    return (
+      integrations
+        .map((i) => IntegrationsToConnectToMap[i.type].prettyName)
+        .join(", ") + (integrations.length <= 1 ? "" : ",")
+    );
+  }, [integrations?.length, organization?._id]);
+  const description = useMemo(() => {
+    if (!prettyIntegrations) {
+      return "We'll pull your Logtree events that have a reference ID matching the user's email.";
+    }
+    return `We'll pull this user's activities from ${prettyIntegrations} and any of your Logtree events that have a reference ID matching the user's email.`;
+  }, [prettyIntegrations]);
   const filterOptionsInPicker = filterOptions.map((option) => ({
     value: option,
     label: option,
@@ -43,9 +60,8 @@ export const TopOfSearch = ({
 
   return (
     <div style={styles.container}>
-      <label style={styles.title}>
-        View a user's journey through {organization?.name}
-      </label>
+      <label style={styles.title}>View a user's activity</label>
+      <label style={styles.desc}>{description}</label>
       <input
         style={styles.searchInput}
         value={query}
@@ -76,8 +92,16 @@ export const TopOfSearch = ({
         </div>
       ) : null}
       {numLogsText ? (
-        <label style={styles.numLogsTotalText}>{numLogsText}</label>
+        <label
+          style={{
+            ...styles.numLogsTotalText,
+            ...(!isLoading && styles.numLogsTotalTextAtResults),
+          }}
+        >
+          {numLogsText}
+        </label>
       ) : null}
+      {query ? <hr style={styles.hr} /> : null}
     </div>
   );
 };
@@ -86,10 +110,10 @@ const styles: StylesType = {
   container: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "flex-end",
-    alignItems: "center",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     width: "100%",
-    paddingBottom: 70,
+    paddingBottom: 40,
     paddingTop: 100,
   },
   filterContainer: {
@@ -97,57 +121,62 @@ const styles: StylesType = {
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    position: "relative",
-    width: "80%",
-    maxWidth: 400,
-    top: -12,
+    width: "100%",
+    maxWidth: 600,
     borderRadius: 16,
     borderStyle: "solid",
     borderWidth: 1,
-    borderColor: Colors.lightGray,
+    borderColor: Colors.lighterGray,
     padding: 20,
-    paddingTop: 30,
-    backgroundColor: Colors.veryLightGray,
+    marginTop: 25,
+    backgroundColor: Colors.white,
+    position: "relative",
+    // boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
   },
   numLogsTotalText: {
     paddingBottom: 0,
     color: Colors.gray,
-    fontSize: 13,
-    paddingTop: 16,
-    textAlign: "center",
+    fontSize: 14,
+    paddingTop: 24,
+    textAlign: "start",
     width: "100%",
+    paddingLeft: 5,
   },
   title: {
-    fontWeight: 500,
-    fontSize: 30,
+    fontWeight: 700,
+    fontSize: 36,
     textAlign: "center",
     color: Colors.black,
-    paddingBottom: 40,
+    paddingBottom: 12,
   },
   searchInput: {
     outline: "none",
     borderStyle: "solid",
     borderWidth: 1,
-    borderColor: Colors.lightGray,
+    borderColor: Colors.lighterGray,
     padding: 20,
-    borderRadius: 30,
+    borderRadius: 16,
     minHeight: 35,
     width: "100%",
     maxWidth: 600,
     paddingLeft: 25,
     fontSize: 16,
     zIndex: 10,
-    boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
+    // boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
   },
   select: {
-    width: "100%",
     marginTop: 14,
   },
   moreFiltersLbl: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 400,
-    paddingBottom: 10,
-    color: Colors.darkGray,
+    color: Colors.gray,
+    backgroundColor: Colors.white,
+    paddingLeft: 6,
+    paddingRight: 6,
+    position: "absolute",
+    top: -8,
+    left: 20,
   },
   keywordInput: {
     outline: "none",
@@ -159,5 +188,24 @@ const styles: StylesType = {
     width: "100%",
     paddingLeft: 14,
     fontSize: 14,
+  },
+  desc: {
+    color: Colors.gray,
+    paddingBottom: 25,
+    fontSize: 14,
+    maxWidth: 600,
+    lineHeight: 1.4,
+  },
+  hr: {
+    backgroundColor: Colors.lightGray,
+    width: "100%",
+    height: 1,
+    border: "none",
+    marginTop: 32,
+  },
+  numLogsTotalTextAtResults: {
+    color: Colors.black,
+    fontSize: 14,
+    fontWeight: 500,
   },
 };

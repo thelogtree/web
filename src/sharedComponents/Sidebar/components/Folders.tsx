@@ -55,12 +55,7 @@ export const Folders = () => {
   }, [organization?._id]);
 
   return folders.length ? (
-    <div
-      style={{
-        ...styles.container,
-        ...(integrations.length ? { paddingTop: 0 } : {}),
-      }}
-    >
+    <div style={styles.container}>
       {folders.length ? (
         <div style={styles.topContainer}>
           <label style={styles.title}>CHANNELS</label>

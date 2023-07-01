@@ -5,6 +5,7 @@ import {
   setFolders,
   setOrganization,
   setUser,
+  useFetchIntegrations,
   useFetchMe,
   useFetchMyOrganization,
   useFetchMyRules,
@@ -45,13 +46,19 @@ export const SetupApp = () => {
   const activePathname = usePathname();
   const { fetch: fetchUser } = useFetchMe();
   const { fetch: fetchMyOrganization } = useFetchMyOrganization();
+  const { fetch: fetchIntegrations } = useFetchIntegrations();
   const dispatch = useDispatch();
   const user = useSelector(getUser);
   const organization = useSelector(getOrganization);
   const authStatus = useSelector(getAuthStatus);
   const path = getFirstPathWithSlash(activePathname);
   const dashboards = useSelector(getDashboards);
-  const { navigateIfLost } = useNavigateToDashboardIfLost();
+
+  useEffect(() => {
+    if (user && authStatus === "SIGNED_IN") {
+      fetchIntegrations();
+    }
+  }, [user?._id, authStatus]);
 
   useEffect(() => {
     if (user && authStatus === "SIGNED_IN") {

@@ -416,7 +416,7 @@ export const useFetchIntegrations = (
   overrideInitialLoadingStateTo?: boolean
 ) => {
   const dispatch = useDispatch();
-  const organization = useSelector(getOrganization);
+  const user = useSelector(getUser);
   const [isFetching, setIsFetching] = useState<boolean>(
     overrideInitialLoadingStateTo || false
   );
@@ -426,10 +426,10 @@ export const useFetchIntegrations = (
     try {
       setIsFetching(true);
       const res = await Api.organization.getIntegrations(
-        organization!._id.toString()
+        user!.organizationId.toString()
       );
       const resConnectable = await Api.organization.getConnectableIntegrations(
-        organization!._id.toString()
+        user!.organizationId.toString()
       );
       const { integrations } = res.data;
       const { integrations: connectableIntegrations } = resConnectable.data;

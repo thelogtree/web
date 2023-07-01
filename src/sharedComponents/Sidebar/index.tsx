@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import {
+  getIntegrations,
   getOrganization,
   getSidebarWidth,
 } from "src/redux/organization/selector";
@@ -21,6 +22,7 @@ import { FunnelsTab } from "./components/FunnelsTab";
 import { DashboardTab } from "./components/DashboardTab";
 
 export const Sidebar = () => {
+  const integrations = useSelector(getIntegrations);
   const sidebarWidth = useSelector(getSidebarWidth);
   const organization = useSelector(getOrganization);
 
@@ -32,10 +34,10 @@ export const Sidebar = () => {
         <FavoritesTab />
         {/* <InsightsTab /> */}
         <FunnelsTab />
-        {/* <IntegrationsTab /> */}
+        <IntegrationsTab />
         <GlobalSearchTab />
         <DashboardTab />
-        {organization.slug === "fizz" ? <SupportSearchTab /> : null}
+        {integrations.length ? <SupportSearchTab /> : null}
         {/* <Connections /> */}
         <Folders />
       </div>
