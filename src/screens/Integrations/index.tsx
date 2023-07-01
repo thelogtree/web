@@ -53,7 +53,8 @@ export const IntegrationsScreen = () => {
           ) : (
             <div style={styles.noIntegrationsYet}>
               <label style={styles.noConnectionsLbl}>
-                You have not connected any integrations yet.
+                Connect integrations so you can easily view a user's activity in
+                other apps.
               </label>
               <button
                 style={styles.fallbackConnectIntegrationBtn}
@@ -111,10 +112,10 @@ const styles: StylesType = {
     width: "75%",
   },
   noConnectionsLbl: {
-    fontSize: 18,
+    fontSize: 16,
     color: Colors.darkGray,
     fontWeight: 400,
-    paddingBottom: 15,
+    paddingBottom: 18,
   },
   fallbackConnectIntegrationBtn: {
     outline: "none",
@@ -122,13 +123,13 @@ const styles: StylesType = {
     backgroundColor: Colors.lightGray,
     color: Colors.darkGray,
     borderRadius: 30,
-    paddingTop: 4,
-    paddingBottom: 4,
-    paddingLeft: 12,
-    paddingRight: 12,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 16,
+    paddingRight: 16,
     cursor: "pointer",
     fontWeight: 400,
-    fontSize: 12,
+    fontSize: 14,
   },
   title: {
     fontWeight: 600,

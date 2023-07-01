@@ -27,7 +27,7 @@ export const SupportSearchTab = () => {
       className="tab"
     >
       <img src={PersonSearchIcon} style={styles.icon} />
-      <label style={styles.tabTitle}>Journey Finder</label>
+      <label style={styles.tabTitle}>User Activity</label>
     </button>
   );
 };
