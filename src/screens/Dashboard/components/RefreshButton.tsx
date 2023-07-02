@@ -1,10 +1,10 @@
-import React from "react";
-import { useFetchWidgetsWithData } from "src/redux/actionIndex";
-import RefreshIcon from "src/assets/refresh.png";
-import { SharedStyles, StylesType } from "src/utils/styles";
-import { Colors } from "src/utils/colors";
-import { useSelector } from "react-redux";
-import { getWidgets } from "src/redux/organization/selector";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import RefreshIcon from 'src/assets/refresh.png';
+import { useFetchWidgetsWithData } from 'src/redux/actionIndex';
+import { getWidgets } from 'src/redux/organization/selector';
+import { Colors } from 'src/utils/colors';
+import { SharedStyles, StylesType } from 'src/utils/styles';
 
 export const RefreshButton = () => {
   const widgets = useSelector(getWidgets);
@@ -21,7 +21,7 @@ export const RefreshButton = () => {
     >
       <img src={RefreshIcon} style={styles.icon} />
       <label style={styles.refreshLbl}>
-        {isFetching ? "Pulling..." : "Pull data"}
+        {isFetching ? "Refresh..." : "Refresh data"}
       </label>
     </button>
   ) : null;

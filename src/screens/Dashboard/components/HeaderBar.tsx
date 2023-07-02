@@ -6,6 +6,7 @@ import { StylesType } from "src/utils/styles";
 import { DashboardPicker } from "./DashboardPicker";
 import { ToggleAddWidgetMode } from "./ToggleAddWidgetMode";
 import { RefreshButton } from "src/screens/Dashboard/components/RefreshButton";
+import { HomeButton } from "./HomeButton";
 
 export const HeaderBar = () => {
   const dashboards = useSelector(getDashboards);
@@ -17,6 +18,7 @@ export const HeaderBar = () => {
   return (
     <div style={styles.container}>
       <div style={styles.leftSide}>
+        <HomeButton />
         <DashboardPicker />
         <RefreshButton />
       </div>
