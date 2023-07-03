@@ -120,10 +120,8 @@ export const HistogramItem = ({
         <AntdTooltip
           title={
             isVisualizingByReferenceId
-              ? "Click to do a Global Search for this ID"
-              : histogram.contentKey.length > MAX_CONTENT_KEY_LENGTH
-              ? histogram.contentKey
-              : ""
+              ? "Search for all events with this reference ID"
+              : `Search for events containing "${histogram.contentKey}"`
           }
         >
           <a
