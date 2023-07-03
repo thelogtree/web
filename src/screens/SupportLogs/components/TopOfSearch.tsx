@@ -1,5 +1,5 @@
 import { Select, Switch } from "antd";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   getIntegrations,
@@ -34,6 +34,8 @@ export const TopOfSearch = ({
   setKeywordFilter,
   isLoading,
 }: Props) => {
+  const [isShowingMoreFiltersBox, setIsShowingMoreFiltersBox] =
+    useState<boolean>(false);
   const integrations = useSelector(getIntegrations);
   const organization = useSelector(getOrganization);
   const prettyIntegrations = useMemo(() => {
@@ -69,27 +71,36 @@ export const TopOfSearch = ({
         placeholder="Enter a user's email"
       />
       {showFilters ? (
-        <div style={styles.filterContainer}>
-          <label style={styles.moreFiltersLbl}>Add filters</label>
-          <input
-            style={styles.keywordInput}
-            value={keywordFilter}
-            onChange={(e) => setKeywordFilter(e.target.value)}
-            placeholder="Filter by a word or phrase"
-          />
-          {filterOptions.length ? (
-            <Select
-              mode="multiple"
-              allowClear
-              value={filteredSources}
-              style={styles.select}
-              placeholder="Filter sources"
-              defaultValue={[]}
-              onChange={setFilteredSources}
-              options={filterOptionsInPicker}
+        isShowingMoreFiltersBox ? (
+          <div style={styles.filterContainer}>
+            <label style={styles.moreFiltersLbl}>Add filters</label>
+            <input
+              style={styles.keywordInput}
+              value={keywordFilter}
+              onChange={(e) => setKeywordFilter(e.target.value)}
+              placeholder="Filter by a word or phrase"
             />
-          ) : null}
-        </div>
+            {filterOptions.length ? (
+              <Select
+                mode="multiple"
+                allowClear
+                value={filteredSources}
+                style={styles.select}
+                placeholder="Filter sources"
+                defaultValue={[]}
+                onChange={setFilteredSources}
+                options={filterOptionsInPicker}
+              />
+            ) : null}
+          </div>
+        ) : (
+          <button
+            onClick={() => setIsShowingMoreFiltersBox(true)}
+            style={styles.addFiltersBtn}
+          >
+            Filter events by source
+          </button>
+        )
       ) : null}
       {numLogsText ? (
         <label
@@ -207,5 +218,15 @@ const styles: StylesType = {
     color: Colors.black,
     fontSize: 14,
     fontWeight: 500,
+  },
+  addFiltersBtn: {
+    outline: "none",
+    border: "none",
+    cursor: "pointer",
+    color: Colors.gray,
+    textDecoration: "underline",
+    backgroundColor: Colors.transparent,
+    fontSize: 13,
+    marginTop: 8,
   },
 };
