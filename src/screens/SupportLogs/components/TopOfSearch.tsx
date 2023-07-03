@@ -98,7 +98,7 @@ export const TopOfSearch = ({
             onClick={() => setIsShowingMoreFiltersBox(true)}
             style={styles.addFiltersBtn}
           >
-            Filter events by source
+            Search for events by source or keywords
           </button>
         )
       ) : null}
