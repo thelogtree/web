@@ -112,8 +112,8 @@ export const Histograms = ({
         <>
           <Grid style={styles.container}>
             <Row>
-              {histogramsToShow.map((histogram) => (
-                <Col xs={6}>
+              {histogramsToShow.map((histogram, i) => (
+                <Col xs={6} key={`${histogram.contentKey}_${i}`}>
                   <HistogramItem
                     histogram={histogram}
                     isVisualizingByReferenceId={isHistogramByReferenceId}
