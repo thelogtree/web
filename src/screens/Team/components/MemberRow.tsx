@@ -86,7 +86,6 @@ export const MemberRow = ({ member, isFirst }: Props) => {
         <Select
           defaultValue={permissionLevel}
           value={permissionLevel}
-          style={{ width: 120 }}
           onChange={(val) => setPermissionLevel(val)}
           options={[
             { value: orgPermissionLevel.Admin, label: "Admin" },
