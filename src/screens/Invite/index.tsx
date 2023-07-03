@@ -42,7 +42,7 @@ const styles: StylesType = {
     color: Colors.black,
     textAlign: "center",
     width: "100%",
-    fontWeight: 500,
+    fontWeight: 700,
   },
   joiningTextDesc: {
     fontSize: 15,
@@ -51,6 +51,6 @@ const styles: StylesType = {
     paddingBottom: 30,
     textAlign: "center",
     width: "100%",
-    fontWeight: 300,
+    fontWeight: 400,
   },
 };
