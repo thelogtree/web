@@ -26,6 +26,7 @@ import { DataBox } from "src/screens/Dashboard/components/widgetTypes/Histogram"
 export type StatHistogram = {
   contentKey: string;
   numReferenceIdsAffected: number;
+  separateByKeywords: boolean;
   histogramData: DataBox[];
 };
 
@@ -138,7 +139,9 @@ export const HistogramItem = ({
           </a>
         </AntdTooltip>
         <label style={styles.timeAgo}>Last {timeAgo}</label>
-        {isVisualizingByReferenceId || !firstLogId ? null : (
+        {isVisualizingByReferenceId ||
+        !firstLogId ||
+        histogram.separateByKeywords ? null : (
           <label style={styles.numAffected}>
             {histogram.numReferenceIdsAffected}{" "}
             {inferIdType(firstLogId, histogram.numReferenceIdsAffected)}
