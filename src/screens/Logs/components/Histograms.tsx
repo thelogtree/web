@@ -61,7 +61,9 @@ export const Histograms = ({
       <div style={styles.header}>
         {histogramsToShow.length ? (
           <label style={styles.histogramsLbl}>
-            Our AI analyst made some graphs for you 🪄
+            Our AI analyst made some{" "}
+            {histogramsToShow[0].separateByKeywords ? "keyword " : ""}graphs for
+            you 🪄
           </label>
         ) : null}
         {moreThanPreviewExist && histogramsToShow.length ? (
@@ -84,8 +86,8 @@ export const Histograms = ({
             setIsHistogramByReferenceId(!isHistogramByReferenceId)
           }
           checked={isHistogramByReferenceId}
-          checkedChildren="Visualize by content"
-          unCheckedChildren="Visualize by reference ID"
+          checkedChildren="Visualizing by reference ID"
+          unCheckedChildren="Visualizing by event content"
           style={{
             textAlign: "left",
             marginLeft: 10,
@@ -98,8 +100,8 @@ export const Histograms = ({
         <Switch
           onChange={switchTimeInterval}
           checked={!is24HourTimeframe}
-          checkedChildren="Show last 24 hours"
-          unCheckedChildren={`Show last ${organization?.logRetentionInDays} days`}
+          checkedChildren={`Showing last ${organization?.logRetentionInDays} days`}
+          unCheckedChildren="Showing last 24 hours"
           style={{
             textAlign: "left",
             marginLeft: 10,
