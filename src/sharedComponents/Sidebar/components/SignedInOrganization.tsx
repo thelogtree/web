@@ -92,9 +92,7 @@ export const SignedInOrganization = () => {
         onMouseLeave={() => setIsHovering(false)}
       >
         <div style={styles.topHorizontal}>
-          <label style={styles.orgName}>
-            {shortenString(organization?.name, 23)}
-          </label>
+          <label style={styles.orgName}>Snackpass</label>
           <img src={CaretDownIcon} style={styles.caretDownIcon} />
         </div>
       </div>

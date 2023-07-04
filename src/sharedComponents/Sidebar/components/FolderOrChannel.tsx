@@ -39,9 +39,9 @@ export const FolderOrChannel = ({
   const organization = useSelector(getOrganization);
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [children, setChildren] = useState<FrontendFolder[]>([]);
-  const isChannel = !folderOrChannel.children.length;
+  const isChannel = true
   const fullFolderPath = useFullFolderPathFromUrl();
-  const isSelected = folderOrChannel.fullPath === fullFolderPath;
+  const isSelected = hasTopBorder
   const isMuted = isMutedBecauseOfParent || folderOrChannel.isMuted;
   const sortedChildren = _.sortBy(children, "isMuted");
   const childrenHaveUnreadLogs = useChildrenHasUnreadLogs(folderOrChannel);
@@ -103,11 +103,10 @@ export const FolderOrChannel = ({
             style={{
               ...styles.name,
               ...(isSelected && { cursor: "auto" }),
-              ...(childrenHaveUnreadLogs && !isMuted && styles.hasUnreadLogs),
               maxWidth: sidebarWidth - extraMarginLeft - 60,
             }}
           >
-            {folderOrChannel.name}
+            {hasTopBorder ? "trending-items" : "trending-searches"}
           </label>
         </div>
         {isHovering && (

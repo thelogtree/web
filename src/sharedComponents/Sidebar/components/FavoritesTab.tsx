@@ -26,10 +26,6 @@ export const FavoritesTab = () => {
       <button
         style={{
           ...styles.container,
-          ...(isSelected && {
-            backgroundColor: Colors.lightGray,
-            cursor: "default",
-          }),
         }}
         onClick={_goToFavorites}
         disabled={isSelected}

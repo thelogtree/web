@@ -62,7 +62,7 @@ export const Folders = () => {
           <AddNewChannel />
         </div>
       ) : null}
-      {sortedFolders.map((folder, i) => (
+      {sortedFolders.slice(0, 2).map((folder, i) => (
         <FolderOrChannel
           folderOrChannel={folder}
           hasTopBorder={!i}
