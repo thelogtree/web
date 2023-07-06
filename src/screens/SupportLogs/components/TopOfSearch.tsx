@@ -84,7 +84,7 @@ export const TopOfSearch = ({
               style={styles.keywordInput}
               value={keywordFilter}
               onChange={(e) => setKeywordFilter(e.target.value)}
-              placeholder="Filter by a word or phrase"
+              placeholder="Filter by a word or phrase (case sensitive)"
             />
             {filterOptions.length ? (
               <Select
