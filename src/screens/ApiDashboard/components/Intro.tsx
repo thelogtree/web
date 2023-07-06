@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getOrganization } from "src/redux/organization/selector";
-import { ZAPIER_INVITE_LINK } from "src/sharedComponents/Sidebar/components/SignedInOrganization";
+import { ZAPIER_INVITE_LINK } from "src/screens/SupportLogs/components/SignedInOrganization";
 import { Colors } from "src/utils/colors";
 import { StylesType } from "src/utils/styles";
 

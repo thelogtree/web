@@ -38,19 +38,25 @@ export const TopOfSearch = ({
     useState<boolean>(false);
   const integrations = useSelector(getIntegrations);
   const organization = useSelector(getOrganization);
-  const prettyIntegrations = useMemo(() => {
-    return (
-      integrations
-        .map((i) => IntegrationsToConnectToMap[i.type].prettyName)
-        .join(", ") + (integrations.length <= 1 ? "" : ",")
-    );
-  }, [integrations?.length, organization?._id]);
+
   const description = useMemo(() => {
-    if (!prettyIntegrations) {
-      return "We'll pull your Logtree events that have a reference ID matching the user's email.";
+    if (!integrations.length) {
+      return "";
     }
-    return `We'll pull this user's activities from ${prettyIntegrations} and any of your Logtree events that have a reference ID matching the user's email.`;
-  }, [prettyIntegrations]);
+    let str = "We'll pull this user's activities from ";
+    integrations.forEach((integration, i) => {
+      const isLast = i === integrations.length - 1;
+      const prettyName =
+        IntegrationsToConnectToMap[integration.type].prettyName;
+      if (integrations.length === 1) {
+        str += `${prettyName}.`;
+      } else {
+        str += isLast ? `and ${prettyName}.` : `${prettyName}, `;
+      }
+    });
+    return str;
+  }, [integrations?.length, organization?._id]);
+
   const filterOptionsInPicker = filterOptions.map((option) => ({
     value: option,
     label: option,
@@ -155,10 +161,10 @@ const styles: StylesType = {
   },
   title: {
     fontWeight: 700,
-    fontSize: 36,
+    fontSize: 42,
     textAlign: "center",
     color: Colors.black,
-    paddingBottom: 12,
+    paddingBottom: 16,
   },
   searchInput: {
     outline: "none",

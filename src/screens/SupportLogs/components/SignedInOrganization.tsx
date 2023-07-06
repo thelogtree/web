@@ -18,6 +18,8 @@ export const SignedInOrganization = () => {
   const organization = useSelector(getOrganization);
   const teamPath = `/org/${organization?.slug}/team`;
   const _goToTeamScreen = () => history.push(teamPath);
+  const _goToIntegrationsScreen = () =>
+    history.push(`/org/${organization?.slug}/integrations`);
   const _connectIntegrationsClicked = () => {
     window.open(ZAPIER_INVITE_LINK, "_blank");
   };
@@ -25,18 +27,18 @@ export const SignedInOrganization = () => {
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: <label style={styles.normalBtn}>Team members</label>,
+      label: <label style={styles.normalBtn}>Manage integrations</label>,
       onClick: (e) => {
         e.domEvent.stopPropagation();
-        _goToTeamScreen();
+        _goToIntegrationsScreen();
       },
     },
     {
       key: "2",
-      label: <label style={styles.normalBtn}>Connect Zapier</label>,
+      label: <label style={styles.normalBtn}>Team members</label>,
       onClick: (e) => {
         e.domEvent.stopPropagation();
-        _connectIntegrationsClicked();
+        _goToTeamScreen();
       },
     },
     {
@@ -92,9 +94,7 @@ export const SignedInOrganization = () => {
         onMouseLeave={() => setIsHovering(false)}
       >
         <div style={styles.topHorizontal}>
-          <label style={styles.orgName}>
-            {shortenString(organization?.name, 23)}
-          </label>
+          <label style={styles.orgName}>Settings</label>
           <img src={CaretDownIcon} style={styles.caretDownIcon} />
         </div>
       </div>
@@ -108,18 +108,18 @@ const styles: StylesType = {
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    backgroundColor: Colors.veryLightGray,
+    backgroundColor: Colors.white,
+    // borderWidth: 1,
+    // borderStyle: "solid",
+    // borderColor: Colors.gray,
+    border: "none",
     // width: "100%",
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 5,
     paddingTop: 5,
-    marginLeft: 12,
-    marginTop: 20,
     borderRadius: 8,
     cursor: "pointer",
-    border: "none",
-    marginBottom: 10,
     // borderBottomColor: Colors.lightGray,
     // borderBottomWidth: 1,
     // borderBottomStyle: "solid",
@@ -137,8 +137,9 @@ const styles: StylesType = {
   },
   orgName: {
     fontSize: 14,
-    fontWeight: 600,
+    fontWeight: 500,
     cursor: "pointer",
+    color: Colors.darkGray,
   },
   caretDownIcon: {
     width: 8,

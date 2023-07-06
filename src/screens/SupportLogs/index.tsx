@@ -11,6 +11,8 @@ import { Placeholder } from "./components/Placeholder";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
 import _ from "lodash";
+import { SignedInOrganization } from "src/screens/SupportLogs/components/SignedInOrganization";
+import { ManageConnectionsButton } from "./components/ManageConnectionsButton";
 
 export const SupportLogsScreen = () => {
   useFetchFoldersOnce();
@@ -106,24 +108,29 @@ export const SupportLogsScreen = () => {
 
   return (
     <>
-      <div style={styles.container}>
-        <TopOfSearch
-          numLogsText={numLogsText}
-          filterOptions={logSourcesOptionsToFilterBy}
-          filteredSources={filteredSources}
-          setFilteredSources={setFilteredSources}
-          query={query}
-          setQuery={setQuery}
-          showFilters={!!logs.length && !isLoading}
-          keywordFilter={keywordFilter}
-          setKeywordFilter={setKeywordFilter}
-          isLoading={shouldShowLoadingSigns}
-        />
-        <LogsList
-          shouldShowLoadingSigns={shouldShowLoadingSigns}
-          logs={logsToShow}
-          endOfFeedText={endOfFeedText}
-        />
+      <div style={styles.outerContainer}>
+        <div style={styles.container}>
+          <div style={styles.top}>
+            <SignedInOrganization />
+          </div>
+          <TopOfSearch
+            numLogsText={numLogsText}
+            filterOptions={logSourcesOptionsToFilterBy}
+            filteredSources={filteredSources}
+            setFilteredSources={setFilteredSources}
+            query={query}
+            setQuery={setQuery}
+            showFilters={!!logs.length && !isLoading}
+            keywordFilter={keywordFilter}
+            setKeywordFilter={setKeywordFilter}
+            isLoading={shouldShowLoadingSigns}
+          />
+          <LogsList
+            shouldShowLoadingSigns={shouldShowLoadingSigns}
+            logs={logsToShow}
+            endOfFeedText={endOfFeedText}
+          />
+        </div>
       </div>
     </>
   );
@@ -135,9 +142,16 @@ const styles: StylesType = {
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
+    width: "90%",
+    overflow: "scroll",
+    maxWidth: 1200,
+  },
+  outerContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-start",
     width: "100%",
-    paddingLeft: 60,
-    paddingRight: 60,
     paddingBottom: 60,
     paddingTop: 20,
     overflow: "scroll",
@@ -150,6 +164,13 @@ const styles: StylesType = {
     marginBottom: 30,
   },
   hrWrapper: {
+    width: "100%",
+  },
+  top: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     width: "100%",
   },
 };

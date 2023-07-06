@@ -12,7 +12,7 @@ import { ApiTab } from "./components/ApiTab";
 import { FavoritesTab } from "./components/FavoritesTab";
 import { Folders } from "./components/Folders";
 import { InsightsTab } from "./components/InsightsTab";
-import { SignedInOrganization } from "./components/SignedInOrganization";
+import { SignedInOrganization } from "../../screens/SupportLogs/components/SignedInOrganization";
 import { Resizer } from "./components/Resizer";
 import { SupportSearchTab } from "./components/SupportSearchTab";
 import { IntegrationsTab } from "./components/IntegrationsTab";
