@@ -65,13 +65,14 @@ export const IntegrationsScreen = () => {
               <label style={styles.title}>Manage integrations</label>
               {integrations.length ? (
                 <label style={styles.desc}>
-                  Now you can view a user's activity from these integrations{" "}
+                  Now you can view a user's activity timeline from these
+                  integrations{" "}
                   <a
                     href={globalSearchPath}
                     style={styles.userActivityLink}
                     target="_self"
                   >
-                    here.
+                    by clicking here.
                   </a>
                 </label>
               ) : null}
@@ -248,6 +249,7 @@ const styles: StylesType = {
   },
   userActivityLink: {
     color: Colors.gray,
+    fontWeight: 700,
   },
   desc: {
     color: Colors.gray,
