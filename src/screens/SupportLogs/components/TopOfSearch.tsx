@@ -162,7 +162,7 @@ const styles: StylesType = {
   title: {
     fontWeight: 700,
     fontSize: 42,
-    textAlign: "center",
+    textAlign: "start",
     color: Colors.black,
     paddingBottom: 16,
   },
