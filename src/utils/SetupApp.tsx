@@ -76,17 +76,10 @@ export const SetupApp = () => {
         !SIGNED_IN_ROUTES.includes(path)
       ) {
         // navigateIfLost();
-        if (organization?.numLogsSentInPeriod) {
-          window.open(
-            `${ORG_ROUTE_PREFIX}/${organization.slug}/favorites`,
-            "_self"
-          );
-        } else {
-          window.open(
-            `${ORG_ROUTE_PREFIX}/${organization?.slug}/api-dashboard`,
-            "_self"
-          );
-        }
+        window.open(
+          `${ORG_ROUTE_PREFIX}/${organization.slug}/integrations`,
+          "_self"
+        );
       } else {
         fetchMyOrganization();
       }

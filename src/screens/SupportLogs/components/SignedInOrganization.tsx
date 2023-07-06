@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import CaretDownIcon from "src/assets/caretDown.png";
 import { getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
-import { shortenString } from "src/utils/helpers";
+import { shortenString, usePathname } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 
 export const ZAPIER_INVITE_LINK =
@@ -16,8 +16,9 @@ export const SignedInOrganization = () => {
   const history = useHistory();
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const organization = useSelector(getOrganization);
-  const teamPath = `/org/${organization?.slug}/team`;
-  const _goToTeamScreen = () => history.push(teamPath);
+  const _goToTeamScreen = () => history.push(`/org/${organization?.slug}/team`);
+  const pathname = usePathname();
+  const isOnIntegrations = pathname.includes("/integrations");
   const _goToIntegrationsScreen = () =>
     history.push(`/org/${organization?.slug}/integrations`);
   const _connectIntegrationsClicked = () => {
@@ -27,11 +28,21 @@ export const SignedInOrganization = () => {
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: <label style={styles.normalBtn}>Manage integrations</label>,
+      label: (
+        <label
+          style={{
+            ...styles.normalBtn,
+            ...(isOnIntegrations && { cursor: "default", opacity: 0.3 }),
+          }}
+        >
+          Manage integrations
+        </label>
+      ),
       onClick: (e) => {
         e.domEvent.stopPropagation();
         _goToIntegrationsScreen();
       },
+      disabled: isOnIntegrations,
     },
     {
       key: "2",

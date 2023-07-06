@@ -143,7 +143,7 @@ const styles: StylesType = {
     justifyContent: "flex-start",
     alignItems: "flex-start",
     width: "90%",
-    overflow: "scroll",
+    overflow: "auto",
     maxWidth: 1200,
   },
   outerContainer: {
@@ -154,7 +154,7 @@ const styles: StylesType = {
     width: "100%",
     paddingBottom: 60,
     paddingTop: 20,
-    overflow: "scroll",
+    overflow: "auto",
   },
   hr: {
     border: "none",

@@ -15,6 +15,7 @@ import { SUPPORT_TOOL_SUFFIX } from "src/RouteManager";
 import AISupportScreenshot from "src/assets/aiLogtreeExample.png";
 import { MyLogtree } from "src/utils/logtree";
 import Swal from "sweetalert2";
+import { SignedInOrganization } from "../SupportLogs/components/SignedInOrganization";
 
 export const IntegrationsScreen = () => {
   const user = useSelector(getUser);
@@ -56,57 +57,62 @@ export const IntegrationsScreen = () => {
         isModalOpen={isConnectModalOpen}
         setIsModalOpen={setIsConnectModalOpen}
       />
-      <div style={styles.container}>
-        <div style={styles.header}>
-          <div style={styles.topLeft}>
-            <label style={styles.title}>Connections</label>
-            <label style={styles.desc}>
-              View a user's activity from these integrations in the{" "}
-              <a
-                href={globalSearchPath}
-                style={styles.userActivityLink}
-                target="_self"
-              >
-                User Activity
-              </a>{" "}
-              tab.
-            </label>
-          </div>
-          {integrations.length ? (
-            <button
-              style={styles.connectBtn}
-              onClick={() => setIsConnectModalOpen(true)}
-            >
-              Connect more
-            </button>
-          ) : null}
-        </div>
-        <div style={styles.table}>
-          {integrations.length ? (
-            <>
-              {integrations.map((integration, i) => (
-                <IntegrationRow integration={integration} isFirst={!i} />
-              ))}
-            </>
-          ) : (
-            <div style={styles.noIntegrationsYet}>
-              <label style={styles.noConnectionsLbl}>
-                Connect integrations so you can easily view a user's activity in
-                other apps.
+      <div style={styles.outerContainer}>
+        <div style={styles.container}>
+          <SignedInOrganization />
+          <div style={styles.header}>
+            <div style={styles.topLeft}>
+              <label style={styles.title}>Manage integrations</label>
+              <label style={styles.desc}>
+                View a user's activity from these integrations{" "}
+                <a
+                  href={globalSearchPath}
+                  style={styles.userActivityLink}
+                  target="_self"
+                >
+                  here.
+                </a>
               </label>
+            </div>
+            {integrations.length ? (
               <button
-                style={styles.fallbackConnectIntegrationBtn}
+                style={styles.connectBtn}
                 onClick={() => setIsConnectModalOpen(true)}
               >
-                Connect integration
+                Connect more
               </button>
-            </div>
-          )}
-        </div>
-        <div style={styles.gptAccess}>
+            ) : null}
+          </div>
+          <div style={styles.table}>
+            {integrations.length ? (
+              <>
+                {integrations.map((integration, i) => (
+                  <IntegrationRow
+                    key={integration._id.toString()}
+                    integration={integration}
+                    isFirst={!i}
+                  />
+                ))}
+              </>
+            ) : (
+              <div style={styles.noIntegrationsYet}>
+                <label style={styles.noConnectionsLbl}>
+                  Connect integrations so you can easily view a user's activity
+                  in other apps.
+                </label>
+                <button
+                  style={styles.fallbackConnectIntegrationBtn}
+                  onClick={() => setIsConnectModalOpen(true)}
+                >
+                  Connect integration
+                </button>
+              </div>
+            )}
+          </div>
+          {/* <div style={styles.gptAccess}>
           <div style={styles.gptLeftSide}>
             <label style={styles.gptTitle}>
-              Deploy an AI Support Engineer 🪄
+              Deploy an AI Support Assistant 🪄
             </label>
             <label style={styles.gptDesc}>
               Our AI support bot looks through the events from your connected
@@ -134,6 +140,7 @@ export const IntegrationsScreen = () => {
             </button>
           </div>
           <img style={styles.aiExample} src={AISupportScreenshot} />
+        </div> */}
         </div>
       </div>
     </>
@@ -141,22 +148,33 @@ export const IntegrationsScreen = () => {
 };
 
 const styles: StylesType = {
+  outerContainer: {
+    width: "100%",
+    paddingBottom: 60,
+    paddingTop: 40,
+    overflow: "auto",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
   container: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    width: "100%",
     overflow: "auto",
-    padding: 90,
+    width: "90%",
+    maxWidth: 1200,
   },
   header: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-end",
     width: "100%",
-    paddingBottom: 20,
+    paddingBottom: 25,
+    paddingTop: 100,
   },
   table: {
     outline: "none",
@@ -201,7 +219,7 @@ const styles: StylesType = {
   },
   title: {
     fontWeight: 700,
-    fontSize: 36,
+    fontSize: 42,
   },
   connectBtn: {
     outline: "none",
@@ -231,7 +249,7 @@ const styles: StylesType = {
   },
   desc: {
     color: Colors.gray,
-    paddingTop: 10,
+    paddingTop: 16,
     fontSize: 14,
   },
   gptAccess: {
