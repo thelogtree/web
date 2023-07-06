@@ -62,7 +62,7 @@ export const SignInForm = () => {
       />
       <label style={{ ...styles.inputTitle, paddingTop: 24 }}>Password</label>
       <input
-        placeholder="Secret"
+        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         type="password"
