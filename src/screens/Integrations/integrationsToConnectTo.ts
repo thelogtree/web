@@ -44,7 +44,7 @@ export const IntegrationsToConnectToMap: {
     isOAuth: false,
     showsLogsWhenThereIsNoQuery: true,
     whatThisDoesDescription:
-      "You'll be able to see a feed of recent events and also search for the recent errors of a specific user by their email address. Make sure you have setContext set up with Sentry in order for this to work correctly.",
+      "You'll be able to see a feed of recent events and also search for the recent errors of a specific user by their email address. Make sure you have setUser set up with Sentry in order for this to work correctly.",
   },
   mixpanel: {
     image: MixpanelLogo,
