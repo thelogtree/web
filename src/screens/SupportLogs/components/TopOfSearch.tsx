@@ -104,7 +104,7 @@ export const TopOfSearch = ({
             onClick={() => setIsShowingMoreFiltersBox(true)}
             style={styles.addFiltersBtn}
           >
-            Search for events by source or keywords
+            Filter by source or keywords
           </button>
         )
       ) : null}
@@ -221,8 +221,8 @@ const styles: StylesType = {
     marginTop: 32,
   },
   numLogsTotalTextAtResults: {
-    color: Colors.black,
-    fontSize: 14,
+    color: Colors.gray,
+    fontSize: 15,
     fontWeight: 500,
   },
   addFiltersBtn: {
@@ -233,6 +233,6 @@ const styles: StylesType = {
     textDecoration: "underline",
     backgroundColor: Colors.transparent,
     fontSize: 13,
-    marginTop: 8,
+    marginTop: 10,
   },
 };

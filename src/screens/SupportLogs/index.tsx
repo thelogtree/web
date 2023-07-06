@@ -44,7 +44,7 @@ export const SupportLogsScreen = () => {
 
   const numLogsText = useMemo(() => {
     if (shouldShowLoadingSigns) {
-      return "Fetching...this may take a couple seconds";
+      return "Sit tight...it may take up to 30 seconds to find all relevant events";
     } else if (
       query &&
       logsToShow.length &&
