@@ -63,16 +63,18 @@ export const IntegrationsScreen = () => {
           <div style={styles.header}>
             <div style={styles.topLeft}>
               <label style={styles.title}>Manage integrations</label>
-              <label style={styles.desc}>
-                View a user's activity from these integrations{" "}
-                <a
-                  href={globalSearchPath}
-                  style={styles.userActivityLink}
-                  target="_self"
-                >
-                  here.
-                </a>
-              </label>
+              {integrations.length ? (
+                <label style={styles.desc}>
+                  Now you can view a user's activity from these integrations{" "}
+                  <a
+                    href={globalSearchPath}
+                    style={styles.userActivityLink}
+                    target="_self"
+                  >
+                    here.
+                  </a>
+                </label>
+              ) : null}
             </div>
             {integrations.length ? (
               <button
@@ -98,7 +100,7 @@ export const IntegrationsScreen = () => {
               <div style={styles.noIntegrationsYet}>
                 <label style={styles.noConnectionsLbl}>
                   Connect integrations so you can easily view a user's activity
-                  in other apps.
+                  across your entire app.
                 </label>
                 <button
                   style={styles.fallbackConnectIntegrationBtn}
@@ -206,15 +208,15 @@ const styles: StylesType = {
   fallbackConnectIntegrationBtn: {
     outline: "none",
     border: "none",
-    backgroundColor: Colors.lightGray,
-    color: Colors.darkGray,
+    backgroundColor: Colors.black,
+    color: Colors.white,
     borderRadius: 30,
     paddingTop: 8,
     paddingBottom: 8,
     paddingLeft: 16,
     paddingRight: 16,
     cursor: "pointer",
-    fontWeight: 400,
+    fontWeight: 500,
     fontSize: 14,
   },
   title: {
