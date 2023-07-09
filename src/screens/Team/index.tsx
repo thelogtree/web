@@ -9,8 +9,10 @@ import { LoadingSpinnerFullScreen } from "src/sharedComponents/LoadingSpinnerFul
 import { useFetchOrganizationMembers } from "src/redux/actionIndex";
 import { StylesType } from "src/utils/styles";
 import { GenerateInviteLinkButton } from "./components/GenerateInviteLinkButton";
+import { useTrackPageView } from "src/utils/useTrackPageView";
 
 export const TeamScreen = () => {
+  useTrackPageView();
   const organization = useSelector(getOrganization);
   const organizationMembers = useSelector(getOrganizationMembers);
   const { fetch } = useFetchOrganizationMembers();

@@ -1,20 +1,19 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { FrontendLog, useLogs } from "../Logs/lib";
-import { numberToNumberWithCommas, useSearchParams } from "src/utils/helpers";
-import { LogsList } from "./components/LogsList";
-import { StylesType } from "src/utils/styles";
-import { Colors } from "src/utils/colors";
-import { SearchBar } from "./components/SearchBar";
-import { TopOfSearch } from "./components/TopOfSearch";
-import { useFetchFoldersOnce } from "./lib";
-import { Placeholder } from "./components/Placeholder";
 import { useSelector } from "react-redux";
 import { getOrganization } from "src/redux/organization/selector";
-import _ from "lodash";
 import { SignedInOrganization } from "src/screens/SupportLogs/components/SignedInOrganization";
-import { ManageConnectionsButton } from "./components/ManageConnectionsButton";
+import { Colors } from "src/utils/colors";
+import { numberToNumberWithCommas, useSearchParams } from "src/utils/helpers";
+import { StylesType } from "src/utils/styles";
+
+import { useLogs } from "../Logs/lib";
+import { LogsList } from "./components/LogsList";
+import { TopOfSearch } from "./components/TopOfSearch";
+import { useFetchFoldersOnce } from "./lib";
+import { useTrackPageView } from "src/utils/useTrackPageView";
 
 export const SupportLogsScreen = () => {
+  useTrackPageView();
   useFetchFoldersOnce();
   const organization = useSelector(getOrganization);
   const {

@@ -16,8 +16,10 @@ import AISupportScreenshot from "src/assets/aiLogtreeExample.png";
 import { MyLogtree } from "src/utils/logtree";
 import Swal from "sweetalert2";
 import { SignedInOrganization } from "../SupportLogs/components/SignedInOrganization";
+import { useTrackPageView } from "src/utils/useTrackPageView";
 
 export const IntegrationsScreen = () => {
+  useTrackPageView();
   const user = useSelector(getUser);
   const organization = useSelector(getOrganization);
   const { fetch, isFetching } = useFetchIntegrations(true);

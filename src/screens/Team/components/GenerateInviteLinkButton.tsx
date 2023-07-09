@@ -6,6 +6,7 @@ import { getOrganization, getUser } from "src/redux/organization/selector";
 import { LoadingSpinner } from "src/sharedComponents/LoadingSpinner";
 import { Colors } from "src/utils/colors";
 import { showGenericErrorAlert } from "src/utils/helpers";
+import { MySegment, SegmentEventsEnum } from "src/utils/segmentClient";
 import { StylesType } from "src/utils/styles";
 import Swal from "sweetalert2";
 
@@ -29,6 +30,9 @@ export const GenerateInviteLinkButton = () => {
         organization!._id.toString()
       );
       const { url } = res.data;
+      MySegment.track(SegmentEventsEnum.ClickedSendInviteButton, {
+        organization: organization?.slug,
+      });
       Swal.fire({
         width: 800,
         html: `<h2 style="padding-top: 15px;">Here's a new invite link</h3><p style="text-align: left; padding-top: 12px;">Send this link to the person you want to invite to ${organization?.name}. This link will expire once it gets used or after 24 hours if it's never used.</p><a href={${url}} style="color: rgb(50,50,50);">${url}</a>`,

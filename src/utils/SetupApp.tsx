@@ -1,6 +1,6 @@
+import LogRocket from "logrocket";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import {
   setFolders,
   setIntegrations,
@@ -9,26 +9,19 @@ import {
   useFetchIntegrations,
   useFetchMe,
   useFetchMyOrganization,
-  useFetchMyRules,
 } from "src/redux/actionIndex";
 import { getAuthStatus } from "src/redux/auth/selector";
 import {
-  getDashboards,
   getIntegrations,
   getOrganization,
   getUser,
 } from "src/redux/organization/selector";
+import { ORG_ROUTE_PREFIX } from "src/RouteManager";
 
 import firebase from "../firebaseConfig";
 import { setAuthStatus } from "../redux/auth/action";
-import { analytics } from "../utils/segmentClient";
+import { MySegment } from "../utils/segmentClient";
 import { getFirstPathWithSlash, usePathname } from "./helpers";
-import { ORG_ROUTE_PREFIX } from "src/RouteManager";
-import LogRocket from "logrocket";
-import {
-  useCurrentDashboard,
-  useNavigateToDashboardIfLost,
-} from "src/screens/Dashboard/lib";
 
 // routes where logged out users can view it and will not be redirected anywhere
 const NO_ACTION_ROUTES = [
@@ -112,7 +105,7 @@ export const SetupApp = () => {
     firebase.auth().onAuthStateChanged((fbUser) => {
       if (fbUser) {
         dispatch(setAuthStatus("SIGNED_IN"));
-        analytics.identify(fbUser.uid, { email: fbUser.email });
+        MySegment.identify(fbUser.uid, { email: fbUser.email });
       } else {
         dispatch(setUser(null));
         dispatch(setAuthStatus("NOT_SIGNED_IN"));

@@ -4,7 +4,7 @@
   "private": true,
   "main": "host.js",
   "dependencies": {
-    "@analytics/segment": "^0.6.1",
+    "@analytics/segment": "^1.1.4",
     "@react-hook/window-size": "^3.0.7",
     "@sentry/react": "^6.1.0",
     "@stripe/react-stripe-js": "^1.15.0",
@@ -27,7 +27,7 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/recharts": "^1.8.24",
     "@types/redux-logger": "^3.0.8",
-    "analytics": "^0.7.0",
+    "analytics": "^0.8.9",
     "antd": "^5.0.1",
     "axios": "^0.20.0",
     "cors": "^2.8.5",
