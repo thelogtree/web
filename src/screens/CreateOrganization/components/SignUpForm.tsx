@@ -55,7 +55,7 @@ export const SignUpForm = () => {
         Set password
       </label>
       <input
-        placeholder="Secret"
+        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         type="password"

@@ -53,17 +53,7 @@ export const RouteManager = () => {
   return authStatus === "UNDETERMINED" ? null : (
     <Switch>
       <div style={styles.container}>
-        {routeNeedsSidebar ? <Sidebar /> : null}
-        <div
-          style={
-            routeNeedsSidebar
-              ? {
-                  ...styles.innerContainer,
-                  left: sidebarWidth,
-                }
-              : styles.innerContainer
-          }
-        >
+        <div style={styles.innerContainer}>
           <Route path="/org/sign-out" component={SignOutScreen} />
           <Route path="/sign-in" component={SignInScreen} />
           <Route path="/sign-up" component={CreateOrganizationScreen} />

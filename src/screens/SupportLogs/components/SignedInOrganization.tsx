@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import CaretDownIcon from "src/assets/caretDown.png";
 import { getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
-import { shortenString } from "src/utils/helpers";
+import { shortenString, usePathname } from "src/utils/helpers";
 import { StylesType } from "src/utils/styles";
 
 export const ZAPIER_INVITE_LINK =
@@ -16,8 +16,11 @@ export const SignedInOrganization = () => {
   const history = useHistory();
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const organization = useSelector(getOrganization);
-  const teamPath = `/org/${organization?.slug}/team`;
-  const _goToTeamScreen = () => history.push(teamPath);
+  const _goToTeamScreen = () => history.push(`/org/${organization?.slug}/team`);
+  const pathname = usePathname();
+  const isOnIntegrations = pathname.includes("/integrations");
+  const _goToIntegrationsScreen = () =>
+    history.push(`/org/${organization?.slug}/integrations`);
   const _connectIntegrationsClicked = () => {
     window.open(ZAPIER_INVITE_LINK, "_blank");
   };
@@ -25,18 +28,28 @@ export const SignedInOrganization = () => {
   const items: MenuProps["items"] = [
     {
       key: "1",
+      label: (
+        <label
+          style={{
+            ...styles.normalBtn,
+            ...(isOnIntegrations && { cursor: "default", opacity: 0.3 }),
+          }}
+        >
+          Manage integrations
+        </label>
+      ),
+      onClick: (e) => {
+        e.domEvent.stopPropagation();
+        _goToIntegrationsScreen();
+      },
+      disabled: isOnIntegrations,
+    },
+    {
+      key: "2",
       label: <label style={styles.normalBtn}>Team members</label>,
       onClick: (e) => {
         e.domEvent.stopPropagation();
         _goToTeamScreen();
-      },
-    },
-    {
-      key: "2",
-      label: <label style={styles.normalBtn}>Connect Zapier</label>,
-      onClick: (e) => {
-        e.domEvent.stopPropagation();
-        _connectIntegrationsClicked();
       },
     },
     {
@@ -92,9 +105,7 @@ export const SignedInOrganization = () => {
         onMouseLeave={() => setIsHovering(false)}
       >
         <div style={styles.topHorizontal}>
-          <label style={styles.orgName}>
-            {shortenString(organization?.name, 23)}
-          </label>
+          <label style={styles.orgName}>Settings</label>
           <img src={CaretDownIcon} style={styles.caretDownIcon} />
         </div>
       </div>
@@ -108,18 +119,18 @@ const styles: StylesType = {
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    backgroundColor: Colors.veryLightGray,
+    backgroundColor: Colors.white,
+    // borderWidth: 1,
+    // borderStyle: "solid",
+    // borderColor: Colors.gray,
+    border: "none",
     // width: "100%",
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 5,
     paddingTop: 5,
-    marginLeft: 12,
-    marginTop: 20,
     borderRadius: 8,
     cursor: "pointer",
-    border: "none",
-    marginBottom: 10,
     // borderBottomColor: Colors.lightGray,
     // borderBottomWidth: 1,
     // borderBottomStyle: "solid",
@@ -137,8 +148,9 @@ const styles: StylesType = {
   },
   orgName: {
     fontSize: 14,
-    fontWeight: 600,
+    fontWeight: 500,
     cursor: "pointer",
+    color: Colors.darkGray,
   },
   caretDownIcon: {
     width: 8,
