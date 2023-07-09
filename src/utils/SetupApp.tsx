@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   setFolders,
+  setIntegrations,
   setOrganization,
   setUser,
   useFetchIntegrations,
@@ -13,6 +14,7 @@ import {
 import { getAuthStatus } from "src/redux/auth/selector";
 import {
   getDashboards,
+  getIntegrations,
   getOrganization,
   getUser,
 } from "src/redux/organization/selector";
@@ -46,13 +48,14 @@ export const SetupApp = () => {
   const activePathname = usePathname();
   const { fetch: fetchUser } = useFetchMe();
   const { fetch: fetchMyOrganization } = useFetchMyOrganization();
-  const { fetch: fetchIntegrations } = useFetchIntegrations();
+  const { fetch: fetchIntegrations, isFetching: isFetchingIntegrations } =
+    useFetchIntegrations(true);
   const dispatch = useDispatch();
   const user = useSelector(getUser);
   const organization = useSelector(getOrganization);
   const authStatus = useSelector(getAuthStatus);
   const path = getFirstPathWithSlash(activePathname);
-  const dashboards = useSelector(getDashboards);
+  const integrations = useSelector(getIntegrations);
 
   useEffect(() => {
     if (user && authStatus === "SIGNED_IN") {
@@ -61,7 +64,7 @@ export const SetupApp = () => {
   }, [user?._id, authStatus]);
 
   useEffect(() => {
-    if (user && authStatus === "SIGNED_IN") {
+    if (user && authStatus === "SIGNED_IN" && !isFetchingIntegrations) {
       LogRocket.identify(user._id.toString(), {
         email: user.email,
       });
@@ -76,14 +79,14 @@ export const SetupApp = () => {
         !SIGNED_IN_ROUTES.includes(path)
       ) {
         // navigateIfLost();
-        if (organization?.numLogsSentInPeriod) {
+        if (integrations.length) {
           window.open(
-            `${ORG_ROUTE_PREFIX}/${organization.slug}/favorites`,
+            `${ORG_ROUTE_PREFIX}/${organization.slug}/journey`,
             "_self"
           );
         } else {
           window.open(
-            `${ORG_ROUTE_PREFIX}/${organization?.slug}/api-dashboard`,
+            `${ORG_ROUTE_PREFIX}/${organization.slug}/integrations`,
             "_self"
           );
         }
@@ -97,7 +100,7 @@ export const SetupApp = () => {
     ) {
       window.open("/", "_self");
     }
-  }, [user?._id, organization?.slug, authStatus, !!dashboards.length]);
+  }, [user?._id, organization?.slug, authStatus, isFetchingIntegrations]);
 
   useEffect(() => {
     if (authStatus === "SIGNED_IN") {
@@ -115,6 +118,7 @@ export const SetupApp = () => {
         dispatch(setAuthStatus("NOT_SIGNED_IN"));
         dispatch(setFolders([]));
         dispatch(setOrganization(null));
+        dispatch(setIntegrations([]));
       }
     });
   }, []);

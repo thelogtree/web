@@ -219,7 +219,7 @@ export const ConnectNewIntegration = ({
                 </label>
                 {keyInputs.map((keyInput, i) => (
                   <input
-                    key={i}
+                    key={`key_input_${i}`}
                     style={styles.keyInput}
                     value={keyInput.plaintextValue}
                     onChange={(e) => _changeKeyInput(e.target.value, i)}
@@ -228,7 +228,7 @@ export const ConnectNewIntegration = ({
                 ))}
                 {additionalInputs.map((additionalInput, i) => (
                   <input
-                    key={i}
+                    key={`additional_input_${i}`}
                     style={styles.keyInput}
                     value={additionalInput.value}
                     onChange={(e) => _changeAdditionalInput(e.target.value, i)}
@@ -256,7 +256,7 @@ export const ConnectNewIntegration = ({
                     const integration =
                       IntegrationsToConnectToMap[integrationKey];
                     return (
-                      <Col>
+                      <Col key={integrationKey}>
                         <button
                           style={{
                             ...styles.integrationBtn,
