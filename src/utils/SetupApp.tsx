@@ -99,6 +99,7 @@ export const SetupApp = () => {
     if (authStatus === "SIGNED_IN") {
       fetchUser();
     }
+    console.log(document.referrer)
   }, [authStatus, path]);
 
   useEffect(() => {
