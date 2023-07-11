@@ -20,16 +20,9 @@ export const useLogFormattedTexts = (
     );
   }, []);
 
-  const modifiedFormattedString = useMemo(() => {
-    const logCreatedAt = moment(log.createdAt);
-    const isRecent = moment().diff(logCreatedAt, "hours") <= 1;
-    const fromNow = logCreatedAt.fromNow();
-    return isRecent ? fromNow : formattedString;
-  }, []);
-
   const textToCopy = `${formattedString}\n${overrideTextToCopy || log.content}`;
 
-  return { modifiedFormattedString, textToCopy };
+  return { modifiedFormattedString: formattedString, textToCopy };
 };
 
 export const useFetchFoldersOnce = () => {
