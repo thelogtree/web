@@ -19,13 +19,34 @@ export const SignedInOrganization = () => {
   const _goToTeamScreen = () => history.push(`/org/${organization?.slug}/team`);
   const pathname = usePathname();
   const isOnIntegrations = pathname.includes("/integrations");
+  const isOnSearch = pathname.includes("/journey");
   const _goToIntegrationsScreen = () =>
     history.push(`/org/${organization?.slug}/integrations`);
+  const _goToSearchScreen = () =>
+    history.push(`/org/${organization?.slug}/journey`);
   const _connectIntegrationsClicked = () => {
     window.open(ZAPIER_INVITE_LINK, "_blank");
   };
 
   const items: MenuProps["items"] = [
+    {
+      key: "0",
+      label: (
+        <label
+          style={{
+            ...styles.normalBtn,
+            ...(isOnSearch && { cursor: "default", opacity: 0.3 }),
+          }}
+        >
+          Search for user's activity
+        </label>
+      ),
+      onClick: (e) => {
+        e.domEvent.stopPropagation();
+        _goToSearchScreen();
+      },
+      disabled: isOnSearch,
+    },
     {
       key: "1",
       label: (
@@ -105,7 +126,7 @@ export const SignedInOrganization = () => {
         onMouseLeave={() => setIsHovering(false)}
       >
         <div style={styles.topHorizontal}>
-          <label style={styles.orgName}>Settings</label>
+          <label style={styles.orgName}>Menu</label>
           <img src={CaretDownIcon} style={styles.caretDownIcon} />
         </div>
       </div>

@@ -49,7 +49,7 @@ export const IntegrationsToConnectToMap: {
   mixpanel: {
     image: MixpanelLogo,
     prettyName: "Mixpanel",
-    helpDescription: `First, create a Service Account by going to Settings -> Organization Settings -> Service Accounts -> Add Service Account. Enter your Service Account's username and password below. Then go to Settings -> Organization Settings -> Projects -> click on the project you want to connect to -> enter the Project ID of that project below (the ID is a couple digits long).`,
+    helpDescription: `You must have either a paid Mixpanel account or applied for their 50k in free credits for startups program to use this integration. First, create a Service Account by going to Settings -> Organization Settings -> Service Accounts -> Add Service Account. Enter your Service Account's username and password below. Then go to Settings -> Organization Settings -> Projects -> click on the project you want to connect to -> enter the Project ID of that project below (the ID is a couple digits long).`,
     keyTypesNeeded: [keyTypeEnum.Username, keyTypeEnum.Password],
     additionalPropertiesNeeded: [
       { key: "projectId", prettyName: "Project ID" },

@@ -68,7 +68,7 @@ export const TopOfSearch = ({
 
   return (
     <div style={styles.container}>
-      <label style={styles.title}>View a user's activity</label>
+      <label style={styles.title}>Search for a user's activity</label>
       <label style={styles.desc}>{description}</label>
       <input
         style={styles.searchInput}

@@ -67,8 +67,7 @@ export const IntegrationsScreen = () => {
               <label style={styles.title}>Manage integrations</label>
               {integrations.length ? (
                 <label style={styles.desc}>
-                  Now you can view a user's activity timeline from these
-                  integrations{" "}
+                  You can search for a user's activity from these integrations{" "}
                   <a
                     href={globalSearchPath}
                     style={styles.userActivityLink}
@@ -102,8 +101,8 @@ export const IntegrationsScreen = () => {
             ) : (
               <div style={styles.noIntegrationsYet}>
                 <label style={styles.noConnectionsLbl}>
-                  Connect integrations so you can easily view a user's activity
-                  across your entire app.
+                  Connect integrations so you can easily search for a user's
+                  activity across your entire app.
                 </label>
                 <button
                   style={styles.fallbackConnectIntegrationBtn}
