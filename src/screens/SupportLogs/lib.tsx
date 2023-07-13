@@ -57,6 +57,7 @@ export const useQuickGPTAction = (email: string) => {
       }
       MySegment.track(SegmentEventsEnum.ClickedDiagnoseProblemButton, {
         user_email: user?.email,
+        query_email: email,
       });
       setResponse("");
       setIsLoading(true);
