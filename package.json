@@ -38,7 +38,7 @@
     "lodash": "^4.17.20",
     "logrocket": "^4.0.2",
     "logtree-node": "^1.0.38",
-    "logtree-types": "1.0.73",
+    "logtree-types": "1.0.74",
     "moment-timezone": "^0.5.33",
     "qs": "^6.10.1",
     "react": "18",

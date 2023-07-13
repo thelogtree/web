@@ -11,6 +11,7 @@ import { LogsList } from "./components/LogsList";
 import { TopOfSearch } from "./components/TopOfSearch";
 import { useFetchFoldersOnce } from "./lib";
 import { useTrackPageView } from "src/utils/useTrackPageView";
+import { simplifiedLogTagEnum } from "logtree-types";
 
 export const SupportLogsScreen = () => {
   useTrackPageView();
@@ -35,6 +36,15 @@ export const SupportLogsScreen = () => {
     return logs.filter((log) => log.content.includes(keywordFilter));
   }, [logs.length, filteredSources.length, isSearchQueued, keywordFilter]);
   const { query: urlQuery } = useSearchParams();
+  const isDiagnoseProblemVisible = useMemo(() => {
+    if (isLoading || shouldShowLoadingSigns) {
+      return false;
+    }
+    if (logs.find((l) => l.tag === simplifiedLogTagEnum.Error)) {
+      return true;
+    }
+    return false;
+  }, [logs.length, isLoading, shouldShowLoadingSigns]);
 
   useEffect(() => {
     setKeywordFilter("");
@@ -123,6 +133,7 @@ export const SupportLogsScreen = () => {
             keywordFilter={keywordFilter}
             setKeywordFilter={setKeywordFilter}
             isLoading={shouldShowLoadingSigns}
+            isDiagnoseProblemVisible={isDiagnoseProblemVisible}
           />
           <LogsList
             shouldShowLoadingSigns={shouldShowLoadingSigns}

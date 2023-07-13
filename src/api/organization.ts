@@ -13,6 +13,7 @@ import {
 import axios from "../utils/axios";
 import moment from "moment";
 import { KeyInput } from "src/screens/Integrations/components/ConnectNewIntegration";
+import { quickGptEnum } from "logtree-types/misc";
 
 const routeUrl = "/organization";
 
@@ -343,5 +344,10 @@ export const organization = {
   createDashboard: (organizationId: string, title: string) =>
     axios.post(routeUrl + `/${organizationId}/dashboard`, {
       title,
+    }),
+  quickGpt: (organizationId: string, email: string, type: quickGptEnum) =>
+    axios.post(routeUrl + `/${organizationId}/quick-gpt`, {
+      email,
+      type,
     }),
 };

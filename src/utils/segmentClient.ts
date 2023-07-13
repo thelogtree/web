@@ -11,4 +11,5 @@ export const MySegment = Analytics({
 
 export enum SegmentEventsEnum {
   ClickedSendInviteButton = "Clicked Send Invite Button",
+  ClickedDiagnoseProblemButton = "Clicked Diagnose Problem Button",
 }

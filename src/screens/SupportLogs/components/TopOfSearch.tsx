@@ -1,5 +1,5 @@
-import { Select, Switch } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
+import { Select, Tooltip } from "antd";
+import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   getIntegrations,
@@ -7,7 +7,10 @@ import {
 } from "src/redux/organization/selector";
 import { IntegrationsToConnectToMap } from "src/screens/Integrations/integrationsToConnectTo";
 import { Colors } from "src/utils/colors";
-import { StylesType } from "src/utils/styles";
+import { SharedStyles, StylesType } from "src/utils/styles";
+import { useQuickGPTAction } from "../lib";
+import DiagnoseIcon from "src/assets/personTalkingWhite.png";
+import { quickGptEnum } from "logtree-types/misc";
 
 type Props = {
   numLogsText?: string;
@@ -20,6 +23,7 @@ type Props = {
   keywordFilter: string;
   setKeywordFilter: (keywordFilter: string) => void;
   isLoading: boolean;
+  isDiagnoseProblemVisible: boolean;
 };
 
 export const TopOfSearch = ({
@@ -33,7 +37,13 @@ export const TopOfSearch = ({
   keywordFilter,
   setKeywordFilter,
   isLoading,
+  isDiagnoseProblemVisible,
 }: Props) => {
+  const {
+    submitQuickGpt,
+    isLoading: isLoadingResponse,
+    response,
+  } = useQuickGPTAction(query);
   const [isShowingMoreFiltersBox, setIsShowingMoreFiltersBox] =
     useState<boolean>(false);
   const integrations = useSelector(getIntegrations);
@@ -70,12 +80,38 @@ export const TopOfSearch = ({
     <div style={styles.container}>
       <label style={styles.title}>Search for a user's activity</label>
       <label style={styles.desc}>{description}</label>
-      <input
-        style={styles.searchInput}
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Enter a user's email"
-      />
+      <div style={styles.inputContainer}>
+        <input
+          style={styles.searchInput}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Enter a user's email"
+        />
+        {isDiagnoseProblemVisible ? (
+          <Tooltip
+            title={isLoadingResponse ? "Thinking..." : "Summarize errors"}
+          >
+            <button
+              style={{
+                ...styles.quickGptActionButton,
+                ...(isLoadingResponse && SharedStyles.loadingButton),
+                ...(isLoadingResponse && { cursor: "wait" }),
+              }}
+              disabled={isLoadingResponse}
+              onClick={() => submitQuickGpt(quickGptEnum.Diagnose)}
+            >
+              <img
+                src={DiagnoseIcon}
+                style={{
+                  ...styles.quickActionIcon,
+                  ...(isLoadingResponse && SharedStyles.loadingButton),
+                  ...(isLoadingResponse && { cursor: "wait" }),
+                }}
+              />
+            </button>
+          </Tooltip>
+        ) : null}
+      </div>
       {showFilters ? (
         isShowingMoreFiltersBox ? (
           <div style={styles.filterContainer}>
@@ -117,6 +153,11 @@ export const TopOfSearch = ({
         >
           {numLogsText}
         </label>
+      ) : null}
+      {showFilters && response ? (
+        <div style={styles.responseContainer}>
+          <label>{response}</label>
+        </div>
       ) : null}
       {query ? <hr style={styles.hr} /> : null}
     </div>
@@ -171,6 +212,22 @@ const styles: StylesType = {
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: Colors.lighterGray,
+    paddingRight: 20,
+    borderRadius: 16,
+    minHeight: 35,
+    width: "100%",
+    maxWidth: 600,
+    paddingLeft: 25,
+    fontSize: 16,
+    zIndex: 10,
+    height: "100%",
+    // boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
+  },
+  questionInput: {
+    outline: "none",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: Colors.lighterGray,
     padding: 20,
     borderRadius: 16,
     minHeight: 35,
@@ -179,7 +236,6 @@ const styles: StylesType = {
     paddingLeft: 25,
     fontSize: 16,
     zIndex: 10,
-    // boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
   },
   select: {
     marginTop: 14,
@@ -234,5 +290,64 @@ const styles: StylesType = {
     backgroundColor: Colors.transparent,
     fontSize: 13,
     marginTop: 10,
+  },
+  askButton: {
+    height: "100%",
+    width: 120,
+    cursor: "pointer",
+    backgroundColor: Colors.black,
+    color: Colors.white,
+    fontWeight: 600,
+    fontSize: 15,
+    outline: "none",
+    border: "none",
+    marginLeft: 15,
+    borderRadius: 16,
+  },
+  qaDiv: {
+    paddingTop: 30,
+    backgroundColor: Colors.white,
+    display: "flex",
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  responseContainer: {
+    width: "100%",
+    borderRadius: 16,
+    padding: 20,
+    marginTop: 25,
+    marginBottom: 25,
+    backgroundColor: Colors.veryLightRed,
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: Colors.red,
+  },
+  inputContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    height: 60,
+    width: "100%",
+  },
+  quickGptActionButton: {
+    outline: "none",
+    border: "none",
+    borderRadius: 16,
+    backgroundColor: Colors.black,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 60,
+    height: 60,
+    marginLeft: 20,
+    cursor: "pointer",
+  },
+  quickActionIcon: {
+    width: 26,
+    height: 26,
+    cursor: "pointer",
   },
 };
