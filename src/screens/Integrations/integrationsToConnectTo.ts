@@ -4,6 +4,7 @@ import IntercomLogo from "src/assets/intercomLogo.png";
 import SendgridLogo from "src/assets/sendgridLogo.png";
 import CustomerioLogo from "src/assets/customerioLogo.png";
 import StripeLogo from "src/assets/stripeLogo.png";
+import MongodbLogo from "src/assets/mongodbLogo.png";
 import { integrationTypeEnum, keyTypeEnum } from "logtree-types";
 
 export type AdditionalPropertyObj = {
@@ -106,5 +107,26 @@ export const IntegrationsToConnectToMap: {
     showsLogsWhenThereIsNoQuery: true,
     whatThisDoesDescription:
       "You'll be able to see all your recent payment events and also search for the payments of a specific user by their email address.",
+  },
+  mongodb: {
+    image: MongodbLogo,
+    prettyName: "MongoDB",
+    helpDescription: `Go to your project in the MongoDB dashboard. Click "Data API" on the sidebar. Navigate to the "API Keys" tab. Click "Create API Key". Enter a name for your key and generate it. Enter the created API key below. Feel free to also make your key Read Only access. Next, click on the "Data API" tab right next to the API Keys tab. Enter the "URL Endpoint" below. Enter your Data Source below. Next, navigate to your database > Collections > enter the name of your database below. So you know what to look for, common database names are "test", "prod", etc. Now, below you must enter the name of the collection that holds your users. Then, enter in the names of the properties that hold your user's email and ID. These are commonly "email" and "_id".`,
+    keyTypesNeeded: [keyTypeEnum.ApiKey],
+    additionalPropertiesNeeded: [
+      { key: "baseUrl", prettyName: "Endpoint URL" },
+      { key: "cluster", prettyName: "Data source" },
+      { key: "database", prettyName: "Database (e.g. 'test', 'prod')" },
+      { key: "collection", prettyName: "Collection name (e.g. 'users')" },
+      {
+        key: "emailKeyField",
+        prettyName: "User email field name (e.g. 'email')",
+      },
+      { key: "idKeyField", prettyName: "User ID field name (e.g. '_id')" },
+    ],
+    isOAuth: false,
+    showsLogsWhenThereIsNoQuery: false,
+    whatThisDoesDescription:
+      "By doing all of this, we will be able to know which user IDs belong to which user emails, which lets you pull events from more integrations that typically use the user ID as a query parameter like Datadog, NewRelic, and more.",
   },
 };
