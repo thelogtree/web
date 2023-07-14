@@ -133,11 +133,11 @@ export const IntegrationsToConnectToMap: {
   new_relic: {
     image: NewRelicLogo,
     prettyName: "New Relic",
-    helpDescription: `Go to your profile in New Relic and click on "API Keys". Click "Create a Key" and create a new API key with the key type "User". Enter that key below. Then, enter below the name of the field you are logging that represents a user's user ID (e.g. 'userId'). Next, go to "APM & Services" on the sidebar. Click on the application you want to connect, then click on the Metadata button. Find the App ID, then enter that value below.`,
+    helpDescription: `Go to your profile in New Relic and click on "API Keys". Click "Create a Key" and create a new API key with the key type "User". Enter that key below. Next, enter your key's Account ID below too. Then, enter below the name of the field you are logging that represents a user's user ID (e.g. 'userId').`,
     keyTypesNeeded: [keyTypeEnum.ApiKey],
     additionalPropertiesNeeded: [
+      { key: "accountId", prettyName: "Account ID" },
       { key: "userIdField", prettyName: "User ID field (e.g. 'userId')" },
-      { key: "appId", prettyName: "App ID" },
     ],
     isOAuth: false,
     showsLogsWhenThereIsNoQuery: false,
