@@ -5,6 +5,7 @@ import SendgridLogo from "src/assets/sendgridLogo.png";
 import CustomerioLogo from "src/assets/customerioLogo.png";
 import StripeLogo from "src/assets/stripeLogo.png";
 import MongodbLogo from "src/assets/mongodbLogo.png";
+import NewRelicLogo from "src/assets/newRelicLogo.png";
 import { integrationTypeEnum, keyTypeEnum } from "logtree-types";
 
 export type AdditionalPropertyObj = {
@@ -128,5 +129,19 @@ export const IntegrationsToConnectToMap: {
     showsLogsWhenThereIsNoQuery: false,
     whatThisDoesDescription:
       "By doing all of this, we will be able to know which user IDs belong to which user emails, which lets you pull events from more integrations that typically use the user ID as a query parameter like Datadog, NewRelic, and more.",
+  },
+  new_relic: {
+    image: NewRelicLogo,
+    prettyName: "New Relic",
+    helpDescription: `Go to your profile in New Relic and click on "API Keys". Click "Create a Key" and create a new API key with the key type "User". Enter that key below. Then, enter below the name of the field you are logging that represents a user's user ID (e.g. 'userId'). Next, go to "APM & Services" on the sidebar. Click on the application you want to connect, then click on the Metadata button. Find the App ID, then enter that value below.`,
+    keyTypesNeeded: [keyTypeEnum.ApiKey],
+    additionalPropertiesNeeded: [
+      { key: "userIdField", prettyName: "User ID field (e.g. 'userId')" },
+      { key: "appId", prettyName: "App ID" },
+    ],
+    isOAuth: false,
+    showsLogsWhenThereIsNoQuery: false,
+    whatThisDoesDescription:
+      "We'll show you all of the logs that correspond with a specific user.",
   },
 };
