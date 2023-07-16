@@ -7,6 +7,7 @@ import StripeLogo from "src/assets/stripeLogo.png";
 import MongodbLogo from "src/assets/mongodbLogo.png";
 import NewRelicLogo from "src/assets/newRelicLogo.png";
 import { integrationTypeEnum, keyTypeEnum } from "logtree-types";
+import { tabKeys } from "../SupportLogs/components/Tabs";
 
 export type AdditionalPropertyObj = {
   key: string;
@@ -22,6 +23,7 @@ type IntegrationMapValue = {
   isOAuth: boolean;
   showsLogsWhenThereIsNoQuery: boolean;
   whatThisDoesDescription: string;
+  validTabKeys: tabKeys[];
 };
 
 /*
@@ -47,6 +49,7 @@ export const IntegrationsToConnectToMap: {
     showsLogsWhenThereIsNoQuery: true,
     whatThisDoesDescription:
       "You'll be able to see a feed of recent events and also search for the recent errors of a specific user by their email address. Make sure you have setUser set up with Sentry in order for this to work correctly.",
+    validTabKeys: [tabKeys.Timeline, tabKeys.Errors],
   },
   mixpanel: {
     image: MixpanelLogo,
@@ -60,6 +63,7 @@ export const IntegrationsToConnectToMap: {
     showsLogsWhenThereIsNoQuery: false,
     whatThisDoesDescription:
       "You'll be able to search for the recent events of a specific user by their email address.",
+    validTabKeys: [tabKeys.Timeline],
   },
   intercom: {
     image: IntercomLogo,
@@ -71,6 +75,7 @@ export const IntegrationsToConnectToMap: {
     showsLogsWhenThereIsNoQuery: true,
     whatThisDoesDescription:
       "You'll be able to see all recent Intercom messages and also search for the messages of a specific user by their email address.",
+    validTabKeys: [tabKeys.Timeline],
   },
   sendgrid: {
     image: SendgridLogo,
@@ -83,6 +88,7 @@ export const IntegrationsToConnectToMap: {
     showsLogsWhenThereIsNoQuery: false,
     whatThisDoesDescription:
       "You'll be able to see when emails are delivered successfully or unsuccessfully for a specific user when you search by their email address.",
+    validTabKeys: [tabKeys.Timeline],
   },
   customer_io: {
     image: CustomerioLogo,
@@ -97,6 +103,7 @@ export const IntegrationsToConnectToMap: {
     showsLogsWhenThereIsNoQuery: true,
     whatThisDoesDescription:
       "You'll be able to search for all message events (emails, push notifications) of a specific user by their email address.",
+    validTabKeys: [tabKeys.Timeline],
   },
   stripe: {
     image: StripeLogo,
@@ -108,6 +115,7 @@ export const IntegrationsToConnectToMap: {
     showsLogsWhenThereIsNoQuery: true,
     whatThisDoesDescription:
       "You'll be able to see all your recent payment events and also search for the payments of a specific user by their email address.",
+    validTabKeys: [tabKeys.Timeline],
   },
   mongodb: {
     image: MongodbLogo,
@@ -129,6 +137,7 @@ export const IntegrationsToConnectToMap: {
     showsLogsWhenThereIsNoQuery: false,
     whatThisDoesDescription:
       "By doing all of this, we will be able to know which user IDs belong to which user emails, which lets you pull events from more integrations that typically use the user ID as a query parameter like Datadog, NewRelic, and more.",
+    validTabKeys: [tabKeys.Timeline],
   },
   new_relic: {
     image: NewRelicLogo,
@@ -143,5 +152,6 @@ export const IntegrationsToConnectToMap: {
     showsLogsWhenThereIsNoQuery: false,
     whatThisDoesDescription:
       "We'll show you all of the logs that correspond with a specific user.",
+    validTabKeys: [tabKeys.Requests],
   },
 };

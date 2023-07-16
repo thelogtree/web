@@ -9,9 +9,10 @@ import { StylesType } from "src/utils/styles";
 import { useLogs } from "../Logs/lib";
 import { LogsList } from "./components/LogsList";
 import { TopOfSearch } from "./components/TopOfSearch";
-import { useFetchFoldersOnce } from "./lib";
+import { useFetchFoldersOnce, useSelectTab } from "./lib";
 import { useTrackPageView } from "src/utils/useTrackPageView";
 import { simplifiedLogTagEnum } from "logtree-types";
+import { Tabs } from "./components/Tabs";
 
 export const SupportLogsScreen = () => {
   useTrackPageView();
@@ -25,91 +26,30 @@ export const SupportLogsScreen = () => {
     shouldShowLoadingSigns,
     filteredSources,
     setFilteredSources,
-    logSourcesOptionsToFilterBy,
     isLoading,
   } = useLogs();
-  const [keywordFilter, setKeywordFilter] = useState<string>("");
-  const logsToShow = useMemo(() => {
-    if (!keywordFilter) {
-      return logs;
-    }
-    return logs.filter((log) => log.content.includes(keywordFilter));
-  }, [logs.length, filteredSources.length, isSearchQueued, keywordFilter]);
   const { query: urlQuery } = useSearchParams();
-  const isDiagnoseProblemVisible = useMemo(() => {
-    if (isLoading || shouldShowLoadingSigns) {
-      return false;
-    }
-    if (logs.find((l) => l.tag === simplifiedLogTagEnum.Error)) {
-      return true;
-    }
-    return false;
-  }, [logs.length, isLoading, shouldShowLoadingSigns]);
+  const { selectedTabKey, setSelectedTabKey } =
+    useSelectTab(setFilteredSources);
 
   useEffect(() => {
-    setKeywordFilter("");
     setFilteredSources([]);
   }, [query]);
 
-  const numLogsText = useMemo(() => {
-    if (shouldShowLoadingSigns) {
-      return "Sit tight...it may take up to 30 seconds to find all relevant events";
-    } else if (
-      query &&
-      logsToShow.length &&
-      (keywordFilter || filteredSources.length)
-    ) {
-      if (logsToShow.length === 1) {
-        return "Showing 1 event under this filter for this user";
-      }
-      return `Showing ${logsToShow.length} events under this filter for this user`;
-    } else if (
-      query &&
-      !logsToShow.length &&
-      (keywordFilter || filteredSources.length)
-    ) {
-      return "No results under this filter were found";
-    } else if (query && logsToShow.length === 1) {
-      return "Showing 1 recent event for this user";
-    } else if (query && logsToShow.length) {
-      return `Showing the ${numberToNumberWithCommas(
-        logsToShow.length
-      )} most recent events for this user`;
-    }
-    return "";
-  }, [
-    logsToShow.length,
-    query,
-    shouldShowLoadingSigns,
-    filteredSources.length,
-    keywordFilter,
-  ]);
-
   const endOfFeedText = useMemo(() => {
-    if (logsToShow.length && (keywordFilter || filteredSources.length)) {
-      return "There are no more results under your filter.";
-    } else if (
-      (query || urlQuery) &&
-      !logsToShow.length &&
-      (keywordFilter || filteredSources.length)
-    ) {
-      return "There are no results under your filter.";
-    } else if (query && !logsToShow.length) {
-      return "There are no recent events for this user.";
+    if (logs.length && filteredSources.length) {
+      return "There are no more recent events.";
+    } else if ((query || urlQuery) && !logs.length && filteredSources.length) {
+      return "There are no recent events.";
+    } else if (query && !logs.length) {
+      return "There are no recent events.";
     } else if (query) {
-      return "There are no more recent results.";
+      return "There are no more recent events.";
     } else if (urlQuery) {
       return "We're preparing your search. One moment please...";
     }
     return "";
-  }, [
-    logsToShow.length,
-    query,
-    isSearchQueued,
-    urlQuery,
-    filteredSources.length,
-    keywordFilter,
-  ]);
+  }, [query, isSearchQueued, urlQuery, filteredSources.length]);
 
   if (!organization) {
     return null;
@@ -123,21 +63,17 @@ export const SupportLogsScreen = () => {
             <SignedInOrganization />
           </div>
           <TopOfSearch
-            numLogsText={numLogsText}
-            filterOptions={logSourcesOptionsToFilterBy}
-            filteredSources={filteredSources}
-            setFilteredSources={setFilteredSources}
             query={query}
             setQuery={setQuery}
-            showFilters={!!logs.length && !isLoading}
-            keywordFilter={keywordFilter}
-            setKeywordFilter={setKeywordFilter}
             isLoading={shouldShowLoadingSigns}
-            isDiagnoseProblemVisible={isDiagnoseProblemVisible}
+          />
+          <Tabs
+            selectedTabKey={selectedTabKey}
+            onSelectTab={setSelectedTabKey}
           />
           <LogsList
             shouldShowLoadingSigns={shouldShowLoadingSigns}
-            logs={logsToShow}
+            logs={logs}
             endOfFeedText={endOfFeedText}
           />
         </div>

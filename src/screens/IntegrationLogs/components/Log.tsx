@@ -9,6 +9,7 @@ import {
   LOGS_ROUTE_PREFIX,
   SUPPORT_TOOL_SUFFIX,
 } from "src/RouteManager";
+import { IntegrationsToConnectToMap } from "src/screens/Integrations/integrationsToConnectTo";
 import { OpenExternalLink } from "src/screens/Logs/components/OpenExternalLink";
 import { FrontendLog } from "src/screens/Logs/lib";
 import { useLogFormattedTexts } from "src/screens/SupportLogs/lib";
@@ -84,8 +85,10 @@ export const Log = ({ log }: Props) => {
               {log.folderFullPath}
             </span>
           ) : null}
-          {log.sourceTitle ? (
-            <span style={styles.sourceTitle}>{log.sourceTitle}</span>
+          {log.sourceType ? (
+            <span style={styles.sourceTitle}>
+              {IntegrationsToConnectToMap[log.sourceType].prettyName}
+            </span>
           ) : null}
           <OpenExternalLink log={log} />
           <span style={styles.copyText}>{copyText}</span>

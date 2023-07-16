@@ -8,6 +8,8 @@ import { showGenericErrorAlert } from "src/utils/helpers";
 import { Api } from "src/api";
 import { quickGptEnum } from "logtree-types/misc";
 import { MySegment, SegmentEventsEnum } from "src/utils/segmentClient";
+import { tabKeys } from "./components/Tabs";
+import { IntegrationsToConnectToMap } from "../Integrations/integrationsToConnectTo";
 
 export const useLogFormattedTexts = (
   log: FrontendLog,
@@ -79,4 +81,30 @@ export const useQuickGPTAction = (email: string) => {
     submitQuickGpt,
     response,
   };
+};
+
+export const useSelectTab = (
+  setFilteredSources: (sources: string[]) => void
+) => {
+  const [selectedTabKey, setSelectedTabKey] = useState<tabKeys>(
+    tabKeys.Timeline
+  );
+
+  useEffect(() => {
+    let newFilteredSources = Object.keys(IntegrationsToConnectToMap).filter(
+      (integrationKey) => {
+        const integrationValue = IntegrationsToConnectToMap[integrationKey];
+        return integrationValue.validTabKeys.includes(selectedTabKey);
+      }
+    );
+
+    // temporary workaround for fizz
+    if (selectedTabKey === tabKeys.Timeline) {
+      newFilteredSources.push("logtree");
+    }
+
+    setFilteredSources(newFilteredSources);
+  }, [selectedTabKey]);
+
+  return { selectedTabKey, setSelectedTabKey };
 };

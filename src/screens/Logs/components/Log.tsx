@@ -25,6 +25,7 @@ import { DeletedLogRedBox } from "./DeletedLogRedBox";
 import { DeleteProgressBar } from "./DeleteProgressBar";
 import { FlipToAdditionalContextButton } from "./FlipToAdditionalContextButton";
 import { OpenExternalLink } from "./OpenExternalLink";
+import { IntegrationsToConnectToMap } from "src/screens/Integrations/integrationsToConnectTo";
 
 type Props = {
   log: FrontendLog;
@@ -145,8 +146,10 @@ export const Log = ({ log }: Props) => {
               {log.folderFullPath}
             </span>
           ) : null}
-          {log.sourceTitle ? (
-            <span style={styles.sourceTitle}>{log.sourceTitle}</span>
+          {log.sourceType ? (
+            <span style={styles.sourceTitle}>
+              {IntegrationsToConnectToMap[log.sourceType].prettyName}
+            </span>
           ) : null}
           <OpenExternalLink log={log} />
           <span style={styles.copyText}>{copyText}</span>

@@ -1,76 +1,17 @@
-import { Select, Tooltip } from "antd";
 import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import {
-  getIntegrations,
-  getOrganization,
-} from "src/redux/organization/selector";
-import { IntegrationsToConnectToMap } from "src/screens/Integrations/integrationsToConnectTo";
+import { getOrganization } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
-import { SharedStyles, StylesType } from "src/utils/styles";
-import { useQuickGPTAction } from "../lib";
-import DiagnoseIcon from "src/assets/personTalkingWhite.png";
-import { quickGptEnum } from "logtree-types/misc";
+import { StylesType } from "src/utils/styles";
 
 type Props = {
-  numLogsText?: string;
-  setFilteredSources: (sources: string[]) => void;
-  filteredSources: string[];
-  filterOptions: string[];
   query: string;
   setQuery: (newQuery: string) => void;
-  showFilters: boolean;
-  keywordFilter: string;
-  setKeywordFilter: (keywordFilter: string) => void;
   isLoading: boolean;
-  isDiagnoseProblemVisible: boolean;
 };
 
-export const TopOfSearch = ({
-  numLogsText,
-  query,
-  setQuery,
-  setFilteredSources,
-  filterOptions,
-  filteredSources,
-  showFilters,
-  keywordFilter,
-  setKeywordFilter,
-  isLoading,
-  isDiagnoseProblemVisible,
-}: Props) => {
-  const {
-    submitQuickGpt,
-    isLoading: isLoadingResponse,
-    response,
-  } = useQuickGPTAction(query);
-  const [isShowingMoreFiltersBox, setIsShowingMoreFiltersBox] =
-    useState<boolean>(false);
-  const integrations = useSelector(getIntegrations);
+export const TopOfSearch = ({ query, setQuery, isLoading }: Props) => {
   const organization = useSelector(getOrganization);
-
-  const description = useMemo(() => {
-    if (!integrations.length) {
-      return "";
-    }
-    let str = "We'll pull this user's activities from ";
-    integrations.forEach((integration, i) => {
-      const isLast = i === integrations.length - 1;
-      const prettyName =
-        IntegrationsToConnectToMap[integration.type].prettyName;
-      if (integrations.length === 1) {
-        str += `${prettyName}.`;
-      } else {
-        str += isLast ? `and ${prettyName}.` : `${prettyName}, `;
-      }
-    });
-    return str;
-  }, [integrations?.length, organization?._id]);
-
-  const filterOptionsInPicker = filterOptions.map((option) => ({
-    value: option,
-    label: option,
-  }));
 
   if (!organization) {
     return null;
@@ -79,7 +20,6 @@ export const TopOfSearch = ({
   return (
     <div style={styles.container}>
       <label style={styles.title}>Search for a user's activity</label>
-      <label style={styles.desc}>{description}</label>
       <div style={styles.inputContainer}>
         <input
           style={styles.searchInput}
@@ -87,64 +27,8 @@ export const TopOfSearch = ({
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Enter a user's email"
         />
-        {isDiagnoseProblemVisible ? (
-          <Tooltip
-            title={isLoadingResponse ? "Thinking..." : "Summarize errors"}
-          >
-            <button
-              style={{
-                ...styles.quickGptActionButton,
-                ...(isLoadingResponse && SharedStyles.loadingButton),
-                ...(isLoadingResponse && { cursor: "wait" }),
-              }}
-              disabled={isLoadingResponse}
-              onClick={() => submitQuickGpt(quickGptEnum.Diagnose)}
-            >
-              <img
-                src={DiagnoseIcon}
-                style={{
-                  ...styles.quickActionIcon,
-                  ...(isLoadingResponse && SharedStyles.loadingButton),
-                  ...(isLoadingResponse && { cursor: "wait" }),
-                }}
-              />
-            </button>
-          </Tooltip>
-        ) : null}
       </div>
-      {showFilters ? (
-        isShowingMoreFiltersBox ? (
-          <div style={styles.filterContainer}>
-            <label style={styles.moreFiltersLbl}>Add filters</label>
-            <input
-              style={styles.keywordInput}
-              value={keywordFilter}
-              onChange={(e) => setKeywordFilter(e.target.value)}
-              placeholder="Filter by a word or phrase (case sensitive)"
-            />
-            {filterOptions.length ? (
-              <Select
-                mode="multiple"
-                allowClear
-                value={filteredSources}
-                style={styles.select}
-                placeholder="Filter sources"
-                defaultValue={[]}
-                onChange={setFilteredSources}
-                options={filterOptionsInPicker}
-              />
-            ) : null}
-          </div>
-        ) : (
-          <button
-            onClick={() => setIsShowingMoreFiltersBox(true)}
-            style={styles.addFiltersBtn}
-          >
-            Filter by source or keywords
-          </button>
-        )
-      ) : null}
-      {numLogsText ? (
+      {/* {numLogsText ? (
         <label
           style={{
             ...styles.numLogsTotalText,
@@ -153,13 +37,7 @@ export const TopOfSearch = ({
         >
           {numLogsText}
         </label>
-      ) : null}
-      {showFilters && response ? (
-        <div style={styles.responseContainer}>
-          <label>{response}</label>
-        </div>
-      ) : null}
-      {query ? <hr style={styles.hr} /> : null}
+      ) : null} */}
     </div>
   );
 };
@@ -201,11 +79,11 @@ const styles: StylesType = {
     paddingLeft: 5,
   },
   title: {
-    fontWeight: 700,
-    fontSize: 42,
+    fontWeight: 600,
+    fontSize: 30,
     textAlign: "start",
     color: Colors.black,
-    paddingBottom: 16,
+    paddingBottom: 22,
   },
   searchInput: {
     outline: "none",

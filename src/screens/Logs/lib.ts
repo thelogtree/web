@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/react";
 import _ from "lodash";
-import { simplifiedLogTagEnum } from "logtree-types";
+import { integrationTypeEnum, simplifiedLogTagEnum } from "logtree-types";
 import moment from "moment-timezone";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
@@ -89,7 +89,7 @@ export type FrontendLog = {
   referenceId?: string;
   externalLink?: string;
   tag?: simplifiedLogTagEnum;
-  sourceTitle?: string;
+  sourceType?: integrationTypeEnum;
   additionalContext?: Object;
 };
 
@@ -159,10 +159,9 @@ export const useLogs = (
           isSearchQueued ||
           (query && lastSearchCompletedWithQuery !== query)
       );
-  const logSourcesOptionsToFilterBy = useMemo(() => {
-    const sources = logs.map((log) => log.sourceTitle);
-    return _.uniq(sources).filter((v) => v) as string[];
-  }, [isSearchQueued, isLoading, logs.length]);
+  const shouldReturnLogs =
+    lastSearchCompletedWithQuery === query &&
+    lastCompletedFetchWithConnectionUrl === connectionUrl;
 
   const attemptFetchingMoreResults = async () => {
     setStart(Math.min(logs.length, start + PAGINATION_RECORDS_INCREMENT));
@@ -188,39 +187,14 @@ export const useLogs = (
     }
   };
 
-  const _addFolderPathToLogsIfPossible = (
-    logs: FrontendLog[]
-  ): FrontendLog[] => {
-    if (!logs.length) {
-      return [];
-    }
-    if (
-      !isFavoritesScreen &&
-      !isGlobalSearchScreen &&
-      !isSupportScreen &&
-      !isIntegrationsScreen
-    ) {
-      // looking inside a specific channel, return as-is
-      return logs;
-    }
-
-    return logs.map((log) => {
-      if (!log.folderId) {
-        return log;
-      }
-      const folderFullPath = flattenedFolders.find(
-        (flattenedFolder) => flattenedFolder._id === log.folderId
-      )?.fullPath;
-      return {
-        ...log,
-        folderFullPath,
-      };
-    });
-  };
-
   const _filterLogsBySource = (logs: FrontendLog[]) =>
     logs.filter(
-      (log) => log.sourceTitle && filteredSources.includes(log.sourceTitle)
+      (
+        log // the .includes("logtree") is a temporary workaround for fizz right now
+      ) =>
+        log.folderId
+          ? filteredSources.includes("logtree")
+          : filteredSources.includes(log.sourceType || "")
     );
 
   const _fetchLogs = async (
@@ -362,11 +336,7 @@ export const useLogs = (
 
   useEffect(() => {
     if (filteredSources.length) {
-      setFilteredLogs(
-        _addFolderPathToLogsIfPossible(_filterLogsBySource(logs))
-      );
-    } else {
-      setLogs(_addFolderPathToLogsIfPossible(logs));
+      setFilteredLogs(_filterLogsBySource(logs));
     }
   }, [
     isFavoritesScreen,
@@ -374,7 +344,7 @@ export const useLogs = (
     isSupportScreen,
     isIntegrationsScreen,
     favoritedFolderPaths.length,
-    filteredSources.length,
+    JSON.stringify(filteredSources),
     JSON.stringify(logsIds),
   ]);
 
@@ -423,31 +393,8 @@ export const useLogs = (
     }
   }, [isGlobalSearchScreen, isSupportScreen, query]);
 
-  const logsToReturn = useMemo(() => {
-    if (
-      lastSearchCompletedWithQuery === query &&
-      lastCompletedFetchWithConnectionUrl === connectionUrl
-    ) {
-      if (filteredSources.length) {
-        return filteredLogs;
-      }
-      return logs;
-    }
-    return [];
-  }, [
-    query,
-    lastSearchCompletedWithQuery,
-    lastCompletedFetchWithConnectionUrl,
-    connectionUrl,
-    logs.length,
-    isLoading,
-    isSearchQueued,
-    filteredLogs.length,
-    filteredSources.length,
-  ]);
-
   return {
-    logs: logsToReturn,
+    logs: shouldReturnLogs ? filteredLogs : [],
     numLogsInTotal,
     isLoading,
     attemptFetchingMoreResults,
@@ -461,7 +408,6 @@ export const useLogs = (
     shouldShowLoadingSigns,
     setFilteredSources,
     filteredSources,
-    logSourcesOptionsToFilterBy,
   };
 };
 

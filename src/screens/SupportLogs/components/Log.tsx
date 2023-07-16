@@ -14,6 +14,7 @@ import { StylesType } from "src/utils/styles";
 
 import { useLogFormattedTexts } from "../lib";
 import { FlipToAdditionalContextButton } from "src/screens/Logs/components/FlipToAdditionalContextButton";
+import { IntegrationsToConnectToMap } from "src/screens/Integrations/integrationsToConnectTo";
 
 type Props = {
   log: FrontendLog;
@@ -110,8 +111,10 @@ export const Log = ({ log }: Props) => {
               {log.folderFullPath}
             </span>
           ) : null}
-          {log.sourceTitle ? (
-            <span style={styles.sourceTitle}>{log.sourceTitle}</span>
+          {log.sourceType ? (
+            <span style={styles.sourceTitle}>
+              {IntegrationsToConnectToMap[log.sourceType].prettyName}
+            </span>
           ) : null}
           {logTagColorAndText.text ? (
             <span
