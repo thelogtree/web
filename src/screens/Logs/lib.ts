@@ -317,8 +317,10 @@ export const useLogs = (
   };
 
   useEffect(() => {
-    setFilteredLogs(logs);
-  }, [logs.length, isLoading, isSearchQueued]);
+    if (!isSupportScreen) {
+      setFilteredLogs(logs);
+    }
+  }, [logs.length, isLoading, isSearchQueued, isSupportScreen]);
 
   useEffect(() => {
     if (start !== 0) {
