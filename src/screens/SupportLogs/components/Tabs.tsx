@@ -7,6 +7,7 @@ export enum tabKeys {
   Requests = "requests",
   Marketing = "marketing",
   Errors = "errors",
+  Support = "support",
 }
 
 type Props = {
@@ -46,7 +47,7 @@ export const Tabs = ({ onSelectTab, selectedTabKey }: Props) => (
   <div style={styles.outerContainer}>
     <div style={styles.container}>
       <IndividualTab
-        title="Timeline"
+        title="Full Timeline"
         tabKey={tabKeys.Timeline}
         onSelectTab={onSelectTab}
         selectedTabKey={selectedTabKey}
@@ -60,6 +61,18 @@ export const Tabs = ({ onSelectTab, selectedTabKey }: Props) => (
       <IndividualTab
         title="Errors"
         tabKey={tabKeys.Errors}
+        onSelectTab={onSelectTab}
+        selectedTabKey={selectedTabKey}
+      />
+      <IndividualTab
+        title="Support"
+        tabKey={tabKeys.Support}
+        onSelectTab={onSelectTab}
+        selectedTabKey={selectedTabKey}
+      />
+      <IndividualTab
+        title="Marketing"
+        tabKey={tabKeys.Marketing}
         onSelectTab={onSelectTab}
         selectedTabKey={selectedTabKey}
       />
@@ -87,7 +100,7 @@ const styles: StylesType = {
     border: "none",
     cursor: "pointer",
     color: Colors.black,
-    fontWeight: 400,
+    fontWeight: 300,
     backgroundColor: Colors.transparent,
     paddingLeft: 20,
     paddingRight: 20,
@@ -98,5 +111,6 @@ const styles: StylesType = {
     borderBottomColor: Colors.black,
     borderBottomWidth: 2,
     borderBottomStyle: "solid",
+    fontWeight: 500,
   },
 };

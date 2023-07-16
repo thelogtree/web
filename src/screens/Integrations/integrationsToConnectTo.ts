@@ -75,7 +75,7 @@ export const IntegrationsToConnectToMap: {
     showsLogsWhenThereIsNoQuery: true,
     whatThisDoesDescription:
       "You'll be able to see all recent Intercom messages and also search for the messages of a specific user by their email address.",
-    validTabKeys: [tabKeys.Timeline],
+    validTabKeys: [tabKeys.Timeline, tabKeys.Support],
   },
   sendgrid: {
     image: SendgridLogo,
@@ -88,7 +88,7 @@ export const IntegrationsToConnectToMap: {
     showsLogsWhenThereIsNoQuery: false,
     whatThisDoesDescription:
       "You'll be able to see when emails are delivered successfully or unsuccessfully for a specific user when you search by their email address.",
-    validTabKeys: [tabKeys.Timeline],
+    validTabKeys: [tabKeys.Timeline, tabKeys.Marketing],
   },
   customer_io: {
     image: CustomerioLogo,
@@ -103,7 +103,7 @@ export const IntegrationsToConnectToMap: {
     showsLogsWhenThereIsNoQuery: true,
     whatThisDoesDescription:
       "You'll be able to search for all message events (emails, push notifications) of a specific user by their email address.",
-    validTabKeys: [tabKeys.Timeline],
+    validTabKeys: [tabKeys.Timeline, tabKeys.Marketing],
   },
   stripe: {
     image: StripeLogo,

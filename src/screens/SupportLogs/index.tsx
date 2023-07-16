@@ -31,10 +31,9 @@ export const SupportLogsScreen = () => {
   const { query: urlQuery } = useSearchParams();
   const { selectedTabKey, setSelectedTabKey } =
     useSelectTab(setFilteredSources);
-
-  useEffect(() => {
-    setFilteredSources([]);
-  }, [query]);
+  const shouldShowTabs = Boolean(
+    query && !isLoading && !isSearchQueued && !shouldShowLoadingSigns
+  );
 
   const endOfFeedText = useMemo(() => {
     if (logs.length && filteredSources.length) {
@@ -44,12 +43,18 @@ export const SupportLogsScreen = () => {
     } else if (query && !logs.length) {
       return "There are no recent events.";
     } else if (query) {
-      return "There are no more recent events.";
+      return "There are no recent events.";
     } else if (urlQuery) {
       return "We're preparing your search. One moment please...";
     }
     return "";
-  }, [query, isSearchQueued, urlQuery, filteredSources.length]);
+  }, [
+    query,
+    isSearchQueued,
+    urlQuery,
+    JSON.stringify(filteredSources),
+    logs.length,
+  ]);
 
   if (!organization) {
     return null;
@@ -67,10 +72,12 @@ export const SupportLogsScreen = () => {
             setQuery={setQuery}
             isLoading={shouldShowLoadingSigns}
           />
-          <Tabs
-            selectedTabKey={selectedTabKey}
-            onSelectTab={setSelectedTabKey}
-          />
+          {shouldShowTabs ? (
+            <Tabs
+              selectedTabKey={selectedTabKey}
+              onSelectTab={setSelectedTabKey}
+            />
+          ) : null}
           <LogsList
             shouldShowLoadingSigns={shouldShowLoadingSigns}
             logs={logs}
@@ -89,7 +96,7 @@ const styles: StylesType = {
     justifyContent: "flex-start",
     alignItems: "flex-start",
     width: "90%",
-    overflow: "auto",
+    overflow: "hidden",
     maxWidth: 1200,
   },
   outerContainer: {
