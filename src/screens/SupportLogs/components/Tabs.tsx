@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { getUser } from "src/redux/organization/selector";
 import { Colors } from "src/utils/colors";
 import { MySegment, SegmentEventsEnum } from "src/utils/segmentClient";
 import { StylesType } from "src/utils/styles";
@@ -27,12 +29,14 @@ const IndividualTab = ({
   onSelectTab: (tab_key: tabKeys) => void;
   selectedTabKey: tabKeys;
 }) => {
+  const user = useSelector(getUser);
   const isSelected = tabKey === selectedTabKey;
   const _select = () => {
     onSelectTab(tabKey);
     MySegment.track(SegmentEventsEnum.ClickedTab, {
       tab: tabKey,
       title,
+      user_email: user?.email,
     });
   };
 
