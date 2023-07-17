@@ -11,6 +11,7 @@ export enum tabKeys {
   Marketing = "marketing",
   Errors = "errors",
   Support = "support",
+  UserDetails = "user_details",
 }
 
 type Props = {
@@ -84,6 +85,12 @@ export const Tabs = ({ onSelectTab, selectedTabKey }: Props) => (
       <IndividualTab
         title="Marketing"
         tabKey={tabKeys.Marketing}
+        onSelectTab={onSelectTab}
+        selectedTabKey={selectedTabKey}
+      />
+      <IndividualTab
+        title="User Details"
+        tabKey={tabKeys.UserDetails}
         onSelectTab={onSelectTab}
         selectedTabKey={selectedTabKey}
       />

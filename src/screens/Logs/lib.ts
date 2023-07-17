@@ -145,6 +145,7 @@ export const useLogs = (
   const [isSearchQueued, setIsSearchQueued] = useState<boolean>(!!urlQuery);
   const [filteredSources, setFilteredSources] = useState<string[]>([]);
   const [filteredLogs, setFilteredLogs] = useState<FrontendLog[]>([]);
+  const [userDetails, setUserDetails] = useState<any | null>(null);
   const { fetch: refetchFolders, isFetching: isFetchingFolders } =
     useFetchFolders();
   const shouldShowLoadingSigns = connectionUrl
@@ -174,9 +175,11 @@ export const useLogs = (
     shouldResetFloorDate?: boolean
   ) => {
     if (shouldResetQueryString && query) {
+      setUserDetails(null);
       setQuery(""); // this state change will call the fetch logs for us, so we can stop early
     } else {
       setLogs([]);
+      setUserDetails(null);
       setStart(0);
       await _fetchLogs(
         true,
@@ -244,6 +247,7 @@ export const useLogs = (
 
       let fetchedLogs: FrontendLog[] = [];
       let fetchedNumLogsInTotal: number = 0;
+      let fetchedUserDetails: any | null = null;
       if (query) {
         let res;
         if (isSupportScreen) {
@@ -266,6 +270,7 @@ export const useLogs = (
           );
         }
         fetchedLogs = res.data.logs;
+        fetchedUserDetails = res.data.user;
       } else if (!isGlobalSearchScreen && !isSupportScreen) {
         if (isIntegrationsScreen) {
           const res = await Api.organization.getIntegrationLogs(
@@ -298,6 +303,7 @@ export const useLogs = (
       );
 
       setLogs(newLogsArr);
+      setUserDetails(fetchedUserDetails);
 
       let hadUnreadLogs = isFavoritesScreen
         ? favoritesScreenHasUnread
@@ -410,6 +416,7 @@ export const useLogs = (
     shouldShowLoadingSigns,
     setFilteredSources,
     filteredSources,
+    userDetails,
   };
 };
 
@@ -767,6 +774,30 @@ export const useAdditionalContextOfLog = (log: FrontendLog) => {
   }, [log._id]);
 
   return additionalContextString;
+};
+
+export const prettifyObjectIntoString = (obj: any) => {
+  let result = "";
+  if (!obj || !Object.keys(obj).length) {
+    return result;
+  }
+  let lastKey = "";
+  Object.keys(obj).forEach((key) => {
+    if (result) {
+      result += `\n`;
+    }
+    let value = obj[key];
+    if (typeof value === "object") {
+      value = stringify(value, { indent: 5 });
+    } else if (isValidJsonString(value)) {
+      value = stringify(JSON.parse(value), { indent: 5 });
+    } else if (typeof value === "string") {
+      value = `"${value}"`;
+    }
+    result += `${key}: ${value}`;
+    lastKey = key;
+  });
+  return result;
 };
 
 export const useAdditionalContextOfLogManager = (log: FrontendLog) => {

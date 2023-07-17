@@ -12,7 +12,8 @@ import { TopOfSearch } from "./components/TopOfSearch";
 import { useFetchFoldersOnce, useSelectTab } from "./lib";
 import { useTrackPageView } from "src/utils/useTrackPageView";
 import { simplifiedLogTagEnum } from "logtree-types";
-import { Tabs } from "./components/Tabs";
+import { Tabs, tabKeys } from "./components/Tabs";
+import { UserDetails } from "./components/UserDetails";
 
 export const SupportLogsScreen = () => {
   useTrackPageView();
@@ -27,11 +28,12 @@ export const SupportLogsScreen = () => {
     filteredSources,
     setFilteredSources,
     isLoading,
+    userDetails,
   } = useLogs();
   const { query: urlQuery } = useSearchParams();
   const { selectedTabKey, setSelectedTabKey } =
     useSelectTab(setFilteredSources);
-  const shouldShowTabs = Boolean(
+  const resultsAreReady = Boolean(
     query && !isLoading && !isSearchQueued && !shouldShowLoadingSigns
   );
 
@@ -72,17 +74,21 @@ export const SupportLogsScreen = () => {
             setQuery={setQuery}
             isLoading={shouldShowLoadingSigns}
           />
-          {shouldShowTabs ? (
+          {resultsAreReady ? (
             <Tabs
               selectedTabKey={selectedTabKey}
               onSelectTab={setSelectedTabKey}
             />
           ) : null}
-          <LogsList
-            shouldShowLoadingSigns={shouldShowLoadingSigns}
-            logs={logs}
-            endOfFeedText={endOfFeedText}
-          />
+          {selectedTabKey === tabKeys.UserDetails && resultsAreReady ? (
+            <UserDetails userDetails={userDetails} />
+          ) : (
+            <LogsList
+              shouldShowLoadingSigns={shouldShowLoadingSigns}
+              logs={logs}
+              endOfFeedText={endOfFeedText}
+            />
+          )}
         </div>
       </div>
     </>
