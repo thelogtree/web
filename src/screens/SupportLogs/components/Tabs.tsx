@@ -1,5 +1,6 @@
 import React from "react";
 import { Colors } from "src/utils/colors";
+import { MySegment, SegmentEventsEnum } from "src/utils/segmentClient";
 import { StylesType } from "src/utils/styles";
 
 export enum tabKeys {
@@ -27,7 +28,13 @@ const IndividualTab = ({
   selectedTabKey: tabKeys;
 }) => {
   const isSelected = tabKey === selectedTabKey;
-  const _select = () => onSelectTab(tabKey);
+  const _select = () => {
+    onSelectTab(tabKey);
+    MySegment.track(SegmentEventsEnum.ClickedTab, {
+      tab: tabKey,
+      title,
+    });
+  };
 
   return (
     <button
