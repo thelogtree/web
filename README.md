@@ -22,3 +22,7 @@ SKIP_PREFLIGHT_CHECK=true
 ## Deployment
 
 It should be relatively easy to figure out how to deploy this React app on Netlify or Vercel. I've already included files to make it easy for Netlify hosting.
+
+## License
+
+Logtree by Andy Lebowitz is licensed under Attribution-NonCommercial 4.0 International 
