@@ -13,7 +13,7 @@ if (process.env.REACT_APP_SENTRY_DSN) {
   });
 }
 
-LogRocket.init("vngzei/logtree");
+LogRocket.init("replace_with_your_own_logrocket_key_if_you_want");
 
 ReactDOM.render(
   <React.StrictMode>
