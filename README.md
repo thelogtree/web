@@ -1,5 +1,7 @@
 # Frontend/Web App
 
+Note: You may need to make some tweaks to the codebase to get it up and running / eliminate errors.
+
 ## Development Setup
 
 1. clone the repo
