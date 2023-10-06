@@ -1,6 +1,6 @@
 # Frontend/Web App
 
-## Setup
+## Development Setup
 
 1. clone the repo
 2. `yarn`
@@ -18,3 +18,7 @@ REACT_APP_PROD_API_URL="url_you_are_hosting_the_server_on"
 SKIP_PREFLIGHT_CHECK=true
 ```
 5. `yarn start`
+
+## Deployment
+
+It should be relatively easy to figure out how to deploy this React app on Netlify or Vercel. I've already included files to make it easy for Netlify hosting.
