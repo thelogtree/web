@@ -29,7 +29,7 @@ SKIP_PREFLIGHT_CHECK=true
 
 ## Deployment
 
-It should be relatively easy to figure out how to deploy this React app on Netlify or Vercel. I've already included files to make it easy for Netlify hosting.
+It should be relatively easy to figure out how to deploy this React app on Netlify or Vercel. I've already included files to make it easy for Netlify hosting. Remember to add your .env keys to the service you're hosting this on.
 
 ## License
 
