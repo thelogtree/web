@@ -25,4 +25,4 @@ It should be relatively easy to figure out how to deploy this React app on Netli
 
 ## License
 
-Logtree by Andy Lebowitz is licensed under Attribution-NonCommercial 4.0 International 
+Logtree by Andy Lebowitz is licensed under Attribution-NonCommercial 4.0 International. [See details here.](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
