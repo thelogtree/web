@@ -2,6 +2,10 @@
 
 Note: You may need to make some tweaks to the codebase to get it up and running / eliminate errors. Also, the codebase is relatively messy right now. There is a lot of code still in the repo from a prior feature. Please ignore irrelevant code.
 
+## Privacy
+
+Because you are using your own API keys, hosting it on your own servers, and using your own database, everything can only be seen and used by you and people in your organization. There is no code that lets me monitor the activity of people using this product.
+
 ## Development Setup
 
 1. clone the repo
